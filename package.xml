@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package format="2">
+    <name>bitbots_kick_engine</name>
+    <version>0.0</version>
+    <description>TODO</description>
+
+    <maintainer email="">TODO</maintainer>
+
+    <author email="">TODO<author>
+
+    <license>BSD</license>
+
+    <buildtool_depend>catkin</buildtool_depend>
+
+    <depend>roscpp</depend>
+
+
+    <export>
+        <bitbots_documentation>
+            <status>TODO</status>
+            <language>c++</language>
+        </bitbots_documentation>
+    </export>
+</package>
