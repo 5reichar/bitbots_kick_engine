@@ -135,7 +135,7 @@ include_directories(
 # add_executable(${PROJECT_NAME}_node src/bitbots_kick_engine_node.cpp)
 add_executable
 (
-    visual_spline_node src/VisualSplineNode.cpp
+    visual_splines_node src/VisualSplinesNode.cpp
 )
 
 ## Rename C++ executable without prefix
@@ -154,7 +154,7 @@ add_executable
 # )
 target_link_libraries
 (
-    viasual_spline_node ${catkin_LIBRARIES}
+    viasual_splines_node ${catkin_LIBRARIES}
 )
 
 #############
