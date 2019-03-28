@@ -2,11 +2,11 @@
 #include <visualization_msg/Marker.h>
 #include <Spline.hpp>
 
-class VisualSplinesNode
+class VisualSplinesService
 {
 public:
-    VisualSplinesNode(int argc, char** argv);
-    ~VisualSplinesNode();
+    VisualSplinesService(int argc, char** argv);
+    ~VisualSplinesService();
 
     visualization_msgs::Marker get_marker(string marker_namespace, uint8_t marker_id);
     void set_marker_properties(visualization_msgs::Marker & marker);
