@@ -1,4 +1,4 @@
-#include <VisualSplinesService.hpp>
+#include "../../include/Utils/VisualSplinesService.hpp"
 #include <ros/ros.h>
 
 int main(int argc, char** argv)
