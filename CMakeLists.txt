@@ -133,6 +133,10 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/bitbots_kick_engine_node.cpp)
+add_executable
+(
+    visual_spline_node src/VisualSplineNode.cpp
+)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -148,6 +152,10 @@ include_directories(
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}
 # )
+target_link_libraries
+(
+    viasual_spline_node ${catkin_LIBRARIES}
+)
 
 #############
 ## Install ##
