@@ -9,7 +9,7 @@ public:
     ~VisualSplinesService();
 
     visualization_msgs::Marker get_marker(string marker_namespace, uint8_t marker_id);
-    void set_marker_properties(visualization_msgs::Marker & marker);
+    void set_marker_properties(visualization_msgs::Marker & marker, Spline * x_spline = NULL, Spline * y_spline = NULL, Spline * z_spline = NULL);
     void publish_marker(visualization_msgs::Marker & marker);
 
 private:
@@ -19,4 +19,5 @@ private:
 
     uint32_t m_uint_shape;
     ros::Publisher m_ros_marker_publisher;
+    double m_d_time;
 };

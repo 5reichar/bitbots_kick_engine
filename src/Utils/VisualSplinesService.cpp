@@ -3,6 +3,7 @@
 
 VisualSplinesService::VisualSplinesService(int argc, char** argv)
 {
+    m_d_time = 0.0;
     m_uint_shape = UINT32_MAX;
     m_ros_marker_publisher = node_handle.advertise<visualization_msgs::Maker>("spline_marker", 1);
 
@@ -54,15 +55,19 @@ visualization_msgs::Marker VisualSplinesService::get_marker(string marker_namesp
     marker.type = get_shape();
 }
 
-void VisualSplinesService::set_marker_properties(visualization_msgs::Marker & marker)
+void VisualSplinesService::set_marker_properties(visualization_msgs::Marker & marker, Spline * x_spline = NULL, Spline * y_spline = NULL, Spline * z_spline = NULL)
 {
+    auto x_position = x_spline ? x_spline->pos(m_d_time) : 0;
+    auto y_position = y_spline ? y_spline->pos(m_d_time) : 0;
+    auto z_position = z_spline ? z_spline->pos(m_d_time) : 0;
+
     // Set the marker action.  Options are ADD, DELETE, and new in ROS Indigo: 3 (DELETEALL)
     marker.action = visualization_msgs::Marker::ADD;
 
     // Set the pose of the marker.  This is a full 6DOF pose relative to the frame/time specified in the header
-    marker.pose.position.x = 0;
-    marker.pose.position.y = 0;
-    marker.pose.position.z = 0;
+    marker.pose.position.x = x_position;
+    marker.pose.position.y = y_position;
+    marker.pose.position.z = z_position;
     marker.pose.orientation.x = 0.0;
     marker.pose.orientation.y = 0.0;
     marker.pose.orientation.z = 0.0;
