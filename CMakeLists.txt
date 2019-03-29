@@ -10,6 +10,7 @@ project(bitbots_kick_engine)
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
+  visualization_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -70,6 +71,7 @@ find_package(catkin REQUIRED COMPONENTS
 # generate_messages(
 #   DEPENDENCIES
 #   std_msgs
+#   visualization_msgs
 # )
 
 ################################################
@@ -104,7 +106,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
   INCLUDE_DIRS include
 #  LIBRARIES bitbots_kick_engine
-#  CATKIN_DEPENDS roscpp std_msgs
+#  CATKIN_DEPENDS roscpp std_msgs visualization_msgs
 #  DEPENDS system_lib
 )
 
@@ -152,7 +154,7 @@ add_executable(
 #   ${catkin_LIBRARIES}
 # )
 target_link_libraries(
-    visual_splines_node ${catkin_LIBRARIES}
+    visual_splines_node ${catkin_LIBRARIES} include/Utils/VisualSplinesService.hpp
 )
 
 #############

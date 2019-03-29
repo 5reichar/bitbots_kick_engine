@@ -1,12 +1,10 @@
 #include <VisualSplinesService.hpp>
-#include <ros/ros.h>
 
 VisualSplinesService::VisualSplinesService(int argc, char** argv)
+: m_d_time(0.0),
+  m_uint_shape(UINT32_MAX),
+  m_ros_marker_publisher(node_handle.advertise<visualization_msgs::Maker>("spline_marker", 1))
 {
-    m_d_time = 0.0;
-    m_uint_shape = UINT32_MAX;
-    m_ros_marker_publisher = node_handle.advertise<visualization_msgs::Maker>("spline_marker", 1);
-
     // init ros
     ros::init(argc, argv, "spline_visual");
     ros::NodeHandle node_handle;
@@ -38,7 +36,7 @@ uint32_t VisualSplinesService::get_shape()
     return m_uint_shape;
 }
 
-visualization_msgs::Marker VisualSplinesService::get_marker(string marker_namespace, uint8_t marker_id)
+visualization_msgs::Marker VisualSplinesService::get_marker(std::string marker_namespace, uint8_t marker_id)
 {
     visualization_msgs::Marker marker;
 
@@ -55,7 +53,7 @@ visualization_msgs::Marker VisualSplinesService::get_marker(string marker_namesp
     marker.type = get_shape();
 }
 
-void VisualSplinesService::set_marker_properties(visualization_msgs::Marker & marker, Spline * x_spline = NULL, Spline * y_spline = NULL, Spline * z_spline = NULL)
+void VisualSplinesService::set_marker_properties(visualization_msgs::Marker & marker, bitbots_splines::Spline * x_spline = NULL, bitbots_splines::Spline * y_spline = NULL, bitbots_splines::Spline * z_spline = NULL)
 {
     auto x_position = x_spline ? x_spline->pos(m_d_time) : 0;
     auto y_position = y_spline ? y_spline->pos(m_d_time) : 0;
