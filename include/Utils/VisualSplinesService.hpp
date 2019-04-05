@@ -2,7 +2,7 @@
 #include <string>
 #include <ros/ros.h>
 #include <visualization_msgs/Marker.h>
-#include "../bitbots_spline/Spline.hpp"
+#include "bitbots_spline/Spline.hpp"
 
 class VisualSplinesService
 {

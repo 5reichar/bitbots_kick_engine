@@ -105,8 +105,8 @@ find_package(catkin REQUIRED COMPONENTS
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
   INCLUDE_DIRS include
-#  LIBRARIES bitbots_kick_engine
-#  CATKIN_DEPENDS roscpp std_msgs visualization_msgs
+  LIBRARIES ${PROJECT_NAME}
+  CATKIN_DEPENDS roscpp std_msgs visualization_msgs
 #  DEPENDS system_lib
 )
 
@@ -121,10 +121,18 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
+set (CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+
+set(SOURCES
+  src/Utils/VisualSplinesService.cpp
+  src/Utils/VisualSplinesNode.cpp
+)
+
 ## Declare a C++ library
-# add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/bitbots_kick_engine.cpp
-# )
+ add_library(${PROJECT_NAME}
+  ${SOURCES}
+ )
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -136,7 +144,7 @@ include_directories(
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/bitbots_kick_engine_node.cpp)
 add_executable(
-    visual_splines_node src/Utils/VisualSplinesNode.cpp
+    bitbots_kick_engine src/Utils/VisualSplinesNode.cpp
 )
 
 ## Rename C++ executable without prefix
@@ -154,7 +162,7 @@ add_executable(
 #   ${catkin_LIBRARIES}
 # )
 target_link_libraries(
-    visual_splines_node ${catkin_LIBRARIES} include/Utils/VisualSplinesService.hpp
+    bitbots_kick_engine ${catkin_LIBRARIES}
 )
 
 #############

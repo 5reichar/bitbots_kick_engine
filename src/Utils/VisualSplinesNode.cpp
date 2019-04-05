@@ -1,5 +1,5 @@
 #include <ros/ros.h>
-#include "../../include/Utils/VisualSplinesService.hpp"
+#include "Utils/VisualSplinesService.hpp"
 
 int main(int argc, char** argv)
 {

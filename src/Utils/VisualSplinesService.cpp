@@ -1,4 +1,4 @@
-#include <VisualSplinesService.hpp>
+#include "Utils/VisualSplinesService.hpp"
 
 VisualSplinesService::VisualSplinesService(int argc, char** argv)
 : m_d_time(0.0),
