@@ -2,12 +2,13 @@
 
 VisualSplinesService::VisualSplinesService(int argc, char** argv)
 : m_d_time(0.0),
-  m_uint_shape(UINT32_MAX),
-  m_ros_marker_publisher(node_handle.advertise<visualization_msgs::Maker>("spline_marker", 1))
+  m_uint_shape(UINT32_MAX)
 {
     // init ros
     ros::init(argc, argv, "spline_visual");
     ros::NodeHandle node_handle;
+
+    m_ros_marker_publisher = node_handle.advertise<visualization_msgs::Marker>("spline_marker", 1);
 }
 
 VisualSplinesService::~VisualSplinesService()
@@ -42,7 +43,7 @@ visualization_msgs::Marker VisualSplinesService::get_marker(std::string marker_n
 
     //Set the frame ID and timestamp
     marker.header.frame_id = "spline_visual_frame";
-    marker.header.stamp = ros::time::now();
+    marker.header.stamp = ros::Time::now();
 
     // Set the namespace and id for this marker.  This serves to create a unique ID
     // Any marker sent with the same namespace and id will overwrite the old one
@@ -53,7 +54,7 @@ visualization_msgs::Marker VisualSplinesService::get_marker(std::string marker_n
     marker.type = get_shape();
 }
 
-void VisualSplinesService::set_marker_properties(visualization_msgs::Marker & marker, bitbots_splines::Spline * x_spline = NULL, bitbots_splines::Spline * y_spline = NULL, bitbots_splines::Spline * z_spline = NULL)
+void VisualSplinesService::set_marker_properties(visualization_msgs::Marker & marker, bitbots_splines::Spline * x_spline, bitbots_splines::Spline * y_spline, bitbots_splines::Spline * z_spline)
 {
     auto x_position = x_spline ? x_spline->pos(m_d_time) : 0;
     auto y_position = y_spline ? y_spline->pos(m_d_time) : 0;
@@ -71,12 +72,12 @@ void VisualSplinesService::set_marker_properties(visualization_msgs::Marker & ma
     marker.pose.orientation.z = 0.0;
     marker.pose.orientation.w = 1.0;
 
-    set_marker_scale();
-    set_marker_color();
+    set_marker_scale(marker);
+    set_marker_color(marker);
     marker.lifetime = ros::Duration();
 }
 
-void VisualSplinesService::set_marker_scale()
+void VisualSplinesService::set_marker_scale(visualization_msgs::Marker & marker)
 {
     // Set the scale of the marker -- 1x1x1 here means 1m on a side
     marker.scale.x = 1.0;
@@ -84,7 +85,7 @@ void VisualSplinesService::set_marker_scale()
     marker.scale.z = 1.0;
 }
 
-void VisualSplinesService::set_marker_color()
+void VisualSplinesService::set_marker_color(visualization_msgs::Marker & marker)
 {
     // Set the color -- be sure to set alpha to something non-zero!
     marker.color.r = 0.0f;
@@ -99,7 +100,7 @@ void VisualSplinesService::publish_marker(visualization_msgs::Marker & marker)
     {
         if (!ros::ok())
         {
-            return 0;
+            return;
         }
 
         ROS_WARN_ONCE("Please create a subscriber to the marker");

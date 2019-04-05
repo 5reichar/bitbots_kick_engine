@@ -20,8 +20,8 @@ public:
 
 private:
     uint32_t get_shape();
-    void set_marker_scale();
-    void set_marker_color();
+    void set_marker_scale(visualization_msgs::Marker & marker);
+    void set_marker_color(visualization_msgs::Marker & marker);
 
     uint32_t m_uint_shape;
     ros::Publisher m_ros_marker_publisher;
