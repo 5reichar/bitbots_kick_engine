@@ -7,11 +7,13 @@
 class VisualSplinesService
 {
 public:
-    VisualSplinesService(int argc, char** argv);
+    VisualSplinesService(int argc, char** argv, std::string node_name, std::string publisher_topic);
     ~VisualSplinesService();
 
-    visualization_msgs::Marker get_marker(std::string marker_namespace,
-                                            uint8_t marker_id);
+    void set_marker(visualization_msgs::Marker & marker,
+                        std::string marker_frame_id,
+                        std::string marker_namespace,
+                        uint8_t marker_id);
     void set_marker_properties(visualization_msgs::Marker & marker,
                                 bitbots_splines::Spline * x_spline = NULL,
                                 bitbots_splines::Spline * y_spline = NULL,
@@ -19,10 +21,15 @@ public:
     void publish_marker(visualization_msgs::Marker & marker);
 
 private:
-    uint32_t get_shape();
-    void wait_till_someone_subscribed();
+    void set_marker_position(visualization_msgs::Marker & marker,
+                                bitbots_splines::Spline * x_spline = NULL,
+                                bitbots_splines::Spline * y_spline = NULL,
+                                bitbots_splines::Spline * z_spline = NULL);
+    void set_marker_orientation(visualization_msgs::Marker & marker);
     void set_marker_scale(visualization_msgs::Marker & marker);
     void set_marker_color(visualization_msgs::Marker & marker);
+    uint32_t get_shape();
+    void wait_till_someone_subscribed();
 
     uint32_t m_uint_shape;
     ros::Publisher m_ros_marker_publisher;
