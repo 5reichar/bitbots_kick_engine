@@ -131,6 +131,9 @@ set(SOURCES
   src/Utils/NewtonBinomial.cpp
   src/bitbots_splines/Polynom.cpp
   src/bitbots_splines/Spline.cpp
+  src/bitbots_splines/LinearSpline.cpp
+  src/bitbots_splines/CubicSpline.cpp
+  src/bitbots_splines/SmoothSpline.cpp
 )
 
 ## Declare a C++ library

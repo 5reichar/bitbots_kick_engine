@@ -15,16 +15,16 @@ public:
                         std::string marker_namespace,
                         uint8_t marker_id);
     void set_marker_properties(visualization_msgs::Marker & marker,
-                                bitbots_splines::Spline * x_spline = NULL,
-                                bitbots_splines::Spline * y_spline = NULL,
-                                bitbots_splines::Spline * z_spline = NULL);
+                                bitbots_splines::Spline const * const x_spline = NULL,
+                                bitbots_splines::Spline const * const y_spline = NULL,
+                                bitbots_splines::Spline const * const z_spline = NULL);
     void publish_marker(visualization_msgs::Marker & marker);
 
 private:
     void set_marker_position(visualization_msgs::Marker & marker,
-                                bitbots_splines::Spline * x_spline = NULL,
-                                bitbots_splines::Spline * y_spline = NULL,
-                                bitbots_splines::Spline * z_spline = NULL);
+                                bitbots_splines::Spline const * const x_spline = NULL,
+                                bitbots_splines::Spline const * const y_spline = NULL,
+                                bitbots_splines::Spline const * const z_spline = NULL);
     void set_marker_orientation(visualization_msgs::Marker & marker);
     void set_marker_scale(visualization_msgs::Marker & marker);
     void set_marker_color(visualization_msgs::Marker & marker);

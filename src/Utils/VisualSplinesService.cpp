@@ -52,23 +52,24 @@ void VisualSplinesService::set_marker(visualization_msgs::Marker & marker, std::
     marker.type = get_shape();
 }
 
-void VisualSplinesService::set_marker_properties(visualization_msgs::Marker & marker, bitbots_splines::Spline * x_spline, bitbots_splines::Spline * y_spline, bitbots_splines::Spline * z_spline)
+void VisualSplinesService::set_marker_properties(visualization_msgs::Marker & marker, bitbots_splines::Spline const * const x_spline, bitbots_splines::Spline const * const y_spline, bitbots_splines::Spline const * const z_spline)
 {
     // Set the marker action.  Options are ADD, DELETE, and new in ROS Indigo: 3 (DELETEALL)
     marker.action = visualization_msgs::Marker::ADD;
 
-    set_marker_position(marker);
+    set_marker_position(marker, x_spline, y_spline, z_spline);
     set_marker_orientation(marker);
     set_marker_scale(marker);
     set_marker_color(marker);
     marker.lifetime = ros::Duration();
 }
 
-void VisualSplinesService::set_marker_position(visualization_msgs::Marker & marker, bitbots_splines::Spline * x_spline, bitbots_splines::Spline * y_spline, bitbots_splines::Spline * z_spline)
+void VisualSplinesService::set_marker_position(visualization_msgs::Marker & marker, bitbots_splines::Spline const * const x_spline, bitbots_splines::Spline const * const y_spline, bitbots_splines::Spline const * const z_spline)
 {
     auto x_position = x_spline == NULL ? 0.0 : x_spline->pos(m_d_time);
     auto y_position = y_spline == NULL ? 0.0 : y_spline->pos(m_d_time);
     auto z_position = z_spline == NULL ? 0.0 : z_spline->pos(m_d_time);
+    m_d_time += 1;
 
     // Set the pose of the marker.  This is a full 6DOF pose relative to the frame/time specified in the header
     marker.pose.position.x = x_position;
