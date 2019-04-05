@@ -130,9 +130,9 @@ set(SOURCES
 )
 
 ## Declare a C++ library
- add_library(${PROJECT_NAME}
+add_library(${PROJECT_NAME}
   ${SOURCES}
- )
+)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -144,7 +144,7 @@ set(SOURCES
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/bitbots_kick_engine_node.cpp)
 add_executable(
-    bitbots_kick_engine src/Utils/VisualSplinesNode.cpp
+    VisualSplinesNode src/Utils/VisualSplinesNode.cpp
 )
 
 ## Rename C++ executable without prefix
@@ -162,7 +162,7 @@ add_executable(
 #   ${catkin_LIBRARIES}
 # )
 target_link_libraries(
-    bitbots_kick_engine ${catkin_LIBRARIES}
+    VisualSplinesNode ${PROJECT_NAME} ${catkin_LIBRARIES}
 )
 
 #############
