@@ -56,9 +56,9 @@ visualization_msgs::Marker VisualSplinesService::get_marker(std::string marker_n
 
 void VisualSplinesService::set_marker_properties(visualization_msgs::Marker & marker, bitbots_splines::Spline * x_spline, bitbots_splines::Spline * y_spline, bitbots_splines::Spline * z_spline)
 {
-    auto x_position = x_spline ? x_spline->pos(m_d_time) : 0;
-    auto y_position = y_spline ? y_spline->pos(m_d_time) : 0;
-    auto z_position = z_spline ? z_spline->pos(m_d_time) : 0;
+    auto x_position = x_spline == NULL ? x_spline->pos(m_d_time) : 0.0;
+    auto y_position = y_spline == NULL ? y_spline->pos(m_d_time) : 0.0;
+    auto z_position = z_spline == NULL ? z_spline->pos(m_d_time) : 0.0;
 
     // Set the marker action.  Options are ADD, DELETE, and new in ROS Indigo: 3 (DELETEALL)
     marker.action = visualization_msgs::Marker::ADD;
@@ -96,6 +96,12 @@ void VisualSplinesService::set_marker_color(visualization_msgs::Marker & marker)
 
 void VisualSplinesService::publish_marker(visualization_msgs::Marker & marker)
 {
+    wait_till_someone_subscribed();
+    m_ros_marker_publisher.publish(marker);
+}
+
+void VisualSplinesService::wait_till_someone_subscribed()
+{
     while(m_ros_marker_publisher.getNumSubscribers() < 1)
     {
         if (!ros::ok())
@@ -106,6 +112,4 @@ void VisualSplinesService::publish_marker(visualization_msgs::Marker & marker)
         ROS_WARN_ONCE("Please create a subscriber to the marker");
         sleep(1);
     }
-
-    m_ros_marker_publisher.publish(marker);
 }
