@@ -8,34 +8,45 @@ VisualSplinesService::VisualSplinesService(int argc, char** argv, std::string no
     ros::init(argc, argv, node_name);
     ros::NodeHandle node_handle;
 
-    m_ros_marker_publisher = node_handle.advertise<visualization_msgs::Marker>(publisher_topic, 1);
+    this->m_ros_marker_publisher = node_handle.advertise<visualization_msgs::Marker>(publisher_topic, 1);
 }
 
 VisualSplinesService::~VisualSplinesService()
 {
 }
 
+void VisualSplinesService::set_marker_frame(std::string marker_frame_id)
+{
+    this->m_str_marker_frame_id = marker_frame_id;
+}
+
 uint32_t VisualSplinesService::get_shape()
 {
-    switch (m_uint_shape)
+    switch (this->m_uint_shape)
     {
         case visualization_msgs::Marker::CUBE:
-            m_uint_shape = visualization_msgs::Marker::SPHERE;
+            this->m_uint_shape = visualization_msgs::Marker::SPHERE;
             break;
         case visualization_msgs::Marker::SPHERE:
-            m_uint_shape = visualization_msgs::Marker::ARROW;
+            this->m_uint_shape = visualization_msgs::Marker::ARROW;
             break;
         case visualization_msgs::Marker::ARROW:
-            m_uint_shape = visualization_msgs::Marker::CYLINDER;
+            this->m_uint_shape = visualization_msgs::Marker::CYLINDER;
             break;
         case visualization_msgs::Marker::CYLINDER:
         default:
-            m_uint_shape = visualization_msgs::Marker::CUBE;
+            this->m_uint_shape = visualization_msgs::Marker::CUBE;
             break;
     }
 
     return m_uint_shape;
 }
+
+void VisualSplinesService::set_marker(visualization_msgs::Marker & marker, std::string marker_namespace, uint8_t marker_id)
+{
+    set_marker(marker, this->m_str_marker_frame_id, marker_namespace, marker_id);
+}
+
 
 void VisualSplinesService::set_marker(visualization_msgs::Marker & marker, std::string marker_frame_id, std::string marker_namespace, uint8_t marker_id)
 {
@@ -52,7 +63,7 @@ void VisualSplinesService::set_marker(visualization_msgs::Marker & marker, std::
     marker.type = get_shape();
 }
 
-void VisualSplinesService::set_marker_properties(visualization_msgs::Marker & marker, bitbots_splines::Spline const * const x_spline, bitbots_splines::Spline const * const y_spline, bitbots_splines::Spline const * const z_spline)
+void VisualSplinesService::set_marker_properties(visualization_msgs::Marker & marker, bitbots_splines::Spline const * const x_spline, bitbots_splines::Spline const * const y_spline, bitbots_splines::Spline const * const z_spline, Color const color)
 {
     // Set the marker action.  Options are ADD, DELETE, and new in ROS Indigo: 3 (DELETEALL)
     marker.action = visualization_msgs::Marker::ADD;
@@ -60,7 +71,7 @@ void VisualSplinesService::set_marker_properties(visualization_msgs::Marker & ma
     set_marker_position(marker, x_spline, y_spline, z_spline);
     set_marker_orientation(marker);
     set_marker_scale(marker);
-    set_marker_color(marker);
+    set_marker_color(marker, color);
     marker.lifetime = ros::Duration();
 }
 
@@ -93,24 +104,43 @@ void VisualSplinesService::set_marker_scale(visualization_msgs::Marker & marker)
     marker.scale.z = 1.0;
 }
 
-void VisualSplinesService::set_marker_color(visualization_msgs::Marker & marker)
+void VisualSplinesService::set_marker_color(visualization_msgs::Marker & marker, Color const color)
 {
+    switch (color)
+    {
+        case red:
+            marker.color.r = 1.0f;
+            marker.color.g = 0.0f;
+            marker.color.b = 0.0f;
+            break;
+
+        case green:
+        default:
+            marker.color.r = 0.0f;
+            marker.color.g = 1.0f;
+            marker.color.b = 0.0f;
+            break;
+
+        case blue:
+            marker.color.r = 0.0f;
+            marker.color.g = 0.0f;
+            marker.color.b = 1.0f;
+            break;
+    }
+
     // Set the color -- be sure to set alpha to something non-zero!
-    marker.color.r = 0.0f;
-    marker.color.g = 1.0f;
-    marker.color.b = 0.0f;
     marker.color.a = 1.0;
 }
 
 void VisualSplinesService::publish_marker(visualization_msgs::Marker & marker)
 {
     wait_till_someone_subscribed();
-    m_ros_marker_publisher.publish(marker);
+    this->m_ros_marker_publisher.publish(marker);
 }
 
 void VisualSplinesService::wait_till_someone_subscribed()
 {
-    while(m_ros_marker_publisher.getNumSubscribers() < 1)
+    while(this->m_ros_marker_publisher.getNumSubscribers() < 1)
     {
         if (!ros::ok())
         {
