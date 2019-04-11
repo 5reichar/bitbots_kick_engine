@@ -5,8 +5,6 @@
 #include "bitbots_splines/CubicSpline.hpp"
 #include "bitbots_splines/SmoothSpline.hpp"
 
-
-
 template<typename Spline> std::unique_ptr<Spline> create_linear_spline(std::vector<double> times, std::vector<double> positions)
 {
     if (times.size() != positions.size())
@@ -22,6 +20,17 @@ template<typename Spline> std::unique_ptr<Spline> create_linear_spline(std::vect
     }
 
     return spline;
+}
+
+template<typename Spline> std::vector<std::unique_ptr<Spline>> create_splines(std::vector<double> times, std::vector<double> points_x, std::vector<double> points_y, std::vector<double> points_z)
+{
+    std::vector<std::unique_ptr<Spline>> ret;
+
+    ret.push_back(create_linear_spline<Spline>(times, points_x));
+    ret.push_back(create_linear_spline<Spline>(times, points_y));
+    ret.push_back(create_linear_spline<Spline>(times, points_z));
+
+    return ret;
 }
 
 void visualize_spline_point(VisualSplinesService & vs_service,
@@ -43,17 +52,9 @@ int main(int argc, char** argv)
     std::vector<double> positions_y{0, 0, 1, 1};
     std::vector<double> positions_z{0, 0, 0, 1};
 
-    auto ap_linear_spline_x = create_linear_spline<bitbots_splines::LinearSpline>(times, positions_x);
-    auto ap_linear_spline_y = create_linear_spline<bitbots_splines::LinearSpline>(times, positions_y);
-    auto ap_linear_spline_z = create_linear_spline<bitbots_splines::LinearSpline>(times, positions_z);
-
-    auto ap_cubic_spline_x = create_linear_spline<bitbots_splines::CubicSpline>(times, positions_x);
-    auto ap_cubic_spline_y = create_linear_spline<bitbots_splines::CubicSpline>(times, positions_y);
-    auto ap_cubic_spline_z = create_linear_spline<bitbots_splines::CubicSpline>(times, positions_z);
-
-    auto ap_smooth_spline_x = create_linear_spline<bitbots_splines::SmoothSpline>(times, positions_x);
-    auto ap_smooth_spline_y = create_linear_spline<bitbots_splines::SmoothSpline>(times, positions_y);
-    auto ap_smooth_spline_z = create_linear_spline<bitbots_splines::SmoothSpline>(times, positions_z);
+    auto vec_linear_splines = create_splines<bitbots_splines::LinearSpline>(times, positions_x, positions_y, positions_z);
+    auto vec_cubic_splines = create_splines<bitbots_splines::CubicSpline>(times, positions_x, positions_y, positions_z);
+    auto vec_smooth_splines = create_splines<bitbots_splines::SmoothSpline>(times, positions_x, positions_y, positions_z);
 
     VisualSplinesService vs_service(argc, argv, "spline_shapes", "visualization_marker");
     vs_service.set_marker_frame("/spline_visual_frame");
@@ -63,9 +64,9 @@ int main(int argc, char** argv)
     {
         visualization_msgs::Marker marker;
 
-        //visualize_spline_point(vs_service, marker, "linear_spline_shapes", ap_linear_spline_x.get(), ap_linear_spline_y.get(), ap_linear_spline_z.get());
-        visualize_spline_point(vs_service, marker, "cubic_spline_shapes", ap_cubic_spline_x.get(), ap_cubic_spline_y.get(), ap_cubic_spline_z.get());
-        //visualize_spline_point(vs_service, marker, "smooth_spline_shapes", ap_smooth_spline_x.get(), ap_smooth_spline_y.get(), ap_smooth_spline_z.get());
+        visualize_spline_point(vs_service, marker, "linear_spline_shapes", vec_linear_splines[0].get(), vec_linear_splines[1].get(), vec_linear_splines[2].get());
+        visualize_spline_point(vs_service, marker, "cubic_spline_shapes", vec_cubic_splines[0].get(), vec_cubic_splines[1].get(), vec_cubic_splines[2].get());
+        visualize_spline_point(vs_service, marker, "smooth_spline_shapes", vec_smooth_splines[0].get(), vec_smooth_splines[1].get(), vec_smooth_splines[2].get());
 
         rate.sleep();
     }
