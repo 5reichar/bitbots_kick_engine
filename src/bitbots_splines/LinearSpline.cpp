@@ -12,8 +12,8 @@ namespace bitbots_splines {
 
 void LinearSpline::addPoint(double time, double position)
 {
-    _points.push_back({time, position});
-    computeSplines();
+    Spline::Point point = {time, position, 0.0, 0.0};
+    addPoint(point);
 }
 
 void LinearSpline::computeSplines() 

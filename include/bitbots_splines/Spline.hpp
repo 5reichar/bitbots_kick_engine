@@ -61,6 +61,30 @@ class Spline
 
 
         /**
+         * Simple point struture
+         */
+        struct Point {
+            double time;
+            double position;
+            double velocity;
+            double acceleration;
+        };
+
+        /**
+         * Add a new point
+         */
+        virtual void addPoint(Point point);
+
+        /**
+         * Access to points container
+         */
+        const std::vector<Point>& points() const;
+        std::vector<Point>& points();
+
+        virtual void computeSplines() = 0;
+
+
+        /**
          * Write and read splines data into given
          * iostream in ascii format
          */
@@ -96,6 +120,11 @@ class Spline
          * Spline part container
          */
         std::vector<Spline_t> _splines;
+
+        /**
+         * Points container
+         */
+        std::vector<Point> _points;
 
         /**
          * Possible override callback

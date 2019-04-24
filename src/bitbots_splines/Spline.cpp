@@ -61,7 +61,24 @@ double Spline::max() const
 }
         
 
-        
+
+void Spline::addPoint(Spline::Point point)
+{
+    _points.push_back(point);
+    computeSplines();
+}
+
+const std::vector<Spline::Point>& Spline::points() const
+{
+    return _points;
+}
+std::vector<Spline::Point>& Spline::points()
+{
+    return _points;
+}
+
+
+
 void Spline::exportData(std::ostream& os) const
 {
     for (size_t i=0;i<_splines.size();i++) {

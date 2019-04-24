@@ -20,22 +20,15 @@ namespace bitbots_splines {
 class CubicSpline : public Spline
 {
     public:
-        
-        /**
-         * Simple point struture
-         */
-        struct Point {
-            double time;
-            double position;
-            double velocity;
-        };
 
+        using Spline::addPoint;
         /**
          * Add a new point with its time, position value,
          * and velocity
          */
-        void addPoint(double time, double position, 
-            double velocity = 0.0);
+        virtual void addPoint(double time,
+                                double position,
+                                double velocity = 0.0);
         
         /**
          * Apply normal random noise on spline point 
@@ -52,17 +45,11 @@ class CubicSpline : public Spline
          * distributed. Cubic splines are splited.
          */
         void subdivide(unsigned int divider);
-
-        /**
-         * Access to points container
-         */
-        const std::vector<Point>& points() const;
-        std::vector<Point>& points();
         
         /**
          * Recompute splines interpolation model
          */
-        void computeSplines();
+        virtual void computeSplines() override;
 
     protected:
 
@@ -73,11 +60,6 @@ class CubicSpline : public Spline
         virtual void importCallBack() override;
         
     private:
-
-        /**
-         * Points container
-         */
-        std::vector<Point> _points;
         
         /**
          * Fit a polynom between 0 and t with given

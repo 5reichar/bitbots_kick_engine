@@ -15,9 +15,8 @@ namespace bitbots_splines {
 void CubicSpline::addPoint(double time, double position, 
     double velocity)
 {
-    _points.push_back({time, 
-        position, velocity});
-    computeSplines();
+    Spline::Point point = {time, position, velocity, 0.0};
+    addPoint(point);
 }
 
 void CubicSpline::randomNoise(
@@ -64,15 +63,6 @@ void CubicSpline::subdivide(unsigned int divider)
     _points = newPoints;
     //Recompute the splines
     computeSplines();
-}
-        
-const std::vector<CubicSpline::Point>& CubicSpline::points() const
-{
-    return _points;
-}
-std::vector<CubicSpline::Point>& CubicSpline::points()
-{
-    return _points;
 }
         
 void CubicSpline::computeSplines() 

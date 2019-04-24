@@ -21,30 +21,18 @@ class LinearSpline : public Spline
 {
     public:
 
+        using Spline::addPoint;
         /**
          * Add a new point with its time and position value,
          */
-        void addPoint(double time, double position);
+        virtual void addPoint(double time, double position);
         
     private:
-
-        /**
-         * Simple point struture
-         */
-        struct Point {
-            double time;
-            double position;
-        };
-
-        /**
-         * Points container
-         */
-        std::vector<Point> _points;
         
         /**
          * Recompute splines interpolation model
          */
-        void computeSplines();
+        virtual void computeSplines() override;
 };
 
 }

@@ -14,18 +14,8 @@ namespace bitbots_splines {
 void SmoothSpline::addPoint(double time, double position, 
     double velocity, double acceleration)
 {
-    _points.push_back({time, position, 
-        velocity, acceleration});
-    computeSplines();
-}
-
-const std::vector<SmoothSpline::Point>& SmoothSpline::points() const
-{
-    return _points;
-}
-std::vector<SmoothSpline::Point>& SmoothSpline::points()
-{
-    return _points;
+    Spline::Point point = {time, position, velocity, acceleration};
+    addPoint(point);
 }
 
 void SmoothSpline::computeSplines() 

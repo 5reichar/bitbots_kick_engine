@@ -19,34 +19,21 @@ namespace bitbots_splines {
 class SmoothSpline : public Spline
 {
     public:
-        
-        /**
-         * Simple point struture
-         */
-        struct Point {
-            double time;
-            double position;
-            double velocity;
-            double acceleration;
-        };
 
+        using Spline::addPoint;
         /**
          * Add a new point with its time, position value,
          * velocity and acceleration
          */
-        void addPoint(double time, double position, 
-            double velocity = 0.0, double acceleration = 0.0);
-        
-        /**
-         * Access to points container
-         */
-        const std::vector<Point>& points() const;
-        std::vector<Point>& points();
+        virtual void addPoint(double time,
+                                double position, 
+                                double velocity = 0.0,
+                                double acceleration = 0.0);
         
         /**
          * Recompute splines interpolation model
          */
-        void computeSplines();
+        virtual void computeSplines() override;
     
     protected:
 
@@ -57,11 +44,6 @@ class SmoothSpline : public Spline
         virtual void importCallBack() override;    
         
     private:
-
-        /**
-         * Points container
-         */
-        std::vector<Point> _points;
         
         /**
          * Fit a polynom between 0 and t with given
