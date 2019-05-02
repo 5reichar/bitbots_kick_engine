@@ -41,17 +41,15 @@ void VisualSplinesService::set_marker(visualization_msgs::Marker & marker, std::
 void VisualSplinesService::set_marker_position(visualization_msgs::Marker & marker_points,
                                                 visualization_msgs::Marker & marker_lines,
                                                 uint32_t const number_of_points,
-                                                bitbots_splines::Spline const * const x_spline,
-                                                bitbots_splines::Spline const * const y_spline,
-                                                bitbots_splines::Spline const * const z_spline,
+                                                VisualSplinesMaterial * vs_material,
                                                 double const step)
 {
     for(uint32_t i = 0; i < number_of_points; ++i)
     {
         geometry_msgs::Point point;
-        point.x = x_spline == NULL ? 0.0 : x_spline->pos(i * step);
-        point.y = y_spline == NULL ? 0.0 : y_spline->pos(i * step);
-        point.z = z_spline == NULL ? 0.0 : z_spline->pos(i * step);
+        point.x = vs_material->get_position_from_x(i * step);
+        point.y = vs_material->get_position_from_y(i * step);
+        point.z = vs_material->get_position_from_z(i * step);
 
         marker_points.points.push_back(point);
         marker_lines.points.push_back(point);

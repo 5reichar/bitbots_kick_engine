@@ -127,6 +127,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 set(SOURCES
   src/Utils/VisualSplinesService.cpp
   src/Utils/VisualSplinesNode.cpp
+  src/Utils/VisualSplinesMaterial.cpp
   src/Utils/Combination.cpp
   src/Utils/NewtonBinomial.cpp
   src/bitbots_splines/Polynom.cpp

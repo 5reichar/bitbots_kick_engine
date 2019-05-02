@@ -70,6 +70,12 @@ class Spline
             double acceleration;
         };
 
+        static Point createPoint(double time, double position, double velocity = 0.0, double acceleration = 0.0)
+        {
+            Point point = {time, position, velocity, acceleration};
+            return point;
+        };
+
         /**
          * Add a new point
          */

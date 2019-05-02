@@ -2,7 +2,7 @@
 #include <string>
 #include <ros/ros.h>
 #include <visualization_msgs/Marker.h>
-#include "bitbots_splines/Spline.hpp"
+#include "Utils/VisualSplinesMaterial.hpp"
 
 enum Color { red, green, blue };
 
@@ -22,9 +22,7 @@ public:
     void set_marker_position(visualization_msgs::Marker & marker_points,
                                 visualization_msgs::Marker & marker_lines,
                                 uint32_t const number_of_points,
-                                bitbots_splines::Spline const * const x_spline = NULL,
-                                bitbots_splines::Spline const * const y_spline = NULL,
-                                bitbots_splines::Spline const * const z_spline = NULL,
+                                VisualSplinesMaterial * vs_material,
                                 double const step = 1.0);
 
     void set_marker_color(visualization_msgs::Marker & marker, Color const color);
