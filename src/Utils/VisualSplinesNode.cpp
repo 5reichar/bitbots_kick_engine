@@ -4,12 +4,14 @@
 #include "bitbots_splines/LinearSpline.hpp"
 #include "bitbots_splines/CubicSpline.hpp"
 #include "bitbots_splines/SmoothSpline.hpp"
+#include "bitbots_splines/Beziercurve.hpp"
 
 void visualize_spline_point(VisualSplinesService & vs_service,
                             std::string const str_namespace,
                             Color const color,
                             VisualSplinesMaterial * vs_material,
-                            double const step)
+                            double const step,
+                            bool const debug = false)
 {
     visualization_msgs::Marker vs_marker_points, vs_marker_lines;
 
@@ -21,7 +23,7 @@ void visualize_spline_point(VisualSplinesService & vs_service,
     vs_service.set_marker_scale(vs_marker_lines, 0.1, 0.1, 0.1);
     vs_service.set_marker_color(vs_marker_lines, color);
 
-    vs_service.set_marker_position(vs_marker_points, vs_marker_lines, 100, vs_material, step);
+    vs_service.set_marker_position(vs_marker_points, vs_marker_lines, 100, vs_material, step, debug);
 
     vs_service.publish_marker(vs_marker_points);
     vs_service.publish_marker(vs_marker_lines);
@@ -62,6 +64,12 @@ int main(int argc, char** argv)
                                                     new bitbots_splines::SmoothSpline());
     add_points(vsm_smooth_spline);
 
+    VisualSplinesMaterial * vsm_bezier_curve;
+    vsm_bezier_curve = new VisualSplinesMaterial(new Beziercurve(),
+                                                    new Beziercurve(),
+                                                    new Beziercurve());
+    add_points(vsm_bezier_curve);
+
     VisualSplinesService vs_service(argc, argv, "spline_shapes", "visualization_marker");
     vs_service.set_marker_frame("/spline_visual_frame");
     ros::Rate rate(1);
@@ -85,6 +93,13 @@ int main(int argc, char** argv)
                                 Color::blue,
                                 vsm_smooth_spline,
                                 0.1);
+
+        visualize_spline_point(vs_service,
+                                "bezier_curve_shapes",
+                                Color::blue,
+                                vsm_bezier_curve,
+                                0.1,
+                                false);
 
         rate.sleep();
     }

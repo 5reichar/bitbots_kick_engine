@@ -42,14 +42,16 @@ void VisualSplinesService::set_marker_position(visualization_msgs::Marker & mark
                                                 visualization_msgs::Marker & marker_lines,
                                                 uint32_t const number_of_points,
                                                 VisualSplinesMaterial * vs_material,
-                                                double const step)
+                                                double const step,
+                                                bool const debug)
 {
     for(uint32_t i = 0; i < number_of_points; ++i)
     {
+        double time = i * step;
         geometry_msgs::Point point;
-        point.x = vs_material->get_position_from_x(i * step);
-        point.y = vs_material->get_position_from_y(i * step);
-        point.z = vs_material->get_position_from_z(i * step);
+        point.x = vs_material->get_position_from_x(time);
+        point.y = vs_material->get_position_from_y(time);
+        point.z = vs_material->get_position_from_z(time);
 
         marker_points.points.push_back(point);
         marker_lines.points.push_back(point);
@@ -84,6 +86,12 @@ void VisualSplinesService::set_marker_color(visualization_msgs::Marker & marker,
         case blue:
             marker.color.r = 0.0f;
             marker.color.g = 0.0f;
+            marker.color.b = 1.0f;
+            break;
+
+        case yellow:
+            marker.color.r = 0.0f;
+            marker.color.g = 1.0f;
             marker.color.b = 1.0f;
             break;
     }

@@ -135,6 +135,7 @@ set(SOURCES
   src/bitbots_splines/LinearSpline.cpp
   src/bitbots_splines/CubicSpline.cpp
   src/bitbots_splines/SmoothSpline.cpp
+  src/bitbots_splines/Beziercurve.cpp
 )
 
 ## Declare a C++ library

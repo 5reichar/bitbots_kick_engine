@@ -37,20 +37,20 @@ class Spline
          * at given t. Compute spline value,
          * its first, second and third derivative
          */
-        double pos(double t) const;
-        double vel(double t) const;
-        double acc(double t) const;
-        double jerk(double t) const;
+        virtual double pos(double t) const;
+        virtual double vel(double t) const;
+        virtual double acc(double t) const;
+        virtual double jerk(double t) const;
 
         /**
          * Return spline interpolation
          * value, first, second and third derivative
          * with given t bound between 0 and 1
          */
-        double posMod(double t) const;
-        double velMod(double t) const;
-        double accMod(double t) const;
-        double jerkMod(double t) const;
+        virtual double posMod(double t) const;
+        virtual double velMod(double t) const;
+        virtual double accMod(double t) const;
+        virtual double jerkMod(double t) const;
 
         /**
          * Return minimum and maximum abscisse

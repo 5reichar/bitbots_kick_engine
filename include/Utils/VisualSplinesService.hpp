@@ -4,7 +4,7 @@
 #include <visualization_msgs/Marker.h>
 #include "Utils/VisualSplinesMaterial.hpp"
 
-enum Color { red, green, blue };
+enum Color { red, green, blue, yellow };
 
 class VisualSplinesService
 {
@@ -23,7 +23,8 @@ public:
                                 visualization_msgs::Marker & marker_lines,
                                 uint32_t const number_of_points,
                                 VisualSplinesMaterial * vs_material,
-                                double const step = 1.0);
+                                double const step = 1.0,
+                                bool const debug = false);
 
     void set_marker_color(visualization_msgs::Marker & marker, Color const color);
     void set_marker_scale(visualization_msgs::Marker & marker, float const x = 1.0, float const y = 1.0, float const z = 1.0);
