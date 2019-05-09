@@ -1,9 +1,12 @@
-#include "bitbots_splines/Spline.hpp"
+#ifndef VISUALSPLINESMATERIAL_HPP
+#define VISUALSPLINESMATERIAL_HPP
+
+#include "bitbots_splines/Curve.hpp"
 
 class VisualSplinesMaterial
 {
 public:
-    VisualSplinesMaterial(bitbots_splines::Spline *spline_x, bitbots_splines::Spline *spline_y, bitbots_splines::Spline *spline_z);
+    VisualSplinesMaterial(bitbots_splines::Curve *curve_x, bitbots_splines::Curve *curve_y, bitbots_splines::Curve *curve_z);
     ~VisualSplinesMaterial();
 
     void add_point_to_x(double const time, double const position, double const velocity, double const acceleration);
@@ -14,11 +17,13 @@ public:
     double get_position_from_y(double const time);
     double get_position_from_z(double const time);
 
-    std::vector<std::vector<bitbots_splines::Spline::Point>> get_points() const;
+    std::vector<std::vector<bitbots_splines::Curve::Point>> get_points() const;
 
 protected:
 private:
-    bitbots_splines::Spline *m_p_spline_x;
-    bitbots_splines::Spline *m_p_spline_y;
-    bitbots_splines::Spline *m_p_spline_z;
+    bitbots_splines::Curve *m_p_curve_x;
+    bitbots_splines::Curve *m_p_curve_y;
+    bitbots_splines::Curve *m_p_curve_z;
 };
+
+#endif

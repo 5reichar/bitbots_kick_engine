@@ -9,7 +9,8 @@ https://github.com/Rhoban/model/
 #include "Combination.hpp"
 #include "Polynom.hpp"
 
-namespace bitbots_splines {
+namespace bitbots_splines
+{
 
 /**
  * NewtonBinomial
@@ -20,20 +21,18 @@ namespace bitbots_splines {
  */
 class NewtonBinomial
 {
-    public:
-
-        /**
+public:
+    /**
          * Expand the given formula (x + y)^degree
          * and return the polynom in x whose coefficient
          * are computed using binomial coefficient
          */
-        static Polynom expandPolynom(
-            double y, unsigned int degree);
+    static Polynom expandPolynom(
+        double y, unsigned int degree);
 
-    private:
+private:
 };
 
-}
+} // namespace bitbots_splines
 
 #endif
-

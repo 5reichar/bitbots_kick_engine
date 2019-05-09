@@ -1,3 +1,6 @@
+#ifndef VISUALSPLINESSERVICE_HPP
+#define VISUALSPLINESSERVICE_HPP
+
 #include <stdint.h>
 #include <string>
 #include <ros/ros.h>
@@ -46,3 +49,5 @@ private:
     std::string m_str_marker_frame_id;
     ros::Publisher m_ros_marker_publisher;
 };
+
+#endif

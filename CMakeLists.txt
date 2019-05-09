@@ -130,6 +130,7 @@ set(SOURCES
   src/Utils/VisualSplinesMaterial.cpp
   src/Utils/Combination.cpp
   src/Utils/NewtonBinomial.cpp
+  src/bitbots_splines/Curve.cpp
   src/bitbots_splines/Polynom.cpp
   src/bitbots_splines/Spline.cpp
   src/bitbots_splines/LinearSpline.cpp

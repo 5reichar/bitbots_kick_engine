@@ -63,9 +63,9 @@ int main(int argc, char **argv)
     add_points(vsm_smooth_spline);
 
     VisualSplinesMaterial *vsm_bezier_curve;
-    vsm_bezier_curve = new VisualSplinesMaterial(new Beziercurve(),
-                                                 new Beziercurve(),
-                                                 new Beziercurve());
+    vsm_bezier_curve = new VisualSplinesMaterial(new bitbots_splines::Beziercurve(),
+                                                 new bitbots_splines::Beziercurve(),
+                                                 new bitbots_splines::Beziercurve());
     add_points(vsm_bezier_curve);
 
     VisualSplinesService vs_service(argc, argv, "spline_shapes", "visualization_marker");
