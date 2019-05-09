@@ -6,10 +6,10 @@
 #include "bitbots_splines/SmoothSpline.hpp"
 #include "bitbots_splines/Beziercurve.hpp"
 
-void visualize_spline_point(VisualSplinesService & vs_service,
+void visualize_spline_point(VisualSplinesService &vs_service,
                             std::string const str_namespace,
                             Color const color,
-                            VisualSplinesMaterial * vs_material,
+                            VisualSplinesMaterial *vs_material,
                             double const step,
                             bool const debug = false)
 {
@@ -29,77 +29,77 @@ void visualize_spline_point(VisualSplinesService & vs_service,
     vs_service.publish_marker(vs_marker_lines);
 }
 
-void add_points(VisualSplinesMaterial * vs_material)
+void add_points(VisualSplinesMaterial *vs_material)
 {
-    vs_material->add_point_to_x( 0.0,  0.0,  0.0,  0.0);
-    vs_material->add_point_to_x( 5.0,  5.0,  0.0,  0.0);
-    vs_material->add_point_to_x(10.0, 10.0,  0.0,  0.0);
+    vs_material->add_point_to_x(0.0, 0.0, 0.0, 0.0);
+    vs_material->add_point_to_x(5.0, 5.0, 0.0, 0.0);
+    vs_material->add_point_to_x(10.0, 10.0, 0.0, 0.0);
 
-    vs_material->add_point_to_y( 0.0, 10.0, -4.0,  0.8);
-    vs_material->add_point_to_y( 5.0,  0.0,  0.0,  0.8);
-    vs_material->add_point_to_y(10.0, 10.0,  4.0,  0.8);
+    vs_material->add_point_to_y(0.0, 10.0, -4.0, 0.8);
+    vs_material->add_point_to_y(5.0, 0.0, 0.0, 0.8);
+    vs_material->add_point_to_y(10.0, 10.0, 4.0, 0.8);
 
-    vs_material->add_point_to_z( 0.0,  0.0,  0.0,  0.0);
-    vs_material->add_point_to_z( 5.0,  0.0,  0.0,  0.0);
-    vs_material->add_point_to_z(10.0,  0.0,  0.0,  0.0);
+    vs_material->add_point_to_z(0.0, 0.0, 0.0, 0.0);
+    vs_material->add_point_to_z(5.0, 0.0, 0.0, 0.0);
+    vs_material->add_point_to_z(10.0, 0.0, 0.0, 0.0);
 }
 
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
-    VisualSplinesMaterial * vsm_linear_spline;
+    VisualSplinesMaterial *vsm_linear_spline;
     vsm_linear_spline = new VisualSplinesMaterial(new bitbots_splines::LinearSpline(),
-                                                    new bitbots_splines::LinearSpline(),
-                                                    new bitbots_splines::LinearSpline());
+                                                  new bitbots_splines::LinearSpline(),
+                                                  new bitbots_splines::LinearSpline());
     add_points(vsm_linear_spline);
 
-    VisualSplinesMaterial * vsm_cubic_spline;
+    VisualSplinesMaterial *vsm_cubic_spline;
     vsm_cubic_spline = new VisualSplinesMaterial(new bitbots_splines::CubicSpline(),
-                                                    new bitbots_splines::CubicSpline(),
-                                                    new bitbots_splines::CubicSpline());
+                                                 new bitbots_splines::CubicSpline(),
+                                                 new bitbots_splines::CubicSpline());
     add_points(vsm_cubic_spline);
-    
-    VisualSplinesMaterial * vsm_smooth_spline;
+
+    VisualSplinesMaterial *vsm_smooth_spline;
     vsm_smooth_spline = new VisualSplinesMaterial(new bitbots_splines::SmoothSpline(),
-                                                    new bitbots_splines::SmoothSpline(),
-                                                    new bitbots_splines::SmoothSpline());
+                                                  new bitbots_splines::SmoothSpline(),
+                                                  new bitbots_splines::SmoothSpline());
     add_points(vsm_smooth_spline);
 
-    VisualSplinesMaterial * vsm_bezier_curve;
+    VisualSplinesMaterial *vsm_bezier_curve;
     vsm_bezier_curve = new VisualSplinesMaterial(new Beziercurve(),
-                                                    new Beziercurve(),
-                                                    new Beziercurve());
+                                                 new Beziercurve(),
+                                                 new Beziercurve());
     add_points(vsm_bezier_curve);
 
     VisualSplinesService vs_service(argc, argv, "spline_shapes", "visualization_marker");
     vs_service.set_marker_frame("/spline_visual_frame");
     ros::Rate rate(1);
 
-    while(ros::ok())
+    while (ros::ok())
     {
         visualize_spline_point(vs_service,
-                                "linear_spline_shapes",
-                                Color::red,
-                                vsm_linear_spline,
-                                0.1);
-        
-        visualize_spline_point(vs_service,
-                                "cubic_spline_shapes",
-                                Color::green,
-                                vsm_cubic_spline,
-                                0.1);
+                               "linear_spline_shapes",
+                               Color::red,
+                               vsm_linear_spline,
+                               0.1);
 
         visualize_spline_point(vs_service,
-                                "smooth_spline_shapes",
-                                Color::blue,
-                                vsm_smooth_spline,
-                                0.1);
+                               "cubic_spline_shapes",
+                               Color::green,
+                               vsm_cubic_spline,
+                               0.1);
 
         visualize_spline_point(vs_service,
-                                "bezier_curve_shapes",
-                                Color::blue,
-                                vsm_bezier_curve,
-                                0.1,
-                                false);
+                               "smooth_spline_shapes",
+                               Color::blue,
+                               vsm_smooth_spline,
+                               0.1);
+
+        visualize_spline_point(vs_service,
+                               "bezier_curve_shapes",
+                               Color::yellow,
+                               vsm_bezier_curve,
+                               0.1,
+                               false);
 
         rate.sleep();
     }
