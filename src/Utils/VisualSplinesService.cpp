@@ -42,13 +42,13 @@ void VisualSplinesService::set_marker(visualization_msgs::Marker &marker,
 }
 
 void VisualSplinesService::set_marker_position(visualization_msgs::Marker &marker_lines,
-                                               uint32_t const number_of_points,
                                                VisualSplinesMaterial *vs_material,
-                                               double const step)
+                                               double const sampling_rate)
 {
-    for (uint32_t i = 0; i < number_of_points; ++i)
+    auto steps = vs_material->get_number_of_points() * sampling_rate;
+    for (uint32_t i = 0; i < steps; ++i)
     {
-        double time = i * step;
+        double time = i / sampling_rate;
         add_point_to_marker(marker_lines,
                             vs_material->get_position_from_x(time),
                             vs_material->get_position_from_y(time),

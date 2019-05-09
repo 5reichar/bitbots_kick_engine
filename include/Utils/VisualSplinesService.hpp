@@ -30,9 +30,8 @@ public:
                     uint32_t const &marker_shape);
 
     void set_marker_position(visualization_msgs::Marker &marker_lines,
-                             uint32_t const number_of_points,
                              VisualSplinesMaterial *vs_material,
-                             double const step = 1.0);
+                             double const sampling_rate = 10.0);
 
     void draw_points(visualization_msgs::Marker &marker_points,
                      VisualSplinesMaterial *vs_material);

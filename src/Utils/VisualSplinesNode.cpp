@@ -6,24 +6,34 @@
 #include "bitbots_splines/SmoothSpline.hpp"
 #include "bitbots_splines/Beziercurve.hpp"
 
+void visualize_points(VisualSplinesService &vs_service,
+                      std::string const str_namespace,
+                      Color const color,
+                      VisualSplinesMaterial *vs_material)
+{
+
+    visualization_msgs::Marker vs_marker_points;
+
+    vs_service.set_marker(vs_marker_points, str_namespace, 0, visualization_msgs::Marker::POINTS);
+    vs_service.set_marker_scale(vs_marker_points, 0.3, 0.3, 0.3);
+    vs_service.set_marker_color(vs_marker_points, color);
+    vs_service.draw_points(vs_marker_points, vs_material);
+
+    vs_service.publish_marker(vs_marker_points);
+}
+
 void visualize_spline_point(VisualSplinesService &vs_service,
                             std::string const str_namespace,
                             Color const color,
                             VisualSplinesMaterial *vs_material)
 {
-    visualization_msgs::Marker vs_marker_points, vs_marker_lines;
+    visualization_msgs::Marker vs_marker_lines;
 
-    vs_service.set_marker(vs_marker_points, str_namespace, 0, visualization_msgs::Marker::POINTS);
-    vs_service.set_marker_scale(vs_marker_points, 0.3, 0.3, 0.3);
-    vs_service.set_marker_color(vs_marker_points, Color::white);
-    vs_service.draw_points(vs_marker_points, vs_material);
-
-    vs_service.set_marker(vs_marker_lines, str_namespace, 1, visualization_msgs::Marker::LINE_STRIP);
+    vs_service.set_marker(vs_marker_lines, str_namespace, 0, visualization_msgs::Marker::LINE_STRIP);
     vs_service.set_marker_scale(vs_marker_lines, 0.1, 0.1, 0.1);
     vs_service.set_marker_color(vs_marker_lines, color);
-    vs_service.set_marker_position(vs_marker_lines, 100, vs_material, 0.1);
+    vs_service.set_marker_position(vs_marker_lines, vs_material);
 
-    vs_service.publish_marker(vs_marker_points);
     vs_service.publish_marker(vs_marker_lines);
 }
 
@@ -93,6 +103,11 @@ int main(int argc, char **argv)
                                "bezier_curve_shapes",
                                Color::yellow,
                                vsm_bezier_curve);
+
+        visualize_points(vs_service,
+                         "points",
+                         Color::white,
+                         vsm_linear_spline);
 
         rate.sleep();
     }
