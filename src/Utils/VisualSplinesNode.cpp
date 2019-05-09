@@ -9,21 +9,19 @@
 void visualize_spline_point(VisualSplinesService &vs_service,
                             std::string const str_namespace,
                             Color const color,
-                            VisualSplinesMaterial *vs_material,
-                            double const step,
-                            bool const debug = false)
+                            VisualSplinesMaterial *vs_material)
 {
     visualization_msgs::Marker vs_marker_points, vs_marker_lines;
 
     vs_service.set_marker(vs_marker_points, str_namespace, 0, visualization_msgs::Marker::POINTS);
     vs_service.set_marker_scale(vs_marker_points, 0.3, 0.3, 0.3);
-    vs_service.set_marker_color(vs_marker_points, color);
+    vs_service.set_marker_color(vs_marker_points, Color::white);
+    vs_service.draw_points(vs_marker_points, vs_material);
 
     vs_service.set_marker(vs_marker_lines, str_namespace, 1, visualization_msgs::Marker::LINE_STRIP);
     vs_service.set_marker_scale(vs_marker_lines, 0.1, 0.1, 0.1);
     vs_service.set_marker_color(vs_marker_lines, color);
-
-    vs_service.set_marker_position(vs_marker_points, vs_marker_lines, 100, vs_material, step, debug);
+    vs_service.set_marker_position(vs_marker_lines, 100, vs_material, 0.1);
 
     vs_service.publish_marker(vs_marker_points);
     vs_service.publish_marker(vs_marker_lines);
@@ -79,27 +77,22 @@ int main(int argc, char **argv)
         visualize_spline_point(vs_service,
                                "linear_spline_shapes",
                                Color::red,
-                               vsm_linear_spline,
-                               0.1);
+                               vsm_linear_spline);
 
         visualize_spline_point(vs_service,
                                "cubic_spline_shapes",
                                Color::green,
-                               vsm_cubic_spline,
-                               0.1);
+                               vsm_cubic_spline);
 
         visualize_spline_point(vs_service,
                                "smooth_spline_shapes",
                                Color::blue,
-                               vsm_smooth_spline,
-                               0.1);
+                               vsm_smooth_spline);
 
         visualize_spline_point(vs_service,
                                "bezier_curve_shapes",
                                Color::yellow,
-                               vsm_bezier_curve,
-                               0.1,
-                               false);
+                               vsm_bezier_curve);
 
         rate.sleep();
     }
