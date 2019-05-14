@@ -45,7 +45,7 @@ void VisualSplinesService::set_marker_position(visualization_msgs::Marker &marke
                                                VisualSplinesMaterial *vs_material,
                                                double const sampling_rate)
 {
-    auto steps = vs_material->get_number_of_points() * sampling_rate;
+    auto steps = vs_material->get_points()[0].back().time * sampling_rate;
     for (uint32_t i = 0; i < steps; ++i)
     {
         double time = i / sampling_rate;
