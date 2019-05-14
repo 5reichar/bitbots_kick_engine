@@ -1,3 +1,6 @@
+#ifndef KICKENGINENODE_HPP
+#define KICKENGINENODE_HPP
+
 class KickEngineNode
 {
 private:
@@ -6,3 +9,5 @@ public:
     KickEngineNode(/* args */);
     ~KickEngineNode();
 };
+
+#endif
