@@ -10,7 +10,8 @@ namespace bitbots_splines
 
 Trajectories TrajectoriesInit()
 {
-    SplineContainer<SmoothSpline> traj;
+    Trajectories traj;
+
     traj.add("is_double_support");
     traj.add("is_left_support_foot");
     traj.add("trunk_pos_x");
