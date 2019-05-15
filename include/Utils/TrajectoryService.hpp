@@ -6,15 +6,16 @@ https://github.com/Rhoban/model/
 #ifndef TRAJECTORYSERVICE_HPP
 #define TRAJECTORYSERVICE_HPP
 
-#include "bitbots_splines/Curve.hpp"
+#include "../bitbots_splines/Curve.hpp"
 #include "SplineContainer.hpp"
-#include <Eigen/Dense>
+#include <eigen3/Eigen/Dense>
 
 namespace bitbots_splines
 {
 
 class TrajectoryService
 {
+public:
     /**
      * Simple typedef for trajectories container
      */
@@ -71,6 +72,8 @@ class TrajectoryService
         const Eigen::Vector3d &trunkAxis,
         const Eigen::Vector3d &footPos,
         const Eigen::Vector3d &footAxis);
+
+private:
 };
 
 } // namespace bitbots_splines

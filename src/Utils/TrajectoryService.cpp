@@ -3,14 +3,15 @@ This code is largely based on the original code by Quentin "Leph" Rouxel and Tea
 The original files can be found at:
 https://github.com/Rhoban/model/
 */
+
 #include "Utils/TrajectoryService.hpp"
 
 namespace bitbots_splines
 {
 
-Trajectories TrajectoriesInit()
+TrajectoryService::Trajectories TrajectoriesInit()
 {
-    Trajectories traj;
+    TrajectoryService::Trajectories traj;
 
     traj.add("is_double_support");
     traj.add("is_left_support_foot");
@@ -31,7 +32,8 @@ Trajectories TrajectoriesInit()
 }
 
 void TrajectoriesTrunkFootPos(
-    double t, const Trajectories &traj,
+    double t,
+    const TrajectoryService::Trajectories &traj,
     Eigen::Vector3d &trunkPos,
     Eigen::Vector3d &trunkAxis,
     Eigen::Vector3d &footPos,
@@ -56,7 +58,8 @@ void TrajectoriesTrunkFootPos(
         traj.get("foot_axis_z").pos(t));
 }
 void TrajectoriesTrunkFootVel(
-    double t, const Trajectories &traj,
+    double t,
+    const TrajectoryService::Trajectories &traj,
     Eigen::Vector3d &trunkPosVel,
     Eigen::Vector3d &trunkAxisVel,
     Eigen::Vector3d &footPosVel,
@@ -81,7 +84,8 @@ void TrajectoriesTrunkFootVel(
         traj.get("foot_axis_z").vel(t));
 }
 void TrajectoriesTrunkFootAcc(
-    double t, const Trajectories &traj,
+    double t,
+    const TrajectoryService::Trajectories &traj,
     Eigen::Vector3d &trunkPosAcc,
     Eigen::Vector3d &trunkAxisAcc,
     Eigen::Vector3d &footPosAcc,
@@ -106,7 +110,8 @@ void TrajectoriesTrunkFootAcc(
         traj.get("foot_axis_z").acc(t));
 }
 void TrajectoriesSupportFootState(
-    double t, const Trajectories &traj,
+    double t,
+    const TrajectoryService::Trajectories &traj,
     bool &isDoubleSupport,
     bool &isLeftsupportFoot)
 {
