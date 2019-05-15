@@ -10,7 +10,7 @@ https://github.com/Rhoban/model/
 #include <map>
 #include <stdexcept>
 #include <fstream>
-#include "Spline.hpp"
+#include "../bitbots_splines/Curve.hpp"
 #include <set>
 #include <algorithm>
 #include <vector>
@@ -107,7 +107,7 @@ public:
         for (const auto &sp : _container)
         {
             // go trough all points of the spline
-            for (SmoothSpline::Point point : sp.second.points())
+            for (Curve::Point point : sp.second.points())
             {
                 times.insert(point.time);
             }
