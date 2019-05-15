@@ -67,3 +67,46 @@ void KickEngineService::calc_point_time_from_start_point(std::vector<bitbots_spl
         it.time = ball_hit_time;
     }
 }
+
+void KickEngineService::computeCartesianPosition(Eigen::Vector3d &trunkPos,
+                                                 Eigen::Vector3d &trunkAxis,
+                                                 Eigen::Vector3d &footPos,
+                                                 Eigen::Vector3d &footAxis,
+                                                 bool &isLeftsupportFoot)
+{
+    // TODO implement
+}
+
+void KickEngineService::computeCartesianPositionAtTime(Eigen::Vector3d &trunkPos,
+                                                       Eigen::Vector3d &trunkAxis,
+                                                       Eigen::Vector3d &footPos,
+                                                       Eigen::Vector3d &footAxis,
+                                                       bool &isLeftsupportFoot,
+                                                       double time)
+{
+    // TODO implement
+}
+
+bool KickEngineService::check_kick_ball_to_the_left()
+{
+    // TODO implement check
+    return false;
+}
+
+bool KickEngineService::check_kick_ball_to_the_right()
+{
+    // TODO implement check
+    return false;
+}
+
+bool KickEngineService::check_can_kick_ball_to_target()
+{
+    // TODO implement check
+    return false;
+}
+
+bool KickEngineService::check_use_left_leg_to_kick()
+{
+    // TODO implement check
+    return false;
+}
