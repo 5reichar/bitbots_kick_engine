@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <cmath>
 #include "bitbots_splines/Beziercurve.hpp"
 
 namespace bitbots_splines
@@ -120,32 +121,32 @@ double Beziercurve::calc_bernstein_polynomial(double const time, uint32_t const 
     uint32_t intervall_start = this->_points.front().time;
     uint32_t intervall_end = this->_points.back().time;
 
-    double p1 = calc_power((intervall_end - intervall_start), degree);
+    double p1 = pow((intervall_end - intervall_start), degree);
     double p2 = calc_binomial_coefficient(degree, i);
-    double p3 = calc_power((time - intervall_start), i);
-    double p4 = calc_power((intervall_end - time), (degree - i));
+    double p3 = pow((time - intervall_start), i);
+    double p4 = pow((intervall_end - time), (degree - i));
 
     return (p2 * p3 * p4) / p1;
 }
 
 double Beziercurve::calc_bernstein_polynomial_mod(double const time, uint32_t const i, uint32_t const degree) const
 {
-    return calc_binomial_coefficient(degree, i) * calc_power(time, i) * calc_power((1 - time), (degree - i));
+    return calc_binomial_coefficient(degree, i) * pow(time, i) * pow((1 - time), (degree - i));
 }
 
 /*
  *  Additional mathematical functions
  */
 
-double Beziercurve::calc_binomial_coefficient(uint32_t n, uint32_t i) const
+double Beziercurve::calc_binomial_coefficient(uint32_t n, uint32_t k) const
 {
-    if (i >= n || i < 0 || n < 0)
+    if (k == 0 || n == k)
     {
         return 1;
     }
 
-    auto dividend = calc_factorial(i, n);
-    auto divisor = calc_factorial(2, n - i);
+    auto dividend = calc_factorial(1, n);
+    auto divisor = calc_factorial(1, k) * calc_factorial(1, n - k);
 
     return dividend / divisor;
 }
@@ -157,18 +158,6 @@ uint32_t Beziercurve::calc_factorial(uint32_t start, uint32_t end) const
     for (uint32_t f = (start > 0 ? start : 1); f <= end; ++f)
     {
         return_value *= f;
-    }
-
-    return return_value;
-}
-
-double Beziercurve::calc_power(double base, uint32_t exponent) const
-{
-    double return_value = 1.0;
-
-    for (uint32_t i = 1; i <= exponent; ++i)
-    {
-        return_value *= base;
     }
 
     return return_value;
