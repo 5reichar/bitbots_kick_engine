@@ -9,9 +9,12 @@ https://github.com/Rhoban/model/
 namespace bitbots_splines
 {
 
-TrajectoryService::Trajectories TrajectoriesInit()
+template <class T>
+TrajectoryService::Trajectories TrajectoryService::TrajectoriesInit()
 {
-    TrajectoryService::Trajectories traj;
+    static_assert(std::is_base_of<Curve, T>::value, "TrajectoriesInit<T>(): T must derive from Curve");
+
+    SplineContainer<T> traj;
 
     traj.add("is_double_support");
     traj.add("is_left_support_foot");
@@ -31,7 +34,7 @@ TrajectoryService::Trajectories TrajectoriesInit()
     return traj;
 }
 
-void TrajectoriesTrunkFootPos(
+void TrajectoryService::TrajectoriesTrunkFootPos(
     double t,
     const TrajectoryService::Trajectories &traj,
     Eigen::Vector3d &trunkPos,
@@ -57,7 +60,7 @@ void TrajectoriesTrunkFootPos(
         traj.get("foot_axis_y").pos(t),
         traj.get("foot_axis_z").pos(t));
 }
-void TrajectoriesTrunkFootVel(
+void TrajectoryService::TrajectoriesTrunkFootVel(
     double t,
     const TrajectoryService::Trajectories &traj,
     Eigen::Vector3d &trunkPosVel,
@@ -83,7 +86,7 @@ void TrajectoriesTrunkFootVel(
         traj.get("foot_axis_y").vel(t),
         traj.get("foot_axis_z").vel(t));
 }
-void TrajectoriesTrunkFootAcc(
+void TrajectoryService::TrajectoriesTrunkFootAcc(
     double t,
     const TrajectoryService::Trajectories &traj,
     Eigen::Vector3d &trunkPosAcc,
@@ -109,7 +112,7 @@ void TrajectoriesTrunkFootAcc(
         traj.get("foot_axis_y").acc(t),
         traj.get("foot_axis_z").acc(t));
 }
-void TrajectoriesSupportFootState(
+void TrajectoryService::TrajectoriesSupportFootState(
     double t,
     const TrajectoryService::Trajectories &traj,
     bool &isDoubleSupport,
@@ -120,7 +123,7 @@ void TrajectoriesSupportFootState(
     isLeftsupportFoot = (traj.get("is_left_support_foot").pos(t) >= 0.5 ? true : false);
 }
 
-double DefaultCheckState(
+double TrajectoryService::DefaultCheckState(
     const Eigen::VectorXd &params,
     double t,
     const Eigen::Vector3d &trunkPos,
