@@ -7,15 +7,6 @@
 #include <visualization_msgs/Marker.h>
 #include "Utils/VisualSplinesMaterial.hpp"
 
-enum Color
-{
-    red,
-    green,
-    blue,
-    yellow,
-    white
-};
-
 class VisualSplinesService
 {
 public:
@@ -24,17 +15,24 @@ public:
 
     void set_marker_frame(std::string marker_frame_id);
 
-    void set_marker(visualization_msgs::Marker &marker,
-                    std::string marker_namespace,
-                    uint8_t marker_id,
-                    uint32_t const &marker_shape);
+    void visualize_curve(VisualSplinesMaterial *vs_material);
+    void visualize_points(VisualSplinesMaterial *vs_material,
+                          std::string const str_namespace,
+                          Color const color,
+                          double const scale = 0.3,
+                          uint32_t id = 0);
 
-    void set_marker_position(visualization_msgs::Marker &marker_lines,
-                             VisualSplinesMaterial *vs_material,
-                             double const sampling_rate = 10.0);
+    void set_marker_properties(visualization_msgs::Marker &marker,
+                               std::string marker_namespace,
+                               uint8_t marker_id,
+                               uint32_t const &marker_shape);
 
-    void draw_points(visualization_msgs::Marker &marker_points,
-                     VisualSplinesMaterial *vs_material);
+    void calc_and_add_points_from_curve(visualization_msgs::Marker &marker_lines,
+                                        VisualSplinesMaterial *vs_material,
+                                        double const sampling_rate = 10.0);
+
+    void add_points_from_curve(visualization_msgs::Marker &marker_points,
+                               VisualSplinesMaterial *vs_material);
 
     void set_marker_color(visualization_msgs::Marker &marker, Color const color);
     void set_marker_scale(visualization_msgs::Marker &marker, float const x = 1.0, float const y = 1.0, float const z = 1.0);

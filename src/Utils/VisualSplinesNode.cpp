@@ -6,37 +6,6 @@
 #include "bitbots_splines/SmoothSpline.hpp"
 #include "bitbots_splines/Beziercurve.hpp"
 
-void visualize_points(VisualSplinesService &vs_service,
-                      std::string const str_namespace,
-                      Color const color,
-                      VisualSplinesMaterial *vs_material)
-{
-
-    visualization_msgs::Marker vs_marker_points;
-
-    vs_service.set_marker(vs_marker_points, str_namespace, 0, visualization_msgs::Marker::POINTS);
-    vs_service.set_marker_scale(vs_marker_points, 0.3, 0.3, 0.3);
-    vs_service.set_marker_color(vs_marker_points, color);
-    vs_service.draw_points(vs_marker_points, vs_material);
-
-    vs_service.publish_marker(vs_marker_points);
-}
-
-void visualize_spline_point(VisualSplinesService &vs_service,
-                            std::string const str_namespace,
-                            Color const color,
-                            VisualSplinesMaterial *vs_material)
-{
-    visualization_msgs::Marker vs_marker_lines;
-
-    vs_service.set_marker(vs_marker_lines, str_namespace, 0, visualization_msgs::Marker::LINE_STRIP);
-    vs_service.set_marker_scale(vs_marker_lines, 0.1, 0.1, 0.1);
-    vs_service.set_marker_color(vs_marker_lines, color);
-    vs_service.set_marker_position(vs_marker_lines, vs_material);
-
-    vs_service.publish_marker(vs_marker_lines);
-}
-
 void add_points(VisualSplinesMaterial *vs_material)
 {
     vs_material->add_point_to_x(0.0, 0.0, 0.0, 0.0);
@@ -58,24 +27,36 @@ int main(int argc, char **argv)
     vsm_linear_spline = new VisualSplinesMaterial(new bitbots_splines::LinearSpline(),
                                                   new bitbots_splines::LinearSpline(),
                                                   new bitbots_splines::LinearSpline());
+    vsm_linear_spline->set_namspace("linear_spline_shapes");
+    vsm_linear_spline->set_color(Color::red);
+    vsm_linear_spline->set_scale(0.1);
     add_points(vsm_linear_spline);
 
     VisualSplinesMaterial *vsm_cubic_spline;
     vsm_cubic_spline = new VisualSplinesMaterial(new bitbots_splines::CubicSpline(),
                                                  new bitbots_splines::CubicSpline(),
                                                  new bitbots_splines::CubicSpline());
+    vsm_cubic_spline->set_namspace("cubic_spline_shapes");
+    vsm_cubic_spline->set_color(Color::green);
+    vsm_cubic_spline->set_scale(0.1);
     add_points(vsm_cubic_spline);
 
     VisualSplinesMaterial *vsm_smooth_spline;
     vsm_smooth_spline = new VisualSplinesMaterial(new bitbots_splines::SmoothSpline(),
                                                   new bitbots_splines::SmoothSpline(),
                                                   new bitbots_splines::SmoothSpline());
+    vsm_smooth_spline->set_namspace("smooth_spline_shapes");
+    vsm_smooth_spline->set_color(Color::blue);
+    vsm_smooth_spline->set_scale(0.1);
     add_points(vsm_smooth_spline);
 
     VisualSplinesMaterial *vsm_bezier_curve;
     vsm_bezier_curve = new VisualSplinesMaterial(new bitbots_splines::Beziercurve(),
                                                  new bitbots_splines::Beziercurve(),
                                                  new bitbots_splines::Beziercurve());
+    vsm_bezier_curve->set_namspace("bezier_curve_shapes");
+    vsm_bezier_curve->set_color(Color::yellow);
+    vsm_bezier_curve->set_scale(0.1);
     add_points(vsm_bezier_curve);
 
     VisualSplinesService vs_service(argc, argv, "spline_shapes", "visualization_marker");
@@ -84,30 +65,12 @@ int main(int argc, char **argv)
 
     while (ros::ok())
     {
-        visualize_spline_point(vs_service,
-                               "linear_spline_shapes",
-                               Color::red,
-                               vsm_linear_spline);
+        vs_service.visualize_curve(vsm_linear_spline);
+        vs_service.visualize_curve(vsm_cubic_spline);
+        vs_service.visualize_curve(vsm_smooth_spline);
+        vs_service.visualize_curve(vsm_bezier_curve);
 
-        visualize_spline_point(vs_service,
-                               "cubic_spline_shapes",
-                               Color::green,
-                               vsm_cubic_spline);
-
-        visualize_spline_point(vs_service,
-                               "smooth_spline_shapes",
-                               Color::blue,
-                               vsm_smooth_spline);
-
-        visualize_spline_point(vs_service,
-                               "bezier_curve_shapes",
-                               Color::yellow,
-                               vsm_bezier_curve);
-
-        visualize_points(vs_service,
-                         "points",
-                         Color::white,
-                         vsm_linear_spline);
+        vs_service.visualize_points(vsm_linear_spline, "points", Color::white);
 
         rate.sleep();
     }
@@ -115,4 +78,5 @@ int main(int argc, char **argv)
     delete vsm_linear_spline;
     delete vsm_cubic_spline;
     delete vsm_smooth_spline;
+    delete vsm_bezier_curve;
 }

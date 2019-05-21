@@ -18,10 +18,41 @@ void VisualSplinesService::set_marker_frame(std::string marker_frame_id)
     this->m_str_marker_frame_id = marker_frame_id;
 }
 
-void VisualSplinesService::set_marker(visualization_msgs::Marker &marker,
-                                      std::string marker_namespace,
-                                      uint8_t marker_id,
-                                      uint32_t const &marker_shape)
+void VisualSplinesService::visualize_points(VisualSplinesMaterial *vs_material,
+                                            std::string const str_namespace,
+                                            Color const color,
+                                            double const scale,
+                                            uint32_t id)
+{
+
+    visualization_msgs::Marker vs_marker_points;
+
+    set_marker_properties(vs_marker_points, str_namespace, id, visualization_msgs::Marker::POINTS);
+    set_marker_scale(vs_marker_points, scale, scale, scale);
+    set_marker_color(vs_marker_points, color);
+
+    add_points_from_curve(vs_marker_points, vs_material);
+
+    publish_marker(vs_marker_points);
+}
+
+void VisualSplinesService::visualize_curve(VisualSplinesMaterial *vs_material)
+{
+    visualization_msgs::Marker vs_marker_lines;
+
+    set_marker_properties(vs_marker_lines, vs_material->get_namspace(), vs_material->get_id(), visualization_msgs::Marker::LINE_STRIP);
+    set_marker_scale(vs_marker_lines, vs_material->get_scale_x(), vs_material->get_scale_y(), vs_material->get_scale_z());
+    set_marker_color(vs_marker_lines, vs_material->get_color());
+
+    calc_and_add_points_from_curve(vs_marker_lines, vs_material);
+
+    publish_marker(vs_marker_lines);
+}
+
+void VisualSplinesService::set_marker_properties(visualization_msgs::Marker &marker,
+                                                 std::string marker_namespace,
+                                                 uint8_t marker_id,
+                                                 uint32_t const &marker_shape)
 {
     //Set the frame ID and timestamp
     marker.header.frame_id = this->m_str_marker_frame_id;
@@ -39,50 +70,6 @@ void VisualSplinesService::set_marker(visualization_msgs::Marker &marker,
     marker.action = visualization_msgs::Marker::ADD;
 
     marker.pose.orientation.w = 1.0;
-}
-
-void VisualSplinesService::set_marker_position(visualization_msgs::Marker &marker_lines,
-                                               VisualSplinesMaterial *vs_material,
-                                               double const sampling_rate)
-{
-    auto steps = vs_material->get_points()[0].back().time * sampling_rate;
-    for (uint32_t i = 0; i < steps; ++i)
-    {
-        double time = i / sampling_rate;
-        add_point_to_marker(marker_lines,
-                            vs_material->get_position_from_x(time),
-                            vs_material->get_position_from_y(time),
-                            vs_material->get_position_from_z(time));
-    }
-}
-
-void VisualSplinesService::draw_points(visualization_msgs::Marker &marker_points,
-                                       VisualSplinesMaterial *vs_material)
-{
-    auto vec_points = vs_material->get_points();
-    auto it_points_x = vec_points[0].begin();
-    auto it_points_y = vec_points[1].begin();
-    auto it_points_z = vec_points[2].begin();
-
-    while (it_points_x != vec_points[0].end() && it_points_y != vec_points[1].end() && it_points_z != vec_points[2].end())
-    {
-        add_point_to_marker(marker_points, (*it_points_x).position, (*it_points_y).position, (*it_points_z).position);
-
-        ++it_points_x;
-        ++it_points_y;
-        ++it_points_z;
-    }
-}
-
-void VisualSplinesService::add_point_to_marker(visualization_msgs::Marker &marker, double x, double y, double z)
-{
-    geometry_msgs::Point point;
-
-    point.x = x;
-    point.y = y;
-    point.z = z;
-
-    marker.points.push_back(point);
 }
 
 void VisualSplinesService::set_marker_scale(visualization_msgs::Marker &marker, float const x, float const y, float const z)
@@ -131,6 +118,50 @@ void VisualSplinesService::set_marker_color(visualization_msgs::Marker &marker, 
 
     // Set the color -- be sure to set alpha to something non-zero!
     marker.color.a = 1.0;
+}
+
+void VisualSplinesService::calc_and_add_points_from_curve(visualization_msgs::Marker &marker_lines,
+                                                          VisualSplinesMaterial *vs_material,
+                                                          double const sampling_rate)
+{
+    auto steps = vs_material->get_points()[0].back().time * sampling_rate;
+    for (uint32_t i = 0; i < steps; ++i)
+    {
+        double time = i / sampling_rate;
+        add_point_to_marker(marker_lines,
+                            vs_material->get_position_from_x(time),
+                            vs_material->get_position_from_y(time),
+                            vs_material->get_position_from_z(time));
+    }
+}
+
+void VisualSplinesService::add_points_from_curve(visualization_msgs::Marker &marker_points,
+                                                 VisualSplinesMaterial *vs_material)
+{
+    auto vec_points = vs_material->get_points();
+    auto it_points_x = vec_points[0].begin();
+    auto it_points_y = vec_points[1].begin();
+    auto it_points_z = vec_points[2].begin();
+
+    while (it_points_x != vec_points[0].end() && it_points_y != vec_points[1].end() && it_points_z != vec_points[2].end())
+    {
+        add_point_to_marker(marker_points, (*it_points_x).position, (*it_points_y).position, (*it_points_z).position);
+
+        ++it_points_x;
+        ++it_points_y;
+        ++it_points_z;
+    }
+}
+
+void VisualSplinesService::add_point_to_marker(visualization_msgs::Marker &marker, double x, double y, double z)
+{
+    geometry_msgs::Point point;
+
+    point.x = x;
+    point.y = y;
+    point.z = z;
+
+    marker.points.push_back(point);
 }
 
 void VisualSplinesService::publish_marker(visualization_msgs::Marker &marker)

@@ -4,7 +4,13 @@
 VisualSplinesMaterial::VisualSplinesMaterial(bitbots_splines::Curve *curve_x, bitbots_splines::Curve *curve_y, bitbots_splines::Curve *curve_z)
     : m_p_curve_x(curve_x),
       m_p_curve_y(curve_y),
-      m_p_curve_z(curve_z)
+      m_p_curve_z(curve_z),
+      m_d_curve_scale_x(1.0),
+      m_d_curve_scale_y(1.0),
+      m_d_curve_scale_z(1.0),
+      m_e_curve_color(Color::white),
+      m_str_curve_namespace("Curve"),
+      m_uint_id(0)
 {
 }
 
@@ -13,6 +19,67 @@ VisualSplinesMaterial::~VisualSplinesMaterial()
     delete m_p_curve_x;
     delete m_p_curve_y;
     delete m_p_curve_z;
+}
+
+/*
+ * Curve Attributes
+ */
+
+void VisualSplinesMaterial::set_scale(double curve_scale)
+{
+    set_scale(curve_scale, curve_scale, curve_scale);
+}
+
+void VisualSplinesMaterial::set_scale(double curve_scale_x, double curve_scale_y, double curve_scale_z)
+{
+    m_d_curve_scale_x = curve_scale_x;
+    m_d_curve_scale_y = curve_scale_y;
+    m_d_curve_scale_z = curve_scale_z;
+}
+
+double VisualSplinesMaterial::get_scale_x() const
+{
+    return m_d_curve_scale_x;
+}
+
+double VisualSplinesMaterial::get_scale_y() const
+{
+    return m_d_curve_scale_y;
+}
+
+double VisualSplinesMaterial::get_scale_z() const
+{
+    return m_d_curve_scale_z;
+}
+
+void VisualSplinesMaterial::set_color(Color curve_color)
+{
+    m_e_curve_color = curve_color;
+}
+
+Color VisualSplinesMaterial::get_color() const
+{
+    return m_e_curve_color;
+}
+
+void VisualSplinesMaterial::set_namspace(std::string curve_namespace)
+{
+    m_str_curve_namespace = curve_namespace;
+}
+
+std::string VisualSplinesMaterial::get_namspace() const
+{
+    return m_str_curve_namespace;
+}
+
+void VisualSplinesMaterial::set_id(uint32_t curve_id)
+{
+    m_uint_id = curve_id;
+}
+
+uint32_t VisualSplinesMaterial::get_id() const
+{
+    return m_uint_id;
 }
 
 /*
