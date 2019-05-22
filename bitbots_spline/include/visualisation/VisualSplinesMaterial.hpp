@@ -1,7 +1,8 @@
 #ifndef VISUALSPLINESMATERIAL_HPP
 #define VISUALSPLINESMATERIAL_HPP
 
-#include "bitbots_splines/Curve.hpp"
+#include <string>
+#include "spline/Curve.hpp"
 
 enum Color
 {

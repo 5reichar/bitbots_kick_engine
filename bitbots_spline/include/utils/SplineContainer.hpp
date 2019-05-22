@@ -10,7 +10,7 @@ https://github.com/Rhoban/model/
 #include <map>
 #include <stdexcept>
 #include <fstream>
-#include "../bitbots_splines/Curve.hpp"
+#include "spline/Curve.hpp"
 #include <set>
 #include <algorithm>
 #include <vector>

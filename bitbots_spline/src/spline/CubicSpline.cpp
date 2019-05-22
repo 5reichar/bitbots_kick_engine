@@ -8,7 +8,7 @@ https://github.com/Rhoban/model/
 #include <algorithm>
 #include <random>
 #include <chrono>
-#include "bitbots_splines/CubicSpline.hpp"
+#include "spline/CubicSpline.hpp"
 
 namespace bitbots_splines
 {

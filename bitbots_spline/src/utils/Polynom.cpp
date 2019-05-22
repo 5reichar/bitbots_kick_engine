@@ -3,8 +3,8 @@ This code is largely based on the original code by Quentin "Leph" Rouxel and Tea
 The original files can be found at:
 https://github.com/Rhoban/model/
 */
-#include "bitbots_splines/Polynom.hpp"
-#include "bitbots_splines/NewtonBinomial.hpp"
+#include "utils/Polynom.hpp"
+#include "utils/NewtonBinomial.hpp"
 
 namespace bitbots_splines
 {

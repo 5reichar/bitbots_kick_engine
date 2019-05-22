@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(bitbots_kick_engine)
+project(bitbots_spline)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -125,18 +125,19 @@ set (CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 
 set(SOURCES
-  src/Utils/VisualSplinesService.cpp
-  src/Utils/VisualSplinesNode.cpp
-  src/Utils/VisualSplinesMaterial.cpp
-  src/Utils/Combination.cpp
-  src/Utils/NewtonBinomial.cpp
-  src/bitbots_splines/Curve.cpp
-  src/bitbots_splines/Polynom.cpp
-  src/bitbots_splines/Spline.cpp
-  src/bitbots_splines/LinearSpline.cpp
-  src/bitbots_splines/CubicSpline.cpp
-  src/bitbots_splines/SmoothSpline.cpp
-  src/bitbots_splines/Beziercurve.cpp
+  src/visualisation/VisualSplinesService.cpp
+  src/visualisation/VisualSplinesNode.cpp
+  src/visualisation/VisualSplinesMaterial.cpp
+  src/utils/Combination.cpp
+  src/utils/NewtonBinomial.cpp
+  src/utils/Polynom.cpp
+  src/utils/TrajectoryService.cpp
+  src/spline/Curve.cpp
+  src/spline/Spline.cpp
+  src/spline/LinearSpline.cpp
+  src/spline/CubicSpline.cpp
+  src/spline/SmoothSpline.cpp
+  src/spline/Beziercurve.cpp
 )
 
 ## Declare a C++ library
@@ -154,7 +155,7 @@ add_library(${PROJECT_NAME}
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/bitbots_kick_engine_node.cpp)
 add_executable(
-    VisualSplinesNode src/Utils/VisualSplinesNode.cpp
+    VisualSplinesNode src/visualisation/VisualSplinesNode.cpp
 )
 
 ## Rename C++ executable without prefix

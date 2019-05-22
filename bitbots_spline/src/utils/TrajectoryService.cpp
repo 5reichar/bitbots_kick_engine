@@ -4,7 +4,7 @@ The original files can be found at:
 https://github.com/Rhoban/model/
 */
 
-#include "Utils/TrajectoryService.hpp"
+#include "utils/TrajectoryService.hpp"
 
 namespace bitbots_splines
 {

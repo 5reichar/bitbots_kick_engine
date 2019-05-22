@@ -7,7 +7,6 @@ https://github.com/Rhoban/model/
 #define CURVE_HPP
 
 #include <vector>
-#include <iostream>
 
 namespace bitbots_splines
 {

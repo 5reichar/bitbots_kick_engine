@@ -6,7 +6,7 @@ https://github.com/Rhoban/model/
 #include <stdexcept>
 #include <algorithm>
 #include <math.h>
-#include "bitbots_splines/SmoothSpline.hpp"
+#include "spline/SmoothSpline.hpp"
 
 namespace bitbots_splines
 {

@@ -6,7 +6,6 @@ https://github.com/Rhoban/model/
 #ifndef TRAJECTORYSERVICE_HPP
 #define TRAJECTORYSERVICE_HPP
 
-#include "../bitbots_splines/Curve.hpp"
 #include "SplineContainer.hpp"
 #include <eigen3/Eigen/Dense>
 

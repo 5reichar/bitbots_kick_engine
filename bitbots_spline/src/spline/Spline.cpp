@@ -5,7 +5,7 @@ https://github.com/Rhoban/model/
 */
 #include <iomanip>
 #include <stdexcept>
-#include "bitbots_splines/Spline.hpp"
+#include "spline/Spline.hpp"
 
 namespace bitbots_splines
 {
