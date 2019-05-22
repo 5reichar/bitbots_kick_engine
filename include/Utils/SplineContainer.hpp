@@ -18,54 +18,52 @@ https://github.com/Rhoban/model/
 namespace bitbots_splines
 {
 
-/**
+/*
  * SplineContainer
  *
  * Wrapper for map of generic splines
  * types indexed by string name
  * Implementation of implort/export from files
  */
-template <class T>
 class SplineContainer
 {
 public:
-    /**
-         * Return the number of contained splines
-         */
+    /*
+     * Return the number of contained splines
+     */
     inline size_t size() const
     {
         return _container.size();
     }
 
-    /**
-         * Add an empty spline with given name.
-         * Variadic arguments allow to pass parameters to
-         * spline constructor.
-         */
-    template <typename... Args>
-    inline void add(const std::string &name, Args... args)
+    /*
+     * Add an empty spline with given name.
+     * Variadic arguments allow to pass parameters to
+     * spline constructor.
+     */
+    inline void add(const std::string &name, Curve &curve)
     {
         if (_container.count(name) != 0)
         {
             throw std::logic_error(
                 "SplineContainer spline already added");
         }
-        _container[name] = T(args...);
+        _container[name] = curve;
     }
 
-    /**
-         * Return true if given spline
-         * name is contained
-         */
+    /*
+     * Return true if given spline
+     * name is contained
+     */
     inline bool exist(const std::string &name) const
     {
         return _container.count(name) > 0;
     }
 
-    /**
-         * Access to given named spline
-         */
-    inline const T &get(const std::string &name) const
+    /*
+     * Access to given named spline
+     */
+    inline const Curve &get(const std::string &name) const
     {
         if (_container.count(name) == 0)
         {
@@ -74,7 +72,7 @@ public:
         }
         return _container.at(name);
     }
-    inline T &get(const std::string &name)
+    inline Curve &get(const std::string &name)
     {
         if (_container.count(name) == 0)
         {
@@ -84,21 +82,21 @@ public:
         return _container.at(name);
     }
 
-    /**
-         * Access to internal map container
-         */
-    const std::map<std::string, T> &get() const
+    /*
+     * Access to internal map container
+     */
+    const std::map<std::string, Curve> &get() const
     {
         return _container;
     }
-    std::map<std::string, T> &get()
+    std::map<std::string, Curve> &get()
     {
         return _container;
     }
 
-    /**
-         * Returns all time points where a point in any spline exists.
-         */
+    /*
+     * Returns all time points where a point in any spline exists.
+     */
     std::vector<double> getTimes()
     {
         std::set<double> times;
@@ -118,10 +116,11 @@ public:
         return times_sorted;
     }
 
-    /**
-         * Return minimum and maximum abscisse values
-         * of all registered splines parts
-         */
+    /*
+     * Return minimum and maximum abscisse values
+     * of all registered splines parts
+     */
+    /*
     double min() const
     {
         if (_container.size() == 0)
@@ -159,10 +158,11 @@ public:
         return m;
     }
 
-    /**
-         * Export to and Import from given file name
-         * in "spline" CSV format prefixed with spline name
-         */
+    /*
+     * Export to and Import from given file name
+     * in "spline" CSV format prefixed with spline name
+     */
+    /*
     void exportData(const std::string &fileName) const
     {
         if (_container.size() == 0)
@@ -180,7 +180,7 @@ public:
         for (const auto &sp : _container)
         {
             file << "'" << sp.first << "' ";
-            sp.second.exportData(file);
+            sp.second->exportData(file);
         }
 
         file.close();
@@ -229,13 +229,13 @@ public:
 
         file.close();
     }
-
+    */
 private:
-    /**
-         * Spline container indexed
-         * by their name
-         */
-    std::map<std::string, T> _container;
+    /*
+     * Spline container indexed
+     * by their name
+     */
+    std::map<std::string, Curve> _container;
 };
 
 } // namespace bitbots_splines

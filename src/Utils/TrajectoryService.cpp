@@ -10,33 +10,33 @@ namespace bitbots_splines
 {
 
 template <class T>
-TrajectoryService::Trajectories TrajectoryService::TrajectoriesInit()
+SplineContainer TrajectoryService::TrajectoriesInit()
 {
     static_assert(std::is_base_of<Curve, T>::value, "TrajectoriesInit<T>(): T must derive from Curve");
 
-    SplineContainer<T> traj;
+    SplineContainer traj;
 
-    traj.add("is_double_support");
-    traj.add("is_left_support_foot");
-    traj.add("trunk_pos_x");
-    traj.add("trunk_pos_y");
-    traj.add("trunk_pos_z");
-    traj.add("trunk_axis_x");
-    traj.add("trunk_axis_y");
-    traj.add("trunk_axis_z");
-    traj.add("foot_pos_x");
-    traj.add("foot_pos_y");
-    traj.add("foot_pos_z");
-    traj.add("foot_axis_x");
-    traj.add("foot_axis_y");
-    traj.add("foot_axis_z");
+    traj.add("is_double_support", new T());
+    traj.add("is_left_support_foot", new T());
+    traj.add("trunk_pos_x", new T());
+    traj.add("trunk_pos_y", new T());
+    traj.add("trunk_pos_z", new T());
+    traj.add("trunk_axis_x", new T());
+    traj.add("trunk_axis_y", new T());
+    traj.add("trunk_axis_z", new T());
+    traj.add("foot_pos_x", new T());
+    traj.add("foot_pos_y", new T());
+    traj.add("foot_pos_z", new T());
+    traj.add("foot_axis_x", new T());
+    traj.add("foot_axis_y", new T());
+    traj.add("foot_axis_z", new T());
 
     return traj;
 }
 
 void TrajectoryService::TrajectoriesTrunkFootPos(
     double t,
-    const TrajectoryService::Trajectories &traj,
+    const SplineContainer &traj,
     Eigen::Vector3d &trunkPos,
     Eigen::Vector3d &trunkAxis,
     Eigen::Vector3d &footPos,
@@ -62,7 +62,7 @@ void TrajectoryService::TrajectoriesTrunkFootPos(
 }
 void TrajectoryService::TrajectoriesTrunkFootVel(
     double t,
-    const TrajectoryService::Trajectories &traj,
+    const SplineContainer &traj,
     Eigen::Vector3d &trunkPosVel,
     Eigen::Vector3d &trunkAxisVel,
     Eigen::Vector3d &footPosVel,
@@ -88,7 +88,7 @@ void TrajectoryService::TrajectoriesTrunkFootVel(
 }
 void TrajectoryService::TrajectoriesTrunkFootAcc(
     double t,
-    const TrajectoryService::Trajectories &traj,
+    const SplineContainer &traj,
     Eigen::Vector3d &trunkPosAcc,
     Eigen::Vector3d &trunkAxisAcc,
     Eigen::Vector3d &footPosAcc,
@@ -114,7 +114,7 @@ void TrajectoryService::TrajectoriesTrunkFootAcc(
 }
 void TrajectoryService::TrajectoriesSupportFootState(
     double t,
-    const TrajectoryService::Trajectories &traj,
+    const SplineContainer &traj,
     bool &isDoubleSupport,
     bool &isLeftsupportFoot)
 {

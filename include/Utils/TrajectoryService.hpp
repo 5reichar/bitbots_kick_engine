@@ -17,16 +17,11 @@ class TrajectoryService
 {
 public:
     /**
-     * Simple typedef for trajectories container
-     */
-    typedef SplineContainer<Curve> Trajectories;
-
-    /**
      * Return initialized trajectories for
      * trunk/foot ik cartesian with empty splines
      */
     template <class T>
-    static Trajectories TrajectoriesInit();
+    static SplineContainer TrajectoriesInit();
 
     /**
      * Compute from given spline container
@@ -35,28 +30,28 @@ public:
      * and assign it to given vector
      */
     static void TrajectoriesTrunkFootPos(
-        double t, const Trajectories &traj,
+        double t, const SplineContainer &traj,
         Eigen::Vector3d &trunkPos,
         Eigen::Vector3d &trunkAxis,
         Eigen::Vector3d &footPos,
         Eigen::Vector3d &footAxis);
 
     static void TrajectoriesTrunkFootVel(
-        double t, const Trajectories &traj,
+        double t, const SplineContainer &traj,
         Eigen::Vector3d &trunkPosVel,
         Eigen::Vector3d &trunkAxisVel,
         Eigen::Vector3d &footPosVel,
         Eigen::Vector3d &footAxisVel);
 
     static void TrajectoriesTrunkFootAcc(
-        double t, const Trajectories &traj,
+        double t, const SplineContainer &traj,
         Eigen::Vector3d &trunkPosAcc,
         Eigen::Vector3d &trunkAxisAcc,
         Eigen::Vector3d &footPosAcc,
         Eigen::Vector3d &footAxisAcc);
 
     static void TrajectoriesSupportFootState(
-        double t, const Trajectories &traj,
+        double t, const SplineContainer &traj,
         bool &isDoubleSupport,
         bool &isLeftsupportFoot);
 
