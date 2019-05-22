@@ -46,6 +46,14 @@ enum class CurvePurpose
 class SplineContainer
 {
 public:
+    ~SplineContainer()
+    {
+        for (const auto &it : _container)
+        {
+            delete it.second;
+        }
+    }
+
     /*
      * Return the number of contained splines
      */
@@ -59,7 +67,7 @@ public:
      * Variadic arguments allow to pass parameters to
      * spline constructor.
      */
-    inline void add(const CurvePurpose &name, Curve &curve)
+    inline void add(const CurvePurpose &name, Curve *curve)
     {
         if (_container.count(name) != 0)
         {
@@ -81,7 +89,7 @@ public:
     /*
      * Access to given named spline
      */
-    inline const Curve &get(const CurvePurpose &name) const
+    inline const Curve *get(const CurvePurpose &name) const
     {
         if (_container.count(name) == 0)
         {
@@ -90,7 +98,7 @@ public:
         }
         return _container.at(name);
     }
-    inline Curve &get(const CurvePurpose &name)
+    inline Curve *get(const CurvePurpose &name)
     {
         if (_container.count(name) == 0)
         {
@@ -101,13 +109,13 @@ public:
     }
 
     /*
-     * Access to internal map container
+     * Access to internal map containera
      */
-    const std::map<CurvePurpose, Curve> &get() const
+    const std::map<CurvePurpose, Curve *> &get() const
     {
         return _container;
     }
-    std::map<CurvePurpose, Curve> &get()
+    std::map<CurvePurpose, Curve *> &get()
     {
         return _container;
     }
@@ -123,7 +131,7 @@ public:
         for (const auto &sp : _container)
         {
             // go trough all points of the spline
-            for (Curve::Point point : sp.second.points())
+            for (Curve::Point point : sp.second->points())
             {
                 times.insert(point.time);
             }
@@ -253,7 +261,7 @@ private:
      * Spline container indexed
      * by their name
      */
-    std::map<CurvePurpose, Curve> _container;
+    std::map<CurvePurpose, Curve *> _container;
 
     static std::string get_purpose_name(CurvePurpose purpose)
     {

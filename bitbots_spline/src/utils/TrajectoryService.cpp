@@ -44,21 +44,21 @@ void TrajectoryService::TrajectoriesTrunkFootPos(
 {
     //Compute Cartesian positions
     trunkPos = Eigen::Vector3d(
-        traj.get(CurvePurpose::trunk_position_x).pos(t),
-        traj.get(CurvePurpose::trunk_position_y).pos(t),
-        traj.get(CurvePurpose::trunk_position_z).pos(t));
+        traj.get(CurvePurpose::trunk_position_x)->pos(t),
+        traj.get(CurvePurpose::trunk_position_y)->pos(t),
+        traj.get(CurvePurpose::trunk_position_z)->pos(t));
     trunkAxis = Eigen::Vector3d(
-        traj.get(CurvePurpose::trunk_axis_x).pos(t),
-        traj.get(CurvePurpose::trunk_axis_y).pos(t),
-        traj.get(CurvePurpose::trunk_axis_z).pos(t));
+        traj.get(CurvePurpose::trunk_axis_x)->pos(t),
+        traj.get(CurvePurpose::trunk_axis_y)->pos(t),
+        traj.get(CurvePurpose::trunk_axis_z)->pos(t));
     footPos = Eigen::Vector3d(
-        traj.get(CurvePurpose::foot_position_x).pos(t),
-        traj.get(CurvePurpose::foot_position_y).pos(t),
-        traj.get(CurvePurpose::foot_position_z).pos(t));
+        traj.get(CurvePurpose::foot_position_x)->pos(t),
+        traj.get(CurvePurpose::foot_position_y)->pos(t),
+        traj.get(CurvePurpose::foot_position_z)->pos(t));
     footAxis = Eigen::Vector3d(
-        traj.get(CurvePurpose::foot_axis_x).pos(t),
-        traj.get(CurvePurpose::foot_axis_y).pos(t),
-        traj.get(CurvePurpose::foot_axis_z).pos(t));
+        traj.get(CurvePurpose::foot_axis_x)->pos(t),
+        traj.get(CurvePurpose::foot_axis_y)->pos(t),
+        traj.get(CurvePurpose::foot_axis_z)->pos(t));
 }
 void TrajectoryService::TrajectoriesTrunkFootVel(
     double t,
@@ -70,21 +70,21 @@ void TrajectoryService::TrajectoriesTrunkFootVel(
 {
     //Compute Cartesian velocities
     trunkPosVel = Eigen::Vector3d(
-        traj.get(CurvePurpose::trunk_position_x).vel(t),
-        traj.get(CurvePurpose::trunk_position_y).vel(t),
-        traj.get(CurvePurpose::trunk_position_z).vel(t));
+        traj.get(CurvePurpose::trunk_position_x)->vel(t),
+        traj.get(CurvePurpose::trunk_position_y)->vel(t),
+        traj.get(CurvePurpose::trunk_position_z)->vel(t));
     trunkAxisVel = Eigen::Vector3d(
-        traj.get(CurvePurpose::trunk_axis_x).vel(t),
-        traj.get(CurvePurpose::trunk_axis_y).vel(t),
-        traj.get(CurvePurpose::trunk_axis_z).vel(t));
+        traj.get(CurvePurpose::trunk_axis_x)->vel(t),
+        traj.get(CurvePurpose::trunk_axis_y)->vel(t),
+        traj.get(CurvePurpose::trunk_axis_z)->vel(t));
     footPosVel = Eigen::Vector3d(
-        traj.get(CurvePurpose::foot_position_x).vel(t),
-        traj.get(CurvePurpose::foot_position_y).vel(t),
-        traj.get(CurvePurpose::foot_position_z).vel(t));
+        traj.get(CurvePurpose::foot_position_x)->vel(t),
+        traj.get(CurvePurpose::foot_position_y)->vel(t),
+        traj.get(CurvePurpose::foot_position_z)->vel(t));
     footAxisVel = Eigen::Vector3d(
-        traj.get(CurvePurpose::foot_axis_x).vel(t),
-        traj.get(CurvePurpose::foot_axis_y).vel(t),
-        traj.get(CurvePurpose::foot_axis_z).vel(t));
+        traj.get(CurvePurpose::foot_axis_x)->vel(t),
+        traj.get(CurvePurpose::foot_axis_y)->vel(t),
+        traj.get(CurvePurpose::foot_axis_z)->vel(t));
 }
 void TrajectoryService::TrajectoriesTrunkFootAcc(
     double t,
@@ -96,21 +96,21 @@ void TrajectoryService::TrajectoriesTrunkFootAcc(
 {
     //Compute Cartesian accelerations
     trunkPosAcc = Eigen::Vector3d(
-        traj.get(CurvePurpose::trunk_position_x).acc(t),
-        traj.get(CurvePurpose::trunk_position_y).acc(t),
-        traj.get(CurvePurpose::trunk_position_z).acc(t));
+        traj.get(CurvePurpose::trunk_position_x)->acc(t),
+        traj.get(CurvePurpose::trunk_position_y)->acc(t),
+        traj.get(CurvePurpose::trunk_position_z)->acc(t));
     trunkAxisAcc = Eigen::Vector3d(
-        traj.get(CurvePurpose::trunk_axis_x).acc(t),
-        traj.get(CurvePurpose::trunk_axis_y).acc(t),
-        traj.get(CurvePurpose::trunk_axis_z).acc(t));
+        traj.get(CurvePurpose::trunk_axis_x)->acc(t),
+        traj.get(CurvePurpose::trunk_axis_y)->acc(t),
+        traj.get(CurvePurpose::trunk_axis_z)->acc(t));
     footPosAcc = Eigen::Vector3d(
-        traj.get(CurvePurpose::foot_position_x).acc(t),
-        traj.get(CurvePurpose::foot_position_y).acc(t),
-        traj.get(CurvePurpose::foot_position_z).acc(t));
+        traj.get(CurvePurpose::foot_position_x)->acc(t),
+        traj.get(CurvePurpose::foot_position_y)->acc(t),
+        traj.get(CurvePurpose::foot_position_z)->acc(t));
     footAxisAcc = Eigen::Vector3d(
-        traj.get(CurvePurpose::foot_axis_x).acc(t),
-        traj.get(CurvePurpose::foot_axis_y).acc(t),
-        traj.get(CurvePurpose::foot_axis_z).acc(t));
+        traj.get(CurvePurpose::foot_axis_x)->acc(t),
+        traj.get(CurvePurpose::foot_axis_y)->acc(t),
+        traj.get(CurvePurpose::foot_axis_z)->acc(t));
 }
 void TrajectoryService::TrajectoriesSupportFootState(
     double t,
@@ -119,8 +119,8 @@ void TrajectoryService::TrajectoriesSupportFootState(
     bool &isLeftsupportFoot)
 {
     //Compute support foot state
-    isDoubleSupport = (traj.get(CurvePurpose::is_double_support).pos(t) >= 0.5 ? true : false);
-    isLeftsupportFoot = (traj.get(CurvePurpose::is_left_support_foot).pos(t) >= 0.5 ? true : false);
+    isDoubleSupport = (traj.get(CurvePurpose::is_double_support)->pos(t) >= 0.5 ? true : false);
+    isLeftsupportFoot = (traj.get(CurvePurpose::is_left_support_foot)->pos(t) >= 0.5 ? true : false);
 }
 
 double TrajectoryService::DefaultCheckState(
