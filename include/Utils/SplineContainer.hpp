@@ -18,6 +18,24 @@ https://github.com/Rhoban/model/
 namespace bitbots_splines
 {
 
+enum class CurvePurpose
+{
+    is_double_support,
+    is_left_support_foot,
+    trunk_position_x,
+    trunk_position_y,
+    trunk_position_z,
+    trunk_axis_x,
+    trunk_axis_y,
+    trunk_axis_z,
+    foot_position_x,
+    foot_position_y,
+    foot_position_z,
+    foot_axis_x,
+    foot_axis_y,
+    foot_axis_z
+};
+
 /*
  * SplineContainer
  *
@@ -41,7 +59,7 @@ public:
      * Variadic arguments allow to pass parameters to
      * spline constructor.
      */
-    inline void add(const std::string &name, Curve &curve)
+    inline void add(const CurvePurpose &name, Curve &curve)
     {
         if (_container.count(name) != 0)
         {
@@ -55,7 +73,7 @@ public:
      * Return true if given spline
      * name is contained
      */
-    inline bool exist(const std::string &name) const
+    inline bool exist(const CurvePurpose &name) const
     {
         return _container.count(name) > 0;
     }
@@ -63,21 +81,21 @@ public:
     /*
      * Access to given named spline
      */
-    inline const Curve &get(const std::string &name) const
+    inline const Curve &get(const CurvePurpose &name) const
     {
         if (_container.count(name) == 0)
         {
             throw std::logic_error(
-                "SplineContainer invalid name: " + name);
+                "SplineContainer invalid name: " + get_purpose_name(name));
         }
         return _container.at(name);
     }
-    inline Curve &get(const std::string &name)
+    inline Curve &get(const CurvePurpose &name)
     {
         if (_container.count(name) == 0)
         {
             throw std::logic_error(
-                "SplineContainer invalid name: " + name);
+                "SplineContainer invalid name: " + get_purpose_name(name));
         }
         return _container.at(name);
     }
@@ -85,11 +103,11 @@ public:
     /*
      * Access to internal map container
      */
-    const std::map<std::string, Curve> &get() const
+    const std::map<CurvePurpose, Curve> &get() const
     {
         return _container;
     }
-    std::map<std::string, Curve> &get()
+    std::map<CurvePurpose, Curve> &get()
     {
         return _container;
     }
@@ -235,7 +253,63 @@ private:
      * Spline container indexed
      * by their name
      */
-    std::map<std::string, Curve> _container;
+    std::map<CurvePurpose, Curve> _container;
+
+    static std::string get_purpose_name(CurvePurpose purpose)
+    {
+        std::string name;
+        switch (purpose)
+        {
+        case CurvePurpose::is_double_support:
+            name = "is_double_support:";
+            break;
+        case CurvePurpose::is_left_support_foot:
+            name = "is_left_support_foot:";
+            break;
+        case CurvePurpose::trunk_position_x:
+            name = "trunk_position_x:";
+            break;
+        case CurvePurpose::trunk_position_y:
+            name = "trunk_position_y:";
+            break;
+        case CurvePurpose::trunk_position_z:
+            name = "trunk_position_z:";
+            break;
+        case CurvePurpose::trunk_axis_x:
+            name = "trunk_axis_x:";
+            break;
+        case CurvePurpose::trunk_axis_y:
+            name = "trunk_axis_y:";
+            break;
+        case CurvePurpose::trunk_axis_z:
+            name = "trunk_axis_z:";
+            break;
+        case CurvePurpose::foot_position_x:
+            name = "foot_position_x:";
+            break;
+        case CurvePurpose::foot_position_y:
+            name = "foot_position_y:";
+            break;
+        case CurvePurpose::foot_position_z:
+            name = "foot_position_z:";
+            break;
+        case CurvePurpose::foot_axis_x:
+            name = "foot_axis_x:";
+            break;
+        case CurvePurpose::foot_axis_y:
+            name = "foot_axis_y:";
+            break;
+        case CurvePurpose::foot_axis_z:
+            name = "foot_axis_z:";
+            break;
+
+        default:
+            name = "unknown_purpose";
+            break;
+        }
+
+        return name;
+    }
 };
 
 } // namespace bitbots_splines
