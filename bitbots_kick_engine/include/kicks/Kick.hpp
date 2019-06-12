@@ -3,9 +3,8 @@
 
 class Kick
 {
-    public:
-
-    private:
-}
+public:
+private:
+};
 
 #endif
