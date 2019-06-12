@@ -46,6 +46,11 @@ void KickEngineNode::kick_ball(geometry_msgs::Vector3 const &const ball_position
     }
 }
 
+void publish_controler_commands(std::vector<std::string> joint_names, std::vector<double> positions) const
+{
+    // TODO implementation
+}
+
 void KickEngineNode::publish_kick() const
 {
     // TODO implementation
@@ -68,7 +73,7 @@ void KickEngineNode::publish_odometry() const
 
 void KickEngineNode::robot_state_callback(const humanoid_league_msgs::RobotControlState msg)
 {
-    // TODO implementation
+    m_kick_engine.set_robot_state(msg);
 }
 
 void KickEngineNode::kick_callback()
