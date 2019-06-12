@@ -5,11 +5,11 @@
 
 class KickEngine
 {
-    public:
-        enum class KickType : uint16_t
-        {
-            standard = 0
-        };
+public:
+    enum class KickType : uint16_t
+    {
+        standard = 0
+    };
 
     KickEngine(const humanoid_league_msgs::RobotControlState msg);
 
@@ -21,14 +21,13 @@ class KickEngine
     std::vector<double> get_joint_goals() const;
     bool has_new_goals() const;
 
-    private:
-
+private:
     geometry_msgs::Vector3 get_kick_start_position();
     void move_left_feet_to_position(geometry_msgs::Vector3 position);
     void move_right_feet_to_position(geometry_msgs::Vector3 position);
     void move_feet_to_position(geometry_msgs::Vector3 position);
 
     humanoid_league_msgs::RobotControlState::state m_robot_state;
-}
+};
 
 #endif
