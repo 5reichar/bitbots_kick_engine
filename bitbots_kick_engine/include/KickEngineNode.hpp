@@ -20,7 +20,6 @@ private:
 
     void robot_state_callback(const humanoid_league_msgs::RobotControlState msg);
     void kick_callback();
-    void velocity_cammand_callback(const geometry_msgs::Twist msg);
 
     humanoid_league_msgs::RobotControlState::state m_robot_state;
     uint16_t m_uint_odometry_publish_factor;

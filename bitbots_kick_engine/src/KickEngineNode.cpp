@@ -50,7 +50,7 @@ void KickEngineNode::publish_kick() const
 {
     // TODO implementation
 
-    publish_controler_commands(m_kick_engine.get_joint_names(), m_kick_engine.get_joint_goals()):
+    publish_controler_commands(m_kick_engine.get_joint_names(), m_kick_engine.get_joint_goals());
 
     // TODO Publish current support state
 
@@ -72,12 +72,6 @@ void KickEngineNode::robot_state_callback(const humanoid_league_msgs::RobotContr
 }
 
 void KickEngineNode::kick_callback()
-{
-    // TODO implementation
-}
-
-
-void KickEngineNode::velocity_cammand_callback(const geometry_msgs::Twist msg)
 {
     // TODO implementation
 }
