@@ -1,5 +1,8 @@
 #include "KickEngineNode.hpp"
-#include <geometry_msgs/Vector3.h>
+#include <visualization_msgs/Marker.h>
+#include <nav_msgs/Odometry.h>
+#include <bitbots_msgs/JointCommand.h>
+#include <humanoid_league_msgs/RobotControlState.h>
 
 KickEngineNode::KickEngineNode()
 {

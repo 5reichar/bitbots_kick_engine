@@ -11,7 +11,9 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
   visualization_msgs
+  geometry_msgs
   #bitbots_splines
+  humanoid_league_msgs
 )
 
 ## System dependencies are found with CMake's conventions

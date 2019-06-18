@@ -2,6 +2,7 @@
 #define KICKENGINE_HPP
 
 #include <humanoid_league_msgs/RobotControlState.h>
+#include <geometry_msgs/Vector3.h>
 
 class KickEngine
 {
