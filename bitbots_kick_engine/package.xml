@@ -62,6 +62,8 @@
   <depend>humanoid_league_msgs</depend>
   <depend>bitbots_splines</depend>
   <depend>geometry_msgs</depend>
+  <depend>bitbots_msgs</depend>
+  <depend>bio_ik</depend>
 
   <!--<depend>bitbots_splines</depend>-->
 

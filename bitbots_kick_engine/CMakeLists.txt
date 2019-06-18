@@ -14,6 +14,8 @@ find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   #bitbots_splines
   humanoid_league_msgs
+  bitbots_msgs
+  bio_ik
 )
 
 ## System dependencies are found with CMake's conventions
