@@ -66,12 +66,15 @@
   <exec_depend>std_msgs</exec_depend>
   <exec_depend>visualization_msgs</exec_depend>
 
+  <depend>humanoid_league_msgs</depend>
+  <depend>bitbots_splines</depend>
+
   <!--<depend>bitbots_splines</depend>-->
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>
     <!-- Other tools can request additional information be placed here -->
-     <bitbots_documentation>
+    <bitbots_documentation>
       <status>TODO</status>
       <language>c++</language>
     </bitbots_documentation>
