@@ -2,6 +2,7 @@
 #define BEZIERCURVE_HPP
 
 #include "Curve.hpp"
+#include <cstdint>
 
 namespace bitbots_splines
 {
