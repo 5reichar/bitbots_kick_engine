@@ -16,6 +16,7 @@ find_package(catkin REQUIRED COMPONENTS
   humanoid_league_msgs
   bitbots_msgs
   bio_ik
+  bitbots_ik
 )
 
 ## System dependencies are found with CMake's conventions

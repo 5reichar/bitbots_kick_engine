@@ -4,6 +4,7 @@
 #include "KickEngine.hpp"
 #include "ros/ros.h"
 #include <geometry_msgs/Vector3.h>
+#include "bitbots_ik/BioIKSolver.hpp"
 
 class KickEngineNode
 {
