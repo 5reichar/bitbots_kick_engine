@@ -3,6 +3,8 @@
 #include <nav_msgs/Odometry.h>
 #include <bitbots_msgs/JointCommand.h>
 #include <humanoid_league_msgs/RobotControlState.h>
+#include <std_msgs/Char.h>
+#include <moveit/robot_model_loader/robot_model_loader.h>
 
 KickEngineNode::KickEngineNode()
 {
@@ -16,7 +18,7 @@ KickEngineNode::KickEngineNode()
 
     m_kinematic_model = robot_model_loader.getModel();
 
-    m_goal_state.reset(new robot_state::RobotState(_kinematic_model));
+    m_goal_state.reset(new robot_state::RobotState(m_kinematic_model));
     m_goal_state->setToDefaultValues();
     // we have to set some good initial position in the goal state, since we are using a gradient
     // based method. Otherwise, the first step will be not correct
@@ -28,7 +30,7 @@ KickEngineNode::KickEngineNode()
         m_goal_state->setJointPositions(names_vec[i], &pos_vec[i]);
     }
 
-    m_current_state.reset(new robot_state::RobotState(_kinematic_model));
+    m_current_state.reset(new robot_state::RobotState(m_kinematic_model));
     m_current_state->setToDefaultValues();
 
     m_bio_ik_solver = bitbots_ik::BioIKSolver(*m_kinematic_model->getJointModelGroup("All"),
@@ -56,11 +58,11 @@ void KickEngineNode::initialise_ros_publisher()
     m_ros_publisher_odometry = m_ros_node_handle.advertise<nav_msgs::Odometry>("kick_odometry", 1);
     m_ros_publisher_support = m_ros_node_handle.advertise<std_msgs::Char>("kick_support_state", 1);
 
-    m_ros_publisher_debug = m_ros_node_handle.advertise<bitbots_quintic_walk::WalkingDebug>("kick_debug", 1);
+    m_ros_publisher_debug = m_ros_node_handle.advertise<bitbots_kick_engine::WalkingDebug>("kick_debug", 1);
     m_ros_publisher_debug_marker = m_ros_node_handle.advertise<visualization_msgs::Marker>("kick_debug_marker", 1);
 }
 
-void KickEngineNode::kick_ball(geometry_msgs::Vector3 const &const ball_position, geometry_msgs::Vector3 const &const target_position)
+void KickEngineNode::kick_ball(geometry_msgs::Vector3 & ball_position, geometry_msgs::Vector3 & target_position)
 {
     // TODO implementation
 
@@ -77,7 +79,7 @@ void KickEngineNode::kick_ball(geometry_msgs::Vector3 const &const ball_position
 
         if (odometry_counter > m_uint_odometry_publish_factor)
         {
-            publish_odometry();
+            publish_odemetry();
             odometry_counter = 1;
         }
         else
@@ -110,7 +112,7 @@ void KickEngineNode::publish_kick() const
     }
 }
 
-void KickEngineNode::publish_odometry() const
+void KickEngineNode::publish_odemetry()
 {
     // TODO implementation
 }

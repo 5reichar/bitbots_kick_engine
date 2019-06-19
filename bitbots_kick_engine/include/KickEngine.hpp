@@ -16,7 +16,7 @@ public:
 
     void set_param();
     void set_robot_state(const humanoid_league_msgs::RobotControlState msg);
-    void kick(geometry_msgs::Vector3 const &const ball_position, geometry_msgs::Vector3 const &const target_position);
+    void kick(geometry_msgs::Vector3 & ball_position, geometry_msgs::Vector3 & target_position);
 
     std::vector<std::string> get_joint_names() const;
     std::vector<double> get_joint_goals() const;
@@ -28,7 +28,7 @@ private:
     void move_right_feet_to_position(geometry_msgs::Vector3 position);
     void move_feet_to_position(geometry_msgs::Vector3 position);
 
-    humanoid_league_msgs::RobotControlState::state m_robot_state;
+    uint8_t m_robot_state;
 };
 
 #endif

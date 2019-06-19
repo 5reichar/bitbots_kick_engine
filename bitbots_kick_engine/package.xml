@@ -65,6 +65,7 @@
   <depend>bitbots_msgs</depend>
   <depend>bio_ik</depend>
   <depend>bitbots_ik</depend>
+  <depend>moveit_core</depend>
 
   <!--<depend>bitbots_splines</depend>-->
 
