@@ -18,14 +18,16 @@ private:
     void initialise_ros_subcribtions();
     void initialise_ros_publisher();
     void kick_ball(geometry_msgs::Vector3 & ball_position, geometry_msgs::Vector3 & target_position);
-    void publish_kick() const;
+    void publish_kick();
     void publish_odemetry();
-    void publish_controler_commands(std::vector<std::string> joint_names, std::vector<double> positions) const;
+    void publish_debug();
+    void publish_marker();
+    void publish_controler_commands(std::vector<std::string> joint_names, std::vector<double> positions);
 
     void robot_state_callback(const humanoid_league_msgs::RobotControlState msg);
     void kick_callback();
 
-    KickEngine m_kick_enginge;
+    KickEngine m_kick_engine;
     uint16_t m_uint_odometry_publish_factor;
 
     ros::NodeHandle m_ros_node_handle;
@@ -44,6 +46,8 @@ private:
     robot_state::RobotStatePtr m_current_state;
 
     bitbots_ik::BioIKSolver m_bio_ik_solver;
+
+    bool m_bool_debug;
 };
 
 #endif

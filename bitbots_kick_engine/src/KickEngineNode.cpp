@@ -5,6 +5,7 @@
 #include <humanoid_league_msgs/RobotControlState.h>
 #include <std_msgs/Char.h>
 #include <moveit/robot_model_loader/robot_model_loader.h>
+#include <bitbots_kick_engine/WalkingDebug.h>
 
 KickEngineNode::KickEngineNode()
 {
@@ -47,8 +48,8 @@ void KickEngineNode::kick()
 void KickEngineNode::initialise_ros_subcribtions()
 {
     // TODO implementation
-    m_ros_subsciber_kick = m_ros_node_handle.subscribe("kick", 1, &KickEngineNode::kick_callback, this, ros::TransportHints().tcpNoDelay());
-    m_ros_subsciber_robot_state = m_ros_node_handle.subscribe("robot_state", 1, &KickEngineNode::robot_state_callback, this, ros::TransportHints().tcpNoDelay());
+    m_ros_subsciber_kick = m_ros_node_handle.subscribe("kick", 1, &KickEngineNode::kick_callback);
+    m_ros_subsciber_robot_state = m_ros_node_handle.subscribe("robot_state", 1, &KickEngineNode::robot_state_callback);
 }
 
 void KickEngineNode::initialise_ros_publisher()
@@ -92,12 +93,12 @@ void KickEngineNode::kick_ball(geometry_msgs::Vector3 & ball_position, geometry_
     }
 }
 
-void publish_controler_commands(std::vector<std::string> joint_names, std::vector<double> positions) const
+void publish_controler_commands(std::vector<std::string> joint_names, std::vector<double> positions)
 {
     // TODO implementation
 }
 
-void KickEngineNode::publish_kick() const
+void KickEngineNode::publish_kick()
 {
     // TODO implementation
 
@@ -113,6 +114,16 @@ void KickEngineNode::publish_kick() const
 }
 
 void KickEngineNode::publish_odemetry()
+{
+    // TODO implementation
+}
+
+void KickEngineNode::publish_debug()
+{
+    // TODO implementation
+}
+
+void KickEngineNode::publish_marker()
 {
     // TODO implementation
 }

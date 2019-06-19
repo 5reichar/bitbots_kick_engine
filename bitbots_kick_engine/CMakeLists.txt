@@ -57,8 +57,6 @@ find_package(catkin REQUIRED COMPONENTS
 add_message_files(
   FILES
   WalkingDebug.msg
-#   Message1.msg
-#   Message2.msg
 )
 
 ## Generate services in the 'srv' folder
@@ -76,11 +74,11 @@ add_message_files(
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   std_msgs
-#   visualization_msgs
-# )
+generate_messages(
+  DEPENDENCIES
+  std_msgs
+  visualization_msgs
+)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -134,6 +132,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 
 set(SOURCES
   src/KickEngineNode.cpp
+  src/KickEngine.cpp
 )
 
 ## Declare a C++ library

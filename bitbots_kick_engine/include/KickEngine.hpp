@@ -12,7 +12,7 @@ public:
         standard = 0
     };
 
-    KickEngine(const humanoid_league_msgs::RobotControlState msg);
+    KickEngine();
 
     void set_param();
     void set_robot_state(const humanoid_league_msgs::RobotControlState msg);
