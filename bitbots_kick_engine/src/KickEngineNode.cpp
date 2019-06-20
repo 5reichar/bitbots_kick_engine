@@ -48,8 +48,8 @@ void KickEngineNode::kick()
 void KickEngineNode::initialise_ros_subcribtions()
 {
     // TODO implementation
-    m_ros_subsciber_kick = m_ros_node_handle.subscribe("kick", 1, &KickEngineNode::kick_callback);
-    m_ros_subsciber_robot_state = m_ros_node_handle.subscribe("robot_state", 1, &KickEngineNode::robot_state_callback);
+    m_ros_subsciber_kick = m_ros_node_handle.subscribe("kick", 1, &KickEngineNode::kick_callback, this, ros::TransportHints().tcpNoDelay());
+    m_ros_subsciber_robot_state = m_ros_node_handle.subscribe("robot_state", 1, &KickEngineNode::robot_state_callback, this, ros::TransportHints().tcpNoDelay());
 }
 
 void KickEngineNode::initialise_ros_publisher()
@@ -68,11 +68,10 @@ void KickEngineNode::kick_ball(geometry_msgs::Vector3 & ball_position, geometry_
     // TODO implementation
 
     uint16_t odometry_counter = 1;
+    ros::Rate loopRate(10);
 
     while (ros::ok())
     {
-        ros::Rate loopRate();
-
         if (m_kick_engine.has_new_goals())
         {
             kick();
