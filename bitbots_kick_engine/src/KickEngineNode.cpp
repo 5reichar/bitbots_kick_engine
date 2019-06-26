@@ -40,9 +40,11 @@ KickEngineNode::KickEngineNode()
     m_bio_ik_solver.set_use_approximate(true);
 }
 
-void KickEngineNode::kick()
+void KickEngineNode::kick(geometry_msgs::Vector3 & ball_position, geometry_msgs::Vector3 & target_position)
 {
-    // TODO implementation
+    m_kick_engine.kick(ball_position, target_position);
+
+    publish_kick();
 }
 
 void KickEngineNode::initialise_ros_subcribtions()
@@ -65,8 +67,6 @@ void KickEngineNode::initialise_ros_publisher()
 
 void KickEngineNode::kick_ball(geometry_msgs::Vector3 & ball_position, geometry_msgs::Vector3 & target_position)
 {
-    // TODO implementation
-
     uint16_t odometry_counter = 1;
     ros::Rate loopRate(10);
 
@@ -92,18 +92,19 @@ void KickEngineNode::kick_ball(geometry_msgs::Vector3 & ball_position, geometry_
     }
 }
 
-void publish_controler_commands(std::vector<std::string> joint_names, std::vector<double> positions)
-{
-    // TODO implementation
-}
-
 void KickEngineNode::publish_kick()
 {
     // TODO implementation
+    auto goal_state = m_kick_engine.get_goal_state();
 
-    publish_controler_commands(m_kick_engine.get_joint_names(), m_kick_engine.get_joint_goals());
+    if (m_node_service.convert_goal_coordinate_from_support_foot_to_trunk_based(m_kick_engine, goal_state))
+    {
+        publish_controler_commands(m_kick_engine.get_joint_names(), m_node_service.get_joint_goals(goal_state));
+    }
+    
 
     // TODO Publish current support state
+    m_ros_publisher_support.publish(m_kick_engine.get_support_foot_state())
 
     if (m_bool_debug)
     {
@@ -112,9 +113,62 @@ void KickEngineNode::publish_kick()
     }
 }
 
+void KickEngineNode::publish_controler_commands(std::vector<std::string> joint_names, std::vector<double> positions)
+{
+    std::vector<double> ones(joint_names.size(), -1.0);
+    publish_controler_commands(joint_names, positions, ones, ones, ones);
+}
+
+void KickEngineNode::publish_controler_commands(std::vector<std::string> joint_names, std::vector<double> positions, std::vector<double> velocities, std::vector<double> accelerations, std::vector<double> max_currents)
+{
+    bitbots_msgs::JointCommand joint_command_msg;
+    
+    joint_command_msg.header.stamp = ros::Time::now();
+    joint_command_msg.joint_names = joint_names;
+    joint_command_msg.positions = positions;
+    joint_command_msg.velocities = velocities;
+    joint_command_msg.accelerations = accelerations;
+    joint_command_msg.max_currents = max_currents;
+
+    m_ros_publisher_controller_command.publish(joint_command_msg);
+
+}
+
 void KickEngineNode::publish_odemetry()
 {
-    // TODO implementation
+    ros::Time current_time = ros::Time::now();
+    geometry_msgs::Quaternion quaternion_msg;
+    tf::Vector3 position;
+
+    m_node_service.get_odemetry_data(m_kick_engine, position, quaternion_msg)
+
+    tf::TransformBroadcaster odometry_broadcaster;
+    geometry_msgs::TransformStamped odometry_transformation;
+
+    odometry_transformation = geometry_msgs::TransformStamped();
+    odometry_transformation.header.stamp = current_time;
+    odometry_transformation.header.frame_id = "odom";
+    odometry_transformation.child_frame_id = "base_link";
+    odometry_transformation.transform.translation.x = position[0];
+    odometry_transformation.transform.translation.y = position[1];
+    odometry_transformation.transform.translation.z = position[2];
+    odometry_transformation.transform.rotation = quaternion_msg;
+    
+    odometry_broadcaster.sendTransform(odometry_transformation);
+
+    // send the odometry also as message
+    nav_msgs::Odometry odometry_nav_msgs;
+
+    odometry_nav_msgs.header.stamp = current_time;
+    odometry_nav_msgs.header.frame_id = "odom";
+    odometry_nav_msgs.child_frame_id = "base_link";
+    odometry_nav_msgs.pose.pose.position.x = position[0];
+    odometry_nav_msgs.pose.pose.position.y = position[1];
+    odometry_nav_msgs.pose.pose.position.z = position[2];
+    odometry_nav_msgs.pose.pose.orientation = quaternion_msg;
+    odometry_nav_msgs.twist.twist = m_kick_engine.get_twist();
+
+    m_ros_publisher_odometry.publish(_odom_msg);
 }
 
 void KickEngineNode::publish_debug()
@@ -132,9 +186,9 @@ void KickEngineNode::robot_state_callback(const humanoid_league_msgs::RobotContr
     m_kick_engine.set_robot_state(msg);
 }
 
-void KickEngineNode::kick_callback()
+void KickEngineNode::kick_callback(const humanoid_league_msgs::Kick action)
 {
-    // TODO implementation
+    kick_ball(action.ball_pos, action.target);
 }
 
 int main(int argc, char **argv)

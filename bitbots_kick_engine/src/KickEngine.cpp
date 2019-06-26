@@ -30,6 +30,24 @@ std::vector<double> KickEngine::get_joint_goals() const
     // TODO: implementation
 }
 
+geometry_msgs::Twist KickEngine::get_twist() const
+{
+    // TODO: implementation
+
+    geometry_msgs::Twist twist;
+    twist.linear.x = m_v3d_current_orders[0] * m_parameter.freq * 2;
+    twist.linear.y = m_v3d_current_orders[1] * m_parameter.freq * 2;
+    twist.angular.z = m_v3d_current_orders[2] * m_parameter.freq * 2;
+
+    return twist;
+}
+
+
+robot_state::RobotStatePtr KickEngine::get_goal_state() const
+{
+    // TODO: implementation
+}
+
 bool KickEngine::has_new_goals() const
 {
     // TODO: implementation

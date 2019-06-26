@@ -5,6 +5,7 @@
 #include "ros/ros.h"
 #include <geometry_msgs/Vector3.h>
 #include "bitbots_ik/BioIKSolver.hpp"
+#include "KickEngineNodeService.hpp"
 
 class KickEngineNode
 {
@@ -12,22 +13,24 @@ public:
     KickEngineNode(/* args */);
     ~KickEngineNode();
 
-    void kick();
 
 private:
     void initialise_ros_subcribtions();
     void initialise_ros_publisher();
+    void kick(geometry_msgs::Vector3 & ball_position, geometry_msgs::Vector3 & target_position);
     void kick_ball(geometry_msgs::Vector3 & ball_position, geometry_msgs::Vector3 & target_position);
     void publish_kick();
     void publish_odemetry();
     void publish_debug();
     void publish_marker();
-    void publish_controler_commands(std::vector<std::string> joint_names, std::vector<double> positions);
+    virtual void publish_controler_commands(std::vector<std::string> joint_names, std::vector<double> positions);
+    virutal void publish_controler_commands(std::vector<std::string> joint_names, std::vector<double> positions, std::vector<double> velocities, std::vector<double> accelerations, std::vector<double> max_currents);
 
     void robot_state_callback(const humanoid_league_msgs::RobotControlState msg);
-    void kick_callback();
+    void kick_callback(const humanoid_league_msgs::Kick action);
 
     KickEngine m_kick_engine;
+    KickEngineNodeService m_node_service;
     uint16_t m_uint_odometry_publish_factor;
 
     ros::NodeHandle m_ros_node_handle;
@@ -42,10 +45,10 @@ private:
     ros::Subscriber m_ros_subsciber_robot_state;
 
     robot_model::RobotModelPtr m_kinematic_model;
-    robot_state::RobotStatePtr m_goal_state;
     robot_state::RobotStatePtr m_current_state;
 
     bitbots_ik::BioIKSolver m_bio_ik_solver;
+
 
     bool m_bool_debug;
 };

@@ -3,6 +3,7 @@
 
 #include <humanoid_league_msgs/RobotControlState.h>
 #include <geometry_msgs/Vector3.h>
+#include <geometry_msgs/Twist.h>
 
 class KickEngine
 {
@@ -20,6 +21,8 @@ public:
 
     std::vector<std::string> get_joint_names() const;
     std::vector<double> get_joint_goals() const;
+    geometry_msgs::Twist get_twist() const;
+    robot_state::RobotStatePtr get_goal_state() const;
     bool has_new_goals() const;
 
 private:
@@ -29,6 +32,9 @@ private:
     void move_feet_to_position(geometry_msgs::Vector3 position);
 
     uint8_t m_robot_state;
+    robot_state::RobotStatePtr m_goal_state;
+    Eigen::Vector3d m_v3d_current_orders;
+    bitbots_quintic_walk::WalkingParameter m_parameter;
 };
 
 #endif
