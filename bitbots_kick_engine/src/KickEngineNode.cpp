@@ -2,49 +2,20 @@
 #include <visualization_msgs/Marker.h>
 #include <nav_msgs/Odometry.h>
 #include <bitbots_msgs/JointCommand.h>
-#include <humanoid_league_msgs/RobotControlState.h>
-#include <std_msgs/Char.h>
-#include <moveit/robot_model_loader/robot_model_loader.h>
 #include <bitbots_kick_engine/WalkingDebug.h>
 
 KickEngineNode::KickEngineNode()
 {
     initialise_ros_subcribtions();
     initialise_ros_publisher();
-
-    robot_model_loader::RobotModelLoader robot_model_loader("/robot_description", false);
-    robot_model_loader.loadKinematicsSolvers(
-        kinematics_plugin_loader::KinematicsPluginLoaderPtr(
-            new kinematics_plugin_loader::KinematicsPluginLoader()));
-
-    m_kinematic_model = robot_model_loader.getModel();
-
-    m_goal_state.reset(new robot_state::RobotState(m_kinematic_model));
-    m_goal_state->setToDefaultValues();
-    // we have to set some good initial position in the goal state, since we are using a gradient
-    // based method. Otherwise, the first step will be not correct
-    std::vector<std::string> names_vec = {"LHipPitch", "LKnee", "LAnklePitch", "RHipPitch", "RKnee", "RAnklePitch"};
-    std::vector<double> pos_vec = {0.7, -1.0, -0.4, -0.7, 1.0, 0.4};
-    for (int i = 0; i < names_vec.size(); i++)
-    {
-        // besides its name, this method only changes a single joint position...
-        m_goal_state->setJointPositions(names_vec[i], &pos_vec[i]);
-    }
-
-    m_current_state.reset(new robot_state::RobotState(m_kinematic_model));
-    m_current_state->setToDefaultValues();
-
-    m_bio_ik_solver = bitbots_ik::BioIKSolver(*m_kinematic_model->getJointModelGroup("All"),
-                                              *m_kinematic_model->getJointModelGroup("LeftLeg"),
-                                              *m_kinematic_model->getJointModelGroup("RightLeg"));
-    m_bio_ik_solver.set_use_approximate(true);
 }
 
 void KickEngineNode::kick(geometry_msgs::Vector3 & ball_position, geometry_msgs::Vector3 & target_position)
 {
-    m_kick_engine.kick(ball_position, target_position);
-
-    publish_kick();
+	if (m_node_service.kick(ball_position, target_position))
+	{
+		publish_kick();
+	}
 }
 
 void KickEngineNode::initialise_ros_subcribtions()
@@ -72,10 +43,7 @@ void KickEngineNode::kick_ball(geometry_msgs::Vector3 & ball_position, geometry_
 
     while (ros::ok())
     {
-        if (m_kick_engine.has_new_goals())
-        {
-            kick();
-        }
+        kick(ball_position, target_position);
 
         if (odometry_counter > m_uint_odometry_publish_factor)
         {
@@ -95,16 +63,14 @@ void KickEngineNode::kick_ball(geometry_msgs::Vector3 & ball_position, geometry_
 void KickEngineNode::publish_kick()
 {
     // TODO implementation
-    auto goal_state = m_kick_engine.get_goal_state();
-
-    if (m_node_service.convert_goal_coordinate_from_support_foot_to_trunk_based(m_kick_engine, goal_state))
+    if (m_node_service.convert_goal_coordinate_from_support_foot_to_trunk_based())
     {
-        publish_controler_commands(m_kick_engine.get_joint_names(), m_node_service.get_joint_goals(goal_state));
+        publish_controler_commands(m_node_service.get_joint_names(), m_node_service.get_joint_goals());
     }
     
 
     // TODO Publish current support state
-    m_ros_publisher_support.publish(m_kick_engine.get_support_foot_state())
+    m_ros_publisher_support.publish(m_node_service.get_support_foot_state())
 
     if (m_bool_debug)
     {
@@ -136,13 +102,12 @@ void KickEngineNode::publish_controler_commands(std::vector<std::string> joint_n
 
 void KickEngineNode::publish_odemetry()
 {
-    ros::Time current_time = ros::Time::now();
-    geometry_msgs::Quaternion quaternion_msg;
     tf::Vector3 position;
+    geometry_msgs::Quaternion quaternion_msg;
+	m_node_service.get_odemetry_data(position, quaternion_msg);
 
-    m_node_service.get_odemetry_data(m_kick_engine, position, quaternion_msg)
+    ros::Time current_time = ros::Time::now();
 
-    tf::TransformBroadcaster odometry_broadcaster;
     geometry_msgs::TransformStamped odometry_transformation;
 
     odometry_transformation = geometry_msgs::TransformStamped();
@@ -154,6 +119,7 @@ void KickEngineNode::publish_odemetry()
     odometry_transformation.transform.translation.z = position[2];
     odometry_transformation.transform.rotation = quaternion_msg;
     
+    tf::TransformBroadcaster odometry_broadcaster;
     odometry_broadcaster.sendTransform(odometry_transformation);
 
     // send the odometry also as message
@@ -183,7 +149,7 @@ void KickEngineNode::publish_marker()
 
 void KickEngineNode::robot_state_callback(const humanoid_league_msgs::RobotControlState msg)
 {
-    m_kick_engine.set_robot_state(msg);
+	m_node_service.set_robot_state(msg);
 }
 
 void KickEngineNode::kick_callback(const humanoid_league_msgs::Kick action)

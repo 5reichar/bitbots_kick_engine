@@ -16,6 +16,7 @@ public:
     KickEngine();
 
     void set_param();
+	void set_goal_state(std::vector<std::string> vec_joint_names, std::vector<double> vec_position);
     void set_robot_state(const humanoid_league_msgs::RobotControlState msg);
     void kick(geometry_msgs::Vector3 & ball_position, geometry_msgs::Vector3 & target_position);
 
@@ -32,6 +33,7 @@ private:
     void move_feet_to_position(geometry_msgs::Vector3 position);
 
     uint8_t m_robot_state;
+	robot_model::RobotModelPtr m_kinematic_model;
     robot_state::RobotStatePtr m_goal_state;
     Eigen::Vector3d m_v3d_current_orders;
     bitbots_quintic_walk::WalkingParameter m_parameter;
