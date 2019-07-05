@@ -6,41 +6,44 @@
 
 KickEngineNode::KickEngineNode()
 {
+	// TODO testing
+	// TODO cleanup
+
 	m_int_marker_id = 1;
+	m_bool_debug = false;
 
     initialise_ros_subcribtions();
     initialise_ros_publisher();
 }
 
-void KickEngineNode::kick(geometry_msgs::Vector3 & ball_position, geometry_msgs::Vector3 & target_position)
-{
-	if (m_node_service.kick(ball_position, target_position))
-	{
-		publish_kick();
-	}
-}
-
 void KickEngineNode::initialise_ros_subcribtions()
 {
-    // TODO implementation
-    m_ros_subsciber_kick = m_ros_node_handle.subscribe("kick", 1, &KickEngineNode::kick_callback, this, ros::TransportHints().tcpNoDelay());
-    m_ros_subsciber_robot_state = m_ros_node_handle.subscribe("robot_state", 1, &KickEngineNode::robot_state_callback, this, ros::TransportHints().tcpNoDelay());
+	// TODO testing
+	// TODO cleanup
+
+	m_ros_subsciber_kick = m_ros_node_handle.subscribe("kick", 1, &KickEngineNode::kick_callback, this, ros::TransportHints().tcpNoDelay());
+	m_ros_subsciber_robot_state = m_ros_node_handle.subscribe("robot_state", 1, &KickEngineNode::robot_state_callback, this, ros::TransportHints().tcpNoDelay());
 }
 
 void KickEngineNode::initialise_ros_publisher()
 {
-    // TODO implementation
-    m_ros_publisher_controller_command = m_ros_node_handle.advertise<bitbots_msgs::JointCommand>("kick_motor_goals", 1);
-    m_ros_publisher_odometry = m_ros_node_handle.advertise<nav_msgs::Odometry>("kick_odometry", 1);
-    m_ros_publisher_support = m_ros_node_handle.advertise<std_msgs::Char>("kick_support_state", 1);
+	// TODO testing
+	// TODO cleanup
 
-    m_ros_publisher_debug = m_ros_node_handle.advertise<bitbots_kick_engine::WalkingDebug>("kick_debug", 1);
-    m_ros_publisher_debug_marker = m_ros_node_handle.advertise<visualization_msgs::Marker>("kick_debug_marker", 1);
+	m_ros_publisher_controller_command = m_ros_node_handle.advertise<bitbots_msgs::JointCommand>("kick_motor_goals", 1);
+	m_ros_publisher_odometry = m_ros_node_handle.advertise<nav_msgs::Odometry>("kick_odometry", 1);
+	m_ros_publisher_support = m_ros_node_handle.advertise<std_msgs::Char>("kick_support_state", 1);
+
+	m_ros_publisher_debug = m_ros_node_handle.advertise<bitbots_kick_engine::WalkingDebug>("kick_debug", 1);
+	m_ros_publisher_debug_marker = m_ros_node_handle.advertise<visualization_msgs::Marker>("kick_debug_marker", 1);
 }
 
 void KickEngineNode::kick_ball(geometry_msgs::Vector3 & ball_position, geometry_msgs::Vector3 & target_position)
 {
-    uint16_t odometry_counter = 1;
+	// TODO testing
+	// TODO cleanup
+
+	uint16_t odometry_counter = 1;
     ros::Rate loopRate(10);
 
     while (ros::ok())
@@ -62,16 +65,27 @@ void KickEngineNode::kick_ball(geometry_msgs::Vector3 & ball_position, geometry_
     }
 }
 
+void KickEngineNode::kick(geometry_msgs::Vector3& ball_position, geometry_msgs::Vector3& target_position)
+{
+	// TODO testing
+	// TODO cleanup
+
+	if (m_node_service.kick(ball_position, target_position))
+	{
+		publish_kick();
+	}
+}
+
 void KickEngineNode::publish_kick()
 {
-    // TODO implementation
+	// TODO testing
+	// TODO cleanup
+
     if (m_node_service.convert_goal_coordinate_from_support_foot_to_trunk_based())
     {
         publish_controler_commands(m_node_service.get_joint_names(), m_node_service.get_joint_goals());
     }
     
-
-    // TODO Publish current support state
     m_ros_publisher_support.publish(m_node_service.get_support_foot_state())
 
     if (m_bool_debug)
@@ -83,13 +97,19 @@ void KickEngineNode::publish_kick()
 
 void KickEngineNode::publish_controler_commands(std::vector<std::string> joint_names, std::vector<double> positions)
 {
-    std::vector<double> ones(joint_names.size(), -1.0);
+	// TODO testing
+	// TODO cleanup
+
+	std::vector<double> ones(joint_names.size(), -1.0);
     publish_controler_commands(joint_names, positions, ones, ones, ones);
 }
 
 void KickEngineNode::publish_controler_commands(std::vector<std::string> joint_names, std::vector<double> positions, std::vector<double> velocities, std::vector<double> accelerations, std::vector<double> max_currents)
 {
-    bitbots_msgs::JointCommand joint_command_msg;
+	// TODO testing
+	// TODO cleanup
+
+	bitbots_msgs::JointCommand joint_command_msg;
     
     joint_command_msg.header.stamp = ros::Time::now();
     joint_command_msg.joint_names = joint_names;
@@ -104,18 +124,23 @@ void KickEngineNode::publish_controler_commands(std::vector<std::string> joint_n
 
 void KickEngineNode::publish_odemetry()
 {
-    tf::Vector3 position;
+	// TODO testing
+	// TODO cleanup
+
+	tf::Vector3 position;
     geometry_msgs::Quaternion quaternion_msg;
 	m_node_service.get_odemetry_data(position, quaternion_msg);
 
     ros::Time current_time = ros::Time::now();
+	std::string frame_id = "odom";
+	std::string child_frame_id = "base_link";
 
-    geometry_msgs::TransformStamped odometry_transformation;
+	// send the odometry as transformation
+    geometry_msgs::TransformStamped odometry_transformation() = geometry_msgs::TransformStamped();
 
-    odometry_transformation = geometry_msgs::TransformStamped();
     odometry_transformation.header.stamp = current_time;
-    odometry_transformation.header.frame_id = "odom";
-    odometry_transformation.child_frame_id = "base_link";
+    odometry_transformation.header.frame_id = frame_id;
+    odometry_transformation.child_frame_id = child_frame_id;
     odometry_transformation.transform.translation.x = position[0];
     odometry_transformation.transform.translation.y = position[1];
     odometry_transformation.transform.translation.z = position[2];
@@ -128,8 +153,8 @@ void KickEngineNode::publish_odemetry()
     nav_msgs::Odometry odometry_nav_msgs;
 
     odometry_nav_msgs.header.stamp = current_time;
-    odometry_nav_msgs.header.frame_id = "odom";
-    odometry_nav_msgs.child_frame_id = "base_link";
+    odometry_nav_msgs.header.frame_id = frame_id;
+    odometry_nav_msgs.child_frame_id = child_frame_id;
     odometry_nav_msgs.pose.pose.position.x = position[0];
     odometry_nav_msgs.pose.pose.position.y = position[1];
     odometry_nav_msgs.pose.pose.position.z = position[2];
@@ -139,14 +164,13 @@ void KickEngineNode::publish_odemetry()
     m_ros_publisher_odometry.publish(_odom_msg);
 }
 
+/*
+	This method publishes various debug / visualization information.
+*/
 void KickEngineNode::publish_debug()
 {
-    // TODO implementation
-
-	/*
-	This method publishes various debug / visualization information.
-	*/
-
+    // TODO testing
+	// TODO cleanup
 
 	// define frames
 	std::string frame_base_link = "base_link";
@@ -156,7 +180,6 @@ void KickEngineNode::publish_debug()
 	std_msgs::ColorRGBA left_feet_color = get_color_left_feet();
 	std_msgs::ColorRGBA right_feet_color = get_color_right_feet();
 	std_msgs::ColorRGBA support_feet_color = get_color_support_feet();
-
 
 	bitbots_quintic_walk::WalkingDebug msg;
 
@@ -182,7 +205,6 @@ void KickEngineNode::publish_debug()
 
 	// goals
 	m_node_service.get_feet_goals(msg.left_foot_goal, msg.right_foot_goal, msg.fly_foot_goal, msg.support_foot_goal);
-
 	publish_marker("engine_left_goal", frame_base_link, msg.left_foot_goal, left_feet_color);
 	publish_marker("engine_right_goal", frame_base_link, msg.right_foot_goal, right_feet_color);
 
@@ -205,10 +227,13 @@ void KickEngineNode::publish_debug()
 
 void KickEngineNode::publish_marker(std::string name_space, std::string frame, geometry_msgs::Pose pose, std_msgs::ColorRGBA color)
 {
+	// TODO testing
+	// TODO cleanup
+
 	visualization_msgs::Marker marker_msg;
+
 	marker_msg.header.stamp = ros::Time::now();
 	marker_msg.header.frame_id = frame;
-
 	marker_msg.type = marker_msg.ARROW;
 	marker_msg.ns = name_space;
 	marker_msg.action = marker_msg.ADD;
@@ -223,8 +248,8 @@ void KickEngineNode::publish_marker(std::string name_space, std::string frame, g
 
 void KickEngineNode::publish_markers()
 {
-    // TODO implementation
-
+    // TODO testing
+	// TODO cleanup
 
 	//publish markers
 	visualization_msgs::Marker marker_msg;
@@ -260,23 +285,51 @@ void KickEngineNode::publish_markers()
 	m_int_marker_id++;
 }
 
+void KickEngineNode::robot_state_callback(const humanoid_league_msgs::RobotControlState msg)
+{
+	// TODO testing
+	// TODO cleanup
+
+	m_node_service.set_robot_state(msg);
+}
+
+void KickEngineNode::kick_callback(const humanoid_league_msgs::Kick action)
+{
+	// TODO testing
+	// TODO cleanup
+
+	kick_ball(action.ball_pos, action.target);
+}
+
 geometry_msgs::Vector3 KickEngineNode::get_step_scale()
 {
+	// TODO testing
+	// TODO cleanup
+
 	return get_scale(0.20, 0.10, 0.01);
 }
 
 geometry_msgs::Vector3 KickEngineNode::get_step_center_scale()
 {
+	// TODO testing
+	// TODO cleanup
+
 	return get_scale(0.01, 0.01, 0.01);
 }
 
 geometry_msgs::Vector3 KickEngineNode::get_default_scale()
 {
+	// TODO testing
+	// TODO cleanup
+
 	return get_scale(0.01, 0.003, 0.003;);
 }
 
 geometry_msgs::Vector3 KickEngineNode::get_scale(float x, float y, float z)
 {
+	// TODO testing
+	// TODO cleanup
+
 	geometry_msgs::Vector3 scale;
 
 	scale.x = x;
@@ -288,21 +341,33 @@ geometry_msgs::Vector3 KickEngineNode::get_scale(float x, float y, float z)
 
 std_msgs::ColorRGBA KickEngineNode::get_color_left_feet()
 {
+	// TODO testing
+	// TODO cleanup
+
 	return get_color(0, 1, 0, 1);
 }
 
 std_msgs::ColorRGBA KickEngineNode::get_color_right_feet()
 {
+	// TODO testing
+	// TODO cleanup
+
 	return get_color(1, 0, 0, 1);
 }
 
 std_msgs::ColorRGBA KickEngineNode::get_color_fly_feet()
 {
+	// TODO testing
+	// TODO cleanup
+
 	return get_color(0, 0, 1, 1);
 }
 
 std_msgs::ColorRGBA KickEngineNode::get_color_support_feet()
 {
+	// TODO testing
+	// TODO cleanup
+
 	// define colors based on current support state
 	std_msgs::ColorRGBA support_feet_color;
 
@@ -324,16 +389,25 @@ std_msgs::ColorRGBA KickEngineNode::get_color_support_feet()
 
 std_msgs::ColorRGBA KickEngineNode::get_color_last_step()
 {
+	// TODO testing
+	// TODO cleanup
+
 	return get_color(0, 0, 0, 1);
 }
 
 std_msgs::ColorRGBA KickEngineNode::get_color_next_step()
 {
+	// TODO testing
+	// TODO cleanup
+
 	return get_color(1, 1, 1, 0.5);
 }
 
 std_msgs::ColorRGBA KickEngineNode::get_color(float red, float green, float blue, float alpha)
 {
+	// TODO testing
+	// TODO cleanup
+
 	std_msgs::ColorRGBA color;
 
 	color.r = red;
@@ -344,16 +418,9 @@ std_msgs::ColorRGBA KickEngineNode::get_color(float red, float green, float blue
 	return color;
 }
 
-void KickEngineNode::robot_state_callback(const humanoid_league_msgs::RobotControlState msg)
-{
-	m_node_service.set_robot_state(msg);
-}
-
-void KickEngineNode::kick_callback(const humanoid_league_msgs::Kick action)
-{
-    kick_ball(action.ball_pos, action.target);
-}
-
 int main(int argc, char **argv)
 {
+	// TODO implementation
+	// TODO testing
+	// TODO cleanup
 }

@@ -8,6 +8,7 @@
 
 class KickEngineNode
 {
+	// TODO cleanup
 public:
     KickEngineNode(/* args */);
 
@@ -33,6 +34,7 @@ private:
 	geometry_msgs::Vector3 get_step_center_scale();
 	geometry_msgs::Vector3 get_default_scale();
 	geometry_msgs::Vector3 get_scale(float x, float y, float z);
+
 	std_msgs::ColorRGBA get_color_left_feet();
 	std_msgs::ColorRGBA get_color_right_feet();
 	std_msgs::ColorRGBA get_color_fly_feet();
@@ -41,9 +43,11 @@ private:
 	std_msgs::ColorRGBA get_color_next_step();
 	std_msgs::ColorRGBA get_color(float red, float green, float blue, float alpha);
 
-    KickEngineNodeService m_node_service;
-    uint16_t m_uint_odometry_publish_factor;
+	bool m_bool_debug;
 	int32_t m_int_marker_id;
+	uint16_t m_uint_odometry_publish_factor;
+
+	KickEngineNodeService m_node_service;
 
     ros::NodeHandle m_ros_node_handle;
 
@@ -55,8 +59,6 @@ private:
 
     ros::Subscriber m_ros_subsciber_kick;
     ros::Subscriber m_ros_subsciber_robot_state;
-
-    bool m_bool_debug;
 };
 
 #endif
