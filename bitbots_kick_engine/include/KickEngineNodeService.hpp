@@ -37,6 +37,9 @@ public:
 	void get_feet_position_offset(geometry_msgs::Vector3& left_foot_position_offset_out, geometry_msgs::Vector3& right_foot_position_offset_out, geometry_msgs::Vector3& fly_foot_position_offset_out, geometry_msgs::Vector3& support_foot_position_offset_out);
 	geometry_msgs::Pose get_trunk_result();
 
+	void get_feet_position(robot_state::RobotStatePtr& state, geometry_msgs::Pose& left_foot_out, geometry_msgs::Pose& right_foot_out, geometry_msgs::Pose& fly_foot_out, geometry_msgs::Pose& support_foot_out);
+	void get_feet_offset(robot_state::RobotStatePtr& state, geometry_msgs::Vector3& left_foot_offset_out, geometry_msgs::Vector3& right_foot_offset_out, geometry_msgs::Vector3& fly_foot_offset_out, geometry_msgs::Vector3& support_foot_offset_out);
+
 private:
 	Eigen::Vector3d get_last_footstep();
 	Eigen::Vector3d get_next_footstep();

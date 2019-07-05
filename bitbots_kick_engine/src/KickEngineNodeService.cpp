@@ -4,7 +4,8 @@
 KickEngineNodeService::KickEngineNodeService()
 {
 	//TODO: Implementation
-
+	//TODO: testing
+	//TODO: cleanup
 
 	// we have to set some good initial position in the goal state, since we are using a gradient
 	// based method. Otherwise, the first step will be not correct
@@ -23,6 +24,10 @@ KickEngineNodeService::KickEngineNodeService()
 
 bool KickEngineNodeService::kick(geometry_msgs::Vector3& ball_position, geometry_msgs::Vector3& target_position)
 {
+	//TODO: Implementation
+	//TODO: testing
+	//TODO: cleanup
+
 	bool success = false;
 
 	if (m_kick_engine.has_new_goals())
@@ -37,28 +42,48 @@ bool KickEngineNodeService::kick(geometry_msgs::Vector3& ball_position, geometry
 bool KickEngineNodeService::is_left_foot_support()
 {
 	//TODO: Implementation
+	//TODO: testing
+	//TODO: cleanup
+
+	_walkEngine.isLeftSupport();
+
 	return false;
 }
 
 bool KickEngineNodeService::are_booth_feet_support()
 {
 	//TODO: Implementation
+	//TODO: testing
+	//TODO: cleanup
+
+	_walkEngine.isDoubleSupport();
+
 	return false;
 }
 
 geometry_msgs::Pose KickEngineNodeService::get_last_footstep_pose()
 {
+	//TODO: Implementation
+	//TODO: testing
+	//TODO: cleanup
+
 	return get_step_pose(get_last_footstep());
 }
 
 geometry_msgs::Pose KickEngineNodeService::get_next_footstep_pose()
 {
+	//TODO: Implementation
+	//TODO: testing
+	//TODO: cleanup
+
 	return get_step_pose(get_next_footstep());
 }
 
 geometry_msgs::Pose KickEngineNodeService::get_engine_fly_foot_goal_pose()
 {
 	//TODO: Implementation
+	//TODO: testing
+	//TODO: cleanup
 
 	return get_pose(_footPos, _footAxis);
 }
@@ -66,30 +91,44 @@ geometry_msgs::Pose KickEngineNodeService::get_engine_fly_foot_goal_pose()
 geometry_msgs::Pose KickEngineNodeService::get_engine_trunk_goal_pose()
 {
 	//TODO: Implementation
+	//TODO: testing
+	//TODO: cleanup
 
 	return get_pose(_trunkPos, _trunkAxis);
 }
 
 std_msgs::Char KickEngineNodeService::get_support_foot_sole()
 {
+	//TODO: Implementation
+	//TODO: testing
+	//TODO: cleanup
+
 	return is_left_foot_support() ? "l_sole" : "r_sole";
 }
 
 std::vector<double> KickEngineNodeService::get_joint_goals()
 {
-    //TODO: Implementation
+	//TODO: Implementation
+	//TODO: testing
+	//TODO: cleanup
+
 	return std::vector<double>();
 }
 
 std::vector<std::string> KickEngineNodeService::get_joint_names()
 {
 	//TODO: Implementation
+	//TODO: testing
+	//TODO: cleanup
+
 	return std::vector<std::string>();
 }
 
 std_msgs::Char KickEngineNodeService::get_support_foot_state()
 {
 	//TODO: Implementation
+	//TODO: testing
+	//TODO: cleanup
 
 	std_msgs::Char support_foot_state;
 
@@ -109,6 +148,9 @@ std_msgs::Char KickEngineNodeService::get_support_foot_state()
 bool KickEngineNodeService::convert_goal_coordinate_from_support_foot_to_trunk_based()
 {
 	//TODO: Implementation
+	//TODO: testing
+	//TODO: cleanup
+
 
 	 // read the cartesian positions and orientations for trunk and fly foot
 	m_kick_engine.computeCartesianPosition(_trunkPos, _trunkAxis, _footPos, _footAxis, _isLeftSupport);
@@ -130,37 +172,52 @@ bool KickEngineNodeService::convert_goal_coordinate_from_support_foot_to_trunk_b
 
 	// call ik solver
 	bool success = m_bio_ik_solver.solve(trunk_to_support_foot_goal, trunk_to_flying_foot_goal,
-		_walkEngine.getFootstep().isLeftSupport(), _goal_state);
+		is_left_foot_support(), _goal_state);
 
 	return success;
 }
 
 void KickEngineNodeService::get_odemetry_data(tf::Vector3 & position_out, geometry_msgs::Quaternion & quaternion_msg_out)
 {
-    //TODO: Implementation
+	//TODO: Implementation
+	//TODO: testing
+	//TODO: cleanup
+
 }
 
 double KickEngineNodeService::get_phase_time()
 {
 	//TODO: Implementation
+	//TODO: testing
+	//TODO: cleanup
+
 	return _walkEngine.getPhase();
 }
 
 double KickEngineNodeService::get_trajectory_time()
 {
 	//TODO: Implementation
+	//TODO: testing
+	//TODO: cleanup
+
 	return _walkEngine.getTrajsTime();
 }
 
 std_msgs::String KickEngineNodeService::get_engine_state()
 {
 	//TODO: Implementation
+	//TODO: testing
+	//TODO: cleanup
+
 	return _walkEngine.getState();
 }
 
 void KickEngineNodeService::get_feet_goals(geometry_msgs::Pose& left_foot_goal_out, geometry_msgs::Pose& right_foot_goal_out, geometry_msgs::Pose& fly_foot_goal_out, geometry_msgs::Pose& support_foot_goal_out)
 {
 	//TODO: Implementation
+	//TODO: testing
+	//TODO: cleanup
+
 	geometry_msgs::Pose pose_support_foot_goal;
 	tf::pointTFToMsg(trunk_to_support_foot_goal.getOrigin(), pose_support_foot_goal.position);
 	tf::quaternionTFToMsg(trunk_to_support_foot_goal.getRotation(), pose_support_foot_goal.orientation);
@@ -181,108 +238,106 @@ void KickEngineNodeService::get_feet_goals(geometry_msgs::Pose& left_foot_goal_o
 
 void KickEngineNodeService::get_feet_ik_results(geometry_msgs::Pose& left_foot_ik_result_out, geometry_msgs::Pose& right_foot_ik_result_out, geometry_msgs::Pose& fly_foot_ik_result_out, geometry_msgs::Pose& support_foot_ik_result_out)
 {
-	//TODO: Implementation
-	geometry_msgs::Pose pose_left_result;
-	tf::poseEigenToMsg(_goal_state->getGlobalLinkTransform("l_sole"), pose_left_result);
-	left_foot_ik_result_out = pose_left_result;
-	geometry_msgs::Pose pose_right_result;
-	tf::poseEigenToMsg(_goal_state->getGlobalLinkTransform("r_sole"), pose_right_result);
-	right_foot_ik_result_out = pose_right_result;
-	if (is_left_support) {
-		support_foot_ik_result_out = pose_left_result;
-		fly_foot_ik_result_out = pose_right_result;
+	//TODO: testing
+	//TODO: cleanup
+
+	get_feet_position(_goal_state, left_foot_ik_result_out, right_foot_ik_result_out, fly_foot_ik_result_out, support_foot_ik_result_out);
+}
+
+void KickEngineNodeService::get_feet_position(geometry_msgs::Pose& left_foot_position_out, geometry_msgs::Pose& right_foot_position_out, geometry_msgs::Pose& fly_foot_position_out, geometry_msgs::Pose& support_foot_position_out)
+{
+	//TODO: testing
+	//TODO: cleanup
+
+	get_feet_position(_current_state, left_foot_position_out, right_foot_position_out, fly_foot_position_out, support_foot_position_out);
+}
+
+void KickEngineNodeService::get_feet_position(robot_state::RobotStatePtr& state, geometry_msgs::Pose& left_foot_out, geometry_msgs::Pose& right_foot_out, geometry_msgs::Pose& fly_foot_out, geometry_msgs::Pose& support_foot_out)
+{
+	//TODO: testing
+	//TODO: cleanup
+
+	geometry_msgs::Pose left_foot;
+	tf::poseEigenToMsg(state->getGlobalLinkTransform("l_sole"), left_foot);
+	left_foot_out = left_foot;
+
+	geometry_msgs::Pose right_foot;
+	tf::poseEigenToMsg(state->getGlobalLinkTransform("r_sole"), right_foot);
+	right_foot_out = right_foot;
+
+	if (is_left_foot_support())
+	{
+		support_foot_out = left_foot;
+		fly_foot_out = right_foot;
 	}
-	else {
-		support_foot_ik_result_out = pose_right_result;
-		fly_foot_ik_result_out = pose_left_result;
+	else
+	{
+		support_foot_out = right_foot;
+		fly_foot_out = left_foot;
 	}
 }
 
 void KickEngineNodeService::get_feet_ik_offset(geometry_msgs::Vector3& left_foot_ik_offset_out, geometry_msgs::Vector3& right_foot_ik_offset_out, geometry_msgs::Vector3& fly_foot_ik_offset_out, geometry_msgs::Vector3& support_foot_ik_offset_out)
 {
-	//TODO: Implementation
-	tf::Vector3 support_off;
-	tf::Vector3 fly_off;
-	tf::Vector3 tf_vec_left;
-	tf::Vector3 tf_vec_right;
-	tf::vectorEigenToTF(_goal_state->getGlobalLinkTransform("l_sole").translation(), tf_vec_left);
-	tf::vectorEigenToTF(_goal_state->getGlobalLinkTransform("r_sole").translation(), tf_vec_right);
-	geometry_msgs::Vector3 vect_msg;
-	if (is_left_support) {
-		support_off = trunk_to_support_foot_goal.getOrigin() - tf_vec_left;
-		fly_off = trunk_to_flying_foot_goal.getOrigin() - tf_vec_right;
-		tf::vector3TFToMsg(support_off, vect_msg);
-		left_foot_ik_offset_out = vect_msg;
-		tf::vector3TFToMsg(fly_off, vect_msg);
-		right_foot_ik_offset_out = vect_msg;
-	}
-	else {
-		support_off = trunk_to_support_foot_goal.getOrigin() - tf_vec_right;
-		fly_off = trunk_to_flying_foot_goal.getOrigin() - tf_vec_left;
-		tf::vector3TFToMsg(fly_off, vect_msg);
-		left_foot_ik_offset_out = vect_msg;
-		tf::vector3TFToMsg(support_off, vect_msg);
-		right_foot_ik_offset_out = vect_msg;
-	}
-	tf::vector3TFToMsg(support_off, vect_msg);
-	support_foot_ik_offset_out = vect_msg;
-	tf::vector3TFToMsg(fly_off, vect_msg);
-	fly_foot_ik_offset_out = vect_msg;
-}
+	//TODO: testing
+	//TODO: cleanup
 
-void KickEngineNodeService::get_feet_position(geometry_msgs::Pose& left_foot_position_out, geometry_msgs::Pose& right_foot_position_out, geometry_msgs::Pose& fly_foot_position_out, geometry_msgs::Pose& support_foot_position_out)
-{
-	//TODO: Implementation
-	geometry_msgs::Pose pose_left_actual;
-	tf::poseEigenToMsg(_current_state->getGlobalLinkTransform("l_sole"), pose_left_actual);
-	left_foot_position_out = pose_left_actual;
-	geometry_msgs::Pose pose_right_actual;
-	tf::poseEigenToMsg(_current_state->getGlobalLinkTransform("r_sole"), pose_right_actual);
-	right_foot_position_out = pose_right_actual;
-	if (is_left_support) {
-		support_foot_position_out = pose_left_actual;
-		fly_foot_position_out = pose_right_actual;
-	}
-	else {
-		support_foot_position_out = pose_right_actual;
-		fly_foot_position_out = pose_left_actual;
-	}
+	get_feet_offset(_goal_state, left_foot_ik_offset_out, right_foot_ik_offset_out, fly_foot_ik_offset_out, support_foot_ik_offset_out);
 }
 
 void KickEngineNodeService::get_feet_position_offset(geometry_msgs::Vector3& left_foot_position_offset_out, geometry_msgs::Vector3& right_foot_position_offset_out, geometry_msgs::Vector3& fly_foot_position_offset_out, geometry_msgs::Vector3& support_foot_position_offset_out)
 {
+	//TODO: testing
+	//TODO: cleanup
+
+	get_feet_offset(_current_state, left_foot_position_offset_out, right_foot_position_offset_out, fly_foot_position_offset_out, support_foot_position_offset_out);
+}
+
+void KickEngineNodeService::get_feet_offset(robot_state::RobotStatePtr& state, geometry_msgs::Vector3& left_foot_offset_out, geometry_msgs::Vector3& right_foot_offset_out, geometry_msgs::Vector3& fly_foot_offset_out, geometry_msgs::Vector3& support_foot_offset_out)
+{
 	//TODO: Implementation
-	tf::Vector3 support_off;
+	//TODO: testing
+	//TODO: cleanup
+
+	tf::Vector3 left_foot;
+	tf::vectorEigenToTF(state->getGlobalLinkTransform("l_sole").translation(), left_foot);
+
+	tf::Vector3 right_foot;
+	tf::vectorEigenToTF(state->getGlobalLinkTransform("r_sole").translation(), right_foot);
+
 	tf::Vector3 fly_off;
-	tf::Vector3 tf_vec_left;
-	tf::Vector3 tf_vec_right;
-	tf::vectorEigenToTF(_current_state->getGlobalLinkTransform("l_sole").translation(), tf_vec_left);
-	tf::vectorEigenToTF(_current_state->getGlobalLinkTransform("r_sole").translation(), tf_vec_right);
-	if (is_left_support) {
+	tf::Vector3 support_off;
+	if (is_left_foot_support())
+	{
 		support_off = trunk_to_support_foot_goal.getOrigin() - tf_vec_left;
 		fly_off = trunk_to_flying_foot_goal.getOrigin() - tf_vec_right;
 		tf::vector3TFToMsg(support_off, vect_msg);
-		left_foot_position_offset_out = vect_msg;
+		left_foot_offset_out = vect_msg;
 		tf::vector3TFToMsg(fly_off, vect_msg);
-		right_foot_position_offset_out = vect_msg;
+		right_foot_offset_out = vect_msg;
 	}
-	else {
+	else
+	{
 		support_off = trunk_to_support_foot_goal.getOrigin() - tf_vec_right;
 		fly_off = trunk_to_flying_foot_goal.getOrigin() - tf_vec_left;
 		tf::vector3TFToMsg(fly_off, vect_msg);
-		left_foot_position_offset_out = vect_msg;
+		left_foot_offset_out = vect_msg;
 		tf::vector3TFToMsg(support_off, vect_msg);
-		right_foot_position_offset_out = vect_msg;
+		right_foot_offset_out = vect_msg;
 	}
+
 	tf::vector3TFToMsg(support_off, vect_msg);
-	support_foot_position_offset_out = vect_msg;
+	support_foot_offset_out = vect_msg;
 	tf::vector3TFToMsg(fly_off, vect_msg);
-	fly_foot_position_offset_out = vect_msg;
+	fly_foot_offset_out = vect_msg;
 }
 
 geometry_msgs::Pose KickEngineNodeService::get_trunk_result()
 {
 	//TODO: Implementation
+	//TODO: testing
+	//TODO: cleanup
+
 	geometry_msgs::Pose pose;
 	geometry_msgs::Point point;
 	point.x = 0;
@@ -295,6 +350,10 @@ geometry_msgs::Pose KickEngineNodeService::get_trunk_result()
 
 geometry_msgs::Pose KickEngineNodeService::get_pose(Eigen::Vector3d position, Eigen::Vector3d axis)
 {
+	//TODO: Implementation
+	//TODO: testing
+	//TODO: cleanup
+
 	geometry_msgs::Pose pose;
 
 	tf::pointEigenToMsg(position, pose.position);
@@ -305,6 +364,10 @@ geometry_msgs::Pose KickEngineNodeService::get_pose(Eigen::Vector3d position, Ei
 
 geometry_msgs::Pose KickEngineNodeService::get_step_pose(Eigen::Vector3d step_position)
 {
+	//TODO: Implementation
+	//TODO: testing
+	//TODO: cleanup
+
 	geometry_msgs::Pose pose;
 
 	pose.position.x = step_position[0];
@@ -319,6 +382,9 @@ geometry_msgs::Pose KickEngineNodeService::get_step_pose(Eigen::Vector3d step_po
 Eigen::Vector3d KickEngineNodeService::get_last_footstep()
 {
 	//TODO: Implementation
+	//TODO: testing
+	//TODO: cleanup
+
 	//return _walkEngine.getFootstep().getLast();
 	return Eigen::Vector3d();
 }
@@ -326,6 +392,9 @@ Eigen::Vector3d KickEngineNodeService::get_last_footstep()
 Eigen::Vector3d KickEngineNodeService::get_next_footstep()
 {
 	//TODO: Implementation
+	//TODO: testing
+	//TODO: cleanup
+
 	//return _walkEngine.getFootstep().getNext();
 	return Eigen::Vector3d();
 }
