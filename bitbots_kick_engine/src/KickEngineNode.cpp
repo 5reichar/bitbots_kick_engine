@@ -83,7 +83,10 @@ void KickEngineNode::publish_kick()
 
     if (m_node_service.convert_goal_coordinate_from_support_foot_to_trunk_based())
     {
-        publish_controler_commands(m_node_service.get_joint_names(), m_node_service.get_joint_goals());
+		std::vector<double> joint_goals;
+		std::vector<std::string> joint_names;
+		m_node_service.get_goal_feet_joints(joint_goals, joint_names);
+        publish_controler_commands(joint_goals, joint_names);
     }
     
     m_ros_publisher_support.publish(m_node_service.get_support_foot_state())
