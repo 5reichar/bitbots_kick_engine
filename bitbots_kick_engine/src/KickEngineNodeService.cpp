@@ -43,6 +43,14 @@ void KickEngineNodeService::set_debug(bool debug)
 	}
 }
 
+void KickEngineNodeService::set_robot_state(const humanoid_league_msgs::RobotControlState msg)
+{
+	//TODO: testing
+	//TODO: cleanup
+
+	m_kick_engine.set_robot_state(msg.state);
+}
+
 bool KickEngineNodeService::kick(geometry_msgs::Vector3& ball_position, geometry_msgs::Vector3& target_position)
 {
 	//TODO: testing
@@ -369,6 +377,103 @@ void KickEngineNodeService::get_feet_offset(Eigen::Isometry3d(KickEngine::* get_
 	support_foot_offset_out = vect_msg;
 	tf::vector3TFToMsg(fly_off, vect_msg);
 	fly_foot_offset_out = vect_msg;
+}
+
+void KickEngineNodeService::reconfigure_parameter(bitbots_kick_engine::bitbots_quintic_walk_paramsConfig& config, uint32_t level)
+{
+	//TODO: implemention
+	//TODO: testing
+	//TODO: cleanup
+
+	kick_engine_parameter parameter;
+
+	parameter.freq = config.freq;
+	parameter.doubleSupportRatio = config.doubleSupportRatio;
+	parameter.footDistance = config.footDistance;
+	parameter.footRise = config.footRise;
+	parameter.footZPause = config.footZPause;
+	parameter.footPutDownZOffset = config.footPutDownZOffset;
+	parameter.footPutDownPhase = config.footPutDownPhase;
+	parameter.footApexPhase = config.footApexPhase;
+	parameter.footOvershootRatio = config.footOvershootRatio;
+	parameter.footOvershootPhase = config.footOvershootPhase;
+	parameter.trunkHeight = config.trunkHeight;
+	parameter.trunkPitch = config.trunkPitch;
+	parameter.trunkPhase = config.trunkPhase;
+	parameter.trunkXOffset = config.trunkXOffset;
+	parameter.trunkYOffset = config.trunkYOffset;
+	parameter.trunkSwing = config.trunkSwing;
+	parameter.trunkPause = config.trunkPause;
+	parameter.trunkXOffsetPCoefForward = config.trunkXOffsetPCoefForward;
+	parameter.trunkXOffsetPCoefTurn = config.trunkXOffsetPCoefTurn;
+	parameter.trunkPitchPCoefForward = config.trunkPitchPCoefForward;
+	parameter.trunkPitchPCoefTurn = config.trunkPitchPCoefTurn;
+	parameter.kickLength = config.kickLength;
+	parameter.kickPhase = config.kickPhase;
+	parameter.footPutDownRollOffset = config.footPutDownRollOffset;
+	parameter.kickVel = config.kickVel;
+
+	parameter.engineFrequency = config.engineFreq;
+
+	parameter.max_step[0] = config.maxStepX;
+	parameter.max_step[1] = config.maxStepY;
+	parameter.max_step[2] = config.maxStepZ;
+	parameter.max_step_xy = config.maxStepXY;
+
+	parameter.imuActive = config.imuActive;
+	parameter.imu_pitch_threshold = config.imuPitchThreshold;
+	parameter.imu_roll_threshold = config.imuRollThreshold;
+
+	parameter.phaseResetActive = config.phaseResetActive;
+	parameter.groundMinPressure = config.groundMinPressure;
+	parameter.copStopActive = config.copStopActive;
+	parameter.ioPressureThreshold = config.ioPressureThreshold;
+	parameter.fbPressureThreshold = config.fbPressureThreshold;
+	parameter.pauseDuration = config.pauseDuration;
+
+	m_kick_engine.set_parameter(parameter);
+	m_bio_ik_solver.set_bioIK_timeout(config.bioIKTime);
+}
+
+double KickEngineNodeService::get_engine_frequence() const
+{
+	return m_kick_engine.get_engine_frequence();
+}
+
+bitbots_quintic_walk::WalkingDebug KickEngineNodeService::create_debug_message()
+{
+	bitbots_quintic_walk::WalkingDebug msg;
+
+	msg.is_left_support = is_left_foot_support();
+	msg.is_double_support = are_booth_feet_support();
+	msg.header.stamp = ros::Time::now();
+
+	// times
+	msg.phase_time = get_engine_phase();
+	msg.traj_time = get_engine_trajectory_time();
+
+	msg.engine_state.data = get_engine_state();
+
+	// engine output
+	msg.engine_fly_goal = get_engine_fly_foot_goal_pose();
+	msg.engine_trunk_goal = get_engine_trunk_goal_pose();
+
+	// goals
+	get_feet_goals(msg.left_foot_goal, msg.right_foot_goal, msg.fly_foot_goal, msg.support_foot_goal);
+
+	// IK results
+	get_feet_ik_results(msg.left_foot_ik_result, msg.right_foot_ik_result, msg.fly_foot_ik_result, support_foot_ik_result);
+
+	// IK offsets
+	get_feet_ik_offset(msg.left_foot_ik_offset, msg.right_foot_ik_offset, msg.fly_foot_ik_offset, msg.support_foot_ik_offset);
+
+	// actual positions
+	get_feet_position(msg.left_foot_position, msg.right_foot_position, msg.fly_foot_position, msg.support_foot_position);
+
+	// actual offsets
+	get_feet_position_offset(msg.left_foot_actual_offset, msg.right_foot_actual_offset, msg.fly_foot_actual_offset, msg.support_foot_actual_offset);
+
+	return msg;
 }
 
 geometry_msgs::Pose KickEngineNodeService::get_trunk_result()

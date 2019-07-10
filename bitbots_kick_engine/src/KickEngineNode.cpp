@@ -44,7 +44,7 @@ void KickEngineNode::kick_ball(geometry_msgs::Vector3 & ball_position, geometry_
 	// TODO cleanup
 
 	uint16_t odometry_counter = 1;
-    ros::Rate loopRate(10);
+    ros::Rate loopRate(m_node_service.get_engine_frequence());
 
     while (ros::ok())
     {
@@ -184,46 +184,22 @@ void KickEngineNode::publish_debug()
 	std_msgs::ColorRGBA right_feet_color = get_color_right_feet();
 	std_msgs::ColorRGBA support_feet_color = get_color_support_feet();
 
-	bitbots_quintic_walk::WalkingDebug msg;
-
-	msg.is_left_support = m_node_service.is_left_foot_support();
-	msg.is_double_support = m_node_service.are_booth_feet_support();
-	msg.header.stamp = ros::Time::now();
-
-	// times
-	msg.phase_time = m_node_service.get_engine_phase();
-	msg.traj_time = m_node_service.get_engine_trajectory_time();
-
-	msg.engine_state.data = m_node_service.get_engine_state();
+	auto msg = m_node_service.create_debug_message();
 
 	// engine output
-	msg.engine_fly_goal = m_node_service.get_engine_fly_foot_goal_pose();
 	publish_marker("engine_fly_goal", current_support_frame, msg.engine_fly_goal, get_color_fly_feet());
-
-	msg.engine_trunk_goal = m_node_service.get_engine_trunk_goal_pose();
 	publish_marker("engine_trunk_goal", current_support_frame, msg.engine_trunk_goal, support_feet_color);
 
 	// resulting trunk pose
 	publish_marker("trunk_result", frame_base_link, m_node_service.get_trunk_result(), support_feet_color);
 
 	// goals
-	m_node_service.get_feet_goals(msg.left_foot_goal, msg.right_foot_goal, msg.fly_foot_goal, msg.support_foot_goal);
 	publish_marker("engine_left_goal", frame_base_link, msg.left_foot_goal, left_feet_color);
 	publish_marker("engine_right_goal", frame_base_link, msg.right_foot_goal, right_feet_color);
 
 	// IK results
-	m_node_service.get_feet_ik_results(msg.left_foot_ik_result, msg.right_foot_ik_result, msg.fly_foot_ik_result, support_foot_ik_result);
 	publish_marker("ik_left", frame_base_link, msg.left_foot_ik_result, left_feet_color);
 	publish_marker("ik_right", frame_base_link, msg.right_foot_ik_result, right_feet_color);
-
-	// IK offsets
-	m_node_service.get_feet_ik_offset(msg.left_foot_ik_offset, msg.right_foot_ik_offset, msg.fly_foot_ik_offset, msg.support_foot_ik_offset);
-
-	// actual positions
-	m_node_service.get_feet_position(msg.left_foot_position, msg.right_foot_position, msg.fly_foot_position, msg.support_foot_position);
-
-	// actual offsets
-	m_node_service.get_feet_position_offset(msg.left_foot_actual_offset, msg.right_foot_actual_offset, msg.fly_foot_actual_offset, msg.support_foot_actual_offset);
 
 	m_ros_publisher_debug.publish(msg);
 }
@@ -302,6 +278,17 @@ void KickEngineNode::kick_callback(const humanoid_league_msgs::Kick action)
 	// TODO cleanup
 
 	kick_ball(action.ball_pos, action.target);
+}
+
+void KickEngineNode::reconfigure_callback(bitbots_kick_engine::bitbots_quintic_walk_paramsConfig& config, uint32_t level)
+{
+	// TODO testing
+	// TODO cleanup
+
+	set_debug(config.debugActive);
+	m_uint_odometry_publish_factor = config.odomPubFactor;
+
+	m_node_service.reconfigure_parameter(config, level);
 }
 
 geometry_msgs::Vector3 KickEngineNode::get_step_scale()
@@ -419,6 +406,12 @@ std_msgs::ColorRGBA KickEngineNode::get_color(float red, float green, float blue
 	color.a = alpha;
 
 	return color;
+}
+
+void KickEngineNode::set_debug(bool debug)
+{
+	m_bool_debug = debug;
+	m_node_service.set_debug(debug);
 }
 
 int main(int argc, char **argv)

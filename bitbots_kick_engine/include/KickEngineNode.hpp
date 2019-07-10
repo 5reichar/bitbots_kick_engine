@@ -29,6 +29,7 @@ private:
 
     void robot_state_callback(const humanoid_league_msgs::RobotControlState msg);
     void kick_callback(const humanoid_league_msgs::Kick action);
+	void reconfigure_callback(bitbots_kick_engine::bitbots_quintic_walk_paramsConfig& config, uint32_t level);
 
 	geometry_msgs::Vector3 get_step_scale();
 	geometry_msgs::Vector3 get_step_center_scale();
@@ -42,6 +43,8 @@ private:
 	std_msgs::ColorRGBA get_color_last_step();
 	std_msgs::ColorRGBA get_color_next_step();
 	std_msgs::ColorRGBA get_color(float red, float green, float blue, float alpha);
+
+	void set_debug(bool debug);
 
 	bool m_bool_debug;
 	int32_t m_int_marker_id;
