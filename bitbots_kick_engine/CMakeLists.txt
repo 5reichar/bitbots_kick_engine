@@ -12,12 +12,15 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   visualization_msgs
   geometry_msgs
-  #bitbots_splines
+  moveit_core
+  dynamic_reconfigure
+  tf
+
+  bitbots_spline
   humanoid_league_msgs
   bitbots_msgs
   bio_ik
   bitbots_ik
-  moveit_core
 )
 
 ## System dependencies are found with CMake's conventions
@@ -99,6 +102,9 @@ generate_messages(
 #   cfg/DynReconf1.cfg
 #   cfg/DynReconf2.cfg
 # )
+generate_dynamic_reconfigure_options(
+  cfg/bitbots_quintic_walk_params.cfg
+)
 
 ###################################
 ## catkin specific configuration ##
@@ -112,7 +118,7 @@ generate_messages(
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES ${PROJECT_NAME}
-  CATKIN_DEPENDS roscpp std_msgs visualization_msgs
+  CATKIN_DEPENDS roscpp std_msgs visualization_msgs humanoid_league_msgs geometry_msgs bitbots_ik bitbots_splines
 #  DEPENDS system_lib
 )
 
@@ -123,20 +129,24 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
- include
+  include
   ${catkin_INCLUDE_DIRS}
 )
 
-set (CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 
-set(SOURCES
-  src/KickEngineNode.cpp
+set(
+  SOURCES
   src/KickEngine.cpp
+  src/KickEngineDebugService.cpp
+  src/KickEngineNode.cpp
+  src/KickEngineNodeService.cpp
 )
 
 ## Declare a C++ library
-add_library(${PROJECT_NAME}
+add_library(
+  ${PROJECT_NAME}
   ${SOURCES}
 )
 
@@ -164,11 +174,10 @@ add_executable(
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-# target_link_libraries(${PROJECT_NAME}_node
-#   ${catkin_LIBRARIES}
-# )
 target_link_libraries(
-    KickEngineNode ${PROJECT_NAME} ${catkin_LIBRARIES}
+    KickEngineNode
+    ${PROJECT_NAME}
+    ${catkin_LIBRARIES}
 )
 
 #############

@@ -60,6 +60,8 @@
   <depend>std_msgs</depend>
   <depend>visualization_msgs</depend>
   <depend>humanoid_league_msgs</depend>
+  <depend>dynamic_reconfigure</depend>
+  <depend>tf</depend>
   <depend>bitbots_splines</depend>
   <depend>geometry_msgs</depend>
   <depend>bitbots_msgs</depend>
