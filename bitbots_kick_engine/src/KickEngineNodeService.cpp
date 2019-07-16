@@ -1,9 +1,7 @@
 #include "KickEngineNodeService.hpp"
 
-
 KickEngineNodeService::KickEngineNodeService()
-	: m_kick_engine()
-	, m_debug_service(m_kick_engine)
+	: m_kick_engine(), m_debug_service(m_kick_engine)
 {
 	//TODO: testing
 	//TODO: cleanup
@@ -12,19 +10,19 @@ KickEngineNodeService::KickEngineNodeService()
 
 	// we have to set some good initial position in the goal state, since we are using a gradient
 	// based method. Otherwise, the first step will be not correct
-	std::vector<std::string> names_vec = { "LHipPitch", "LKnee", "LAnklePitch", "RHipPitch", "RKnee", "RAnklePitch" };
-	std::vector<double> pos_vec = { 0.7, -1.0, -0.4, -0.7, 1.0, 0.4 };
+	std::vector<std::string> names_vec = {"LHipPitch", "LKnee", "LAnklePitch", "RHipPitch", "RKnee", "RAnklePitch"};
+	std::vector<double> pos_vec = {0.7, -1.0, -0.4, -0.7, 1.0, 0.4};
 	m_kick_engine.set_goal_state(names_vec, pos_vec);
 
 	m_kick_engine.reset_current_state();
 
 	m_bio_ik_solver = bitbots_ik::BioIKSolver(m_kick_engine.get_joint_model_group("All"),
-		m_kick_engine.get_joint_model_grou("LeftLeg"),
-		m_kick_engine.get_joint_model_grou("RightLeg"));
+											  m_kick_engine.get_joint_model_grou("LeftLeg"),
+											  m_kick_engine.get_joint_model_grou("RightLeg"));
 	m_bio_ik_solver.set_use_approximate(true);
 }
 
-KickEngineDebugService& KickEngineNodeService::get_debug_service()
+KickEngineDebugService &KickEngineNodeService::get_debug_service()
 {
 	return m_debug_service;
 }
@@ -37,7 +35,7 @@ void KickEngineNodeService::set_robot_state(const humanoid_league_msgs::RobotCon
 	m_kick_engine.set_robot_state(msg.state);
 }
 
-bool KickEngineNodeService::kick(geometry_msgs::Vector3& ball_position, geometry_msgs::Vector3& target_position)
+bool KickEngineNodeService::kick(geometry_msgs::Vector3 &ball_position, geometry_msgs::Vector3 &target_position)
 {
 	//TODO: testing
 	//TODO: cleanup
@@ -69,7 +67,7 @@ bool KickEngineNodeService::are_booth_feet_support()
 	return m_kick_engine.are_booth_feet_support();
 }
 
-void KickEngineNodeService::get_goal_feet_joints(std::vector<double>& joint_goals_out, std::vector<std::string>& joint_names_out)
+void KickEngineNodeService::get_goal_feet_joints(std::vector<double> &joint_goals_out, std::vector<std::string> &joint_names_out)
 {
 	//TODO: testing
 	//TODO: cleanup
@@ -105,7 +103,7 @@ bool KickEngineNodeService::convert_goal_coordinate_from_support_foot_to_trunk_b
 	//TODO: testing
 	//TODO: cleanup
 
-	 // read the cartesian positions and orientations for trunk and fly foot
+	// read the cartesian positions and orientations for trunk and fly foot
 	m_kick_engine.computeCartesianPosition(_trunkPos, _trunkAxis, _footPos, _footAxis, _isLeftSupport);
 	robot_state::RobotStatePtr goal_state;
 
@@ -115,7 +113,7 @@ bool KickEngineNodeService::convert_goal_coordinate_from_support_foot_to_trunk_b
 
 	// call ik solver
 	bool success = m_bio_ik_solver.solve(trunk_to_support_foot_goal, trunk_to_flying_foot_goal,
-		is_left_foot_support(), goal_state);
+										 is_left_foot_support(), goal_state);
 
 	m_kick_engine.set_goal_state(goal_state);
 
@@ -145,7 +143,7 @@ tf::Transform KickEngineNodeService::get_support_foot_transformation(Eigen::Vect
 	return support_foot_transformation;
 }
 
-void KickEngineNodeService::get_odemetry_data(tf::Vector3 & position_out, geometry_msgs::Quaternion & quaternion_msg_out)
+void KickEngineNodeService::get_odemetry_data(tf::Vector3 &position_out, geometry_msgs::Quaternion &quaternion_msg_out)
 {
 	//TODO: testing
 	//TODO: cleanup
@@ -162,7 +160,7 @@ void KickEngineNodeService::get_odemetry_data(tf::Vector3 & position_out, geomet
 	double yaw = next_step[2];
 
 	tf::Transform supportFootTf;
-	supportFootTf.setOrigin(tf::Vector3{ x, y, 0.0 });
+	supportFootTf.setOrigin(tf::Vector3{x, y, 0.0});
 	tf::Quaternion supportFootQuat = tf::Quaternion();
 	supportFootQuat.setRPY(0, 0, yaw);
 	supportFootTf.setRotation(supportFootQuat);
@@ -172,7 +170,7 @@ void KickEngineNodeService::get_odemetry_data(tf::Vector3 & position_out, geomet
 	tf::quaternionTFToMsg(odom_to_trunk.getRotation().normalize(), quaternion_msg_out);
 }
 
-void KickEngineNodeService::reconfigure_parameter(bitbots_kick_engine::bitbots_quintic_walk_paramsConfig& config, uint32_t level)
+void KickEngineNodeService::reconfigure_parameter(bitbots_kick_engine::bitbots_quintic_walk_paramsConfig &config, uint32_t level)
 {
 	//TODO: implemention
 	//TODO: testing
