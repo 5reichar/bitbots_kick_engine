@@ -187,18 +187,18 @@ void KickEngineNode::publish_debug()
 	std::string current_support_frame = m_node_service.get_support_foot_sole();
 
 	// define colors
-	std_msgs::ColorRGBA left_feet_color = get_color(0, 1, 0, 1);
-	std_msgs::ColorRGBA right_feet_color = get_color(1, 0, 0, 1);
-	std_msgs::ColorRGBA fly_feet_color = get_color(0, 0, 1, 1);
-	std_msgs::ColorRGBA support_feet_color = get_color(1, 1, 0, 1);
+	std_msgs::ColorRGBA left_feet_color = m_node_service.create_color_rgba(0, 1, 0, 1);
+	std_msgs::ColorRGBA right_feet_color = m_node_service.create_color_rgba(1, 0, 0, 1);
+	std_msgs::ColorRGBA fly_feet_color = m_node_service.create_color_rgba(0, 0, 1, 1);
+	std_msgs::ColorRGBA support_feet_color = m_node_service.create_color_rgba(1, 1, 0, 1);
 
 	if (m_node_service.are_booth_feet_support())
 	{
-		support_feet_color = get_color(0, 0, 1, 1);
+		support_feet_color = m_node_service.create_color_rgba(0, 0, 1, 1);
 	}
 	else if (m_node_service.is_left_support())
 	{
-		support_feet_color = get_color(1, 0, 0, 1);
+		support_feet_color = m_node_service.create_color_rgba(1, 0, 0, 1);
 	}
 
 	auto msg = create_debug_message();
@@ -228,7 +228,7 @@ void KickEngineNode::publish_markers()
 
 	//publish markers
 	visualization_msgs::Marker marker_msg;
-	auto step_scale = get_scale(0.20, 0.10, 0.01);
+	auto step_scale = m_node_service.create_vector_3(0.20, 0.10, 0.01);
 
 	marker_msg.header.stamp = ros::Time::now();
 	marker_msg.header.frame_id = m_node_service.get_support_foot_sole();
@@ -240,21 +240,21 @@ void KickEngineNode::publish_markers()
 	//last step
 	marker_msg.ns = "last_step";
 	marker_msg.id = 1;
-	marker_msg.color = get_color(0, 0, 0, 1);
+	marker_msg.color = m_node_service.create_color_rgba(0, 0, 0, 1);
 	marker_msg.pose = m_node_service.get_last_footstep_pose();
 	m_ros_publisher_debug_marker.publish(marker_msg);
 
 	//last step center
 	marker_msg.ns = "step_center";
 	marker_msg.id = m_int_marker_id;
-	marker_msg.scale = get_scale(0.01, 0.01, 0.01);
+	marker_msg.scale = m_node_service.create_vector_3(0.01, 0.01, 0.01);
 	m_ros_publisher_debug_marker.publish(marker_msg);
 
 	// next step
 	marker_msg.id = m_int_marker_id;
 	marker_msg.ns = "next_step";
 	marker_msg.scale = step_scale;
-	marker_msg.color = get_color(1, 1, 1, 0.5);
+	marker_msg.color = m_node_service.create_color_rgba(1, 1, 1, 0.5);
 	marker_msg.pose = m_node_service.get_next_footstep_pose();
 	m_ros_publisher_debug_marker.publish(marker_msg);
 
@@ -275,40 +275,11 @@ void KickEngineNode::publish_marker(std::string name_space, std::string frame, g
 	marker_msg.action = marker_msg.ADD;
 	marker_msg.pose = pose;
 	marker_msg.color = color;
-	marker_msg.scale = get_scale(0.01, 0.003, 0.003);
+	marker_msg.scale = m_node_service.create_vector_3(0.01, 0.003, 0.003);
 	marker_msg.id = m_int_marker_id;
 
 	m_ros_publisher_debug_marker.publish(marker_msg);
 	m_int_marker_id++;
-}
-
-geometry_msgs::Vector3 KickEngineNode::get_scale(float x, float y, float z)
-{
-	// TODO testing
-	// TODO cleanup
-
-	geometry_msgs::Vector3 scale;
-
-	scale.x = x;
-	scale.y = y;
-	scale.z = z;
-
-	return scale;
-}
-
-std_msgs::ColorRGBA KickEngineNode::get_color(float red, float green, float blue, float alpha)
-{
-	// TODO testing
-	// TODO cleanup
-
-	std_msgs::ColorRGBA color;
-
-	color.r = red;
-	color.g = green;
-	color.b = blue;
-	color.a = alpha;
-
-	return color;
 }
 
 bitbots_quintic_walk::WalkingDebug KickEngineNode::create_debug_message()

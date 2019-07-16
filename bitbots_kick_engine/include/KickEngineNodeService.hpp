@@ -29,6 +29,9 @@ public:
 	void get_odemetry_data(tf::Vector3 &position_out, geometry_msgs::Quaternion &quaternion_msg_out);
 	std_msgs::Char get_support_foot_state();
 
+	geometry_msgs::Vector3 create_vector_3(float x, float y, float z);
+	std_msgs::ColorRGBA create_color_rgba(float red, float green, float blue, float alpha);
+
 private:
 	tf::Transform get_support_foot_transformation(Eigen::Vector3d position, Eigen::Vector3d axis);
 

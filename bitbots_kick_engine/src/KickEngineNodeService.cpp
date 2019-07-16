@@ -244,3 +244,32 @@ geometry_msgs::Pose KickEngineNodeService::get_trunk_result()
 
 	return pose;
 }
+
+geometry_msgs::Vector3 KickEngineNodeService::create_vector_3(float x, float y, float z)
+{
+	// TODO testing
+	// TODO cleanup
+
+	geometry_msgs::Vector3 scale;
+
+	scale.x = x;
+	scale.y = y;
+	scale.z = z;
+
+	return scale;
+}
+
+std_msgs::ColorRGBA KickEngineNodeService::create_color_rgba(float red, float green, float blue, float alpha)
+{
+	// TODO testing
+	// TODO cleanup
+
+	std_msgs::ColorRGBA color;
+
+	color.r = red;
+	color.g = green;
+	color.b = blue;
+	color.a = alpha;
+
+	return color;
+}

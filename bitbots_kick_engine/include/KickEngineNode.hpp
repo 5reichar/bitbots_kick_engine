@@ -31,8 +31,6 @@ private:
     void publish_markers();
     void publish_marker(std::string name_space, std::string frame, geometry_msgs::Pose pose, std_msgs::ColorRGBA color);
 
-    geometry_msgs::Vector3 get_scale(float x, float y, float z);
-    std_msgs::ColorRGBA get_color(float red, float green, float blue, float alpha);
     bitbots_quintic_walk::WalkingDebug create_debug_message();
 
     int32_t m_int_marker_id;
