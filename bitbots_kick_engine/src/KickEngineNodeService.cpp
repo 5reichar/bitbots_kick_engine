@@ -1,12 +1,11 @@
 #include "KickEngineNodeService.hpp"
 
 KickEngineNodeService::KickEngineNodeService()
-	: m_kick_engine(), m_debug_service(m_kick_engine)
+	: m_kick_engine(),
+	  m_sp_debug_service(m_kick_engine)
 {
 	//TODO: testing
 	//TODO: cleanup
-
-	m_debug = nullptr;
 
 	// we have to set some good initial position in the goal state, since we are using a gradient
 	// based method. Otherwise, the first step will be not correct
@@ -22,9 +21,9 @@ KickEngineNodeService::KickEngineNodeService()
 	m_bio_ik_solver.set_use_approximate(true);
 }
 
-KickEngineDebugService &KickEngineNodeService::get_debug_service()
+std::shared_ptr<KickEngineDebugService> KickEngineNodeService::get_debug_service()
 {
-	return m_debug_service;
+	return m_sp_debug_service;
 }
 
 void KickEngineNodeService::set_robot_state(const humanoid_league_msgs::RobotControlState msg)
@@ -117,10 +116,10 @@ bool KickEngineNodeService::convert_goal_coordinate_from_support_foot_to_trunk_b
 
 	m_kick_engine.set_goal_state(goal_state);
 
-	if (m_debug_service.is_debug_on())
+	if (m_sp_debug_service->is_debug_on())
 	{
-		m_debug_service.set_trunk_to_support_foot_goal(trunk_to_support_foot_goal);
-		m_debug_service.set_trunk_to_flying_foot_goal(trunk_to_flying_foot_goal);
+		m_sp_debug_service->set_trunk_to_support_foot_goal(trunk_to_support_foot_goal);
+		m_sp_debug_service->set_trunk_to_flying_foot_goal(trunk_to_flying_foot_goal);
 	}
 
 	return success;

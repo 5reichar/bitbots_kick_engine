@@ -35,14 +35,11 @@ private:
     std_msgs::ColorRGBA get_color(float red, float green, float blue, float alpha);
     bitbots_quintic_walk::WalkingDebug create_debug_message();
 
-    void set_debug(bool debug);
-
-    bool m_bool_debug;
     int32_t m_int_marker_id;
     uint16_t m_uint_odometry_publish_factor;
 
     KickEngineNodeService m_node_service;
-    KickEngineDebugService m_debug_service;
+    std::shared_ptr<KickEngineDebugService> m_sp_debug_service;
 
     ros::NodeHandle m_ros_node_handle;
 

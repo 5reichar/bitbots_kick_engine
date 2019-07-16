@@ -20,7 +20,7 @@ public:
 	bool is_left_foot_support();
 	bool are_booth_feet_support();
 
-	KickEngineDebugService &get_debug_service();
+	std::shared_ptr<KickEngineDebugService> get_debug_service();
 	void set_robot_state(const humanoid_league_msgs::RobotControlState msg);
 
 	double get_engine_frequence() const;
@@ -33,7 +33,7 @@ private:
 	tf::Transform get_support_foot_transformation(Eigen::Vector3d position, Eigen::Vector3d axis);
 
 	KickEngine m_kick_engine;
-	KickEngineDebugService m_debug_service;
+	std::shared_ptr<KickEngineDebugService> m_sp_debug_service;
 	bitbots_ik::BioIKSolver m_bio_ik_solver;
 };
 

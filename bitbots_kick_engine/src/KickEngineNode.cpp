@@ -5,13 +5,13 @@
 #include <bitbots_kick_engine/WalkingDebug.h>
 
 KickEngineNode::KickEngineNode()
-	: m_node_service(), m_debug_service(m_node_service.get_debug_service())
+	: m_node_service(),
+	  m_sp_debug_service(m_node_service.get_debug_service())
 {
 	// TODO testing
 	// TODO cleanup
 
 	m_int_marker_id = 1;
-	m_bool_debug = false;
 
 	initialise_ros_subcribtions();
 	initialise_ros_publisher();
@@ -60,7 +60,7 @@ void KickEngineNode::reconfigure_callback(bitbots_kick_engine::bitbots_quintic_w
 	// TODO testing
 	// TODO cleanup
 
-	m_debug_service.set_debug(config.debugActive);
+	m__sp_debug_service->set_debug(config.debugActive);
 	m_uint_odometry_publish_factor = config.odomPubFactor;
 
 	m_node_service.reconfigure_parameter(config, level);
@@ -108,7 +108,7 @@ void KickEngineNode::publish_kick()
 
 	m_ros_publisher_support.publish(m_node_service.get_support_foot_state())
 
-		if (m_debug_service.is_debug_on())
+		if (m__sp_debug_service->is_debug_on())
 	{
 		publish_debug();
 		publish_markers();
@@ -311,12 +311,6 @@ std_msgs::ColorRGBA KickEngineNode::get_color(float red, float green, float blue
 	return color;
 }
 
-void KickEngineNode::set_debug(bool debug)
-{
-	m_bool_debug = debug;
-	m_node_service.set_debug(debug);
-}
-
 bitbots_quintic_walk::WalkingDebug KickEngineNode::create_debug_message()
 {
 	bitbots_quintic_walk::WalkingDebug msg;
@@ -326,29 +320,29 @@ bitbots_quintic_walk::WalkingDebug KickEngineNode::create_debug_message()
 	msg.header.stamp = ros::Time::now();
 
 	// times
-	msg.phase_time = m_debug_service.get_engine_phase_time();
-	msg.traj_time = m_debug_service.get_engine_trajectory_time();
+	msg.phase_time = m_sp_debug_service->get_engine_phase_time();
+	msg.traj_time = m_sp_debug_service->get_engine_trajectory_time();
 
-	msg.engine_state.data = m_debug_service.get_engine_state();
+	msg.engine_state.data = m_sp_debug_service->get_engine_state();
 
 	// engine output
-	msg.engine_fly_goal = m_debug_service.get_engine_fly_foot_goal_pose();
-	msg.engine_trunk_goal = m_debug_service.get_engine_trunk_goal_pose();
+	msg.engine_fly_goal = m_sp_debug_service->get_engine_fly_foot_goal_pose();
+	msg.engine_trunk_goal = m_sp_debug_service->get_engine_trunk_goal_pose();
 
 	// goals
-	m_debug_service.get_feet_goals(msg.left_foot_goal, msg.right_foot_goal, msg.fly_foot_goal, msg.support_foot_goal);
+	m_sp_debug_service->get_feet_goals(msg.left_foot_goal, msg.right_foot_goal, msg.fly_foot_goal, msg.support_foot_goal);
 
 	// IK results
-	m_debug_service.get_feet_ik_results(msg.left_foot_ik_result, msg.right_foot_ik_result, msg.fly_foot_ik_result, support_foot_ik_result);
+	m_sp_debug_service->get_feet_ik_results(msg.left_foot_ik_result, msg.right_foot_ik_result, msg.fly_foot_ik_result, support_foot_ik_result);
 
 	// IK offsets
-	m_debug_service.get_feet_ik_offset(msg.left_foot_ik_offset, msg.right_foot_ik_offset, msg.fly_foot_ik_offset, msg.support_foot_ik_offset);
+	m_sp_debug_service->get_feet_ik_offset(msg.left_foot_ik_offset, msg.right_foot_ik_offset, msg.fly_foot_ik_offset, msg.support_foot_ik_offset);
 
 	// actual positions
-	m_debug_service.get_feet_position(msg.left_foot_position, msg.right_foot_position, msg.fly_foot_position, msg.support_foot_position);
+	m_sp_debug_service->get_feet_position(msg.left_foot_position, msg.right_foot_position, msg.fly_foot_position, msg.support_foot_position);
 
 	// actual offsets
-	m_debug_service.get_feet_position_offset(msg.left_foot_actual_offset, msg.right_foot_actual_offset, msg.fly_foot_actual_offset, msg.support_foot_actual_offset);
+	m_sp_debug_service->get_feet_position_offset(msg.left_foot_actual_offset, msg.right_foot_actual_offset, msg.fly_foot_actual_offset, msg.support_foot_actual_offset);
 
 	return msg;
 }
