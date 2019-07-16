@@ -1,25 +1,25 @@
 struct KickEngineParameter
 {
-	//Full walk cycle frequency 
+	//Full walk cycle frequency
 	//(in Hz, > 0)
 	double freq;
 	//Length of double support phase in half cycle
 	//(ratio, [0:1])
 	double doubleSupportRatio;
-	//Lateral distance between the feet center 
+	//Lateral distance between the feet center
 	//(in m, >= 0)
 	double footDistance;
 	//Maximum flying foot height
 	//(in m, >= 0)
 	double footRise;
 	// Pause of Z movement on highest point
-	//(single support cycle ratio, [0,1]) 
+	//(single support cycle ratio, [0,1])
 	double footZPause;
 	//Let the foot's downward trajectory end above the ground
 	//this is helpful if the support leg bends
 	//(in m, >= 0)
 	double footPutDownZOffset;
-	//Phase time for moving the foot from Z offset to ground, 
+	//Phase time for moving the foot from Z offset to ground,
 	// also used for X and Y since they should not move after contact to the ground
 	//(phase between apex and single support end [0:1])
 	double footPutDownPhase;

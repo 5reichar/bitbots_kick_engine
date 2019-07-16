@@ -5,8 +5,7 @@
 #include <bitbots_kick_engine/WalkingDebug.h>
 
 KickEngineNode::KickEngineNode()
-	: m_node_service()
-	, m_debug_service(m_node_service.get_debug_service())
+	: m_node_service(), m_debug_service(m_node_service.get_debug_service())
 {
 	// TODO testing
 	// TODO cleanup
@@ -14,8 +13,8 @@ KickEngineNode::KickEngineNode()
 	m_int_marker_id = 1;
 	m_bool_debug = false;
 
-    initialise_ros_subcribtions();
-    initialise_ros_publisher();
+	initialise_ros_subcribtions();
+	initialise_ros_publisher();
 }
 
 void KickEngineNode::initialise_ros_subcribtions()
@@ -56,7 +55,7 @@ void KickEngineNode::kick_callback(const humanoid_league_msgs::Kick action)
 	kick_ball(action.ball_pos, action.target);
 }
 
-void KickEngineNode::reconfigure_callback(bitbots_kick_engine::bitbots_quintic_walk_paramsConfig& config, uint32_t level)
+void KickEngineNode::reconfigure_callback(bitbots_kick_engine::bitbots_quintic_walk_paramsConfig &config, uint32_t level)
 {
 	// TODO testing
 	// TODO cleanup
@@ -67,34 +66,34 @@ void KickEngineNode::reconfigure_callback(bitbots_kick_engine::bitbots_quintic_w
 	m_node_service.reconfigure_parameter(config, level);
 }
 
-void KickEngineNode::kick_ball(geometry_msgs::Vector3 & ball_position, geometry_msgs::Vector3 & target_position)
+void KickEngineNode::kick_ball(geometry_msgs::Vector3 &ball_position, geometry_msgs::Vector3 &target_position)
 {
 	// TODO testing
 	// TODO cleanup
 
 	uint16_t odometry_counter = 1;
-    ros::Rate loopRate(m_node_service.get_engine_frequence());
+	ros::Rate loopRate(m_node_service.get_engine_frequence());
 
-    while (ros::ok())
-    {
+	while (ros::ok())
+	{
 		if (m_node_service.kick(ball_position, target_position))
 		{
 			publish_kick();
 		}
 
-        if (odometry_counter > m_uint_odometry_publish_factor)
-        {
-            publish_odemetry();
-            odometry_counter = 1;
-        }
-        else
-        {
-            ++odometry_counter;
-        }
+		if (odometry_counter > m_uint_odometry_publish_factor)
+		{
+			publish_odemetry();
+			odometry_counter = 1;
+		}
+		else
+		{
+			++odometry_counter;
+		}
 
-        ros::spinOnce();
-        loopRate.sleep();
-    }
+		ros::spinOnce();
+		loopRate.sleep();
+	}
 }
 
 void KickEngineNode::publish_kick()
@@ -102,18 +101,18 @@ void KickEngineNode::publish_kick()
 	// TODO testing
 	// TODO cleanup
 
-    if (m_node_service.convert_goal_coordinate_from_support_foot_to_trunk_based())
-    {
-        publish_controler_commands();
-    }
-    
-    m_ros_publisher_support.publish(m_node_service.get_support_foot_state())
+	if (m_node_service.convert_goal_coordinate_from_support_foot_to_trunk_based())
+	{
+		publish_controler_commands();
+	}
 
-    if (m_debug_service.is_debug_on())
-    {
-        publish_debug();
+	m_ros_publisher_support.publish(m_node_service.get_support_foot_state())
+
+		if (m_debug_service.is_debug_on())
+	{
+		publish_debug();
 		publish_markers();
-    }
+	}
 }
 
 void KickEngineNode::publish_odemetry()
@@ -122,40 +121,40 @@ void KickEngineNode::publish_odemetry()
 	// TODO cleanup
 
 	tf::Vector3 position;
-    geometry_msgs::Quaternion quaternion_msg;
+	geometry_msgs::Quaternion quaternion_msg;
 	m_node_service.get_odemetry_data(position, quaternion_msg);
 
-    ros::Time current_time = ros::Time::now();
+	ros::Time current_time = ros::Time::now();
 	std::string frame_id = "odom";
 	std::string child_frame_id = "base_link";
 
 	// send the odometry as transformation
-    geometry_msgs::TransformStamped odometry_transformation() = geometry_msgs::TransformStamped();
+	geometry_msgs::TransformStamped odometry_transformation() = geometry_msgs::TransformStamped();
 
-    odometry_transformation.header.stamp = current_time;
-    odometry_transformation.header.frame_id = frame_id;
-    odometry_transformation.child_frame_id = child_frame_id;
-    odometry_transformation.transform.translation.x = position[0];
-    odometry_transformation.transform.translation.y = position[1];
-    odometry_transformation.transform.translation.z = position[2];
-    odometry_transformation.transform.rotation = quaternion_msg;
-    
-    tf::TransformBroadcaster odometry_broadcaster;
-    odometry_broadcaster.sendTransform(odometry_transformation);
+	odometry_transformation.header.stamp = current_time;
+	odometry_transformation.header.frame_id = frame_id;
+	odometry_transformation.child_frame_id = child_frame_id;
+	odometry_transformation.transform.translation.x = position[0];
+	odometry_transformation.transform.translation.y = position[1];
+	odometry_transformation.transform.translation.z = position[2];
+	odometry_transformation.transform.rotation = quaternion_msg;
 
-    // send the odometry also as message
-    nav_msgs::Odometry odometry_nav_msgs;
+	tf::TransformBroadcaster odometry_broadcaster;
+	odometry_broadcaster.sendTransform(odometry_transformation);
 
-    odometry_nav_msgs.header.stamp = current_time;
-    odometry_nav_msgs.header.frame_id = frame_id;
-    odometry_nav_msgs.child_frame_id = child_frame_id;
-    odometry_nav_msgs.pose.pose.position.x = position[0];
-    odometry_nav_msgs.pose.pose.position.y = position[1];
-    odometry_nav_msgs.pose.pose.position.z = position[2];
-    odometry_nav_msgs.pose.pose.orientation = quaternion_msg;
-    odometry_nav_msgs.twist.twist = m_kick_engine.get_twist();
+	// send the odometry also as message
+	nav_msgs::Odometry odometry_nav_msgs;
 
-    m_ros_publisher_odometry.publish(_odom_msg);
+	odometry_nav_msgs.header.stamp = current_time;
+	odometry_nav_msgs.header.frame_id = frame_id;
+	odometry_nav_msgs.child_frame_id = child_frame_id;
+	odometry_nav_msgs.pose.pose.position.x = position[0];
+	odometry_nav_msgs.pose.pose.position.y = position[1];
+	odometry_nav_msgs.pose.pose.position.z = position[2];
+	odometry_nav_msgs.pose.pose.orientation = quaternion_msg;
+	odometry_nav_msgs.twist.twist = m_kick_engine.get_twist();
+
+	m_ros_publisher_odometry.publish(_odom_msg);
 }
 
 void KickEngineNode::publish_controler_commands()
@@ -180,7 +179,7 @@ void KickEngineNode::publish_controler_commands()
 */
 void KickEngineNode::publish_debug()
 {
-    // TODO testing
+	// TODO testing
 	// TODO cleanup
 
 	// define frames
@@ -224,7 +223,7 @@ void KickEngineNode::publish_debug()
 
 void KickEngineNode::publish_markers()
 {
-    // TODO testing
+	// TODO testing
 	// TODO cleanup
 
 	//publish markers
