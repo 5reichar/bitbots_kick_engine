@@ -1,7 +1,8 @@
 #ifndef KICKENGINE_HPP
 #define KICKENGINE_HPP
 
-#include <moveit_msgs/RobotState.h>
+#include <moveit/robot_model/robot_model.h>
+#include <moveit/robot_state/robot_state.h>
 #include <geometry_msgs/Vector3.h>
 #include <geometry_msgs/Twist.h>
 #include "KickEngineParameter.hpp"
@@ -24,12 +25,12 @@ public:
 
 	double get_phase_time() const;
 	double get_engine_frequence() const;
-	std_msgs::String get_state() const;
-	robot_state::RobotStatePtr get_goal_state() const;
+	std::string get_state() const;
+	moveit::core::RobotStatePtr get_goal_state() const;
 
 	double get_foot_distance() const;
 	geometry_msgs::Twist get_twist() const;
-	robot_state::JointModelGroup &get_joint_model_group(std::string name);
+	moveit::core::JointModelGroup &get_joint_model_group(std::string name);
 	Eigen::Isometry3d get_goal_global_link_transform(std::string link_name) const;
 	Eigen::Isometry3d get_current_global_link_transform(std::string link_name) const;
 	void get_goal_joint_group(std::string joint_group_name, std::vector<double> &joint_goals_out, std::vector<std::string> &joint_names_out);
@@ -61,10 +62,9 @@ private:
 	uint8_t m_robot_state;
 	Eigen::Vector3d m_v3d_current_orders;
 	KickEngineParameter m_struc_parameter;
-	robot_state::RobotStatePtr m_goal_state;
-	robot_state::RobotStatePtr m_current_state;
-	robot_model::RobotModelPtr m_kinematic_model;
-	bitbots_quintic_walk::WalkingParameter m_parameter;
+	std::shared_ptr<moveit::core::RobotState> m_sp_goal_state;
+	std::shared_ptr<moveit::core::RobotState> m_sp_current_state;
+	std::shared_ptr<moveit::core::RobotModel> m_sp_kinematic_model;
 };
 
 #endif

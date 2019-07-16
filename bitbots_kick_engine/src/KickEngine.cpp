@@ -12,9 +12,10 @@ KickEngine::KickEngine()
 		kinematics_plugin_loader::KinematicsPluginLoaderPtr(
 			new kinematics_plugin_loader::KinematicsPluginLoader()));
 
-	m_kinematic_model = robot_model_loader.getModel();
+	this->m_sp_kinematic_model = robot_model_loader.getModel();
 }
 
+/*
 void set_goal_state(std::vector<std::string> vec_joint_names, std::vector<double> vec_position)
 {
 	//TODO: Implementation
@@ -47,12 +48,12 @@ geometry_msgs::Twist get_twist() const
 	//TODO: testing
 	//TODO: cleanup
 
-    geometry_msgs::Twist twist;
-    twist.linear.x = m_v3d_current_orders[0] * m_parameter.freq * 2;
-    twist.linear.y = m_v3d_current_orders[1] * m_parameter.freq * 2;
-    twist.angular.z = m_v3d_current_orders[2] * m_parameter.freq * 2;
+	geometry_msgs::Twist twist;
+	twist.linear.x = m_v3d_current_orders[0] * m_parameter.freq * 2;
+	twist.linear.y = m_v3d_current_orders[1] * m_parameter.freq * 2;
+	twist.angular.z = m_v3d_current_orders[2] * m_parameter.freq * 2;
 
-    return twist;
+	return twist;
 }
 
 bool is_left_foot_support() const
@@ -61,7 +62,7 @@ bool is_left_foot_support() const
 	//TODO: testing
 	//TODO: cleanup
 
-	_footstep.isLeftSupport()
+	//_footstep.isLeftSupport()
 
 	return false;
 }
@@ -79,7 +80,7 @@ bool are_booth_feet_support() const
 	return false;
 }
 
-robot_state::JointModelGroup& get_joint_model_group(std::string name)
+robot_state::JointModelGroup &get_joint_model_group(std::string name)
 {
 	//TODO: Implementation
 	//TODO: testing
@@ -88,7 +89,7 @@ robot_state::JointModelGroup& get_joint_model_group(std::string name)
 	return *m_kinematic_model->getJointModelGroup(name);
 }
 
-void get_goal_joint_group(std::string joint_group_name, std::vector<double>& joint_goals_out, std::vector<std::string>& joint_names_out)
+void get_goal_joint_group(std::string joint_group_name, std::vector<double> &joint_goals_out, std::vector<std::string> &joint_names_out)
 {
 	//TODO: Implementation
 	//TODO: testing
@@ -109,22 +110,26 @@ Eigen::Isometry3d get_goal_global_link_transform(std::string link_name)
 	return m_goal_state->getGlobalLinkTransform(link_name);
 }
 
-void get_next_step(double& x_out, double& y_out, double& yaw_out)
+void get_next_step(double &x_out, double &y_out, double &yaw_out)
 {
 	//TODO: Implementation
 	//TODO: testing
 	//TODO: cleanup
 
-	if (_walkEngine.getFootstep().isLeftSupport()) {
+
+	if (_walkEngine.getFootstep().isLeftSupport())
+	{
 		x = _walkEngine.getFootstep().getLeft()[0];
 		y = _walkEngine.getFootstep().getLeft()[1] + _params.footDistance / 2;
 		yaw = _walkEngine.getFootstep().getLeft()[2];
 	}
-	else {
+	else
+	{
 		x = _walkEngine.getFootstep().getRight()[0];
 		y = _walkEngine.getFootstep().getRight()[1] + _params.footDistance / 2;
 		yaw = _walkEngine.getFootstep().getRight()[2];
 	}
+
 }
 
 double get_trajectory_time() const
@@ -132,6 +137,7 @@ double get_trajectory_time() const
 	//TODO: Implementation
 	//TODO: testing
 	//TODO: cleanup
+
 
 	double t;
 	if (_phase < 0.5) {
@@ -144,4 +150,6 @@ double get_trajectory_time() const
 	return t;
 
 	return 0.0;
+
 }
+*/
