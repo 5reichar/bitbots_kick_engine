@@ -300,20 +300,38 @@ bitbots_quintic_walk::WalkingDebug KickEngineNode::create_debug_message()
 	msg.engine_fly_goal = m_sp_debug_service->get_engine_fly_foot_goal_pose();
 	msg.engine_trunk_goal = m_sp_debug_service->get_engine_trunk_goal_pose();
 
-	// goals
-	m_sp_debug_service->get_feet_goals(msg.left_foot_goal, msg.right_foot_goal, msg.fly_foot_goal, msg.support_foot_goal);
+	if (m_sp_debug_service->calculate_debug_data())
+	{
+		// goals
+		msg.left_foot_goal = m_sp_debug_service->get_goal_left_foot();
+		msg.right_foot_goal = m_sp_debug_service->get_goal_right_foot();
+		msg.fly_foot_goal = m_sp_debug_service->get_goal_fly_foot();
+		msg.support_foot_goal = m_sp_debug_service->get_goal_support_foot();
 
-	// IK results
-	m_sp_debug_service->get_feet_ik_results(msg.left_foot_ik_result, msg.right_foot_ik_result, msg.fly_foot_ik_result, support_foot_ik_result);
+		// IK results
+		msg.left_foot_ik_result = m_sp_debug_service->get_ik_result_left_foot();
+		msg.right_foot_ik_result = m_sp_debug_service->get_ik_result_right_foot();
+		msg.fly_foot_ik_result = m_sp_debug_service->get_ik_result_fly_foot();
+		msg.support_foot_ik_result = m_sp_debug_service->get_ik_result_support_foot();
 
-	// IK offsets
-	m_sp_debug_service->get_feet_ik_offset(msg.left_foot_ik_offset, msg.right_foot_ik_offset, msg.fly_foot_ik_offset, msg.support_foot_ik_offset);
+		// IK offsets
+		msg.left_foot_ik_offset = m_sp_debug_service->get_offset_ik_left_foot();
+		msg.right_foot_ik_offset = m_sp_debug_service->get_offset_ik_right_foot();
+		msg.fly_foot_ik_offset = m_sp_debug_service->get_offset_ik_fly_foot();
+		msg.support_foot_ik_offset = m_sp_debug_service->get_offset_ik_support_foot();
 
-	// actual positions
-	m_sp_debug_service->get_feet_position(msg.left_foot_position, msg.right_foot_position, msg.fly_foot_position, msg.support_foot_position);
+		// actual positions
+		msg.left_foot_position = m_sp_debug_service->get_position_left_foot();
+		msg.right_foot_position = m_sp_debug_service->get_position_right_foot();
+		msg.fly_foot_position = m_sp_debug_service->get_position_fly_foot();
+		msg.support_foot_position = m_sp_debug_service->get_position_support_foot();
 
-	// actual offsets
-	m_sp_debug_service->get_feet_position_offset(msg.left_foot_actual_offset, msg.right_foot_actual_offset, msg.fly_foot_actual_offset, msg.support_foot_actual_offset);
+		// actual offsets
+		msg.left_foot_actual_offset = m_sp_debug_service->get_offset_position_left_foot();
+		msg.right_foot_actual_offset = m_sp_debug_service->get_offset_position_right_foot();
+		msg.fly_foot_actual_offset = m_sp_debug_service->get_offset_position_fly_foot();
+		msg.support_foot_actual_offset = m_sp_debug_service->get_offset_position_support_foot();
+	}
 
 	return msg;
 }
