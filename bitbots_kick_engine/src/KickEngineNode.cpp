@@ -17,26 +17,34 @@ KickEngineNode::KickEngineNode()
 	initialise_ros_publisher();
 }
 
-void KickEngineNode::initialise_ros_subcribtions()
+void KickEngineNode::kick_ball(geometry_msgs::Vector3& ball_position, geometry_msgs::Vector3& target_position)
 {
 	// TODO testing
 	// TODO cleanup
 
-	m_ros_subsciber_kick = m_ros_node_handle.subscribe("kick", 1, &KickEngineNode::kick_callback, this, ros::TransportHints().tcpNoDelay());
-	m_ros_subsciber_robot_state = m_ros_node_handle.subscribe("robot_state", 1, &KickEngineNode::robot_state_callback, this, ros::TransportHints().tcpNoDelay());
-}
+	uint16_t odometry_counter = 1;
+	ros::Rate loopRate(m_node_service.get_engine_frequence());
 
-void KickEngineNode::initialise_ros_publisher()
-{
-	// TODO testing
-	// TODO cleanup
+	while (ros::ok())
+	{
+		if (m_node_service.kick(ball_position, target_position))
+		{
+			publish_kick();
+		}
 
-	m_ros_publisher_controller_command = m_ros_node_handle.advertise<bitbots_msgs::JointCommand>("kick_motor_goals", 1);
-	m_ros_publisher_odometry = m_ros_node_handle.advertise<nav_msgs::Odometry>("kick_odometry", 1);
-	m_ros_publisher_support = m_ros_node_handle.advertise<std_msgs::Char>("kick_support_state", 1);
+		if (odometry_counter > m_uint_odometry_publish_factor)
+		{
+			publish_odemetry();
+			odometry_counter = 1;
+		}
+		else
+		{
+			++odometry_counter;
+		}
 
-	m_ros_publisher_debug = m_ros_node_handle.advertise<bitbots_kick_engine::WalkingDebug>("kick_debug", 1);
-	m_ros_publisher_debug_marker = m_ros_node_handle.advertise<visualization_msgs::Marker>("kick_debug_marker", 1);
+		ros::spinOnce();
+		loopRate.sleep();
+	}
 }
 
 void KickEngineNode::robot_state_callback(const humanoid_league_msgs::RobotControlState msg)
@@ -66,34 +74,26 @@ void KickEngineNode::reconfigure_callback(bitbots_kick_engine::bitbots_quintic_w
 	m_node_service.reconfigure_parameter(config, level);
 }
 
-void KickEngineNode::kick_ball(geometry_msgs::Vector3 &ball_position, geometry_msgs::Vector3 &target_position)
+void KickEngineNode::initialise_ros_publisher()
 {
 	// TODO testing
 	// TODO cleanup
 
-	uint16_t odometry_counter = 1;
-	ros::Rate loopRate(m_node_service.get_engine_frequence());
+	m_ros_publisher_controller_command = m_ros_node_handle.advertise<bitbots_msgs::JointCommand>("kick_motor_goals", 1);
+	m_ros_publisher_odometry = m_ros_node_handle.advertise<nav_msgs::Odometry>("kick_odometry", 1);
+	m_ros_publisher_support = m_ros_node_handle.advertise<std_msgs::Char>("kick_support_state", 1);
 
-	while (ros::ok())
-	{
-		if (m_node_service.kick(ball_position, target_position))
-		{
-			publish_kick();
-		}
+	m_ros_publisher_debug = m_ros_node_handle.advertise<bitbots_kick_engine::WalkingDebug>("kick_debug", 1);
+	m_ros_publisher_debug_marker = m_ros_node_handle.advertise<visualization_msgs::Marker>("kick_debug_marker", 1);
+}
 
-		if (odometry_counter > m_uint_odometry_publish_factor)
-		{
-			publish_odemetry();
-			odometry_counter = 1;
-		}
-		else
-		{
-			++odometry_counter;
-		}
+void KickEngineNode::initialise_ros_subcribtions()
+{
+	// TODO testing
+	// TODO cleanup
 
-		ros::spinOnce();
-		loopRate.sleep();
-	}
+	m_ros_subsciber_kick = m_ros_node_handle.subscribe("kick", 1, &KickEngineNode::kick_callback, this, ros::TransportHints().tcpNoDelay());
+	m_ros_subsciber_robot_state = m_ros_node_handle.subscribe("robot_state", 1, &KickEngineNode::robot_state_callback, this, ros::TransportHints().tcpNoDelay());
 }
 
 void KickEngineNode::publish_kick()

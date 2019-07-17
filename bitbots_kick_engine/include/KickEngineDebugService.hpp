@@ -18,14 +18,14 @@ public:
 	void set_trunk_to_support_foot_goal(tf::Transform goal);
 	void set_trunk_to_flying_foot_goal(tf::Transform goal);
 
-	geometry_msgs::Pose get_engine_fly_foot_goal_pose();
-	geometry_msgs::Pose get_engine_trunk_goal_pose();
-	std_msgs::String get_engine_state();
 	double get_trajectory_time();
 	double get_engine_phase_time();
+	std_msgs::String get_engine_state();
 	std_msgs::Char get_support_foot_sole();
 	geometry_msgs::Pose get_last_footstep_pose();
 	geometry_msgs::Pose get_next_footstep_pose();
+	geometry_msgs::Pose get_engine_trunk_goal_pose();
+	geometry_msgs::Pose get_engine_fly_foot_goal_pose();
 
 	geometry_msgs::Pose get_goal_left_foot() const;
 	geometry_msgs::Pose get_goal_right_foot() const;

@@ -41,36 +41,20 @@ void KickEngineDebugService::set_trunk_to_flying_foot_goal(tf::Transform goal)
 	m_tf_trunk_to_flying_foot_goal = goal;
 }
 
-double KickEngineDebugService::get_engine_phase_time()
-{
-	//TODO: testing
-	//TODO: cleanup
-
-	return m_kick_engine.get_phase_time();
-}
-
-geometry_msgs::Pose KickEngineDebugService::get_engine_fly_foot_goal_pose()
-{
-	//TODO: testing
-	//TODO: cleanup
-
-	return get_pose(m_kick_engine.get_fly_foot_position(), m_kick_engine.get_fly_foot_axis());
-}
-
-geometry_msgs::Pose KickEngineDebugService::get_engine_trunk_goal_pose()
-{
-	//TODO: testing
-	//TODO: cleanup
-
-	return get_pose(m_kick_engine.get_trunk_position(), m_kick_engine.get_trunk_axis());
-}
-
 double KickEngineDebugService::get_trajectory_time()
 {
 	//TODO: testing
 	//TODO: cleanup
 
 	return m_kick_engine.get_trajectory_time();
+}
+
+double KickEngineDebugService::get_engine_phase_time()
+{
+	//TODO: testing
+	//TODO: cleanup
+
+	return m_kick_engine.get_phase_time();
 }
 
 std_msgs::String KickEngineDebugService::get_engine_state()
@@ -103,6 +87,22 @@ geometry_msgs::Pose KickEngineDebugService::get_next_footstep_pose()
 	//TODO: cleanup
 
 	return get_pose_from_step(m_kick_engine.get_next_foot_step());
+}
+
+geometry_msgs::Pose KickEngineDebugService::get_engine_trunk_goal_pose()
+{
+	//TODO: testing
+	//TODO: cleanup
+
+	return get_pose(m_kick_engine.get_trunk_position(), m_kick_engine.get_trunk_axis());
+}
+
+geometry_msgs::Pose KickEngineDebugService::get_engine_fly_foot_goal_pose()
+{
+	//TODO: testing
+	//TODO: cleanup
+
+	return get_pose(m_kick_engine.get_fly_foot_position(), m_kick_engine.get_fly_foot_axis());
 }
 
 geometry_msgs::Pose KickEngineDebugService::get_goal_left_foot() const

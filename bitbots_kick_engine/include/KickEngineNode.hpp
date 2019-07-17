@@ -14,14 +14,14 @@ public:
     KickEngineNode(/* args */);
 
 private:
-    void initialise_ros_subcribtions();
-    void initialise_ros_publisher();
-
-    void kick_callback(const humanoid_league_msgs::Kick action);
-    void robot_state_callback(const humanoid_league_msgs::RobotControlState msg);
-    void reconfigure_callback(bitbots_kick_engine::bitbots_quintic_walk_paramsConfig &config, uint32_t level);
-
     void kick_ball(geometry_msgs::Vector3 &ball_position, geometry_msgs::Vector3 &target_position);
+
+	void kick_callback(const humanoid_league_msgs::Kick action);
+	void robot_state_callback(const humanoid_league_msgs::RobotControlState msg);
+	void reconfigure_callback(bitbots_kick_engine::bitbots_quintic_walk_paramsConfig& config, uint32_t level);
+
+    void initialise_ros_publisher();
+    void initialise_ros_subcribtions();
 
     void publish_kick();
     void publish_odemetry();
@@ -31,7 +31,7 @@ private:
     void publish_markers();
     void publish_marker(std::string name_space, std::string frame, geometry_msgs::Pose pose, std_msgs::ColorRGBA color);
 
-    bitbots_quintic_walk::WalkingDebug create_debug_message();
+	bitbots_quintic_walk::WalkingDebug create_debug_message();
 
     int32_t m_int_marker_id;
     uint16_t m_uint_odometry_publish_factor;
@@ -44,6 +44,7 @@ private:
     ros::Publisher m_ros_publisher_controller_command;
     ros::Publisher m_ros_publisher_odometry;
     ros::Publisher m_ros_publisher_support;
+
     ros::Publisher m_ros_publisher_debug;
     ros::Publisher m_ros_publisher_debug_marker;
 
