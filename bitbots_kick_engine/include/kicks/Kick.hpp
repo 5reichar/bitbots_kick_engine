@@ -11,21 +11,13 @@ struct struct3d
 class Kick
 {
 public:
-	kick(struct3d const foot_current, struct3d const foot_kick_start, struct3d const ball_current, struct3d const ball_goal, bool const kick_with_left_foot);
-
-	bitbots_splines::SplineContainer & create_trajectory();
+	bitbots_splines::SplineContainer & create_trajectory(struct3d const foot_current, struct3d const foot_kick_start, struct3d const ball_current, struct3d const ball_goal, bool const kick_with_left_foot);
 
 protected:
-	virtual void calculate_kick() = 0;
-
-	struct3d const foot_current;
-	struct3d const foot_kick_start;
-	struct3d const ball_current;
-	struct3d const ball_goal;
-	bool const kick_with_left_feet;
+	virtual bitbots_splines::SplineContainer calculate_kick(struct3d const foot_current, struct3d const foot_kick_start, struct3d const ball_current, struct3d const ball_goal) = 0;
+	virtual void set_support_foot_trajectories(bitbots_splines::SplineContainer& spline_container, bool const kick_with_left_foot) = 0;
 
 private:
-
 };
 
 #endif
