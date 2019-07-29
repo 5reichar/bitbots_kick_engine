@@ -3,7 +3,6 @@
 
 KickEngine::KickEngine()
 {
-	//TODO: Implementation
 	//TODO: testing
 	//TODO: cleanup
 
@@ -15,48 +14,197 @@ KickEngine::KickEngine()
 	this->m_sp_kinematic_model = robot_model_loader.getModel();
 }
 
-/*
-void set_goal_state(std::vector<std::string> vec_joint_names, std::vector<double> vec_position)
+void KickEngine::set_parameter(std::shared_ptr<KickEngineParameter> &parameter)
 {
-	//TODO: Implementation
 	//TODO: testing
 	//TODO: cleanup
 
-	m_goal_state.reset(new robot_state::RobotState(m_kinematic_model));
-	m_goal_state->setToDefaultValues();
+	m_sp_kick_engine_parameter = parameter;
+}
 
-	for (int i = 0; i < names_vec.size(); i++)
+void KickEngine::set_robot_state(uint8_t state)
+{
+	//TODO: testing
+	//TODO: cleanup
+
+	m_robot_state = state;
+}
+
+void KickEngine::set_goal_state(std::shared_ptr<moveit::core::RobotState> &goal_state)
+{
+	//TODO: testing
+	//TODO: cleanup
+
+	m_sp_goal_state = goal_state;
+}
+
+void KickEngine::set_goal_state(std::vector<std::string> vec_joint_names, std::vector<double> vec_position)
+{
+	//TODO: testing
+	//TODO: cleanup
+
+	m_sp_goal_state.reset(new robot_state::RobotState(m_kinematic_model));
+	m_sp_goal_state->setToDefaultValues();
+
+	for (int i = 0; i < vec_joint_names.size(); i++)
 	{
 		// besides its name, this method only changes a single joint position...
-		m_goal_state->setJointPositions(vec_joint_names[i], &vec_position[i]);
+		m_sp_goal_state->setJointPositions(vec_joint_names[i], &vec_position[i]);
 	}
 }
 
-void reset_current_state()
+double KickEngine::get_phase_time() const
 {
 	//TODO: Implementation
 	//TODO: testing
 	//TODO: cleanup
 
-	m_current_state.reset(new robot_state::RobotState(m_kinematic_model));
-	m_current_state->setToDefaultValues();
+	return 0.0;
 }
 
-geometry_msgs::Twist get_twist() const
+std::string KickEngine::get_state() const
 {
 	//TODO: Implementation
+	//TODO: testing
+	//TODO: cleanup
+
+	return std::string();
+}
+
+std::shared_ptr<moveit::core::RobotState>& KickEngine::get_goal_state() const
+{
+	//TODO: testing
+	//TODO: cleanup
+
+	return m_sp_goal_state;
+}
+
+geometry_msgs::Twist KickEngine::get_twist() const
+{
 	//TODO: testing
 	//TODO: cleanup
 
 	geometry_msgs::Twist twist;
-	twist.linear.x = m_v3d_current_orders[0] * m_parameter.freq * 2;
-	twist.linear.y = m_v3d_current_orders[1] * m_parameter.freq * 2;
-	twist.angular.z = m_v3d_current_orders[2] * m_parameter.freq * 2;
+
+	twist.linear.x = m_v3d_current_orders[0] * m_sp_kick_engine_parameter->freq * 2;
+	twist.linear.y = m_v3d_current_orders[1] * m_sp_kick_engine_parameter->freq * 2;
+	twist.angular.z = m_v3d_current_orders[2] * m_sp_kick_engine_parameter->freq * 2;
 
 	return twist;
 }
 
-bool is_left_foot_support() const
+moveit::core::JointModelGroup& KickEngine::get_joint_model_group(std::string name)
+{
+	//TODO: testing
+	//TODO: cleanup
+
+	return *m_sp_kinematic_model->getJointModelGroup(name);
+}
+
+Eigen::Isometry3d KickEngine::get_goal_global_link_transform(std::string link_name) const
+{
+	//TODO: testing
+	//TODO: cleanup
+
+	return m_sp_goal_state->getGlobalLinkTransform(link_name);
+}
+
+Eigen::Isometry3d KickEngine::get_current_global_link_transform(std::string link_name) const
+{
+	//TODO: testing
+	//TODO: cleanup
+
+	return m_sp_current_state->getGlobalLinkTransform(link_name);
+}
+
+void KickEngine::get_goal_joint_group(std::string joint_group_name, std::vector<double>& joint_goals_out, std::vector<std::string>& joint_names_out)
+{
+	//TODO: testing
+	//TODO: cleanup
+
+	auto legs_joints_group = get_joint_model_group(joint_group_name);
+
+	joint_names_out = legs_joints_group->getActiveJointModelNames();
+	m_sp_goal_state->copyJointGroupPositions(legs_joints_group, joint_goals_out);
+}
+
+Eigen::Vector3d KickEngine::get_trunk_axis() const
+{
+	//TODO: Implementation
+	//TODO: testing
+	//TODO: cleanup
+
+	return Eigen::Vector3d();
+}
+
+Eigen::Vector3d KickEngine::get_fly_foot_axis() const
+{
+	//TODO: Implementation
+	//TODO: testing
+	//TODO: cleanup
+
+	return Eigen::Vector3d();
+}
+
+Eigen::Vector3d KickEngine::get_trunk_position() const
+{
+	//TODO: Implementation
+	//TODO: testing
+	//TODO: cleanup
+
+	return Eigen::Vector3d();
+}
+
+Eigen::Vector3d KickEngine::get_next_foot_step() const
+{
+	//TODO: Implementation
+	//TODO: testing
+	//TODO: cleanup
+
+	if (is_left_foot_support())
+	{
+		x = _walkEngine.getFootstep().getLeft()[0];
+		y = _walkEngine.getFootstep().getLeft()[1] + m_sp_kick_engine_parameter->footDistance / 2;
+		yaw = _walkEngine.getFootstep().getLeft()[2];
+	}
+	else
+	{
+		x = _walkEngine.getFootstep().getRight()[0];
+		y = _walkEngine.getFootstep().getRight()[1] + m_sp_kick_engine_parameter->footDistance / 2;
+		yaw = _walkEngine.getFootstep().getRight()[2];
+	}
+
+	return Eigen::Vector3d(x, y, yaw);
+}
+
+Eigen::Vector3d KickEngine::get_last_foot_step() const
+{
+	//TODO: Implementation
+	//TODO: testing
+	//TODO: cleanup
+
+	return Eigen::Vector3d();
+}
+
+Eigen::Vector3d KickEngine::get_fly_foot_position() const
+{
+	//TODO: Implementation
+	//TODO: testing
+	//TODO: cleanup
+
+	return Eigen::Vector3d();
+}
+
+bool KickEngine::has_new_goals() const
+{
+	//TODO: Implementation
+	//TODO: testing
+	//TODO: cleanup
+
+	return false;
+}
+
+bool KickEngine::is_left_foot_support() const
 {
 	//TODO: Implementation
 	//TODO: testing
@@ -67,7 +215,7 @@ bool is_left_foot_support() const
 	return false;
 }
 
-bool are_booth_feet_support() const
+bool KickEngine::are_booth_feet_support() const
 {
 	//TODO: Implementation
 	//TODO: testing
@@ -75,81 +223,43 @@ bool are_booth_feet_support() const
 
 	// returns true if the value of the "is_double_support" spline is currently higher than 0.5
 	// the spline should only have values of 0 or 1
-	_trajs.get("is_double_support").pos(getTrajsTime()) >= 0.5;
+	m_spline_container.get(bitbots_splines::CurvePurpose::is_double_support).pos(getTrajsTime()) >= 0.5;
 
 	return false;
 }
 
-robot_state::JointModelGroup &get_joint_model_group(std::string name)
+void KickEngine::reset_current_state()
 {
-	//TODO: Implementation
 	//TODO: testing
 	//TODO: cleanup
 
-	return *m_kinematic_model->getJointModelGroup(name);
+	m_sp_current_state.reset(new robot_state::RobotState(m_kinematic_model));
+	m_sp_current_state->setToDefaultValues();
 }
 
-void get_goal_joint_group(std::string joint_group_name, std::vector<double> &joint_goals_out, std::vector<std::string> &joint_names_out)
+double KickEngine::calc_trajectory_time() const
 {
-	//TODO: Implementation
 	//TODO: testing
 	//TODO: cleanup
-
-	auto legs_joints_group = m_kick_engine.get_joint_model_group(joint_group_name);
-
-	joint_names_out = legs_joints_group->getActiveJointModelNames();
-	_goal_state->copyJointGroupPositions(legs_joints_group, joint_goals_out);
-}
-
-Eigen::Isometry3d get_goal_global_link_transform(std::string link_name)
-{
-	//TODO: Implementation
-	//TODO: testing
-	//TODO: cleanup
-
-	return m_goal_state->getGlobalLinkTransform(link_name);
-}
-
-void get_next_step(double &x_out, double &y_out, double &yaw_out)
-{
-	//TODO: Implementation
-	//TODO: testing
-	//TODO: cleanup
-
-
-	if (_walkEngine.getFootstep().isLeftSupport())
-	{
-		x = _walkEngine.getFootstep().getLeft()[0];
-		y = _walkEngine.getFootstep().getLeft()[1] + _params.footDistance / 2;
-		yaw = _walkEngine.getFootstep().getLeft()[2];
-	}
-	else
-	{
-		x = _walkEngine.getFootstep().getRight()[0];
-		y = _walkEngine.getFootstep().getRight()[1] + _params.footDistance / 2;
-		yaw = _walkEngine.getFootstep().getRight()[2];
-	}
-
-}
-
-double get_trajectory_time() const
-{
-	//TODO: Implementation
-	//TODO: testing
-	//TODO: cleanup
-
 
 	double t;
 	if (_phase < 0.5) {
-		t = _phase / _params.freq;
+		t = _phase / m_sp_kick_engine_parameter->freq;
 	}
 	else {
-		t = (_phase - 0.5) / _params.freq;
+		t = (_phase - 0.5) / m_sp_kick_engine_parameter->freq;
 	}
 
 	return t;
-
-	return 0.0;
-
 }
-*/
+
+void KickEngine::kick(geometry_msgs::Vector3& ball_position, geometry_msgs::Vector3& target_position)
+{
+	//TODO: testing
+	//TODO: cleanup
+
+	struct3d ball = { ball_position.x, ball_position.y, ball_position.z };
+	struct3d goal = { target_position.x, target_position.y, target_position.z };
+
+	m_spline_container = m_kick_factory.make_kick_trajection(ball, goal);
+}
