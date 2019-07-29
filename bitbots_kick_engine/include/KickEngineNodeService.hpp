@@ -12,7 +12,7 @@
 class KickEngineNodeService
 {
 public:
-	KickEngineNodeService();
+	KickEngineNodeService(bool simulation);
 
 	bool convert_goal_coordinate_from_support_foot_to_trunk_based();
 	bool kick(geometry_msgs::Vector3 &ball_position, geometry_msgs::Vector3 &target_position);
@@ -36,9 +36,16 @@ public:
 private:
 	tf::Transform get_support_foot_transformation(Eigen::Vector3d position, Eigen::Vector3d axis);
 
+
+	bool m_b_first_run;
+	bool m_b_simulation_active;
+	double m_d_ros_time_last_update;
+	std::chrono::time_point<std::chrono::steady_clock> m_time_point_last_update;
+
 	KickEngine m_kick_engine;
-	std::shared_ptr<KickEngineDebugService> m_sp_debug_service;
 	bitbots_ik::BioIKSolver m_bio_ik_solver;
+	std::shared_ptr<KickEngineDebugService> m_sp_debug_service;
+	std::shared_ptr<KickEngineParameter> m_sp_kick_engine_parameter;
 };
 
 #endif

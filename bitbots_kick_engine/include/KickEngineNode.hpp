@@ -12,6 +12,7 @@ class KickEngineNode
     // TODO cleanup
 public:
     KickEngineNode(/* args */);
+	~KickEngineNode();
 
 private:
     void kick_ball(geometry_msgs::Vector3 &ball_position, geometry_msgs::Vector3 &target_position);
@@ -36,7 +37,7 @@ private:
     int32_t m_int_marker_id;
     uint16_t m_uint_odometry_publish_factor;
 
-    KickEngineNodeService m_node_service;
+    KickEngineNodeService * m_p_node_service;
     std::shared_ptr<KickEngineDebugService> m_sp_debug_service;
 
     ros::NodeHandle m_ros_node_handle;
