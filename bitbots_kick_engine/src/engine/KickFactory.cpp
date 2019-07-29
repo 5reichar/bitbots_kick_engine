@@ -2,6 +2,9 @@
 
 bitbots_splines::SplineContainer KickFactory::make_kick_trajection(struct3d & const ball, struct3d & const goal)
 {
+	//TODO: testing
+	//TODO: cleanup
+
 	init(ball, goal);
 
 	auto kick_trajectory = make_kick_trajection();
@@ -13,6 +16,9 @@ bitbots_splines::SplineContainer KickFactory::make_kick_trajection(struct3d & co
 
 void KickFactory::init(struct3d& const ball, struct3d& const goal)
 {
+	//TODO: testing
+	//TODO: cleanup
+
 	m_d_angle_robot_ball = calculate_angle(ball.x, ball.y);
 	m_d_angle_ball_goal = calculate_angle(goal.x - ball.x, goal.y - ball.y);
 
@@ -25,6 +31,9 @@ void KickFactory::init(struct3d& const ball, struct3d& const goal)
 
 void KickFactory::reset()
 {
+	//TODO: testing
+	//TODO: cleanup
+
 	delete m_pc_current_foot_position;
 	delete m_pc_kick_start_foot_position;
 	delete m_pc_current_ball_position;
@@ -33,6 +42,9 @@ void KickFactory::reset()
 
 double KickFactory::calculate_angle(double const x, double const y)
 {
+	//TODO: testing
+	//TODO: cleanup
+
 	double angle = y == 0.0 ? std::atan(std::abs(x) / std::abs(y));
 
 	if (x < 0 && y > 0)
@@ -53,7 +65,10 @@ double KickFactory::calculate_angle(double const x, double const y)
 
 struct3d KickFactory::calculate_kick_start()
 {
-	// TODO: make dynamic (adjustable via KickEngineParameter and/or Kick)
+	//TODO: make dynamic (adjustable via KickEngineParameter and/or Kick)
+	//TODO: testing
+	//TODO: cleanup
+
 	struct3d kick_start_position;
 
 	if (m_d_angle_robot_ball > 315 || m_d_angle_robot_ball < 45)
@@ -111,18 +126,28 @@ struct3d KickFactory::calculate_kick_start()
 
 struct3d KickFactory::get_foot_position()
 {
+	//TODO: Implementation
+	//TODO: testing
+	//TODO: cleanup
+
 	return struct3d();
 }
 
 bool KickFactory::check_kicking_with_left()
 {
-	// TODO: make dynamic (adjustable via KickEngineParameter and/or Kick)
+	//TODO: make dynamic (adjustable via KickEngineParameter and/or Kick)
+	//TODO: testing
+	//TODO: cleanup
+
 	return m_d_angle_robot_ball > 180;
 }
 
 bitbots_splines::SplineContainer KickFactory::make_kick_trajection()
 {
-	// TODO: implementation
+	//TODO: Implementation
+	//TODO: testing
+	//TODO: cleanup
+
 	bitbots_splines::SplineContainer kick_trajection;
 
 
