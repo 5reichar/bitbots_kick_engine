@@ -35,6 +35,11 @@ public:
         Eigen::Vector3d &footPos,
         Eigen::Vector3d &footAxis);
 
+	static Eigen::Vector3d& GetTrajectoriePositionTrunk(double time, const SplineContainer& trajectories);
+	static Eigen::Vector3d& GetTrajectorieAxisTrunk(double time, const SplineContainer& trajectories);
+	static Eigen::Vector3d& GetTrajectoriePositionFoot(double time, const SplineContainer& trajectories);
+	static Eigen::Vector3d& GetTrajectorieAxisFoot(double time, const SplineContainer& trajectories);
+
     static void TrajectoriesTrunkFootVel(
         double t, const SplineContainer &traj,
         Eigen::Vector3d &trunkPosVel,
@@ -53,6 +58,9 @@ public:
         double t, const SplineContainer &traj,
         bool &isDoubleSupport,
         bool &isLeftsupportFoot);
+
+	static bool& GetTrajectorieFootSupportDouble(double time, const SplineContainer& trajectories);
+	static bool& GetTrajectorieFootSupportLeft(double time, const SplineContainer& trajectories);
 
     /**
      * Default Cartesian state check function.

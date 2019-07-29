@@ -1,5 +1,6 @@
 #include "KickEngine.hpp"
 #include <moveit/robot_model_loader/robot_model_loader.h>
+#include <bitbots_spline/include/utils/TrajectoryService.hpp>
 
 KickEngine::KickEngine()
 {
@@ -130,29 +131,26 @@ void KickEngine::get_goal_joint_group(std::string joint_group_name, std::vector<
 
 Eigen::Vector3d KickEngine::get_trunk_axis() const
 {
-	//TODO: Implementation
 	//TODO: testing
 	//TODO: cleanup
 
-	return Eigen::Vector3d();
+	return bitbots_splines::TrajectoryService::GetTrajectorieAxisTrunk(calc_trajectory_time(), m_spline_container);
 }
 
 Eigen::Vector3d KickEngine::get_fly_foot_axis() const
 {
-	//TODO: Implementation
 	//TODO: testing
 	//TODO: cleanup
 
-	return Eigen::Vector3d();
+	return bitbots_splines::TrajectoryService::GetTrajectorieAxisFoot(calc_trajectory_time(), m_spline_container);
 }
 
 Eigen::Vector3d KickEngine::get_trunk_position() const
 {
-	//TODO: Implementation
 	//TODO: testing
 	//TODO: cleanup
 
-	return Eigen::Vector3d();
+	return bitbots_splines::TrajectoryService::GetTrajectoriePositionTrunk(calc_trajectory_time(), m_spline_container);
 }
 
 Eigen::Vector3d KickEngine::get_next_foot_step() const
@@ -188,11 +186,10 @@ Eigen::Vector3d KickEngine::get_last_foot_step() const
 
 Eigen::Vector3d KickEngine::get_fly_foot_position() const
 {
-	//TODO: Implementation
 	//TODO: testing
 	//TODO: cleanup
 
-	return Eigen::Vector3d();
+	return bitbots_splines::TrajectoryService::GetTrajectoriePositionFoot(calc_trajectory_time(), m_spline_container);
 }
 
 bool KickEngine::has_new_goals() const
@@ -206,26 +203,22 @@ bool KickEngine::has_new_goals() const
 
 bool KickEngine::is_left_foot_support() const
 {
-	//TODO: Implementation
 	//TODO: testing
 	//TODO: cleanup
 
-	//_footstep.isLeftSupport()
-
-	return false;
+	// returns true if the value of the "is_left_support_foot" spline is currently higher than 0.5
+	// the spline should only have values of 0 or 1
+	return bitbots_splines::TrajectoryService::GetTrajectorieFootSupportLeft(calc_trajectory_time(), m_spline_container);
 }
 
 bool KickEngine::are_booth_feet_support() const
 {
-	//TODO: Implementation
 	//TODO: testing
 	//TODO: cleanup
 
 	// returns true if the value of the "is_double_support" spline is currently higher than 0.5
 	// the spline should only have values of 0 or 1
-	m_spline_container.get(bitbots_splines::CurvePurpose::is_double_support).pos(getTrajsTime()) >= 0.5;
-
-	return false;
+	return bitbots_splines::TrajectoryService::GetTrajectorieFootSupportDouble(calc_trajectory_time(), m_spline_container);
 }
 
 void KickEngine::reset_current_state()
