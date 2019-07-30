@@ -41,7 +41,6 @@ public:
 	Eigen::Vector3d get_last_foot_step() const;
 	Eigen::Vector3d get_fly_foot_position() const;
 
-	bool has_new_goals() const;
 	bool is_left_foot_support() const;
 	bool are_booth_feet_support() const;
 

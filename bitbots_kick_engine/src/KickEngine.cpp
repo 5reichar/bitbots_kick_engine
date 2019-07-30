@@ -192,15 +192,6 @@ Eigen::Vector3d KickEngine::get_fly_foot_position() const
 	return bitbots_splines::TrajectoryService::GetTrajectoriePositionFoot(calc_trajectory_time(), m_spline_container);
 }
 
-bool KickEngine::has_new_goals() const
-{
-	//TODO: Implementation
-	//TODO: testing
-	//TODO: cleanup
-
-	return false;
-}
-
 bool KickEngine::is_left_foot_support() const
 {
 	//TODO: testing
