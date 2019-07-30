@@ -1,32 +1,58 @@
 #include "KickFactory.hpp"
 
-bitbots_splines::SplineContainer KickFactory::make_kick_trajection(struct3d & const ball, struct3d & const goal)
+bitbots_splines::SplineContainer KickFactory::make_kick_trajection(struct3d ball_position, struct3d goal_position)
 {
 	//TODO: testing
 	//TODO: cleanup
 
-	init(ball, goal);
+	return make_kick_trajection(nullptr, ball_position, goal_position, nullptr);
+}
+
+bitbots_splines::SplineContainer KickFactory::make_kick_trajection(struct3d current_foot_position, struct3d ball_position, struct3d goal_position)
+{
+	//TODO: testing
+	//TODO: cleanup
+
+	return make_kick_trajection(current_foot_position, ball_position, goal_position, nullptr);
+}
+
+bitbots_splines::SplineContainer KickFactory::make_kick_trajection(struct3d current_foot_position, struct3d ball_position, struct3d goal_position, struct3d final_foot_position)
+{
+	//TODO: testing
+	//TODO: cleanup
+
+	init(current_foot_position, ball_position, goal_position, final_foot_position);
 
 	auto kick_trajectory = make_kick_trajection();
+
+	std::unique_ptr<Kick> up_kick(create_kick());
+
+	up_kick->set_foot_position(m_sp_current_foot_position);
+	up_kick->set_kick_start_position(m_sp_kick_start_foot_position);
+	up_kick->set_ball_position(m_sp_current_ball_position);
+	up_kick->set_foot_end_position(m_sp_final_foot_position);
+	up_kick->set_kick_with_right(m_b_kick_with_right);
 
 	reset();
 
 	return kick_trajectory;
 }
 
-void KickFactory::init(struct3d& const ball, struct3d& const goal)
+void KickFactory::init(struct3d& current_foot_position, struct3d& ball_position, struct3d& goal_position, struct3d& final_foot_position)
 {
 	//TODO: testing
 	//TODO: cleanup
 
-	m_d_angle_robot_ball = calculate_angle(ball.x, ball.y);
-	m_d_angle_ball_goal = calculate_angle(goal.x - ball.x, goal.y - ball.y);
+	m_d_angle_robot_ball = calculate_angle(ball_position.x, ball_position.y);
+	m_d_angle_ball_goal = calculate_angle(goal_position.x - ball_position.x, goal_position.y - ball_position.y);
 
-	m_pc_current_foot_position = get_foot_position();
-	m_pc_kick_start_foot_position = calculate_kick_start();
-	m_pc_current_ball_position = ball;
-	m_pc_ball_goal_position = goal;
-	m_b_kick_with_left = check_kicking_with_left();
+	m_sp_current_foot_position.reset(current_foot_position);
+	m_sp_kick_start_foot_position.reset(calculate_kick_start());
+	m_sp_current_ball_position.reset(ball_position);
+	m_sp_ball_goal_position.reset(goal_position);
+	m_sp_final_foot_position.reset(final_foot_position);
+
+	m_b_kick_with_right = check_kicking_with_right();
 }
 
 void KickFactory::reset()
@@ -34,10 +60,10 @@ void KickFactory::reset()
 	//TODO: testing
 	//TODO: cleanup
 
-	delete m_pc_current_foot_position;
-	delete m_pc_kick_start_foot_position;
-	delete m_pc_current_ball_position;
-	delete m_pc_ball_goal_position;
+	m_sp_current_foot_position.reset();
+	m_sp_kick_start_foot_position.reset();
+	m_sp_current_ball_position.reset();
+	m_sp_ball_goal_position.reset();
 }
 
 double KickFactory::calculate_angle(double const x, double const y)
@@ -124,33 +150,24 @@ struct3d KickFactory::calculate_kick_start()
 	return kick_start_position;
 }
 
-struct3d KickFactory::get_foot_position()
-{
-	//TODO: Implementation
-	//TODO: testing
-	//TODO: cleanup
-
-	return struct3d();
-}
-
-bool KickFactory::check_kicking_with_left()
+bool KickFactory::check_kicking_with_right()
 {
 	//TODO: make dynamic (adjustable via KickEngineParameter and/or Kick)
 	//TODO: testing
 	//TODO: cleanup
 
-	return m_d_angle_robot_ball > 180;
+	return m_d_angle_robot_ball < 180;
 }
 
-bitbots_splines::SplineContainer KickFactory::make_kick_trajection()
+Kick * KickFactory::create_kick()
 {
 	//TODO: Implementation
 	//TODO: testing
 	//TODO: cleanup
 
-	bitbots_splines::SplineContainer kick_trajection;
+	Kick * p_kick = nullptr_t;
 
 
 
-	return kick_trajection;
+	return p_kick;
 }

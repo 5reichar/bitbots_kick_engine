@@ -1,13 +1,96 @@
 #include "..\..\include\kicks\Kick.hpp"
 
-bitbots_splines::SplineContainer& Kick::create_trajectory(struct3d const foot_current, struct3d const foot_kick_start, struct3d const ball_current, struct3d const ball_goal, bool const kick_with_left_foot)
+void Kick::reset()
 {
 	//TODO: testing
 	//TODO: cleanup
 
-	auto spline_container = calculate_kick(foot_current, foot_kick_start, ball_current, ball_goal);
+	m_sp_ball_position.reset();
+	m_sp_foot_end_position.reset();
+	m_sp_foot_position.reset();
+	m_sp_goal_position.reset();
+	m_sp_kick_start_position.reset();
+}
 
-	set_support_foot_trajectories(spline_container, kick_with_left_foot);
+bitbots_splines::SplineContainer& Kick::create_trajectories()
+{
+	//TODO: testing
+	//TODO: cleanup
 
-	return spline_container;
+	bool error = false;
+
+	if (!m_sp_kick_start_position)
+	{
+		// implement ROS Error
+		error = true;
+	}
+	if (!m_sp_ball_position)
+	{
+		// implement ROS Error
+		error = true;
+	}
+	if (!m_sp_goal_position)
+	{
+		// implement ROS Error
+		error = true;
+	}
+	if (!additional_requirements())
+	{
+		error = true;
+	}
+
+	return error ? NULL : calculate_trajectories();
+}
+
+void Kick::set_foot_position(std::shared_ptr<struct3d> position)
+{
+	//TODO: testing
+	//TODO: cleanup
+
+	m_sp_foot_position.reset(position);
+}
+
+void Kick::set_kick_start_position(std::shared_ptr<struct3d> position)
+{
+	//TODO: testing
+	//TODO: cleanup
+
+	m_sp_kick_start_position.reset(position);
+}
+
+void Kick::set_ball_position(std::shared_ptr<struct3d> position)
+{
+	//TODO: testing
+	//TODO: cleanup
+
+	m_sp_ball_position.reset(position);
+}
+
+void Kick::set_goal_position(std::shared_ptr<struct3d> position)
+{
+	//TODO: testing
+	//TODO: cleanup
+
+	m_sp_goal_position.reset(position);
+}
+
+void Kick::set_foot_end_position(std::shared_ptr<struct3d> position)
+{
+	//TODO: testing
+	//TODO: cleanup
+
+	m_sp_foot_end_position.reset(position);
+}
+
+void Kick::set_kick_with_right(bool kick_with_right)
+{
+	//TODO: testing
+	//TODO: cleanup
+
+	m_b_kick_with_right = kick_with_right;
+}
+
+bool Kick::additional_requirements()
+{
+	return true;
 }

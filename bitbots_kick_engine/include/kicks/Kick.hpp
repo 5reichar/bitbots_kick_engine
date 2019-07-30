@@ -11,11 +11,26 @@ struct struct3d
 class Kick
 {
 public:
-	bitbots_splines::SplineContainer & create_trajectory(struct3d const foot_current, struct3d const foot_kick_start, struct3d const ball_current, struct3d const ball_goal, bool const kick_with_left_foot);
+	void reset();
+	bitbots_splines::SplineContainer & create_trajectories();
+
+	void set_foot_position(std::shared_ptr<struct3d> position);
+	void set_kick_start_position(std::shared_ptr<struct3d> position);
+	void set_ball_position(std::shared_ptr<struct3d> position);
+	void set_goal_position(std::shared_ptr<struct3d> position);
+	void set_foot_end_position(std::shared_ptr<struct3d> position);
+	void set_kick_with_right(bool kick_with_right);
 
 protected:
-	virtual bitbots_splines::SplineContainer calculate_kick(struct3d const foot_current, struct3d const foot_kick_start, struct3d const ball_current, struct3d const ball_goal) = 0;
-	virtual void set_support_foot_trajectories(bitbots_splines::SplineContainer& spline_container, bool const kick_with_left_foot) = 0;
+	virtual bool additional_requirements();
+	virtual bitbots_splines::SplineContainer calculate_trajectories() = 0;
+
+	std::shared_ptr<struct3d> m_sp_foot_position;
+	std::shared_ptr<struct3d> m_sp_kick_start_position;
+	std::shared_ptr<struct3d> m_sp_ball_position;
+	std::shared_ptr<struct3d> m_sp_goal_position;
+	std::shared_ptr<struct3d> m_sp_foot_end_position;
+	bool m_b_kick_with_right;
 
 private:
 };
