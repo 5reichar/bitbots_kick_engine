@@ -26,6 +26,7 @@ KickEngineNodeService::KickEngineNodeService(bool simulation)
 
 bool KickEngineNodeService::convert_goal_coordinate_from_support_foot_to_trunk_based()
 {
+	//TODO: implemention
 	//TODO: testing
 	//TODO: cleanup
 
