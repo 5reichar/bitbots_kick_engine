@@ -26,12 +26,9 @@ KickEngineNodeService::KickEngineNodeService(bool simulation)
 
 bool KickEngineNodeService::convert_goal_coordinate_from_support_foot_to_trunk_based()
 {
-	//TODO: implemention
 	//TODO: testing
 	//TODO: cleanup
 
-	// read the cartesian positions and orientations for trunk and fly foot
-	m_kick_engine.computeCartesianPosition(_trunkPos, _trunkAxis, _footPos, _footAxis, _isLeftSupport);
 	robot_state::RobotStatePtr goal_state;
 
 	// change goals from support foot based coordinate system to trunk based coordinate system
@@ -39,8 +36,7 @@ bool KickEngineNodeService::convert_goal_coordinate_from_support_foot_to_trunk_b
 	auto trunk_to_flying_foot_goal = trunk_to_support_foot_goal * get_support_foot_transformation(m_kick_engine.get_fly_foot_position(), m_kick_engine.get_fly_foot_axis());
 
 	// call ik solver
-	bool success = m_bio_ik_solver.solve(trunk_to_support_foot_goal, trunk_to_flying_foot_goal,
-		is_left_foot_support(), goal_state);
+	bool success = m_bio_ik_solver.solve(trunk_to_support_foot_goal, trunk_to_flying_foot_goal, is_left_foot_support(), goal_state);
 
 	m_kick_engine.set_goal_state(goal_state);
 
@@ -60,7 +56,7 @@ bool KickEngineNodeService::kick(geometry_msgs::Vector3& ball_position, geometry
 
 	bool success = false;
 
-	if (m_kick_engine.has_new_goals())
+	if (m_kick_engine.update(calculate_time_delta()))
 	{
 		m_kick_engine.kick(ball_position, target_position);
 		success = true;

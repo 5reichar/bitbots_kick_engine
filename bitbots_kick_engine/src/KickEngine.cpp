@@ -7,12 +7,23 @@ KickEngine::KickEngine()
 	//TODO: testing
 	//TODO: cleanup
 
+	m_footstep.setFootDistance(m_sp_kick_engine_parameter->footDistance);
+
 	robot_model_loader::RobotModelLoader robot_model_loader("/robot_description", false);
 	robot_model_loader.loadKinematicsSolvers(
 		kinematics_plugin_loader::KinematicsPluginLoaderPtr(
 			new kinematics_plugin_loader::KinematicsPluginLoader()));
 
 	this->m_sp_kinematic_model = robot_model_loader.getModel();
+}
+
+bool KickEngine::update(double delta_time)
+{
+	bool b_succ = true;
+
+	update_phase(delta_time);
+
+	return b_succ;
 }
 
 void KickEngine::set_parameter(std::shared_ptr<KickEngineParameter> &parameter)
@@ -54,32 +65,6 @@ void KickEngine::set_goal_state(std::vector<std::string> vec_joint_names, std::v
 	}
 }
 
-double KickEngine::get_phase_time() const
-{
-	//TODO: Implementation
-	//TODO: testing
-	//TODO: cleanup
-
-	return 0.0;
-}
-
-std::string KickEngine::get_state() const
-{
-	//TODO: Implementation
-	//TODO: testing
-	//TODO: cleanup
-
-	return std::string();
-}
-
-std::shared_ptr<moveit::core::RobotState>& KickEngine::get_goal_state() const
-{
-	//TODO: testing
-	//TODO: cleanup
-
-	return m_sp_goal_state;
-}
-
 geometry_msgs::Twist KickEngine::get_twist() const
 {
 	//TODO: testing
@@ -87,9 +72,9 @@ geometry_msgs::Twist KickEngine::get_twist() const
 
 	geometry_msgs::Twist twist;
 
-	twist.linear.x = m_v3d_current_orders[0] * m_sp_kick_engine_parameter->freq * 2;
-	twist.linear.y = m_v3d_current_orders[1] * m_sp_kick_engine_parameter->freq * 2;
-	twist.angular.z = m_v3d_current_orders[2] * m_sp_kick_engine_parameter->freq * 2;
+	twist.linear.x = m_s3d_foot_goal_position.x * m_sp_kick_engine_parameter->freq * 2;
+	twist.linear.y = m_s3d_foot_goal_position.y * m_sp_kick_engine_parameter->freq * 2;
+	twist.angular.z = m_s3d_foot_goal_position.z * m_sp_kick_engine_parameter->freq * 2;
 
 	return twist;
 }
@@ -155,33 +140,25 @@ Eigen::Vector3d KickEngine::get_trunk_position() const
 
 Eigen::Vector3d KickEngine::get_next_foot_step() const
 {
-	//TODO: Implementation
 	//TODO: testing
 	//TODO: cleanup
+
+	auto current_time = calc_trajectory_time() + m_sp_kick_engine_parameter->engineFrequency;
 
 	if (is_left_foot_support())
 	{
-		x = _walkEngine.getFootstep().getLeft()[0];
-		y = _walkEngine.getFootstep().getLeft()[1] + m_sp_kick_engine_parameter->footDistance / 2;
-		yaw = _walkEngine.getFootstep().getLeft()[2];
+		x = m_footstep.getLeft()[0];
+		y = m_footstep.getLeft()[1] + m_sp_kick_engine_parameter->footDistance / 2;
+		yaw = m_footstep.getLeft()[2];
 	}
 	else
 	{
-		x = _walkEngine.getFootstep().getRight()[0];
-		y = _walkEngine.getFootstep().getRight()[1] + m_sp_kick_engine_parameter->footDistance / 2;
-		yaw = _walkEngine.getFootstep().getRight()[2];
+		x = m_footstep.getRight()[0];
+		y = m_footstep.getRight()[1] + m_sp_kick_engine_parameter->footDistance / 2;
+		yaw = m_footstep.getRight()[2];
 	}
 
 	return Eigen::Vector3d(x, y, yaw);
-}
-
-Eigen::Vector3d KickEngine::get_last_foot_step() const
-{
-	//TODO: Implementation
-	//TODO: testing
-	//TODO: cleanup
-
-	return Eigen::Vector3d();
 }
 
 Eigen::Vector3d KickEngine::get_fly_foot_position() const
@@ -226,15 +203,15 @@ double KickEngine::calc_trajectory_time() const
 	//TODO: testing
 	//TODO: cleanup
 
-	double t;
-	if (_phase < 0.5) {
-		t = _phase / m_sp_kick_engine_parameter->freq;
+	double trajectory_time;
+	if (m_d_time_phase < 0.5) {
+		trajectory_time = m_d_time_phase / m_sp_kick_engine_parameter->freq;
 	}
 	else {
-		t = (_phase - 0.5) / m_sp_kick_engine_parameter->freq;
+		trajectory_time = (m_d_time_phase - 0.5) / m_sp_kick_engine_parameter->freq;
 	}
 
-	return t;
+	return trajectory_time;
 }
 
 void KickEngine::kick(geometry_msgs::Vector3& ball_position, geometry_msgs::Vector3& target_position)
@@ -245,5 +222,45 @@ void KickEngine::kick(geometry_msgs::Vector3& ball_position, geometry_msgs::Vect
 	struct3d ball = { ball_position.x, ball_position.y, ball_position.z };
 	struct3d goal = { target_position.x, target_position.y, target_position.z };
 
-	m_spline_container = m_kick_factory.make_kick_trajection(ball, goal);
+	kick(ball, goal, ball);
+}
+
+void KickEngine::kick(struct3d& ball_position, struct3d& target_position, struct3d& foot_final_position)
+{
+	//TODO: testing
+	//TODO: cleanup
+
+	m_s3d_foot_goal_position = foot_final_position;
+	m_footstep.stepFromOrders(foot_final_position);
+	m_spline_container = m_kick_factory.make_kick_trajection(ball_position, target_position);
+}
+
+void KickEngine::update_phase(double delta_time)
+{
+	//TODO: testing
+	//TODO: cleanup
+
+	//Check for negative time step
+	if (delta_time <= 0.0) {
+		if (delta_time == 0.0) { //sometimes happens due to rounding
+			delta_time = 0.0001;
+		}
+		else {
+			ROS_ERROR_THROTTLE(1, "QuinticWalk exception negative dt phase= %f dt= %f", m_d_time_phase, delta_time);
+			return;
+		}
+	}
+	//Check for too long dt
+	if (delta_time > 0.25 / m_sp_kick_engine_parameter->freq) {
+		ROS_ERROR_THROTTLE(1, "QuinticWalk error too long dt phase= %f dt= %f", m_d_time_phase, delta_time);
+		return;
+	}
+
+	//Update the phase
+	m_d_time_phase += delta_time * m_sp_kick_engine_parameter->freq;
+
+	// reset to 0 if step complete
+	if (m_d_time_phase > 1.0) {
+		m_d_time_phase = 0.0;
+	}
 }

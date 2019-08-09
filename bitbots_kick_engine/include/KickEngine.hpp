@@ -7,6 +7,7 @@
 #include <geometry_msgs/Twist.h>
 #include "KickEngineParameter.hpp"
 #include "engine/KickFactory.hpp"
+#include "Footstep.hpp"
 
 class KickEngine
 {
@@ -18,15 +19,13 @@ public:
 
 	KickEngine();
 
+	bool update(double delta_time);
+
 	void set_parameter(std::shared_ptr<KickEngineParameter> &parameter);
 	void set_robot_state(uint8_t state);
 
 	virtual void set_goal_state(std::shared_ptr<moveit::core::RobotState> &goal_state);
 	virtual void set_goal_state(std::vector<std::string> vec_joint_names, std::vector<double> vec_position);
-
-	double get_phase_time() const;
-	std::string get_state() const;
-	std::shared_ptr<moveit::core::RobotState>& get_goal_state() const;
 
 	geometry_msgs::Twist get_twist() const;
 	moveit::core::JointModelGroup &get_joint_model_group(std::string name);
@@ -38,27 +37,30 @@ public:
 	Eigen::Vector3d get_fly_foot_axis() const;
 	Eigen::Vector3d get_trunk_position() const;
 	Eigen::Vector3d get_next_foot_step() const;
-	Eigen::Vector3d get_last_foot_step() const;
 	Eigen::Vector3d get_fly_foot_position() const;
 
 	bool is_left_foot_support() const;
 	bool are_booth_feet_support() const;
 
 	void reset_current_state();
-	double calc_trajectory_time() const;
-	void kick(geometry_msgs::Vector3 &ball_position, geometry_msgs::Vector3 &target_position);
+	void kick(geometry_msgs::Vector3& ball_position, geometry_msgs::Vector3& target_position);
 
 private:
+	void kick(struct3d& ball_position, struct3d& target_position, struct3d& foot_final_position);
+	void update_phase(double delta_time);
 
+	double m_d_time_phase;
+	Footstep m_footstep;
 	uint8_t m_robot_state;
 	KickFactory m_kick_factory;
-	Eigen::Vector3d m_v3d_current_orders;
+	struct3d m_s3d_foot_goal_position;
 	bitbots_splines::SplineContainer m_spline_container;
 
 	std::shared_ptr<moveit::core::RobotState> m_sp_goal_state;
 	std::shared_ptr<moveit::core::RobotState> m_sp_current_state;
 	std::shared_ptr<moveit::core::RobotModel> m_sp_kinematic_model;
 	std::shared_ptr<KickEngineParameter> m_sp_kick_engine_parameter;
+
 };
 
 #endif

@@ -49,36 +49,12 @@ double KickEngineDebugService::get_trajectory_time()
 	return m_kick_engine.get_trajectory_time();
 }
 
-double KickEngineDebugService::get_engine_phase_time()
-{
-	//TODO: testing
-	//TODO: cleanup
-
-	return m_kick_engine.get_phase_time();
-}
-
-std_msgs::String KickEngineDebugService::get_engine_state()
-{
-	//TODO: testing
-	//TODO: cleanup
-
-	return m_kick_engine.get_state();
-}
-
 std_msgs::Char KickEngineDebugService::get_support_foot_sole()
 {
 	//TODO: testing
 	//TODO: cleanup
 
 	return m_kick_engine.is_left_foot_support() ? "l_sole" : "r_sole";
-}
-
-geometry_msgs::Pose KickEngineDebugService::get_last_footstep_pose()
-{
-	//TODO: testing
-	//TODO: cleanup
-
-	return get_pose_from_step(m_kick_engine.get_last_foot_step());
 }
 
 geometry_msgs::Pose KickEngineDebugService::get_next_footstep_pose()
