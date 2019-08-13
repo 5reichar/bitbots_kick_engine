@@ -3,11 +3,10 @@
 #include "../../bitbots_spline/include/utils/TrajectoryService.hpp"
 
 KickEngine::KickEngine()
+	:m_footstep(m_sp_kick_engine_parameter->footDistance, is_left_foot_support())
 {
 	//TODO: testing
 	//TODO: cleanup
-
-	m_footstep.setFootDistance(m_sp_kick_engine_parameter->footDistance);
 
 	robot_model_loader::RobotModelLoader robot_model_loader("/robot_description", false);
 	robot_model_loader.loadKinematicsSolvers(
@@ -55,7 +54,7 @@ void KickEngine::set_goal_state(std::vector<std::string> vec_joint_names, std::v
 	//TODO: testing
 	//TODO: cleanup
 
-	m_sp_goal_state.reset(new robot_state::RobotState(m_kinematic_model));
+	m_sp_goal_state.reset(new robot_state::RobotState(m_sp_kinematic_model));
 	m_sp_goal_state->setToDefaultValues();
 
 	for (int i = 0; i < vec_joint_names.size(); i++)
@@ -110,7 +109,7 @@ void KickEngine::get_goal_joint_group(std::string joint_group_name, std::vector<
 
 	auto legs_joints_group = get_joint_model_group(joint_group_name);
 
-	joint_names_out = legs_joints_group->getActiveJointModelNames();
+	joint_names_out = legs_joints_group.getActiveJointModelNames();
 	m_sp_goal_state->copyJointGroupPositions(legs_joints_group, joint_goals_out);
 }
 
@@ -144,6 +143,7 @@ Eigen::Vector3d KickEngine::get_next_foot_step() const
 	//TODO: cleanup
 
 	auto current_time = calc_trajectory_time() + m_sp_kick_engine_parameter->engineFrequency;
+	double x, y, yaw;
 
 	if (is_left_foot_support())
 	{
@@ -194,7 +194,7 @@ void KickEngine::reset_current_state()
 	//TODO: testing
 	//TODO: cleanup
 
-	m_sp_current_state.reset(new robot_state::RobotState(m_kinematic_model));
+	m_sp_current_state.reset(new robot_state::RobotState(m_sp_kinematic_model));
 	m_sp_current_state->setToDefaultValues();
 }
 
@@ -231,7 +231,7 @@ void KickEngine::kick(struct3d& ball_position, struct3d& target_position, struct
 	//TODO: cleanup
 
 	m_s3d_foot_goal_position = foot_final_position;
-	m_footstep.stepFromOrders(foot_final_position);
+	m_footstep.stepFromOrders(Eigen::Vector3d(foot_final_position.x, foot_final_position.y, foot_final_position.z));
 	m_spline_container = m_kick_factory.make_kick_trajection(ball_position, target_position);
 }
 

@@ -48,6 +48,7 @@ public:
 private:
 	void kick(struct3d& ball_position, struct3d& target_position, struct3d& foot_final_position);
 	void update_phase(double delta_time);
+	double calc_trajectory_time() const;
 
 	double m_d_time_phase;
 	Footstep m_footstep;
