@@ -1,7 +1,7 @@
 #ifndef KICK_HPP
 #define KICK_HPP
 
-#include <bitbots_spline/include/utils/SplineContainer.hpp>
+#include "../../bitbots_spline/include/utils/SplineContainer.hpp"
 
 struct struct3d
 {

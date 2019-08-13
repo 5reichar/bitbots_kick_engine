@@ -9,7 +9,7 @@ https://github.com/Rhoban/model/
 #include <Eigen/Dense>
 #include <cmath>
 #include <stdexcept>
-#include <bitbots_spline/include/utils/Angle.h>
+#include "../../bitbots_spline/include/utils/Angle.h"
 
 /**
  * Footstep
