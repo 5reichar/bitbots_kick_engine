@@ -50,31 +50,35 @@ void TrajectoryService::TrajectoriesTrunkFootPos(
 }
 Eigen::Vector3d& TrajectoryService::GetTrajectoriePositionTrunk(double time, const SplineContainer& trajectories)
 {
-	return Eigen::Vector3d(
-		trajectories.get(CurvePurpose::trunk_position_x)->pos(time),
-		trajectories.get(CurvePurpose::trunk_position_y)->pos(time),
-		trajectories.get(CurvePurpose::trunk_position_z)->pos(time));
+	auto return_value = Eigen::Vector3d(
+                            trajectories.get(CurvePurpose::trunk_position_x)->pos(time),
+                            trajectories.get(CurvePurpose::trunk_position_y)->pos(time),
+                            trajectories.get(CurvePurpose::trunk_position_z)->pos(time));
+    return return_value;
 }
 Eigen::Vector3d& TrajectoryService::GetTrajectorieAxisTrunk(double time, const SplineContainer& trajectories)
 {
-	return Eigen::Vector3d(
-		trajectories.get(CurvePurpose::trunk_axis_x)->pos(time),
-		trajectories.get(CurvePurpose::trunk_axis_y)->pos(time),
-		trajectories.get(CurvePurpose::trunk_axis_z)->pos(time));
+	auto return_value = Eigen::Vector3d(
+                            trajectories.get(CurvePurpose::trunk_axis_x)->pos(time),
+                            trajectories.get(CurvePurpose::trunk_axis_y)->pos(time),
+                            trajectories.get(CurvePurpose::trunk_axis_z)->pos(time));
+    return return_value;
 }
 Eigen::Vector3d& TrajectoryService::GetTrajectoriePositionFoot(double time, const SplineContainer& trajectories)
 {
-	return Eigen::Vector3d(
-		trajectories.get(CurvePurpose::foot_position_x)->pos(time),
-		trajectories.get(CurvePurpose::foot_position_y)->pos(time),
-		trajectories.get(CurvePurpose::foot_position_z)->pos(time));
+	auto return_value = Eigen::Vector3d(
+                            trajectories.get(CurvePurpose::foot_position_x)->pos(time),
+                            trajectories.get(CurvePurpose::foot_position_y)->pos(time),
+                            trajectories.get(CurvePurpose::foot_position_z)->pos(time));
+    return return_value;
 }
 Eigen::Vector3d& TrajectoryService::GetTrajectorieAxisFoot(double time, const SplineContainer& trajectories)
 {
-	return Eigen::Vector3d(
-		trajectories.get(CurvePurpose::foot_axis_x)->pos(time),
-		trajectories.get(CurvePurpose::foot_axis_y)->pos(time),
-		trajectories.get(CurvePurpose::foot_axis_z)->pos(time));
+	auto return_value = Eigen::Vector3d(
+                            trajectories.get(CurvePurpose::foot_axis_x)->pos(time),
+                            trajectories.get(CurvePurpose::foot_axis_y)->pos(time),
+                            trajectories.get(CurvePurpose::foot_axis_z)->pos(time));
+    return return_value;
 }
 void TrajectoryService::TrajectoriesTrunkFootVel(
     double t,
@@ -140,11 +144,13 @@ void TrajectoryService::TrajectoriesSupportFootState(
 }
 bool& TrajectoryService::GetTrajectorieFootSupportDouble(double time, const SplineContainer& trajectories)
 {
-	return trajectories.get(CurvePurpose::is_double_support)->pos(time) >= 0.5 ? true : false
+    auto return_value = trajectories.get(CurvePurpose::is_double_support)->pos(time) >= 0.5 ? true : false;
+    return return_value;
 }
 bool& TrajectoryService::GetTrajectorieFootSupportLeft(double time, const SplineContainer& trajectories)
 {
-	return trajectories.get(CurvePurpose::is_left_support_foot)->pos(time) >= 0.5 ? true : false
+    auto return_value = trajectories.get(CurvePurpose::is_left_support_foot)->pos(time) >= 0.5 ? true : false;
+    return return_value;
 }
 
 double TrajectoryService::DefaultCheckState(
