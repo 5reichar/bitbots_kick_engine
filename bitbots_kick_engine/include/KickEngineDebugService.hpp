@@ -4,7 +4,7 @@
 #include "KickEngine.hpp"
 #include <geometry_msgs/Vector3.h>
 #include <geometry_msgs/Pose.h>
-#include <tf/Transform.h>
+#include <tf/transform_broadcaster.h>
 #include <std_msgs/Char.h>
 
 class KickEngineDebugService
