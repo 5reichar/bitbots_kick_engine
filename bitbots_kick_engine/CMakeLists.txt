@@ -15,7 +15,8 @@ find_package(catkin REQUIRED COMPONENTS
   moveit_core
   dynamic_reconfigure
   tf
-
+  tf_conversions
+  eigen_conversions
   bitbots_spline
   humanoid_league_msgs
   bitbots_msgs

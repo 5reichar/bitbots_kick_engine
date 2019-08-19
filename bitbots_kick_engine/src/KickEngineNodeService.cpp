@@ -1,8 +1,8 @@
 #include "KickEngineNodeService.hpp"
 
 KickEngineNodeService::KickEngineNodeService(bool simulation)
-	: m_kick_engine(),
-	  m_sp_debug_service(m_kick_engine)
+	: m_sp_kick_engine(new KickEngine()),
+	  m_sp_debug_service(m_sp_kick_engine)
 {
 	//TODO: testing
 	//TODO: cleanup
@@ -13,14 +13,14 @@ KickEngineNodeService::KickEngineNodeService(bool simulation)
 	// based method. Otherwise, the first step will be not correct
 	std::vector<std::string> names_vec = {"LHipPitch", "LKnee", "LAnklePitch", "RHipPitch", "RKnee", "RAnklePitch"};
 	std::vector<double> pos_vec = {0.7, -1.0, -0.4, -0.7, 1.0, 0.4};
-	m_kick_engine.set_goal_state(names_vec, pos_vec);
+	m_sp_kick_engine->set_goal_state(names_vec, pos_vec);
 
-	m_kick_engine.reset_current_state();
-	m_kick_engine.set_parameter(m_sp_kick_engine_parameter);
+	m_sp_kick_engine->reset_current_state();
+	m_sp_kick_engine->set_parameter(m_sp_kick_engine_parameter);
 
-	m_bio_ik_solver = bitbots_ik::BioIKSolver(m_kick_engine.get_joint_model_group("All"),
-											  m_kick_engine.get_joint_model_grou("LeftLeg"),
-											  m_kick_engine.get_joint_model_grou("RightLeg"));
+	m_bio_ik_solver = bitbots_ik::BioIKSolver(m_sp_kick_engine->get_joint_model_group("All"),
+											  m_sp_kick_engine->get_joint_model_grou("LeftLeg"),
+											  m_sp_kick_engine->get_joint_model_grou("RightLeg"));
 	m_bio_ik_solver.set_use_approximate(true);
 }
 
@@ -32,13 +32,13 @@ bool KickEngineNodeService::convert_goal_coordinate_from_support_foot_to_trunk_b
 	robot_state::RobotStatePtr goal_state;
 
 	// change goals from support foot based coordinate system to trunk based coordinate system
-	auto trunk_to_support_foot_goal = get_support_foot_transformation(m_kick_engine.get_trunk_position(), m_kick_engine.get_trunk_axis()).inverse();
-	auto trunk_to_flying_foot_goal = trunk_to_support_foot_goal * get_support_foot_transformation(m_kick_engine.get_fly_foot_position(), m_kick_engine.get_fly_foot_axis());
+	auto trunk_to_support_foot_goal = get_support_foot_transformation(m_sp_kick_engine->get_trunk_position(), m_sp_kick_engine->get_trunk_axis()).inverse();
+	auto trunk_to_flying_foot_goal = trunk_to_support_foot_goal * get_support_foot_transformation(m_sp_kick_engine->get_fly_foot_position(), m_sp_kick_engine->get_fly_foot_axis());
 
 	// call ik solver
 	bool success = m_bio_ik_solver.solve(trunk_to_support_foot_goal, trunk_to_flying_foot_goal, is_left_foot_support(), goal_state);
 
-	m_kick_engine.set_goal_state(goal_state);
+	m_sp_kick_engine->set_goal_state(goal_state);
 
 	if (m_sp_debug_service->is_debug_on())
 	{
@@ -56,9 +56,9 @@ bool KickEngineNodeService::kick(geometry_msgs::Vector3& ball_position, geometry
 
 	bool success = false;
 
-	if (m_kick_engine.update(calculate_time_delta()))
+	if (m_sp_kick_engine->update(calculate_time_delta()))
 	{
-		m_kick_engine.kick(ball_position, target_position);
+		m_sp_kick_engine->kick(ball_position, target_position);
 		success = true;
 	}
 
@@ -193,7 +193,7 @@ bool KickEngineNodeService::is_left_foot_support()
 	//TODO: testing
 	//TODO: cleanup
 
-	return m_kick_engine.is_left_foot_support();
+	return m_sp_kick_engine->is_left_foot_support();
 }
 
 bool KickEngineNodeService::are_booth_feet_support()
@@ -201,7 +201,7 @@ bool KickEngineNodeService::are_booth_feet_support()
 	//TODO: testing
 	//TODO: cleanup
 
-	return m_kick_engine.are_booth_feet_support();
+	return m_sp_kick_engine->are_booth_feet_support();
 }
 
 void KickEngineNodeService::set_robot_state(const humanoid_league_msgs::RobotControlState msg)
@@ -209,7 +209,7 @@ void KickEngineNodeService::set_robot_state(const humanoid_league_msgs::RobotCon
 	//TODO: testing
 	//TODO: cleanup
 
-	m_kick_engine.set_robot_state(msg.state);
+	m_sp_kick_engine->set_robot_state(msg.state);
 }
 
 double KickEngineNodeService::get_engine_frequence() const
@@ -272,12 +272,12 @@ void KickEngineNodeService::get_odemetry_data(tf::Vector3& position_out, geometr
 	//TODO: cleanup
 
 	// transformation from support leg to trunk
-	auto support_to_trunk = m_kick_engine.get_goal_global_link_transform(get_support_foot_sole()).inverse();
+	auto support_to_trunk = m_sp_kick_engine->get_goal_global_link_transform(get_support_foot_sole()).inverse();
 	tf::Transform tf_support_to_trunk;
 	tf::transformEigenToTF(support_to_trunk, tf_support_to_trunk);
 
 	// odometry to trunk is transform to support foot * transform from support to trunk
-	auto next_step = m_kick_engine.get_next_foot_step();
+	auto next_step = m_sp_kick_engine->get_next_foot_step();
 	double x = next_step[0];
 	double y = next_step[1] + m_sp_kick_engine_parameter->footDistance / 2;
 	double yaw = next_step[2];
@@ -298,7 +298,7 @@ void KickEngineNodeService::get_goal_feet_joints(std::vector<double> &joint_goal
 	//TODO: testing
 	//TODO: cleanup
 
-	m_kick_engine.get_goal_joint_group("Legs", joint_goals_out, joint_names_out);
+	m_sp_kick_engine->get_goal_joint_group("Legs", joint_goals_out, joint_names_out);
 }
 
 tf::Transform KickEngineNodeService::get_support_foot_transformation(Eigen::Vector3d position, Eigen::Vector3d axis)

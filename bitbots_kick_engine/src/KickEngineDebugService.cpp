@@ -1,7 +1,9 @@
 #include "KickEngineDebugService.hpp"
+#include <eigen_conversions/eigen_msg.h>
+#include <tf_conversions/tf_eigen.h>
 
-KickEngineDebugService::KickEngineDebugService(KickEngine &kick_engine)
-	: m_kick_engine(kick_engine)
+KickEngineDebugService::KickEngineDebugService(std::shared_ptr<KickEngine> kick_engine)
+	: m_sp_kick_engine(kick_engine)
 {
 	//TODO: testing
 	//TODO: cleanup
@@ -30,7 +32,7 @@ void KickEngineDebugService::set_trunk_to_support_foot_goal(tf::Transform goal)
 	//TODO: testing
 	//TODO: cleanup
 
-	m_tf_trunk_to_support_foot_goa = goal;
+	m_p_tf_trunk_to_support_foot_goal = &goal;
 }
 
 void KickEngineDebugService::set_trunk_to_flying_foot_goal(tf::Transform goal)
@@ -38,7 +40,7 @@ void KickEngineDebugService::set_trunk_to_flying_foot_goal(tf::Transform goal)
 	//TODO: testing
 	//TODO: cleanup
 
-	m_tf_trunk_to_flying_foot_goal = goal;
+	m_p_tf_trunk_to_flying_foot_goal = &goal;
 }
 
 double KickEngineDebugService::get_trajectory_time()
@@ -46,15 +48,15 @@ double KickEngineDebugService::get_trajectory_time()
 	//TODO: testing
 	//TODO: cleanup
 
-	return m_kick_engine.get_trajectory_time();
+	return m_sp_kick_engine->calc_trajectory_time();
 }
 
-std_msgs::Char KickEngineDebugService::get_support_foot_sole()
+std::string KickEngineDebugService::get_support_foot_sole()
 {
 	//TODO: testing
 	//TODO: cleanup
 
-	return m_kick_engine.is_left_foot_support() ? "l_sole" : "r_sole";
+	return m_sp_kick_engine->is_left_foot_support() ? "l_sole" : "r_sole";
 }
 
 geometry_msgs::Pose KickEngineDebugService::get_next_footstep_pose()
@@ -62,7 +64,7 @@ geometry_msgs::Pose KickEngineDebugService::get_next_footstep_pose()
 	//TODO: testing
 	//TODO: cleanup
 
-	return get_pose_from_step(m_kick_engine.get_next_foot_step());
+	return get_pose_from_step(m_sp_kick_engine->get_next_foot_step());
 }
 
 geometry_msgs::Pose KickEngineDebugService::get_engine_trunk_goal_pose()
@@ -70,7 +72,7 @@ geometry_msgs::Pose KickEngineDebugService::get_engine_trunk_goal_pose()
 	//TODO: testing
 	//TODO: cleanup
 
-	return get_pose(m_kick_engine.get_trunk_position(), m_kick_engine.get_trunk_axis());
+	return get_pose(m_sp_kick_engine->get_trunk_position(), m_sp_kick_engine->get_trunk_axis());
 }
 
 geometry_msgs::Pose KickEngineDebugService::get_engine_fly_foot_goal_pose()
@@ -78,7 +80,7 @@ geometry_msgs::Pose KickEngineDebugService::get_engine_fly_foot_goal_pose()
 	//TODO: testing
 	//TODO: cleanup
 
-	return get_pose(m_kick_engine.get_fly_foot_position(), m_kick_engine.get_fly_foot_axis());
+	return get_pose(m_sp_kick_engine->get_fly_foot_position(), m_sp_kick_engine->get_fly_foot_axis());
 }
 
 geometry_msgs::Pose KickEngineDebugService::get_goal_left_foot() const
@@ -86,7 +88,7 @@ geometry_msgs::Pose KickEngineDebugService::get_goal_left_foot() const
 	//TODO: testing
 	//TODO: cleanup
 
-	return m_p_pose_goal_left_foot == nullptr ? geometry_msgs::Pose() : m_p_pose_goal_left_foot;
+	return m_p_pose_goal_left_foot == nullptr ? geometry_msgs::Pose() : *m_p_pose_goal_left_foot;
 }
 
 geometry_msgs::Pose KickEngineDebugService::get_goal_right_foot() const
@@ -94,7 +96,7 @@ geometry_msgs::Pose KickEngineDebugService::get_goal_right_foot() const
 	//TODO: testing
 	//TODO: cleanup
 
-	return m_p_pose_goal_right_foot == nullptr ? geometry_msgs::Pose() : m_p_pose_goal_right_foot;
+	return m_p_pose_goal_right_foot == nullptr ? geometry_msgs::Pose() : *m_p_pose_goal_right_foot;
 }
 
 geometry_msgs::Pose KickEngineDebugService::get_goal_fly_foot() const
@@ -102,7 +104,7 @@ geometry_msgs::Pose KickEngineDebugService::get_goal_fly_foot() const
 	//TODO: testing
 	//TODO: cleanup
 
-	return m_p_pose_goal_fly_foot == nullptr ? geometry_msgs::Pose() : m_p_pose_goal_fly_foot;
+	return m_p_pose_goal_fly_foot == nullptr ? geometry_msgs::Pose() : *m_p_pose_goal_fly_foot;
 }
 
 geometry_msgs::Pose KickEngineDebugService::get_goal_support_foot() const
@@ -110,7 +112,7 @@ geometry_msgs::Pose KickEngineDebugService::get_goal_support_foot() const
 	//TODO: testing
 	//TODO: cleanup
 
-	return m_p_pose_goal_support_foot == nullptr ? geometry_msgs::Pose() : m_p_pose_goal_support_foot;
+	return m_p_pose_goal_support_foot == nullptr ? geometry_msgs::Pose() : *m_p_pose_goal_support_foot;
 }
 
 geometry_msgs::Pose KickEngineDebugService::get_ik_result_left_foot() const
@@ -118,7 +120,7 @@ geometry_msgs::Pose KickEngineDebugService::get_ik_result_left_foot() const
 	//TODO: testing
 	//TODO: cleanup
 
-	return m_p_pose_ik_result_left_foot == nullptr ? geometry_msgs::Pose() : m_p_pose_ik_result_left_foot;
+	return m_p_pose_ik_result_left_foot == nullptr ? geometry_msgs::Pose() : *m_p_pose_ik_result_left_foot;
 }
 
 geometry_msgs::Pose KickEngineDebugService::get_ik_result_right_foot() const
@@ -126,7 +128,7 @@ geometry_msgs::Pose KickEngineDebugService::get_ik_result_right_foot() const
 	//TODO: testing
 	//TODO: cleanup
 
-	return m_p_pose_ik_result_right_foot == nullptr ? geometry_msgs::Pose() : m_p_pose_ik_result_right_foot;
+	return m_p_pose_ik_result_right_foot == nullptr ? geometry_msgs::Pose() : *m_p_pose_ik_result_right_foot;
 }
 
 geometry_msgs::Pose KickEngineDebugService::get_ik_result_fly_foot() const
@@ -134,7 +136,7 @@ geometry_msgs::Pose KickEngineDebugService::get_ik_result_fly_foot() const
 	//TODO: testing
 	//TODO: cleanup
 
-	return m_p_pose_ik_result_fly_foot == nullptr ? geometry_msgs::Pose() : m_p_pose_ik_result_fly_foot;
+	return m_p_pose_ik_result_fly_foot == nullptr ? geometry_msgs::Pose() : *m_p_pose_ik_result_fly_foot;
 }
 
 geometry_msgs::Pose KickEngineDebugService::get_ik_result_support_foot() const
@@ -142,7 +144,7 @@ geometry_msgs::Pose KickEngineDebugService::get_ik_result_support_foot() const
 	//TODO: testing
 	//TODO: cleanup
 
-	return m_p_pose_ik_result_support_foot == nullptr ? geometry_msgs::Pose() : m_p_pose_ik_result_support_foot;
+	return m_p_pose_ik_result_support_foot == nullptr ? geometry_msgs::Pose() : *m_p_pose_ik_result_support_foot;
 }
 
 geometry_msgs::Pose KickEngineDebugService::get_position_left_foot() const
@@ -150,7 +152,7 @@ geometry_msgs::Pose KickEngineDebugService::get_position_left_foot() const
 	//TODO: testing
 	//TODO: cleanup
 
-	return m_p_pose_position_left_foot == nullptr ? geometry_msgs::Pose() : m_p_pose_position_left_foot;
+	return m_p_pose_position_left_foot == nullptr ? geometry_msgs::Pose() : *m_p_pose_position_left_foot;
 }
 
 geometry_msgs::Pose KickEngineDebugService::get_position_right_foot() const
@@ -158,7 +160,7 @@ geometry_msgs::Pose KickEngineDebugService::get_position_right_foot() const
 	//TODO: testing
 	//TODO: cleanup
 
-	return m_p_pose_position_right_foot == nullptr ? geometry_msgs::Pose() : m_p_pose_position_right_foot;
+	return m_p_pose_position_right_foot == nullptr ? geometry_msgs::Pose() : *m_p_pose_position_right_foot;
 }
 
 geometry_msgs::Pose KickEngineDebugService::get_position_fly_foot() const
@@ -166,7 +168,7 @@ geometry_msgs::Pose KickEngineDebugService::get_position_fly_foot() const
 	//TODO: testing
 	//TODO: cleanup
 
-	return m_p_pose_position_fly_foot == nullptr ? geometry_msgs::Pose() : m_p_pose_position_fly_foot;
+	return m_p_pose_position_fly_foot == nullptr ? geometry_msgs::Pose() : *m_p_pose_position_fly_foot;
 }
 
 geometry_msgs::Pose KickEngineDebugService::get_position_support_foot() const
@@ -174,7 +176,7 @@ geometry_msgs::Pose KickEngineDebugService::get_position_support_foot() const
 	//TODO: testing
 	//TODO: cleanup
 
-	return m_p_pose_position_support_foot == nullptr ? geometry_msgs::Pose() : m_p_pose_position_support_foot;
+	return m_p_pose_position_support_foot == nullptr ? geometry_msgs::Pose() : *m_p_pose_position_support_foot;
 }
 
 geometry_msgs::Vector3 KickEngineDebugService::get_offset_ik_left_foot() const
@@ -182,7 +184,7 @@ geometry_msgs::Vector3 KickEngineDebugService::get_offset_ik_left_foot() const
 	//TODO: testing
 	//TODO: cleanup
 
-	return m_p_vector3_offset_ik_left_foot == nullptr ? geometry_msgs::Vector3() : m_p_vector3_offset_ik_left_foot;
+	return m_p_vector3_offset_ik_left_foot == nullptr ? geometry_msgs::Vector3() : *m_p_vector3_offset_ik_left_foot;
 }
 
 geometry_msgs::Vector3 KickEngineDebugService::get_offset_ik_right_foot() const
@@ -190,7 +192,7 @@ geometry_msgs::Vector3 KickEngineDebugService::get_offset_ik_right_foot() const
 	//TODO: testing
 	//TODO: cleanup
 
-	return m_p_vector3_offset_ik_right_foot == nullptr ? geometry_msgs::Vector3() : m_p_vector3_offset_ik_right_foot;
+	return m_p_vector3_offset_ik_right_foot == nullptr ? geometry_msgs::Vector3() : *m_p_vector3_offset_ik_right_foot;
 }
 
 geometry_msgs::Vector3 KickEngineDebugService::get_offset_ik_fly_foot() const
@@ -198,7 +200,7 @@ geometry_msgs::Vector3 KickEngineDebugService::get_offset_ik_fly_foot() const
 	//TODO: testing
 	//TODO: cleanup
 
-	return m_p_vector3_offset_ik_fly_foot == nullptr ? geometry_msgs::Vector3() : m_p_vector3_offset_ik_fly_foot;
+	return m_p_vector3_offset_ik_fly_foot == nullptr ? geometry_msgs::Vector3() : *m_p_vector3_offset_ik_fly_foot;
 }
 
 geometry_msgs::Vector3 KickEngineDebugService::get_offset_ik_support_foot() const
@@ -206,7 +208,7 @@ geometry_msgs::Vector3 KickEngineDebugService::get_offset_ik_support_foot() cons
 	//TODO: testing
 	//TODO: cleanup
 
-	return m_p_vector3_offset_ik_support_foot == nullptr ? geometry_msgs::Vector3() : m_p_vector3_offset_ik_support_foot;
+	return m_p_vector3_offset_ik_support_foot == nullptr ? geometry_msgs::Vector3() : *m_p_vector3_offset_ik_support_foot;
 }
 
 geometry_msgs::Vector3 KickEngineDebugService::get_offset_position_left_foot() const
@@ -214,7 +216,7 @@ geometry_msgs::Vector3 KickEngineDebugService::get_offset_position_left_foot() c
 	//TODO: testing
 	//TODO: cleanup
 
-	return m_p_vector3_offset_position_left_foot == nullptr ? geometry_msgs::Vector3() : m_p_vector3_offset_position_left_foot;
+	return m_p_vector3_offset_position_left_foot == nullptr ? geometry_msgs::Vector3() : *m_p_vector3_offset_position_left_foot;
 }
 
 geometry_msgs::Vector3 KickEngineDebugService::get_offset_position_right_foot() const
@@ -222,7 +224,7 @@ geometry_msgs::Vector3 KickEngineDebugService::get_offset_position_right_foot() 
 	//TODO: testing
 	//TODO: cleanup
 
-	return m_p_vector3_offset_position_right_foot == nullptr ? geometry_msgs::Vector3() : m_p_vector3_offset_position_right_foot;
+	return m_p_vector3_offset_position_right_foot == nullptr ? geometry_msgs::Vector3() : *m_p_vector3_offset_position_right_foot;
 }
 
 geometry_msgs::Vector3 KickEngineDebugService::get_offset_position_fly_foot() const
@@ -230,7 +232,7 @@ geometry_msgs::Vector3 KickEngineDebugService::get_offset_position_fly_foot() co
 	//TODO: testing
 	//TODO: cleanup
 
-	return m_p_vector3_offset_position_fly_foot == nullptr ? geometry_msgs::Vector3() : m_p_vector3_offset_position_fly_foot;
+	return m_p_vector3_offset_position_fly_foot == nullptr ? geometry_msgs::Vector3() : *m_p_vector3_offset_position_fly_foot;
 }
 
 geometry_msgs::Vector3 KickEngineDebugService::get_offset_position_support_foot() const
@@ -238,7 +240,7 @@ geometry_msgs::Vector3 KickEngineDebugService::get_offset_position_support_foot(
 	//TODO: testing
 	//TODO: cleanup
 
-	return m_p_vector3_offset_position_support_foot == nullptr ? geometry_msgs::Vector3() : m_p_vector3_offset_position_support_foot;
+	return m_p_vector3_offset_position_support_foot == nullptr ? geometry_msgs::Vector3() : *m_p_vector3_offset_position_support_foot;
 }
 
 bool KickEngineDebugService::calculate_debug_data()
@@ -251,49 +253,60 @@ bool KickEngineDebugService::calculate_debug_data()
 	if (m_b_debug_on)
 	{
 		geometry_msgs::Pose pose_support_foot_goal;
-		tf::pointTFToMsg(m_tf_trunk_to_support_foot_goal.getOrigin(), pose_support_foot_goal.position);
-		tf::quaternionTFToMsg(m_tf_trunk_to_support_foot_goal.getRotation(), pose_support_foot_goal.orientation);
-		m_p_pose_goal_support_foot = pose_support_foot_goal;
+		tf::pointTFToMsg(m_p_tf_trunk_to_support_foot_goal->getOrigin(), pose_support_foot_goal.position);
+		tf::quaternionTFToMsg(m_p_tf_trunk_to_support_foot_goal->getRotation(), pose_support_foot_goal.orientation);
+		m_p_pose_goal_support_foot = &pose_support_foot_goal;
 
 		geometry_msgs::Pose pose_fly_foot_goal;
-		tf::pointTFToMsg(m_tf_trunk_to_flying_foot_goal.getOrigin(), pose_fly_foot_goal.position);
-		tf::quaternionTFToMsg(m_tf_trunk_to_flying_foot_goal.getRotation(), pose_fly_foot_goal.orientation);
-		m_p_pose_goal_fly_foot = pose_fly_foot_goal;
+		tf::pointTFToMsg(m_p_tf_trunk_to_flying_foot_goal->getOrigin(), pose_fly_foot_goal.position);
+		tf::quaternionTFToMsg(m_p_tf_trunk_to_flying_foot_goal->getRotation(), pose_fly_foot_goal.orientation);
+		m_p_pose_goal_fly_foot = &pose_fly_foot_goal;
 
-		if (m_kick_engine.is_left_foot_support())
+		if (m_sp_kick_engine->is_left_foot_support())
 		{
-			m_p_pose_goal_left_foot = pose_support_foot_goal;
-			m_p_pose_goal_right_foot = pose_fly_foot_goal;
+			m_p_pose_goal_left_foot = &pose_support_foot_goal;
+			m_p_pose_goal_right_foot = &pose_fly_foot_goal;
 		}
 		else
 		{
-			m_p_pose_goal_left_foot = pose_fly_foot_goal;
-			m_p_pose_goal_right_foot = pose_support_foot_goal;
+			m_p_pose_goal_left_foot = &pose_fly_foot_goal;
+			m_p_pose_goal_right_foot = &pose_support_foot_goal;
 		}
 
-		get_feet_position(&m_kick_engine.get_goal_global_link_transform,
-						  m_p_pose_ik_result_left_foot,
-						  m_p_pose_ik_result_right_foot,
-						  m_p_pose_ik_result_fly_foot,
-						  m_p_pose_ik_result_support_foot);
+		auto left_sole = m_sp_kick_engine->get_goal_global_link_transform("l_sole");
+		auto right_sole = m_sp_kick_engine->get_goal_global_link_transform("r_sole");
 
-		get_feet_position(&m_kick_engine.get_current_global_link_transform,
-						  m_p_pose_position_left_foot,
-						  m_p_pose_position_right_foot,
-						  m_p_pose_position_fly_foot,
-						  m_p_pose_position_support_foot);
+		get_feet_position(left_sole,
+						  right_sole,
+						  *m_p_pose_ik_result_left_foot,
+						  *m_p_pose_ik_result_right_foot,
+						  *m_p_pose_ik_result_fly_foot,
+						  *m_p_pose_ik_result_support_foot);
 
-		get_feet_offset(&m_kick_engine.get_goal_global_link_transform,
-						m_p_vector3_offset_ik_left_foot,
-						m_p_vector3_offset_ik_right_foot,
-						m_p_vector3_offset_ik_fly_foot,
-						m_p_vector3_offset_ik_support_foot);
+		get_feet_offset(left_sole,
+						right_sole,
+						*m_p_vector3_offset_ik_left_foot,
+						*m_p_vector3_offset_ik_right_foot,
+						*m_p_vector3_offset_ik_fly_foot,
+						*m_p_vector3_offset_ik_support_foot);
 
-		get_feet_offset(&m_kick_engine.get_current_global_link_transform,
-						m_p_vector3_offset_position_left_foot,
-						m_p_vector3_offset_position_right_foot,
-						m_p_vector3_offset_position_fly_foot,
-						m_p_vector3_offset_position_support_foot);
+
+		left_sole = m_sp_kick_engine->get_current_global_link_transform("l_sole");
+		right_sole = m_sp_kick_engine->get_current_global_link_transform("r_sole");
+
+		get_feet_position(left_sole,
+						  right_sole,
+						  *m_p_pose_position_left_foot,
+						  *m_p_pose_position_right_foot,
+						  *m_p_pose_position_fly_foot,
+						  *m_p_pose_position_support_foot);
+
+		get_feet_offset(left_sole,
+						right_sole,
+						*m_p_vector3_offset_position_left_foot,
+						*m_p_vector3_offset_position_right_foot,
+						*m_p_vector3_offset_position_fly_foot,
+						*m_p_vector3_offset_position_support_foot);
 
 		success = true;
 	}
@@ -301,20 +314,20 @@ bool KickEngineDebugService::calculate_debug_data()
 	return success;
 }
 
-void KickEngineDebugService::get_feet_position(Eigen::Isometry3d (KickEngine::*get_global_link_transform)(std::string link_name), geometry_msgs::Pose &left_foot_out, geometry_msgs::Pose &right_foot_out, geometry_msgs::Pose &fly_foot_out, geometry_msgs::Pose &support_foot_out)
+void KickEngineDebugService::get_feet_position(Eigen::Isometry3d& left_sole, Eigen::Isometry3d& right_sole, geometry_msgs::Pose& left_foot_out, geometry_msgs::Pose& right_foot_out, geometry_msgs::Pose& fly_foot_out, geometry_msgs::Pose& support_foot_out)
 {
 	//TODO: testing
 	//TODO: cleanup
 
 	geometry_msgs::Pose left_foot;
-	tf::poseEigenToMsg(m_kick_engine->*get_global_link_transform("l_sole"), left_foot);
+	tf::poseEigenToMsg(left_sole, left_foot);
 	left_foot_out = left_foot;
 
 	geometry_msgs::Pose right_foot;
-	tf::poseEigenToMsg(m_kick_engine->*get_global_link_transform("r_sole"), right_foot);
+	tf::poseEigenToMsg(right_sole, right_foot);
 	right_foot_out = right_foot;
 
-	if (m_kick_engine.is_left_foot_support())
+	if (m_sp_kick_engine->is_left_foot_support())
 	{
 		support_foot_out = left_foot;
 		fly_foot_out = right_foot;
@@ -326,42 +339,36 @@ void KickEngineDebugService::get_feet_position(Eigen::Isometry3d (KickEngine::*g
 	}
 }
 
-void KickEngineDebugService::get_feet_offset(Eigen::Isometry3d (KickEngine::*get_global_link_transform)(std::string link_name), geometry_msgs::Vector3 &left_foot_offset_out, geometry_msgs::Vector3 &right_foot_offset_out, geometry_msgs::Vector3 &fly_foot_offset_out, geometry_msgs::Vector3 &support_foot_offset_out)
+void KickEngineDebugService::get_feet_offset(Eigen::Isometry3d& left_sole, Eigen::Isometry3d& right_sole, geometry_msgs::Vector3 &left_foot_offset_out, geometry_msgs::Vector3 &right_foot_offset_out, geometry_msgs::Vector3 &fly_foot_offset_out, geometry_msgs::Vector3 &support_foot_offset_out)
 {
 	//TODO: testing
 	//TODO: cleanup
 
 	tf::Vector3 left_foot;
-	tf::vectorEigenToTF(m_kick_engine->*get_global_link_transform("l_sole").translation(), left_foot);
+	tf::vectorEigenToTF(left_sole.translation(), left_foot);
 
 	tf::Vector3 right_foot;
-	tf::vectorEigenToTF(m_kick_engine->*get_global_link_transform("r_sole").translation(), right_foot);
+	tf::vectorEigenToTF(right_sole.translation(), right_foot);
 
 	tf::Vector3 fly_off;
 	tf::Vector3 support_off;
-	if (m_kick_engine.is_left_foot_support())
+	if (m_sp_kick_engine->is_left_foot_support())
 	{
-		support_off = trunk_to_support_foot_goal.getOrigin() - tf_vec_left;
-		fly_off = trunk_to_flying_foot_goal.getOrigin() - tf_vec_right;
-		tf::vector3TFToMsg(support_off, vect_msg);
-		left_foot_offset_out = vect_msg;
-		tf::vector3TFToMsg(fly_off, vect_msg);
-		right_foot_offset_out = vect_msg;
+		support_off = m_p_tf_trunk_to_support_foot_goal->getOrigin() - left_foot;
+		fly_off = m_p_tf_trunk_to_flying_foot_goal->getOrigin() - right_foot;
+		tf::vector3TFToMsg(support_off, left_foot_offset_out);
+		tf::vector3TFToMsg(fly_off, right_foot_offset_out);
 	}
 	else
 	{
-		support_off = trunk_to_support_foot_goal.getOrigin() - tf_vec_right;
-		fly_off = trunk_to_flying_foot_goal.getOrigin() - tf_vec_left;
-		tf::vector3TFToMsg(fly_off, vect_msg);
-		left_foot_offset_out = vect_msg;
-		tf::vector3TFToMsg(support_off, vect_msg);
-		right_foot_offset_out = vect_msg;
+		support_off = m_p_tf_trunk_to_support_foot_goal->getOrigin() - right_foot;
+		fly_off = m_p_tf_trunk_to_flying_foot_goal->getOrigin() - left_foot;
+		tf::vector3TFToMsg(fly_off, left_foot_offset_out);
+		tf::vector3TFToMsg(support_off, right_foot_offset_out);
 	}
 
-	tf::vector3TFToMsg(support_off, vect_msg);
-	support_foot_offset_out = vect_msg;
-	tf::vector3TFToMsg(fly_off, vect_msg);
-	fly_foot_offset_out = vect_msg;
+	tf::vector3TFToMsg(support_off, support_foot_offset_out);
+	tf::vector3TFToMsg(fly_off, fly_foot_offset_out);
 }
 
 geometry_msgs::Pose KickEngineDebugService::get_pose(Eigen::Vector3d position, Eigen::Vector3d axis)

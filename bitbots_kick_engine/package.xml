@@ -62,6 +62,8 @@
   <depend>humanoid_league_msgs</depend>
   <depend>dynamic_reconfigure</depend>
   <depend>tf</depend>
+  <depend>tf_conversions</depend>
+  <depend>eigen_conversions</depend>
   <depend>bitbots_splines</depend>
   <depend>geometry_msgs</depend>
   <depend>bitbots_msgs</depend>

@@ -110,7 +110,7 @@ void KickEngine::get_goal_joint_group(std::string joint_group_name, std::vector<
 	auto legs_joints_group = get_joint_model_group(joint_group_name);
 
 	joint_names_out = legs_joints_group.getActiveJointModelNames();
-	m_sp_goal_state->copyJointGroupPositions(legs_joints_group, joint_goals_out);
+	m_sp_goal_state->copyJointGroupPositions(&legs_joints_group, joint_goals_out);
 }
 
 Eigen::Vector3d KickEngine::get_trunk_axis() const

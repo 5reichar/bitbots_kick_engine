@@ -6,7 +6,7 @@
 #include "bitbots_ik/BioIKSolver.hpp"
 #include <geometry_msgs/Quaternion.h>
 #include <std_msgs/Char.h>
-#include "bitbots_quintic_walk_paramsConfig.h"
+#include <bitbots_kick_engine/bitbots_quintic_walk_paramsConfig.h>
 #include "KickEngineDebugService.hpp"
 
 class KickEngineNodeService
@@ -43,7 +43,7 @@ private:
 	double m_d_ros_time_last_update;
 	std::chrono::time_point<std::chrono::steady_clock> m_time_point_last_update;
 
-	KickEngine m_kick_engine;
+	std::shared_ptr<KickEngine> m_sp_kick_engine;
 	bitbots_ik::BioIKSolver m_bio_ik_solver;
 	std::shared_ptr<KickEngineDebugService> m_sp_debug_service;
 	std::shared_ptr<KickEngineParameter> m_sp_kick_engine_parameter;
