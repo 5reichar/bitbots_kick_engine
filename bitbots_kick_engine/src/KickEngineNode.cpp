@@ -2,7 +2,6 @@
 #include <visualization_msgs/Marker.h>
 #include <nav_msgs/Odometry.h>
 #include <bitbots_msgs/JointCommand.h>
-#include <bitbots_kick_engine/WalkingDebug.h>
 
 KickEngineNode::KickEngineNode()
 {
@@ -26,10 +25,10 @@ KickEngineNode::~KickEngineNode()
 	// TODO testing
 	// TODO cleanup
 
-	delete m_p_node_service
+	delete m_p_node_service;
 }
 
-void KickEngineNode::kick_ball(geometry_msgs::Vector3& ball_position, geometry_msgs::Vector3& target_position)
+void KickEngineNode::kick_ball(geometry_msgs::Vector3 ball_position, geometry_msgs::Vector3 target_position)
 {
 	// TODO testing
 	// TODO cleanup
@@ -67,7 +66,7 @@ void KickEngineNode::robot_state_callback(const humanoid_league_msgs::RobotContr
 	m_p_node_service->set_robot_state(msg);
 }
 
-void KickEngineNode::kick_callback(const humanoid_league_msgs::Kick action)
+void KickEngineNode::kick_callback(const bitbots_kick_engine::KickAction action)
 {
 	// TODO testing
 	// TODO cleanup
@@ -80,7 +79,7 @@ void KickEngineNode::reconfigure_callback(bitbots_kick_engine::bitbots_quintic_w
 	// TODO testing
 	// TODO cleanup
 
-	m__sp_debug_service->set_debug(config.debugActive);
+	m_sp_debug_service->set_debug(config.debugActive);
 	m_uint_odometry_publish_factor = config.odomPubFactor;
 
 	m_p_node_service->reconfigure_parameter(config, level);
@@ -118,9 +117,9 @@ void KickEngineNode::publish_kick()
 		publish_controler_commands();
 	}
 
-	m_ros_publisher_support.publish(m_p_node_service->get_support_foot_state())
+	m_ros_publisher_support.publish(m_p_node_service->get_support_foot_state());
 
-		if (m__sp_debug_service->is_debug_on())
+	if (m_sp_debug_service->is_debug_on())
 	{
 		publish_debug();
 		publish_markers();
@@ -141,7 +140,7 @@ void KickEngineNode::publish_odemetry()
 	std::string child_frame_id = "base_link";
 
 	// send the odometry as transformation
-	geometry_msgs::TransformStamped odometry_transformation() = geometry_msgs::TransformStamped();
+	geometry_msgs::TransformStamped odometry_transformation = geometry_msgs::TransformStamped();
 
 	odometry_transformation.header.stamp = current_time;
 	odometry_transformation.header.frame_id = frame_id;
@@ -164,21 +163,21 @@ void KickEngineNode::publish_odemetry()
 	odometry_nav_msgs.pose.pose.position.y = position[1];
 	odometry_nav_msgs.pose.pose.position.z = position[2];
 	odometry_nav_msgs.pose.pose.orientation = quaternion_msg;
-	odometry_nav_msgs.twist.twist = m_kick_engine.get_twist();
+	odometry_nav_msgs.twist.twist = m_p_node_service->get_twist();
 
-	m_ros_publisher_odometry.publish(_odom_msg);
+	m_ros_publisher_odometry.publish(odometry_nav_msgs);
 }
 
 void KickEngineNode::publish_controler_commands()
 {
 	// TODO testing
 	// TODO cleanup
-
 	bitbots_msgs::JointCommand joint_command_msg;
-	std::vector<double> ones(joint_names.size(), -1.0);
 
 	joint_command_msg.header.stamp = ros::Time::now();
-	m_p_node_service->get_goal_feet_joints(joint_command_msg.joint_names, joint_command_msg.positions);
+	m_p_node_service->get_goal_feet_joints(joint_command_msg.positions, joint_command_msg.joint_names);
+
+	std::vector<double> ones(joint_command_msg.joint_names.size(), -1.0);
 	joint_command_msg.velocities = ones;
 	joint_command_msg.accelerations = ones;
 	joint_command_msg.max_currents = ones;
@@ -196,7 +195,7 @@ void KickEngineNode::publish_debug()
 
 	// define frames
 	std::string frame_base_link = "base_link";
-	std::string current_support_frame = m_p_node_service->get_support_foot_sole();
+	std::string current_support_frame = m_sp_debug_service->get_support_foot_sole();
 
 	// define colors
 	std_msgs::ColorRGBA left_feet_color = m_p_node_service->create_color_rgba(0, 1, 0, 1);
@@ -204,11 +203,11 @@ void KickEngineNode::publish_debug()
 	std_msgs::ColorRGBA fly_feet_color = m_p_node_service->create_color_rgba(0, 0, 1, 1);
 	std_msgs::ColorRGBA support_feet_color = m_p_node_service->create_color_rgba(1, 1, 0, 1);
 
-	if (m_p_node_service->are_booth_feet_support())
+	if (m_sp_debug_service->are_booth_feet_support())
 	{
 		support_feet_color = m_p_node_service->create_color_rgba(0, 0, 1, 1);
 	}
-	else if (m_p_node_service->is_left_support())
+	else if (m_sp_debug_service->is_left_foot_support())
 	{
 		support_feet_color = m_p_node_service->create_color_rgba(1, 0, 0, 1);
 	}
@@ -294,12 +293,12 @@ void KickEngineNode::publish_marker(std::string name_space, std::string frame, g
 	m_int_marker_id++;
 }
 
-bitbots_quintic_walk::WalkingDebug KickEngineNode::create_debug_message()
+bitbots_kick_engine::WalkingDebug KickEngineNode::create_debug_message()
 {
 	// TODO testing
 	// TODO cleanup
 
-	bitbots_quintic_walk::WalkingDebug msg;
+	bitbots_kick_engine::WalkingDebug msg;
 
 	msg.is_left_support = m_p_node_service->is_left_foot_support();
 	msg.is_double_support = m_p_node_service->are_booth_feet_support();
@@ -307,9 +306,9 @@ bitbots_quintic_walk::WalkingDebug KickEngineNode::create_debug_message()
 
 	// times
 	msg.phase_time = m_sp_debug_service->get_engine_phase_time();
-	msg.traj_time = m_sp_debug_service->get_engine_trajectory_time();
+	msg.traj_time = m_sp_debug_service->get_trajectory_time();
 
-	msg.engine_state.data = m_sp_debug_service->get_engine_state();
+	//msg.engine_state.data = m_sp_debug_service->get_engine_state();
 
 	// engine output
 	msg.engine_fly_goal = m_sp_debug_service->get_engine_fly_foot_goal_pose();

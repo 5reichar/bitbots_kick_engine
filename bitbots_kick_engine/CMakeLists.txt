@@ -61,6 +61,7 @@ find_package(catkin REQUIRED COMPONENTS
 add_message_files(
   FILES
   WalkingDebug.msg
+  KickAction.msg
 )
 
 ## Generate services in the 'srv' folder
@@ -143,6 +144,9 @@ set(
   src/KickEngineDebugService.cpp
   src/KickEngineNode.cpp
   src/KickEngineNodeService.cpp
+  src/Footstep.cpp
+  src/engine/KickFactory.cpp
+  src/kicks/Kick.cpp
 )
 
 ## Declare a C++ library

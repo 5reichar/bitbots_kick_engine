@@ -28,6 +28,7 @@ public:
 	virtual void set_goal_state(std::vector<std::string> vec_joint_names, std::vector<double> vec_position);
 
 	geometry_msgs::Twist get_twist() const;
+	std::string get_support_foot_sole() const;
 	moveit::core::JointModelGroup &get_joint_model_group(std::string name);
 	Eigen::Isometry3d get_goal_global_link_transform(std::string link_name) const;
 	Eigen::Isometry3d get_current_global_link_transform(std::string link_name) const;
@@ -36,6 +37,7 @@ public:
 	Eigen::Vector3d get_trunk_axis() const;
 	Eigen::Vector3d get_fly_foot_axis() const;
 	Eigen::Vector3d get_trunk_position() const;
+	Eigen::Vector3d get_last_foot_step() const;
 	Eigen::Vector3d get_next_foot_step() const;
 	Eigen::Vector3d get_fly_foot_position() const;
 
@@ -44,10 +46,11 @@ public:
 
 	void reset_current_state();
 	double calc_trajectory_time() const;
+	double get_engine_phase_time() const;
 	void kick(geometry_msgs::Vector3& ball_position, geometry_msgs::Vector3& target_position);
 
 private:
-	void kick(struct3d& ball_position, struct3d& target_position, struct3d& foot_final_position);
+	void kick(struct3d * ball_position, struct3d * target_position, struct3d& foot_final_position);
 	void update_phase(double delta_time);
 
 	double m_d_time_phase;
@@ -55,7 +58,7 @@ private:
 	uint8_t m_robot_state;
 	KickFactory m_kick_factory;
 	struct3d m_s3d_foot_goal_position;
-	bitbots_splines::SplineContainer m_spline_container;
+	std::unique_ptr<bitbots_splines::SplineContainer> m_up_spline_container;
 
 	std::shared_ptr<moveit::core::RobotState> m_sp_goal_state;
 	std::shared_ptr<moveit::core::RobotState> m_sp_current_state;

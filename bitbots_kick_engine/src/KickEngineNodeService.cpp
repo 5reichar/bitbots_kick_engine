@@ -1,8 +1,9 @@
 #include "KickEngineNodeService.hpp"
+#include <eigen_conversions/eigen_msg.h>
+#include <tf_conversions/tf_eigen.h>
 
 KickEngineNodeService::KickEngineNodeService(bool simulation)
-	: m_sp_kick_engine(new KickEngine()),
-	  m_sp_debug_service(m_sp_kick_engine)
+	: m_sp_debug_service(new KickEngineDebugService(m_sp_kick_engine))
 {
 	//TODO: testing
 	//TODO: cleanup
@@ -19,8 +20,8 @@ KickEngineNodeService::KickEngineNodeService(bool simulation)
 	m_sp_kick_engine->set_parameter(m_sp_kick_engine_parameter);
 
 	m_bio_ik_solver = bitbots_ik::BioIKSolver(m_sp_kick_engine->get_joint_model_group("All"),
-											  m_sp_kick_engine->get_joint_model_grou("LeftLeg"),
-											  m_sp_kick_engine->get_joint_model_grou("RightLeg"));
+											  m_sp_kick_engine->get_joint_model_group("LeftLeg"),
+											  m_sp_kick_engine->get_joint_model_group("RightLeg"));
 	m_bio_ik_solver.set_use_approximate(true);
 }
 
@@ -109,8 +110,6 @@ void KickEngineNodeService::reconfigure_parameter(bitbots_kick_engine::bitbots_q
 {
 	//TODO: testing
 	//TODO: cleanup
-
-	kick_engine_parameter parameter;
 
 	m_sp_kick_engine_parameter->freq = config.freq;
 	m_sp_kick_engine_parameter->doubleSupportRatio = config.doubleSupportRatio;
@@ -212,6 +211,22 @@ void KickEngineNodeService::set_robot_state(const humanoid_league_msgs::RobotCon
 	m_sp_kick_engine->set_robot_state(msg.state);
 }
 
+std::string KickEngineNodeService::get_support_foot_sole() const
+{
+	//TODO: testing
+	//TODO: cleanup
+
+	return m_sp_kick_engine->get_support_foot_sole();
+}
+
+geometry_msgs::Twist KickEngineNodeService::get_twist() const
+{
+	//TODO: testing
+	//TODO: cleanup
+
+	return m_sp_kick_engine->get_twist();
+}
+
 double KickEngineNodeService::get_engine_frequence() const
 {
 	//TODO: testing
@@ -244,18 +259,18 @@ std_msgs::Char KickEngineNodeService::get_support_foot_state()
 
 	if (are_booth_feet_support())
 	{
-		support_state.data = 'd';
+		support_foot_state.data = 'd';
 	}
 	else if (is_left_foot_support())
 	{
-		support_state.data = 'l';
+		support_foot_state.data = 'l';
 	}
 	else
 	{
-		support_state.data = 'r';
+		support_foot_state.data = 'r';
 	}
 
-	return support_foot_state
+	return support_foot_state;
 }
 
 std::shared_ptr<KickEngineDebugService> KickEngineNodeService::get_debug_service()
@@ -272,7 +287,7 @@ void KickEngineNodeService::get_odemetry_data(tf::Vector3& position_out, geometr
 	//TODO: cleanup
 
 	// transformation from support leg to trunk
-	auto support_to_trunk = m_sp_kick_engine->get_goal_global_link_transform(get_support_foot_sole()).inverse();
+	auto support_to_trunk = m_sp_kick_engine->get_goal_global_link_transform(m_sp_kick_engine->get_support_foot_sole()).inverse();
 	tf::Transform tf_support_to_trunk;
 	tf::transformEigenToTF(support_to_trunk, tf_support_to_trunk);
 
@@ -301,6 +316,22 @@ void KickEngineNodeService::get_goal_feet_joints(std::vector<double> &joint_goal
 	m_sp_kick_engine->get_goal_joint_group("Legs", joint_goals_out, joint_names_out);
 }
 
+geometry_msgs::Pose KickEngineNodeService::get_last_footstep_pose()
+{
+	//TODO: testing
+	//TODO: cleanup
+
+	return get_pose_from_step(m_sp_kick_engine->get_last_foot_step());
+}
+
+geometry_msgs::Pose KickEngineNodeService::get_next_footstep_pose()
+{
+	//TODO: testing
+	//TODO: cleanup
+
+	return get_pose_from_step(m_sp_kick_engine->get_next_foot_step());
+}
+
 tf::Transform KickEngineNodeService::get_support_foot_transformation(Eigen::Vector3d position, Eigen::Vector3d axis)
 {
 	//TODO: testing
@@ -316,4 +347,20 @@ tf::Transform KickEngineNodeService::get_support_foot_transformation(Eigen::Vect
 	tf::Transform support_foot_transformation(tf_quat, tf_vec);
 
 	return support_foot_transformation;
+}
+
+geometry_msgs::Pose KickEngineNodeService::get_pose_from_step(Eigen::Vector3d step_position)
+{
+	//TODO: testing
+	//TODO: cleanup
+
+	geometry_msgs::Pose pose;
+
+	pose.position.x = step_position[0];
+	pose.position.y = step_position[1];
+	pose.position.z = 0;
+
+	pose.orientation = tf::createQuaternionMsgFromYaw(step_position[2]);
+
+	return pose;
 }

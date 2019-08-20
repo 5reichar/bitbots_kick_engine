@@ -70,7 +70,7 @@ class Footstep
         /**
          * Returns the odometry change of the current step.
          */ 
-        const Eigen::Vector3d& getOdom() const;
+        //const Eigen::Vector3d& getOdom() const;
 
         /**
          * Left and right, current or next pose

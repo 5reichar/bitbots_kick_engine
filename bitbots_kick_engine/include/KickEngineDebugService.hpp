@@ -21,6 +21,8 @@ public:
 	double get_trajectory_time();
 	double get_engine_phase_time();
 	std::string get_support_foot_sole();
+	bool is_left_foot_support() const;
+	bool are_booth_feet_support() const;
 	geometry_msgs::Pose get_last_footstep_pose();
 	geometry_msgs::Pose get_next_footstep_pose();
 	geometry_msgs::Pose get_engine_trunk_goal_pose();

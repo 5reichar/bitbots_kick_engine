@@ -84,6 +84,6 @@ struct KickEngineParameter
 	double imu_pitch_threshold;
 	double imu_roll_threshold;
 
-	Eigen::Vector3d _max_step;
-	double _max_step_xy;
+	Eigen::Vector3d max_step;
+	double max_step_xy;
 };

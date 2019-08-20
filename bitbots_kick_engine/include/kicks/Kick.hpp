@@ -2,6 +2,7 @@
 #define KICK_HPP
 
 #include "../../bitbots_spline/include/utils/SplineContainer.hpp"
+#include <memory>
 
 struct struct3d
 {
@@ -12,7 +13,7 @@ class Kick
 {
 public:
 	void reset();
-	bitbots_splines::SplineContainer & create_trajectories();
+	bitbots_splines::SplineContainer * create_trajectories();
 
 	void set_foot_position(std::shared_ptr<struct3d> position);
 	void set_kick_start_position(std::shared_ptr<struct3d> position);

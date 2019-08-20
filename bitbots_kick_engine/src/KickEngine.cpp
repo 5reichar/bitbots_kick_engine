@@ -78,6 +78,14 @@ geometry_msgs::Twist KickEngine::get_twist() const
 	return twist;
 }
 
+std::string KickEngine::get_support_foot_sole() const
+{
+	//TODO: testing
+	//TODO: cleanup
+
+	return is_left_foot_support() ? "l_sole" : "r_sole";
+}
+
 moveit::core::JointModelGroup& KickEngine::get_joint_model_group(std::string name)
 {
 	//TODO: testing
@@ -118,7 +126,7 @@ Eigen::Vector3d KickEngine::get_trunk_axis() const
 	//TODO: testing
 	//TODO: cleanup
 
-	return bitbots_splines::TrajectoryService::GetTrajectorieAxisTrunk(calc_trajectory_time(), m_spline_container);
+	return bitbots_splines::TrajectoryService::GetTrajectorieAxisTrunk(calc_trajectory_time(), (*m_up_spline_container.get()));
 }
 
 Eigen::Vector3d KickEngine::get_fly_foot_axis() const
@@ -126,7 +134,7 @@ Eigen::Vector3d KickEngine::get_fly_foot_axis() const
 	//TODO: testing
 	//TODO: cleanup
 
-	return bitbots_splines::TrajectoryService::GetTrajectorieAxisFoot(calc_trajectory_time(), m_spline_container);
+	return bitbots_splines::TrajectoryService::GetTrajectorieAxisFoot(calc_trajectory_time(), (*m_up_spline_container.get()));
 }
 
 Eigen::Vector3d KickEngine::get_trunk_position() const
@@ -134,7 +142,16 @@ Eigen::Vector3d KickEngine::get_trunk_position() const
 	//TODO: testing
 	//TODO: cleanup
 
-	return bitbots_splines::TrajectoryService::GetTrajectoriePositionTrunk(calc_trajectory_time(), m_spline_container);
+	return bitbots_splines::TrajectoryService::GetTrajectoriePositionTrunk(calc_trajectory_time(), (*m_up_spline_container.get()));
+}
+
+Eigen::Vector3d KickEngine::get_last_foot_step() const
+{
+	//TODO: implementation
+	//TODO: testing
+	//TODO: cleanup
+
+	return Eigen::Vector3d();
 }
 
 Eigen::Vector3d KickEngine::get_next_foot_step() const
@@ -166,7 +183,7 @@ Eigen::Vector3d KickEngine::get_fly_foot_position() const
 	//TODO: testing
 	//TODO: cleanup
 
-	return bitbots_splines::TrajectoryService::GetTrajectoriePositionFoot(calc_trajectory_time(), m_spline_container);
+	return bitbots_splines::TrajectoryService::GetTrajectoriePositionFoot(calc_trajectory_time(), (*m_up_spline_container.get()));
 }
 
 bool KickEngine::is_left_foot_support() const
@@ -176,7 +193,7 @@ bool KickEngine::is_left_foot_support() const
 
 	// returns true if the value of the "is_left_support_foot" spline is currently higher than 0.5
 	// the spline should only have values of 0 or 1
-	return bitbots_splines::TrajectoryService::GetTrajectorieFootSupportLeft(calc_trajectory_time(), m_spline_container);
+	return bitbots_splines::TrajectoryService::GetTrajectorieFootSupportLeft(calc_trajectory_time(), (*m_up_spline_container.get()));
 }
 
 bool KickEngine::are_booth_feet_support() const
@@ -186,7 +203,7 @@ bool KickEngine::are_booth_feet_support() const
 
 	// returns true if the value of the "is_double_support" spline is currently higher than 0.5
 	// the spline should only have values of 0 or 1
-	return bitbots_splines::TrajectoryService::GetTrajectorieFootSupportDouble(calc_trajectory_time(), m_spline_container);
+	return bitbots_splines::TrajectoryService::GetTrajectorieFootSupportDouble(calc_trajectory_time(), (*m_up_spline_container.get()));
 }
 
 void KickEngine::reset_current_state()
@@ -214,6 +231,14 @@ double KickEngine::calc_trajectory_time() const
 	return trajectory_time;
 }
 
+double KickEngine::get_engine_phase_time() const
+{
+	//TODO: testing
+	//TODO: cleanup
+
+	return m_d_time_phase;
+}
+
 void KickEngine::kick(geometry_msgs::Vector3& ball_position, geometry_msgs::Vector3& target_position)
 {
 	//TODO: testing
@@ -222,17 +247,17 @@ void KickEngine::kick(geometry_msgs::Vector3& ball_position, geometry_msgs::Vect
 	struct3d ball = { ball_position.x, ball_position.y, ball_position.z };
 	struct3d goal = { target_position.x, target_position.y, target_position.z };
 
-	kick(ball, goal, ball);
+	kick(&ball, &goal, ball);
 }
 
-void KickEngine::kick(struct3d& ball_position, struct3d& target_position, struct3d& foot_final_position)
+void KickEngine::kick(struct3d* ball_position, struct3d* target_position, struct3d& foot_final_position)
 {
 	//TODO: testing
 	//TODO: cleanup
 
 	m_s3d_foot_goal_position = foot_final_position;
 	m_footstep.stepFromOrders(Eigen::Vector3d(foot_final_position.x, foot_final_position.y, foot_final_position.z));
-	m_spline_container = m_kick_factory.make_kick_trajection(ball_position, target_position);
+	m_up_spline_container.reset(m_kick_factory.make_kick_trajection(ball_position, target_position));
 }
 
 void KickEngine::update_phase(double delta_time)
