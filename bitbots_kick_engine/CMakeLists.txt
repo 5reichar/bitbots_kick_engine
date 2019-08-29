@@ -17,6 +17,7 @@ find_package(catkin REQUIRED COMPONENTS
   tf
   tf_conversions
   eigen_conversions
+  message_generation
   bitbots_spline
   humanoid_league_msgs
   bitbots_msgs
@@ -120,7 +121,7 @@ generate_dynamic_reconfigure_options(
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES ${PROJECT_NAME}
-  CATKIN_DEPENDS roscpp std_msgs visualization_msgs humanoid_league_msgs geometry_msgs bitbots_ik bitbots_splines
+  CATKIN_DEPENDS roscpp std_msgs visualization_msgs humanoid_league_msgs geometry_msgs bitbots_ik bitbots_splines message_runtime
 #  DEPENDS system_lib
 )
 
@@ -177,6 +178,9 @@ add_executable(
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
+add_dependencies(KickEngineNode ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} ${PROJECT_NAME}_gencfg)
+add_dependencies(${PROJECT_NAME} ${catkin_EXPORTED_TARGETS} ${PROJECT_NAME}_generate_messages_cpp)
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(
