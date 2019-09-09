@@ -13,7 +13,7 @@ class Kick
 {
 public:
 	void reset();
-	bitbots_splines::SplineContainer * create_trajectories();
+	std::shared_ptr<bitbots_splines::SplineContainer> create_trajectories();
 
 	void set_foot_position(std::shared_ptr<struct3d> position);
 	void set_kick_start_position(std::shared_ptr<struct3d> position);
@@ -24,7 +24,9 @@ public:
 
 protected:
 	virtual bool additional_requirements();
-	virtual bitbots_splines::SplineContainer calculate_trajectories() = 0;
+	virtual void build_trajectories() = 0;
+
+	void point(bitbots_splines::CurvePurpose spline_purpose, double time, double position, double velocity = 0, double acceleration = 0);
 
 	std::shared_ptr<struct3d> m_sp_foot_position;
 	std::shared_ptr<struct3d> m_sp_kick_start_position;
@@ -34,6 +36,7 @@ protected:
 	bool m_b_kick_with_right;
 
 private:
+	std::shared_ptr<bitbots_splines::SplineContainer> m_sp_spline_container;
 };
 
 #endif

@@ -1,5 +1,7 @@
-#include "engine/KickFactory.hpp"
+#include <KickFactory.hpp>
+
 #include <math.h>
+#include <SmoothSplineKick.hpp>
 
 bitbots_splines::SplineContainer * KickFactory::make_kick_trajection(struct3d * ball_position, struct3d * goal_position)
 {
@@ -24,17 +26,22 @@ bitbots_splines::SplineContainer * KickFactory::make_kick_trajection(struct3d * 
 
 	init(current_foot_position, ball_position, goal_position, final_foot_position);
 
-	std::unique_ptr<Kick> up_kick(create_kick());
+	auto sp_kick = create_kick();
 
-	up_kick->set_foot_position(m_sp_current_foot_position);
-	up_kick->set_kick_start_position(m_sp_kick_start_foot_position);
-	up_kick->set_ball_position(m_sp_current_ball_position);
-	up_kick->set_foot_end_position(m_sp_final_foot_position);
-	up_kick->set_kick_with_right(m_b_kick_with_right);
+	if (sp_kick)
+	{
+		sp_kick->set_foot_position(m_sp_current_foot_position);
+		sp_kick->set_kick_start_position(m_sp_kick_start_foot_position);
+		sp_kick->set_ball_position(m_sp_current_ball_position);
+		sp_kick->set_foot_end_position(m_sp_final_foot_position);
+		sp_kick->set_kick_with_right(m_b_kick_with_right);
 
-	reset();
-
-	return up_kick->create_trajectories();
+		return sp_kick->create_trajectories();
+	}
+	else
+	{
+		return nullptr;
+	}
 }
 
 void KickFactory::init(struct3d* current_foot_position, struct3d* ball_position, struct3d* goal_position, struct3d* final_foot_position)
@@ -52,17 +59,6 @@ void KickFactory::init(struct3d* current_foot_position, struct3d* ball_position,
 	m_sp_final_foot_position.reset(final_foot_position);
 
 	m_b_kick_with_right = check_kicking_with_right();
-}
-
-void KickFactory::reset()
-{
-	//TODO: testing
-	//TODO: cleanup
-
-	m_sp_current_foot_position.reset();
-	m_sp_kick_start_foot_position.reset();
-	m_sp_current_ball_position.reset();
-	m_sp_ball_goal_position.reset();
 }
 
 double KickFactory::calculate_angle(double const x, double const y)
@@ -158,15 +154,19 @@ bool KickFactory::check_kicking_with_right()
 	return m_d_angle_robot_ball < 180;
 }
 
-Kick * KickFactory::create_kick()
+std::shared_ptr<Kick> KickFactory::create_kick()
 {
 	//TODO: Implementation
 	//TODO: testing
 	//TODO: cleanup
 
-	Kick * p_kick = nullptr;
+	std::shared_ptr<Kick> sp_return_kick;
 
+	if (true)
+	{
+		//TODO: impolement test for when to use this Kick
+		sp_return_kick.reset(new SmoothSplineKick());
+	}
 
-
-	return p_kick;
+	return sp_return_kick;
 }

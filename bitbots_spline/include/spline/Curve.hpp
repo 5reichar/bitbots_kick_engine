@@ -41,7 +41,8 @@ public:
     /**
      * Add a new point
      */
-    virtual void addPoint(Point point);
+	virtual void addPoint(Point point);
+	virtual void addPoint(double time, double position, double velocity = 0.0, double acceleration = 0.0);
 
     /**
      * Access to points container

@@ -14,6 +14,11 @@ void Curve::addPoint(Curve::Point point)
     addPointCallBack();
 }
 
+void Curve::addPoint(double time, double position, double velocity, double acceleration)
+{
+	addPoint(Curve::createPoint(time, position, velocity, acceleration));
+}
+
 void Curve::addPointCallBack()
 {
 }

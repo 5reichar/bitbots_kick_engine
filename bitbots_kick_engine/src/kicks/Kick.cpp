@@ -12,39 +12,44 @@ void Kick::reset()
 	m_sp_kick_start_position.reset();
 }
 
-bitbots_splines::SplineContainer * Kick::create_trajectories()
+std::shared_ptr<bitbots_splines::SplineContainer> Kick::create_trajectories()
 {
 	//TODO: testing
 	//TODO: cleanup
 
-	auto trajectories = calculate_trajectories();
-	bitbots_splines::SplineContainer* container = &trajectories;
+	//checks
+	bool checks_succ = true;
 
 	if (!m_sp_kick_start_position)
 	{
 		// implement ROS Error
-		delete container;
-		container = nullptr;
+		checks_succ = false;
 	}
 	if (!m_sp_ball_position)
 	{
 		// implement ROS Error
-		delete container;
-		container = nullptr;
+		checks_succ = false;
 	}
 	if (!m_sp_goal_position)
 	{
 		// implement ROS Error
-		delete container;
-		container = nullptr;
+		checks_succ = false;
 	}
 	if (!additional_requirements())
 	{
-		delete container;
-		container = nullptr;
+		checks_succ = false;
 	}
 
-	return container;
+	// build and return spline container
+	if (checks_succ)
+	{
+		build_trajectories();
+		return m_sp_spline_container;
+	}
+	else
+	{
+		return std::shared_ptr<bitbots_splines::SplineContainer>;
+	}
 }
 
 void Kick::set_foot_position(std::shared_ptr<struct3d> position)
@@ -97,5 +102,21 @@ void Kick::set_kick_with_right(bool kick_with_right)
 
 bool Kick::additional_requirements()
 {
+	//TODO: testing
+	//TODO: cleanup
+
 	return true;
+}
+
+bitbots_splines::SplineContainer Kick::calculate_trajectories()
+{
+	return bitbots_splines::SplineContainer();
+}
+
+void Kick::point(bitbots_splines::CurvePurpose spline_purpose, double time, double position, double velocity, double acceleration)
+{
+	//TODO: testing
+	//TODO: cleanup
+
+	m_sp_spline_container->get(spline_purpose)->addPoint(time, position, velocity, acceleration);
 }
