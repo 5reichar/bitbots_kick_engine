@@ -1,4 +1,5 @@
 #include <SmoothSplineKick.hpp>
+#include <TrajectoryService.hpp>
 
 bool SmoothSplineKick::additional_requirements()
 {
@@ -7,40 +8,35 @@ bool SmoothSplineKick::additional_requirements()
 
 void SmoothSplineKick::build_trajectories()
 {
-	// save the current trunk state to use it later
-	if (!startStep)
-	{
-		saveCurrentTrunkState();
-	}
-	else
-	{
-		_trunkPosAtLast.y() -= _footstep.getNext().y();
-		//trunkPos = Eigen::Rotation2Dd(-_footstep.getNext().z()).toRotationMatrix() * trunkPos;
-	}
-
-	if (startStep)
-	{
-		// update support foot and compute odometry
-		_footstep.stepFromOrders(Eigen::Vector3d());
-	}
-	else
-	{
-		_footstep.stepFromOrders(orders);
-	}
-
-	//Reset the trajectories
-	_trajs = bitbots_splines::TrajectoriesInit();
+	std::vector<double> v_cycle_times;
+	v_cycle_times.push_back(0.0);
 	//Set up the trajectories for the half cycle (single step)
-	double halfPeriod = 1.0 / (2.0 * _params.freq);
+	double halfPeriod = 1.0 / (2.0 * m_sp_parameter->freq);
+	v_cycle_times.push_back(halfPeriod);
 	// full period (double step) is needed for trunk splines
 	double period = 2.0 * halfPeriod;
+	v_cycle_times.push_back(period);
+
+	auto temp = period;
+
+	if (m_sp_foot_position)
+	{
+		temp += halfPeriod;
+		v_cycle_times.push_back(temp);
+	}
+
+	if (m_sp_foot_end_position)
+	{
+		temp += halfPeriod;
+		v_cycle_times.push_back(temp);
+	}
 
 	//Time length of double and single support phase during the half cycle
 	double doubleSupportLength = _params.doubleSupportRatio * halfPeriod;
 	double singleSupportLength = halfPeriod - doubleSupportLength;
 
 	//Sign of support foot with respect to lateral
-	double supportSign = (_footstep.isLeftSupport() ? 1.0 : -1.0);
+	double supportSign = (m_b_kick_with_right ? 1.0 : -1.0);
 
 	//The trunk trajectory is defined for a
 	//complete cycle to handle trunk phase shift
@@ -49,62 +45,54 @@ void SmoothSplineKick::build_trajectories()
 	// 0.5halfPeriod to be acyclic to the feet, 0.5doubleSupportLength to keep the double support phase centered between feet
 	double timeShift = -0.5 * halfPeriod + 0.5 * doubleSupportLength + _params.trunkPhase * halfPeriod;
 
+	bitbots_splines::CurvePurpose spline_purpose;
+	double time, position, velocity, acceleration;
 
-	//Only move the trunk on the first half cycle after a walk enable
-	if (startStep) {
-		doubleSupportLength = halfPeriod;
-		singleSupportLength = 0.0;
-	}
 	//Set double support phase
-	point("is_double_support", 0.0, 1.0);
-	point("is_double_support", doubleSupportLength, 1.0);
-	point("is_double_support", doubleSupportLength, 0.0);
-	point("is_double_support", halfPeriod, 0.0);
+	point(bitbots_splines::CurvePurpose::is_double_support, 0.0, 1.0);
+	point(bitbots_splines::CurvePurpose::is_double_support, doubleSupportLength, 1.0);
+	point(bitbots_splines::CurvePurpose::is_double_support, doubleSupportLength, 0.0);
+	point(bitbots_splines::CurvePurpose::is_double_support, halfPeriod, 0.0);
 
 	//Set support foot
-	point("is_left_support_foot", 0.0, _footstep.isLeftSupport());
-	point("is_left_support_foot", halfPeriod, _footstep.isLeftSupport());
+	point(bitbots_splines::CurvePurpose::is_left_support_foot, 0.0, m_b_kick_with_right);
+	point(bitbots_splines::CurvePurpose::is_left_support_foot, halfPeriod, m_b_kick_with_right);
 
-	//Flying foot position
-	point("foot_pos_x", 0.0, _footstep.getLast().x());
-	point("foot_pos_x", doubleSupportLength, _footstep.getLast().x());
-	if (kickStep)
-	{
-		point("foot_pos_x", doubleSupportLength + singleSupportLength * _params.kickPhase, _footstep.getNext().x() + _params.kickLength, _params.kickVel);
-	}
-	else
-	{
-		point("foot_pos_x", doubleSupportLength + singleSupportLength * _params.footPutDownPhase * _params.footOvershootPhase, _footstep.getNext().x() + (_footstep.getNext().x() - _footstep.getLast().x()) * _params.footOvershootRatio);
-	}
-	point("foot_pos_x", doubleSupportLength + singleSupportLength * _params.footPutDownPhase, _footstep.getNext().x());
-	point("foot_pos_x", halfPeriod, _footstep.getNext().x());
+	//Foot position
+	point(bitbots_splines::CurvePurpose::foot_position_x, 0.0, m_sp_kick_start_position->x);
 
-	point("foot_pos_y", 0.0, _footstep.getLast().y());
-	point("foot_pos_y", doubleSupportLength, _footstep.getLast().y());
-	point("foot_pos_y", doubleSupportLength + singleSupportLength * _params.footPutDownPhase * _params.footOvershootPhase, _footstep.getNext().y() + (_footstep.getNext().y() - _footstep.getLast().y()) * _params.footOvershootRatio);
-	point("foot_pos_y", doubleSupportLength + singleSupportLength * _params.footPutDownPhase, _footstep.getNext().y());
-	point("foot_pos_y", halfPeriod, _footstep.getNext().y());
+	point(bitbots_splines::CurvePurpose::foot_position_x, doubleSupportLength, _footstep.getLast().x());
+	point(bitbots_splines::CurvePurpose::foot_position_x, doubleSupportLength + singleSupportLength * _params.footPutDownPhase, _footstep.getNext().x());
+	point(bitbots_splines::CurvePurpose::foot_position_x, halfPeriod, _footstep.getNext().x());
 
-	point("foot_pos_z", 0.0, 0.0);
-	point("foot_pos_z", doubleSupportLength, 0.0);
-	point("foot_pos_z", doubleSupportLength + singleSupportLength * _params.footApexPhase - 0.5 * _params.footZPause * singleSupportLength, _params.footRise);
-	point("foot_pos_z", doubleSupportLength + singleSupportLength * _params.footApexPhase + 0.5 * _params.footZPause * singleSupportLength, _params.footRise);
-	point("foot_pos_z", doubleSupportLength + singleSupportLength * _params.footPutDownPhase, _params.footPutDownZOffset);
-	point("foot_pos_z", halfPeriod, 0.0);
+	point(bitbots_splines::CurvePurpose::foot_position_y, 0.0, m_sp_kick_start_position->y);
 
-	//Flying foot orientation
-	point("foot_axis_x", 0.0, 0.0);
-	point("foot_axis_x", doubleSupportLength + 0.1 * singleSupportLength, 0.0);
-	point("foot_axis_x", doubleSupportLength + singleSupportLength * _params.footPutDownPhase, _params.footPutDownRollOffset * supportSign);
-	point("foot_axis_x", halfPeriod, 0.0);
+	point(bitbots_splines::CurvePurpose::foot_position_y, doubleSupportLength, _footstep.getLast().y());
+	point(bitbots_splines::CurvePurpose::foot_position_y, doubleSupportLength + singleSupportLength * _params.footPutDownPhase * _params.footOvershootPhase, _footstep.getNext().y() + (_footstep.getNext().y() - _footstep.getLast().y()) * _params.footOvershootRatio);
+	point(bitbots_splines::CurvePurpose::foot_position_y, doubleSupportLength + singleSupportLength * _params.footPutDownPhase, _footstep.getNext().y());
+	point(bitbots_splines::CurvePurpose::foot_position_y, halfPeriod, _footstep.getNext().y());
 
-	point("foot_axis_y", 0.0, 0.0);
-	point("foot_axis_y", halfPeriod, 0.0);
+	point(bitbots_splines::CurvePurpose::foot_position_z, 0.0, m_sp_kick_start_position->z);
 
-	point("foot_axis_z", 0.0, _footstep.getLast().z());
-	point("foot_axis_z", doubleSupportLength, _footstep.getLast().z());
-	point("foot_axis_z", doubleSupportLength + singleSupportLength * _params.footPutDownPhase, _footstep.getNext().z());
-	point("foot_axis_z", halfPeriod, _footstep.getNext().z());
+	point(bitbots_splines::CurvePurpose::foot_position_z, doubleSupportLength, 0.0);
+	point(bitbots_splines::CurvePurpose::foot_position_z, doubleSupportLength + singleSupportLength * _params.footApexPhase - 0.5 * _params.footZPause * singleSupportLength, _params.footRise);
+	point(bitbots_splines::CurvePurpose::foot_position_z, doubleSupportLength + singleSupportLength * _params.footApexPhase + 0.5 * _params.footZPause * singleSupportLength, _params.footRise);
+	point(bitbots_splines::CurvePurpose::foot_position_z, doubleSupportLength + singleSupportLength * _params.footPutDownPhase, _params.footPutDownZOffset);
+	point(bitbots_splines::CurvePurpose::foot_position_z, halfPeriod, 0.0);
+
+	//Foot orientation
+	point(bitbots_splines::CurvePurpose::foot_axis_x, 0.0, 0.0);
+	point(bitbots_splines::CurvePurpose::foot_axis_x, doubleSupportLength + 0.1 * singleSupportLength, 0.0);
+	point(bitbots_splines::CurvePurpose::foot_axis_x, doubleSupportLength + singleSupportLength * _params.footPutDownPhase, _params.footPutDownRollOffset * supportSign);
+	point(bitbots_splines::CurvePurpose::foot_axis_x, halfPeriod, 0.0);
+
+	point(bitbots_splines::CurvePurpose::foot_axis_y, 0.0, 0.0);
+	point(bitbots_splines::CurvePurpose::foot_axis_y, halfPeriod, 0.0);
+
+	point(bitbots_splines::CurvePurpose::foot_axis_z, 0.0, _footstep.getLast().z());
+	point(bitbots_splines::CurvePurpose::foot_axis_z, doubleSupportLength, _footstep.getLast().z());
+	point(bitbots_splines::CurvePurpose::foot_axis_z, doubleSupportLength + singleSupportLength * _params.footPutDownPhase, _footstep.getNext().z());
+	point(bitbots_splines::CurvePurpose::foot_axis_z, halfPeriod, _footstep.getNext().z());
 
 
 	//Half pause length of trunk swing 
@@ -130,19 +118,19 @@ void SmoothSplineKick::build_trajectories()
 	double trunkVelNext = _footstep.getNext().x() / halfPeriod;
 
 	//Trunk position
-	point("trunk_pos_x", 0.0, _trunkPosAtLast.x(), _trunkVelAtLast.x(), _trunkAccAtLast.x());
-	point("trunk_pos_x", halfPeriod + timeShift, trunkApexSupport.x(), trunkVelSupport);
-	point("trunk_pos_x", period + timeShift, trunkApexNext.x(), trunkVelNext);
+	point(bitbots_splines::CurvePurpose::trunk_position_x, 0.0, _trunkPosAtLast.x(), _trunkVelAtLast.x(), _trunkAccAtLast.x());
+	point(bitbots_splines::CurvePurpose::trunk_position_x, halfPeriod + timeShift, trunkApexSupport.x(), trunkVelSupport);
+	point(bitbots_splines::CurvePurpose::trunk_position_x, period + timeShift, trunkApexNext.x(), trunkVelNext);
 
-	point("trunk_pos_y", 0.0, _trunkPosAtLast.y(), _trunkVelAtLast.y(), _trunkAccAtLast.y());
-	point("trunk_pos_y", halfPeriod + timeShift - pauseLength, trunkApexSupport.y());
-	point("trunk_pos_y", halfPeriod + timeShift + pauseLength, trunkApexSupport.y());
-	point("trunk_pos_y", period + timeShift - pauseLength, trunkApexNext.y());
-	point("trunk_pos_y", period + timeShift + pauseLength, trunkApexNext.y());
+	point(bitbots_splines::CurvePurpose::trunk_position_y, 0.0, _trunkPosAtLast.y(), _trunkVelAtLast.y(), _trunkAccAtLast.y());
+	point(bitbots_splines::CurvePurpose::trunk_position_y, halfPeriod + timeShift - pauseLength, trunkApexSupport.y());
+	point(bitbots_splines::CurvePurpose::trunk_position_y, halfPeriod + timeShift + pauseLength, trunkApexSupport.y());
+	point(bitbots_splines::CurvePurpose::trunk_position_y, period + timeShift - pauseLength, trunkApexNext.y());
+	point(bitbots_splines::CurvePurpose::trunk_position_y, period + timeShift + pauseLength, trunkApexNext.y());
 
-	point("trunk_pos_z", 0.0, _trunkPosAtLast.z(), _trunkVelAtLast.z(), _trunkAccAtLast.z());
-	point("trunk_pos_z", halfPeriod + timeShift, _params.trunkHeight);
-	point("trunk_pos_z", period + timeShift, _params.trunkHeight);
+	point(bitbots_splines::CurvePurpose::trunk_position_z, 0.0, _trunkPosAtLast.z(), _trunkVelAtLast.z(), _trunkAccAtLast.z());
+	point(bitbots_splines::CurvePurpose::trunk_position_z, halfPeriod + timeShift, _params.trunkHeight);
+	point(bitbots_splines::CurvePurpose::trunk_position_z, period + timeShift, _params.trunkHeight);
 
 	//Define trunk yaw target 
 	//orientation position and velocity
@@ -157,15 +145,20 @@ void SmoothSplineKick::build_trajectories()
 	Eigen::Vector3d axisVel(0.0, 0.0, bitbots_splines::AngleDistance(_footstep.getLast().z(), _footstep.getNext().z()) / period);
 
 	//Trunk orientation
-	point("trunk_axis_x", 0.0, _trunkAxisPosAtLast.x(), _trunkAxisVelAtLast.x(), _trunkAxisAccAtLast.x());
-	point("trunk_axis_x", halfPeriod + timeShift, axisAtSupport.x(), axisVel.x());
-	point("trunk_axis_x", period + timeShift, axisAtNext.x(), axisVel.x());
+	point(bitbots_splines::CurvePurpose::trunk_axis_x, 0.0, _trunkAxisPosAtLast.x(), _trunkAxisVelAtLast.x(), _trunkAxisAccAtLast.x());
+	point(bitbots_splines::CurvePurpose::trunk_axis_x, halfPeriod + timeShift, axisAtSupport.x(), axisVel.x());
+	point(bitbots_splines::CurvePurpose::trunk_axis_x, period + timeShift, axisAtNext.x(), axisVel.x());
 
-	point("trunk_axis_y", 0.0, _trunkAxisPosAtLast.y(), _trunkAxisVelAtLast.y(), _trunkAxisAccAtLast.y());
-	point("trunk_axis_y", halfPeriod + timeShift, axisAtSupport.y(), axisVel.y());
-	point("trunk_axis_y", period + timeShift, axisAtNext.y(), axisVel.y());
+	point(bitbots_splines::CurvePurpose::trunk_axis_y, 0.0, _trunkAxisPosAtLast.y(), _trunkAxisVelAtLast.y(), _trunkAxisAccAtLast.y());
+	point(bitbots_splines::CurvePurpose::trunk_axis_y, halfPeriod + timeShift, axisAtSupport.y(), axisVel.y());
+	point(bitbots_splines::CurvePurpose::trunk_axis_y, period + timeShift, axisAtNext.y(), axisVel.y());
 
-	point("trunk_axis_z", 0.0, _trunkAxisPosAtLast.z(), _trunkAxisVelAtLast.z(), _trunkAxisAccAtLast.z());
-	point("trunk_axis_z", halfPeriod + timeShift, axisAtSupport.z(), axisVel.z());
-	point("trunk_axis_z", period + timeShift, axisAtNext.z(), axisVel.z());
+	point(bitbots_splines::CurvePurpose::trunk_axis_z, 0.0, _trunkAxisPosAtLast.z(), _trunkAxisVelAtLast.z(), _trunkAxisAccAtLast.z());
+	point(bitbots_splines::CurvePurpose::trunk_axis_z, halfPeriod + timeShift, axisAtSupport.z(), axisVel.z());
+	point(bitbots_splines::CurvePurpose::trunk_axis_z, period + timeShift, axisAtNext.z(), axisVel.z());
+}
+
+bitbots_splines::SplineContainer SmoothSplineKick::init_trajectories()
+{
+	return bitbots_splines::TrajectoryService::TrajectoriesInit<bitbots_splines::SmoothSpline>()
 }

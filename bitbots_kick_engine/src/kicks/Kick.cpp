@@ -1,5 +1,10 @@
 #include "kicks/Kick.hpp"
 
+Kick::Kick(std::shared_ptr<KickEngineParameter> sp_parameter)
+{
+	m_sp_parameter = sp_parameter;
+}
+
 void Kick::reset()
 {
 	//TODO: testing
@@ -43,6 +48,7 @@ std::shared_ptr<bitbots_splines::SplineContainer> Kick::create_trajectories()
 	// build and return spline container
 	if (checks_succ)
 	{
+		m_sp_ball_position(init_trajectories())
 		build_trajectories();
 		return m_sp_spline_container;
 	}

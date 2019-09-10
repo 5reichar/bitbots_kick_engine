@@ -3,6 +3,12 @@
 #include <math.h>
 #include <SmoothSplineKick.hpp>
 
+KickFactory::KickFactory(std::shared_ptr<KickEngineParameter> sp_parameter)
+{
+	m_sp_parameter = sp_parameter;
+}
+
+
 bitbots_splines::SplineContainer * KickFactory::make_kick_trajection(struct3d * ball_position, struct3d * goal_position)
 {
 	//TODO: testing
@@ -165,7 +171,7 @@ std::shared_ptr<Kick> KickFactory::create_kick()
 	if (true)
 	{
 		//TODO: impolement test for when to use this Kick
-		sp_return_kick.reset(new SmoothSplineKick());
+		sp_return_kick.reset(new SmoothSplineKick(m_sp_parameter));
 	}
 
 	return sp_return_kick;

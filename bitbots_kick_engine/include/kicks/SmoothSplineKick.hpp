@@ -9,8 +9,10 @@ class SmoothSplineKick : public Kick
 public:
 
 protected:
-	virtual bool additional_requirements() override;
 	virtual void build_trajectories() override;
+	virtual bool additional_requirements() override;
+	virtual bitbots_splines::SplineContainer init_trajectories() override;
+
 
 private:
 };

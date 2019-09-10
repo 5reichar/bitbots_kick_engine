@@ -3,6 +3,7 @@
 
 #include "../../bitbots_spline/include/utils/SplineContainer.hpp"
 #include <memory>
+#include <KickEngineParameter.hpp>
 
 struct struct3d
 {
@@ -12,6 +13,8 @@ struct struct3d
 class Kick
 {
 public:
+	Kick(std::shared_ptr<KickEngineParameter> sp_parameter);
+
 	void reset();
 	std::shared_ptr<bitbots_splines::SplineContainer> create_trajectories();
 
@@ -20,13 +23,17 @@ public:
 	void set_ball_position(std::shared_ptr<struct3d> position);
 	void set_goal_position(std::shared_ptr<struct3d> position);
 	void set_foot_end_position(std::shared_ptr<struct3d> position);
+
 	void set_kick_with_right(bool kick_with_right);
 
 protected:
 	virtual bool additional_requirements();
 	virtual void build_trajectories() = 0;
+	virtual bitbots_splines::SplineContainer init_trajectories() = 0;
 
 	void point(bitbots_splines::CurvePurpose spline_purpose, double time, double position, double velocity = 0, double acceleration = 0);
+
+	std::shared_ptr<KickEngineParameter> m_sp_parameter;
 
 	std::shared_ptr<struct3d> m_sp_foot_position;
 	std::shared_ptr<struct3d> m_sp_kick_start_position;

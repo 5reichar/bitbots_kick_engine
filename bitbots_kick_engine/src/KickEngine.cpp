@@ -8,6 +8,8 @@ KickEngine::KickEngine()
 	//TODO: testing
 	//TODO: cleanup
 
+	m_kick_factory(m_sp_kick_engine_parameter);
+
 	robot_model_loader::RobotModelLoader robot_model_loader("/robot_description", false);
 	robot_model_loader.loadKinematicsSolvers(
 		kinematics_plugin_loader::KinematicsPluginLoaderPtr(

@@ -3,10 +3,13 @@
 
 #include "../kicks/Kick.hpp"
 #include <memory>
+#include <KickEngineParameter.hpp>
 
 class KickFactory
 {
 public:
+	KickFactory(std::shared_ptr<KickEngineParameter> sp_parameter);
+
 	virtual bitbots_splines::SplineContainer* make_kick_trajection(struct3d * ball_position, struct3d * goal_position);
 	virtual bitbots_splines::SplineContainer* make_kick_trajection(struct3d * current_foot_position, struct3d * ball_position, struct3d * goal_position);
 	virtual bitbots_splines::SplineContainer* make_kick_trajection(struct3d * current_foot_position, struct3d * ball_position, struct3d * goal_position, struct3d * final_foot_position);
@@ -19,6 +22,8 @@ private:
 	bool check_kicking_with_right();
 
 	std::shared_ptr<Kick> create_kick();
+
+	std::shared_ptr<KickEngineParameter> m_sp_parameter;
 
 	std::shared_ptr<struct3d> m_sp_current_foot_position;
 	std::shared_ptr<struct3d> m_sp_kick_start_foot_position;
