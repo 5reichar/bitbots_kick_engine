@@ -1,122 +1,45 @@
-#include "kicks/Kick.hpp"
+#include <Kick.hpp>
 
 Kick::Kick(std::shared_ptr<KickEngineParameter> sp_parameter)
 {
 	m_sp_parameter = sp_parameter;
+	m_sp_spline_container = init_trajectories();
 }
 
-void Kick::reset()
-{
-	//TODO: testing
-	//TODO: cleanup
-
-	m_sp_ball_position.reset();
-	m_sp_foot_end_position.reset();
-	m_sp_foot_position.reset();
-	m_sp_goal_position.reset();
-	m_sp_kick_start_position.reset();
-}
-
-std::shared_ptr<bitbots_splines::SplineContainer> Kick::create_trajectories()
+std::shared_ptr<bitbots_splines::SplineContainer> Kick::create_trajectories(KickParameter& kick_parameter)
 {
 	//TODO: testing
 	//TODO: cleanup
 
 	//checks
-	bool checks_succ = true;
-
-	if (!m_sp_kick_start_position)
+	if (check_requirements(kick_parameter))
 	{
 		// implement ROS Error
-		checks_succ = false;
-	}
-	if (!m_sp_ball_position)
-	{
-		// implement ROS Error
-		checks_succ = false;
-	}
-	if (!m_sp_goal_position)
-	{
-		// implement ROS Error
-		checks_succ = false;
-	}
-	if (!additional_requirements())
-	{
-		checks_succ = false;
+		return std::shared_ptr<bitbots_splines::SplineContainer>();
 	}
 
 	// build and return spline container
-	if (checks_succ)
+	double d_time = 0.0;
+	bool b_prepared_kick = false;
+
+	if (kick_parameter.has_kick_prepareration())
 	{
-		m_sp_ball_position(init_trajectories())
-		build_trajectories();
-		return m_sp_spline_container;
+		b_prepared_kick = calculate_movement_kick_preparation(d_time, kick_parameter.get_foot_starting_position(), kick_parameter.get_foot_position_for_kick(), kick_parameter.kick_with_right());
 	}
-	else
+
+	calculate_movement_kick(d_time, b_prepared_kick ? kick_parameter.get_foot_position_for_kick() : kick_parameter.get_foot_starting_position(), kick_parameter.get_ball_position(), kick_parameter.get_kick_goal_position(), kick_parameter.kick_with_right());
+
+	if(kick_parameter.has_kick_conclusion())
 	{
-		return std::shared_ptr<bitbots_splines::SplineContainer>;
+		calculate_movement_kick_conclusion(d_time, kick_parameter.get_ball_position(), kick_parameter.get_foot_ending_position(), kick_parameter.kick_with_right());
 	}
+
+	return m_sp_spline_container;
 }
 
-void Kick::set_foot_position(std::shared_ptr<struct3d> position)
+bool Kick::check_foot_position_with_double_support(struct3d const& const foot_starting_position)
 {
-	//TODO: testing
-	//TODO: cleanup
-
-	m_sp_foot_position = position;
-}
-
-void Kick::set_kick_start_position(std::shared_ptr<struct3d> position)
-{
-	//TODO: testing
-	//TODO: cleanup
-
-	m_sp_kick_start_position = position;
-}
-
-void Kick::set_ball_position(std::shared_ptr<struct3d> position)
-{
-	//TODO: testing
-	//TODO: cleanup
-
-	m_sp_ball_position = position;
-}
-
-void Kick::set_goal_position(std::shared_ptr<struct3d> position)
-{
-	//TODO: testing
-	//TODO: cleanup
-
-	m_sp_goal_position = position;
-}
-
-void Kick::set_foot_end_position(std::shared_ptr<struct3d> position)
-{
-	//TODO: testing
-	//TODO: cleanup
-
-	m_sp_foot_end_position = position;
-}
-
-void Kick::set_kick_with_right(bool kick_with_right)
-{
-	//TODO: testing
-	//TODO: cleanup
-
-	m_b_kick_with_right = kick_with_right;
-}
-
-bool Kick::additional_requirements()
-{
-	//TODO: testing
-	//TODO: cleanup
-
-	return true;
-}
-
-bitbots_splines::SplineContainer Kick::calculate_trajectories()
-{
-	return bitbots_splines::SplineContainer();
+	return foot_starting_position.x == 0.0 && foot_starting_position.y == 0.0 && foot_starting_position.z == 0.0;
 }
 
 void Kick::point(bitbots_splines::CurvePurpose spline_purpose, double time, double position, double velocity, double acceleration)

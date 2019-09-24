@@ -148,6 +148,8 @@ set(
   src/Footstep.cpp
   src/engine/KickFactory.cpp
   src/kicks/Kick.cpp
+  src/kicks/KickParameter.cpp
+  src/kicks/SmoothKick.cpp
 )
 
 ## Declare a C++ library
