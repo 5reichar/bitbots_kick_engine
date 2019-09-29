@@ -4,6 +4,7 @@
 #include "../kicks/Kick.hpp"
 #include <memory>
 #include <KickEngineParameter.hpp>
+#include <KickParameter.hpp>
 
 class KickFactory
 {
@@ -15,11 +16,21 @@ public:
 	virtual bitbots_splines::SplineContainer* make_kick_trajection(struct3d * current_foot_position, struct3d * ball_position, struct3d * goal_position, struct3d * final_foot_position);
 
 private:
-	void init(struct3d * current_foot_position, struct3d * ball_position, struct3d * goal_position, struct3d * final_foot_position);
+	KickParameter init(struct3d * current_foot_position, struct3d * ball_position, struct3d * goal_position, struct3d * final_foot_position);
 
 	double calculate_angle(double const x, double const y);
-	struct3d * calculate_kick_start();
-	bool check_kicking_with_right();
+	struct3d * calculate_kick_start(double angle_between_robot_and_ball, double angle_between_ball_and_goal);
+	void set_default_kick_position(struct3d* kick_position);
+	void set_straight_kick_position_front(struct3d* kick_position);
+	void set_straight_kick_position_back(struct3d* kick_position);
+	void set_straight_kick_position_left(struct3d* kick_position);
+	void set_straight_kick_position_right(struct3d* kick_position);
+	void set_side_kick_position_front_left(struct3d* kick_position);
+	void set_side_kick_position_back_left(struct3d* kick_position);
+	void set_side_kick_position_front_right(struct3d* kick_position);
+	void set_side_kick_position_back_right(struct3d* kick_position);
+	bool check_kicking_with_right(double angle_between_robot_and_ball);
+	bool check_generale_requirements(KickParameter & kick_parameter);
 
 	std::shared_ptr<Kick> create_kick();
 
@@ -34,6 +45,15 @@ private:
 
 	double m_d_angle_ball_goal;
 	double m_d_angle_robot_ball;
+
+	const double north;
+	const double north_east;
+	const double east;
+	const double south_east;
+	const double south;
+	const double south_west;
+	const double west;
+	const double north_west;
 };
 
 #endif

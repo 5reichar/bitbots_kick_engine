@@ -6,6 +6,15 @@
 KickFactory::KickFactory(std::shared_ptr<KickEngineParameter> sp_parameter)
 {
 	m_sp_parameter = sp_parameter;
+
+	north = 0.0;
+	north_east = 45.0;
+	east = 90.0;
+	south_east = 135.0;
+	south = 180.0;
+	south_west = 225.0;
+	west = 270.0;
+	north_west = 315.0;
 }
 
 
@@ -30,41 +39,34 @@ bitbots_splines::SplineContainer * KickFactory::make_kick_trajection(struct3d * 
 	//TODO: testing
 	//TODO: cleanup
 
-	init(current_foot_position, ball_position, goal_position, final_foot_position);
-
+	auto parameter = init(current_foot_position, ball_position, goal_position, final_foot_position);
 	auto sp_kick = create_kick();
+	bool can_make_trajectories = sp_kick && check_generale_requirements();
 
-	if (sp_kick)
-	{
-		sp_kick->set_foot_position(m_sp_current_foot_position);
-		sp_kick->set_kick_start_position(m_sp_kick_start_foot_position);
-		sp_kick->set_ball_position(m_sp_current_ball_position);
-		sp_kick->set_foot_end_position(m_sp_final_foot_position);
-		sp_kick->set_kick_with_right(m_b_kick_with_right);
-
-		return sp_kick->create_trajectories();
-	}
-	else
-	{
-		return nullptr;
-	}
+	return can_make_trajectories ? sp_kick->create_trajectories(parameter) : nullptr;
 }
 
-void KickFactory::init(struct3d* current_foot_position, struct3d* ball_position, struct3d* goal_position, struct3d* final_foot_position)
+KickParameter KickFactory::init(struct3d* current_foot_position, struct3d* ball_position, struct3d* goal_position, struct3d* final_foot_position)
 {
 	//TODO: testing
 	//TODO: cleanup
 
-	m_d_angle_robot_ball = calculate_angle(ball_position->x, ball_position->y);
-	m_d_angle_ball_goal = calculate_angle(goal_position->x - ball_position->x, goal_position->y - ball_position->y);
+	auto angle_between_robot_and_ball = calculate_angle(ball_position->x, ball_position->y);
+	auto angle_between_ball_and_goal = calculate_angle(goal_position->x - ball_position->x, goal_position->y - ball_position->y);
 
-	m_sp_current_foot_position.reset(current_foot_position);
-	m_sp_kick_start_foot_position.reset(calculate_kick_start());
-	m_sp_current_ball_position.reset(ball_position);
-	m_sp_ball_goal_position.reset(goal_position);
-	m_sp_final_foot_position.reset(final_foot_position);
+	KickParameter parameter;
+	parameter.set_foot_starting_position(current_foot_position);
+	parameter.set_foot_position_for_kick(calculate_kick_start(angle_between_robot_and_ball, angle_between_ball_and_goal));
+	parameter.set_ball_position(ball_position);
+	parameter.set_kick_goal_position(goal_position);
+	parameter.set_foot_ending_position(final_foot_position);
 
-	m_b_kick_with_right = check_kicking_with_right();
+	parameter.set_angle_between_robot_and_ball(get_angle_between_robot_and_ball);
+	parameter.set_angle_between_ball_and_goal(angle_between_ball_and_goal);
+
+	parameter.set_kick_with_right(check_kicking_with_right(angle_between_robot_and_ball));
+
+	return parameter;
 }
 
 double KickFactory::calculate_angle(double const x, double const y)
@@ -90,74 +92,218 @@ double KickFactory::calculate_angle(double const x, double const y)
 	return angle;
 }
 
-struct3d * KickFactory::calculate_kick_start()
+struct3d* KickFactory::calculate_kick_start(double angle_between_robot_and_ball, double angle_between_ball_and_goal)
 {
+	/*
+			  y (front)             z (up)
+				  /\				  /\
+				   |				   |
+				   |				   |
+				   |				   |
+	-x (left)<-----+-----> x (right)   0
+				   |				   |
+				   |				   |
+				   |				   |
+				  \/		          \/
+			  -y (back)            -z (down)
+	*/
+
 	//TODO: make dynamic (adjustable via KickEngineParameter and/or Kick)
 	//TODO: testing
 	//TODO: cleanup
 
 	struct3d* kick_start_position = new struct3d();
 
-	if (m_d_angle_robot_ball > 315 || m_d_angle_robot_ball < 45)
+	if (angle_between_robot_and_ball > north_west || angle_between_robot_and_ball <= north_east)
 	{
-		// TODO: Replace placeholder-values
-		kick_start_position->x = 0;
-		kick_start_position->y = -10;
-		kick_start_position->z = -10;
+		// north sector
+		if (angle_between_ball_and_goal > north_west || angle_between_ball_and_goal <= north_east)
+		{
+			// north direction
+			set_straight_kick_position_front(kick_start_position);
+		}
+		else if (angle_between_ball_and_goal > north_east || angle_between_ball_and_goal <= south_east)
+		{
+			// east direction
+			set_side_kick_position_front_left(kick_start_position);
+		}
+		else if (angle_between_ball_and_goal > south_east || angle_between_ball_and_goal <= south_west)
+		{
+			// south direction
+			set_straight_kick_position_back(kick_start_position);
+		}
+		else if (angle_between_ball_and_goal > south_west || angle_between_ball_and_goal <= north_west)
+		{
+			// west direction
+			set_side_kick_position_front_right(kick_start_position);
+		}
 	}
-	else if (m_d_angle_robot_ball > 135 || m_d_angle_robot_ball < 225)
+	else if (angle_between_robot_and_ball > north_east || angle_between_robot_and_ball <= south_east)
 	{
-		// TODO: Replace placeholder-values
-		kick_start_position->x = 0;
-		kick_start_position->y = 10;
-		kick_start_position->z = 5;
+		// east sector
+		if (angle_between_ball_and_goal > north_west || angle_between_ball_and_goal <= north_east)
+		{
+			// north direction
+			set_side_kick_position_back_right(kick_start_position);
+		}
+		else if (angle_between_ball_and_goal > north_east || angle_between_ball_and_goal <= south_east)
+		{
+			// east direction
+			set_default_kick_position(kick_start_position);
+		}
+		else if (angle_between_ball_and_goal > south_east || angle_between_ball_and_goal <= south_west)
+		{
+			// south direction
+			set_side_kick_position_front_right(kick_start_position);
+		}
+		else if (angle_between_ball_and_goal > south_west || angle_between_ball_and_goal <= north_west)
+		{
+			// west direction
+			set_straight_kick_position_right(kick_start_position);
+		}
 	}
-	else if (m_d_angle_robot_ball == 90 || m_d_angle_robot_ball == 270)
+	else if (angle_between_robot_and_ball > south_east || angle_between_robot_and_ball <= south_west)
 	{
-		// TODO: Replace placeholder-values
-		kick_start_position->x = 0;
-		kick_start_position->y = 0;
-		kick_start_position->z = 0;
+		// south sector
+		if (angle_between_ball_and_goal > north_west || angle_between_ball_and_goal <= north_east)
+		{
+			// north direction
+			set_straight_kick_position_back(kick_start_position);
+		}
+		else if (angle_between_ball_and_goal > north_east || angle_between_ball_and_goal <= south_east)
+		{
+			// east direction
+			set_side_kick_position_back_left(kick_start_position);
+		}
+		else if (angle_between_ball_and_goal > south_east || angle_between_ball_and_goal <= south_west)
+		{
+			// south direction
+			set_straight_kick_position_front(kick_start_position);
+		}
+		else if (angle_between_ball_and_goal > south_west || angle_between_ball_and_goal <= north_west)
+		{
+			// west direction
+			set_side_kick_position_back_right(kick_start_position);
+		}
 	}
-	else if (m_d_angle_robot_ball > 45 || m_d_angle_robot_ball < 90)
+	else if (angle_between_robot_and_ball > south_west || angle_between_robot_and_ball <= north_west)
 	{
-		// TODO: Replace placeholder-values
-		kick_start_position->x = -5;
-		kick_start_position->y = 5;
-		kick_start_position->z = 0;
-	}
-	else if (m_d_angle_robot_ball > 90 || m_d_angle_robot_ball < 135)
-	{
-		// TODO: Replace placeholder-values
-		kick_start_position->x = -5;
-		kick_start_position->y = -5;
-		kick_start_position->z = 0;
-	}
-	else if (m_d_angle_robot_ball > 225 || m_d_angle_robot_ball < 270)
-	{
-		// TODO: Replace placeholder-values
-		kick_start_position->x = 5;
-		kick_start_position->y = -5;
-		kick_start_position->z = 0;
-	}
-	else if (m_d_angle_robot_ball > 270 || m_d_angle_robot_ball < 315)
-	{
-		// TODO: Replace placeholder-values
-		kick_start_position->x = 5;
-		kick_start_position->y = 5;
-		kick_start_position->z = 0;
+		// west sector
+		if (angle_between_ball_and_goal > north_west || angle_between_ball_and_goal <= north_east)
+		{
+			// north direction
+			set_side_kick_position_back_left(kick_start_position);
+		}
+		else if (angle_between_ball_and_goal > north_east || angle_between_ball_and_goal <= south_east)
+		{
+			// east direction
+			set_straight_kick_position_left(kick_start_position);
+		}
+		else if (angle_between_ball_and_goal > south_east || angle_between_ball_and_goal <= south_west)
+		{
+			// south direction
+			set_side_kick_position_front_left(kick_start_position);
+		}
+		else if (angle_between_ball_and_goal > south_west || angle_between_ball_and_goal <= north_west)
+		{
+			// west direction
+			set_default_kick_position(kick_start_position);
+		}
 	}
 
 	return kick_start_position;
 }
 
-bool KickFactory::check_kicking_with_right()
+void KickFactory::set_default_kick_position(struct3d* kick_position)
+{
+	// TODO: Replace placeholder-values
+	kick_position->x = 0;
+	kick_position->y = 0;
+	kick_position->z = 0;
+}
+
+void KickFactory::set_straight_kick_position_front(struct3d* kick_position)
+{
+	// TODO: Replace placeholder-values
+	kick_position->x = 0;
+	kick_position->y = 10;
+	kick_position->z = 5;
+}
+
+void KickFactory::set_straight_kick_position_back(struct3d* kick_position)
+{
+	// TODO: Replace placeholder-values
+	kick_position->x = 0;
+	kick_position->y = -10;
+	kick_position->z = 10;
+}
+
+void KickFactory::set_straight_kick_position_left(struct3d* kick_position)
+{
+	// TODO: Replace placeholder-values
+	kick_position->x = -10;
+	kick_position->y = 0;
+	kick_position->z = 10;
+}
+
+void KickFactory::set_straight_kick_position_right(struct3d* kick_position)
+{
+	// TODO: Replace placeholder-values
+	kick_position->x = 10;
+	kick_position->y = 0;
+	kick_position->z = 10;
+}
+
+void KickFactory::set_side_kick_position_front_left(struct3d* kick_position)
+{
+	// TODO: Replace placeholder-values
+	kick_position->x = -5;
+	kick_position->y = 5;
+	kick_position->z = 0;
+}
+
+void KickFactory::set_side_kick_position_back_left(struct3d* kick_position)
+{
+	// TODO: Replace placeholder-values
+	kick_position->x = -5;
+	kick_position->y = -5;
+	kick_position->z = 0;
+}
+
+void KickFactory::set_side_kick_position_front_right(struct3d* kick_position)
+{
+	// TODO: Replace placeholder-values
+	kick_position->x = 5;
+	kick_position->y = -5;
+	kick_position->z = 0;
+}
+
+void KickFactory::set_side_kick_position_back_right(struct3d* kick_position)
+{
+	// TODO: Replace placeholder-values
+	kick_position->x = 5;
+	kick_position->y = 5;
+	kick_position->z = 0;
+}
+
+bool KickFactory::check_kicking_with_right(double angle_between_robot_and_ball)
 {
 	//TODO: make dynamic (adjustable via KickEngineParameter and/or Kick)
 	//TODO: testing
 	//TODO: cleanup
 
-	return m_d_angle_robot_ball < 180;
+	return angle_between_robot_and_ball < 180;
+}
+
+bool KickFactory::check_generale_requirements(KickParameter& kick_parameter)
+{
+	bool requirements_meet = true;
+
+	// is Robot in the way
+	requirements_meet &= !(kick_parameter.get_angle_between_robot_and_ball() == this->east && kick_parameter.get_angle_between_ball_and_goal() == this->west);
+	requirements_meet &= !(kick_parameter.get_angle_between_robot_and_ball() == this->west && kick_parameter.get_angle_between_ball_and_goal() == this->east);
+
+	return requirements_meet;
 }
 
 std::shared_ptr<Kick> KickFactory::create_kick()

@@ -21,6 +21,9 @@ public:
 	void set_kick_goal_position(std::shared_ptr<struct3d> position);
 	void set_foot_ending_position(std::shared_ptr<struct3d> position);
 
+	void set_angle_between_robot_and_ball(double angle);
+	void set_angle_between_ball_and_goal(double angle);
+
 	void set_kick_with_right(bool kick_with_right);
 
 	bool has_kick_prepareration();
@@ -37,12 +40,18 @@ public:
 	std::shared_ptr<struct3d> get_kick_goal_position();
 	std::shared_ptr<struct3d> get_foot_ending_position();
 
+	double get_angle_between_robot_and_ball(double angle);
+	double get_angle_between_ball_and_goal(double angle);
+
 private:
 	std::shared_ptr<struct3d> m_sp_foot_starting_position;
 	std::shared_ptr<struct3d> m_sp_foot_position_for_kick;
 	std::shared_ptr<struct3d> m_sp_ball_position;
 	std::shared_ptr<struct3d> m_sp_kick_goal_position;
 	std::shared_ptr<struct3d> m_sp_foot_ending_position;
+
+	double m_d_angle_robot_ball;
+	double m_d_angle_ball_goal;
 
 	bool m_b_kick_with_right;
 };
