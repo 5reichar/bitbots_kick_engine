@@ -1,5 +1,5 @@
-#include <SmoothSplineKick.hpp>
-#include <TrajectoryService.hpp>
+#include "SmoothSplineKick.hpp"
+#include "../..//..//bitbots_spline/include/utils/TrajectoryService.hpp"
 
 bool SmoothSplineKick::check_requirements(KickParameter& kick_parameter)
 {

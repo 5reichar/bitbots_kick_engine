@@ -21,7 +21,7 @@ public:
 
 	bool update(double delta_time);
 
-	void set_parameter(std::shared_ptr<KickEngineParameter> &parameter);
+	std::shared_ptr<KickEngineParameter> get_parameter();
 	void set_robot_state(uint8_t state);
 
 	virtual void set_goal_state(std::shared_ptr<moveit::core::RobotState> &goal_state);

@@ -1,10 +1,10 @@
 #ifndef KICKFACADE_HPP
 #define KICKFACADE_HPP
 
-#include "../kicks/Kick.hpp"
 #include <memory>
-#include <KickEngineParameter.hpp>
-#include <KickParameter.hpp>
+#include "KickEngineParameter.hpp"
+#include "../kicks/Kick.hpp"
+#include "../kicks/KickParameter.hpp"
 
 class KickFactory
 {
@@ -12,7 +12,6 @@ public:
 	KickFactory(std::shared_ptr<KickEngineParameter> sp_parameter);
 
 	virtual bitbots_splines::SplineContainer* make_kick_trajection(struct3d * ball_position, struct3d * goal_position);
-	virtual bitbots_splines::SplineContainer* make_kick_trajection(struct3d * current_foot_position, struct3d * ball_position, struct3d * goal_position);
 	virtual bitbots_splines::SplineContainer* make_kick_trajection(struct3d * current_foot_position, struct3d * ball_position, struct3d * goal_position, struct3d * final_foot_position);
 
 private:

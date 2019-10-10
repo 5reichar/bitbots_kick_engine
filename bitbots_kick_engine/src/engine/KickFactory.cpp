@@ -1,7 +1,7 @@
 #include <KickFactory.hpp>
 
 #include <math.h>
-#include <SmoothSplineKick.hpp>
+#include "../kicks/SmoothSplineKick.hpp"
 
 KickFactory::KickFactory(std::shared_ptr<KickEngineParameter> sp_parameter)
 {
@@ -23,15 +23,7 @@ bitbots_splines::SplineContainer * KickFactory::make_kick_trajection(struct3d * 
 	//TODO: testing
 	//TODO: cleanup
 
-	return make_kick_trajection(nullptr, ball_position, goal_position, nullptr);
-}
-
-bitbots_splines::SplineContainer * KickFactory::make_kick_trajection(struct3d * current_foot_position, struct3d * ball_position, struct3d * goal_position)
-{
-	//TODO: testing
-	//TODO: cleanup
-
-	return make_kick_trajection(current_foot_position, ball_position, goal_position, nullptr);
+	return make_kick_trajection(&struct3d{ 0.0, 0.0, 0.0 }, ball_position, goal_position, &struct3d{ 0.0, 0.0, 0.0 });
 }
 
 bitbots_splines::SplineContainer * KickFactory::make_kick_trajection(struct3d * current_foot_position, struct3d * ball_position, struct3d * goal_position, struct3d * final_foot_position)
@@ -300,8 +292,8 @@ bool KickFactory::check_generale_requirements(KickParameter& kick_parameter)
 	bool requirements_meet = true;
 
 	// is Robot in the way
-	requirements_meet &= !(kick_parameter.get_angle_between_robot_and_ball() == this->east && kick_parameter.get_angle_between_ball_and_goal() == this->west);
-	requirements_meet &= !(kick_parameter.get_angle_between_robot_and_ball() == this->west && kick_parameter.get_angle_between_ball_and_goal() == this->east);
+	requirements_meet &= !(kick_parameter.get_angle_between_robot_and_ball() == 90 && kick_parameter.get_angle_between_ball_and_goal() == 270);
+	requirements_meet &= !(kick_parameter.get_angle_between_robot_and_ball() == 270 && kick_parameter.get_angle_between_ball_and_goal() == 90);
 
 	return requirements_meet;
 }

@@ -3,11 +3,11 @@
 #include "../../bitbots_spline/include/utils/TrajectoryService.hpp"
 
 KickEngine::KickEngine()
-	:m_footstep(m_sp_kick_engine_parameter->footDistance, is_left_foot_support())
+	: m_sp_kick_engine_parameter = std::make_shared(KickEngineParameter),
+	m_footstep(m_sp_kick_engine_parameter->footDistance, is_left_foot_support())
 {
 	//TODO: testing
 	//TODO: cleanup
-
 	m_kick_factory(m_sp_kick_engine_parameter);
 
 	robot_model_loader::RobotModelLoader robot_model_loader("/robot_description", false);
@@ -27,12 +27,12 @@ bool KickEngine::update(double delta_time)
 	return b_succ;
 }
 
-void KickEngine::set_parameter(std::shared_ptr<KickEngineParameter> &parameter)
+std::shared_ptr<KickEngineParameter> KickEngine::get_parameter()
 {
 	//TODO: testing
 	//TODO: cleanup
 
-	m_sp_kick_engine_parameter = parameter;
+	return m_sp_kick_engine_parameter;
 }
 
 void KickEngine::set_robot_state(uint8_t state)

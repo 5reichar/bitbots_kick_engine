@@ -1,4 +1,4 @@
-#include <Kick.hpp>
+#include "Kick.hpp"
 
 Kick::Kick(std::shared_ptr<KickEngineParameter> sp_parameter)
 {

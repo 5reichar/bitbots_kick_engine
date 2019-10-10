@@ -17,7 +17,7 @@ KickEngineNodeService::KickEngineNodeService(bool simulation)
 	m_sp_kick_engine->set_goal_state(names_vec, pos_vec);
 
 	m_sp_kick_engine->reset_current_state();
-	m_sp_kick_engine->set_parameter(m_sp_kick_engine_parameter);
+	m_sp_kick_engine_parameter.reset(m_sp_kick_engine->get_parameter());
 
 	m_bio_ik_solver = bitbots_ik::BioIKSolver(m_sp_kick_engine->get_joint_model_group("All"),
 											  m_sp_kick_engine->get_joint_model_group("LeftLeg"),
