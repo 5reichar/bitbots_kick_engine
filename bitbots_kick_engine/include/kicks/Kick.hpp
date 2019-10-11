@@ -12,8 +12,9 @@ public:
 	Kick(std::shared_ptr<KickEngineParameter> sp_parameter);
 
 	std::shared_ptr<bitbots_splines::SplineContainer> create_trajectories(KickParameter & kick_parameter);
-	
+
 	virtual bool can_execute_kick(KickParameter kick_parameter) = 0;
+	virtual bool use_default_calculation_for_kick_stating_position();
 
 protected:
 	virtual bool check_requirements(KickParameter & kick_parameter) = 0;

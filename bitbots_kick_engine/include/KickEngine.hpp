@@ -47,17 +47,18 @@ public:
 	void reset_current_state();
 	double calc_trajectory_time() const;
 	double get_engine_phase_time() const;
-	void kick(geometry_msgs::Vector3& ball_position, geometry_msgs::Vector3& target_position);
+	bool kick(geometry_msgs::Vector3& ball_position, geometry_msgs::Vector3& target_position);
 
 private:
-	void kick(struct3d * ball_position, struct3d * target_position, struct3d& foot_final_position);
+	bool kick(struct3d* ball_position, struct3d* target_position, struct3d* foot_final_position = nullptr);
 	void update_phase(double delta_time);
 
 	double m_d_time_phase;
-	Footstep m_footstep;
 	uint8_t m_robot_state;
 	KickFactory m_kick_factory;
-	struct3d m_s3d_foot_goal_position;
+
+	std::unique_ptr<Footstep> m_up_footstep;
+	std::unique_ptr<KickFactory> m_up_kick_factory;
 	std::unique_ptr<bitbots_splines::SplineContainer> m_up_spline_container;
 
 	std::shared_ptr<moveit::core::RobotState> m_sp_goal_state;

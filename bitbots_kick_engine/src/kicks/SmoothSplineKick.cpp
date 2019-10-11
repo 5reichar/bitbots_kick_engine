@@ -3,16 +3,25 @@
 
 bool SmoothSplineKick::check_requirements(KickParameter& kick_parameter)
 {
+	//TODO: testing
+	//TODO: cleanup
+
 	return kick_parameter.has_kick_starting_position() && kick_parameter.has_kick_ball_postion() && kick_parameter.has_kick_goal();
 }
 
 bitbots_splines::SplineContainer SmoothSplineKick::init_trajectories()
 {
+	//TODO: testing
+	//TODO: cleanup
+
 	return bitbots_splines::TrajectoryService::TrajectoriesInit<bitbots_splines::SmoothSpline>()
 }
 
 bool SmoothSplineKick::calculate_movement_kick_preparation(double& time, struct3d const& const foot_position, struct3d const& const kick_start_position, bool const& const kick_with_right)
 {
+	//TODO: testing
+	//TODO: cleanup
+
 	//Set up the trajectories for the half cycle (single step)
 	double halfPeriod = 1.0 / (2.0 * m_sp_parameter->freq);
 	// full period (double step) is needed for trunk splines
@@ -72,6 +81,9 @@ bool SmoothSplineKick::calculate_movement_kick_preparation(double& time, struct3
 
 void SmoothSplineKick::calculate_movement_kick(double& time, struct3d const& const foot_position, struct3d const& const ball_position, struct3d const& const kick_goal_position, bool const& const kick_with_right)
 {
+	//TODO: testing
+	//TODO: cleanup
+
 	//Set up the trajectories for the half cycle (single step)
 	double halfPeriod = 1.0 / (2.0 * m_sp_parameter->freq);
 	// full period (double step) is needed for trunk splines
@@ -132,6 +144,9 @@ void SmoothSplineKick::calculate_movement_kick(double& time, struct3d const& con
 
 void SmoothSplineKick::calculate_movement_kick_conclusion(double& time, struct3d const& const foot_position, struct3d const& const foot_ending_position, bool const& const kick_with_right)
 {
+	//TODO: testing
+	//TODO: cleanup
+
 	//Set up the trajectories for the half cycle (single step)
 	double halfPeriod = 1.0 / (2.0 * m_sp_parameter->freq);
 	// full period (double step) is needed for trunk splines
