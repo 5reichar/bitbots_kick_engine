@@ -33,6 +33,20 @@ double KickFactoryService::calculate_angle(double const x, double const y)
 	return angle;
 }
 
+bool KickFactoryService::check_kicking_with_right(double angle_between_robot_and_ball)
+{
+	//TODO: make dynamic (adjustable via KickEngineParameter and/or Kick)
+	//TODO: testing
+	//TODO: cleanup
+
+	return angle_between_robot_and_ball < 180;
+}
+
+bool check_angle_requirements(double angle, AngleRequirements requirements)
+{
+	return requirements.min_angle <= angle && angle <= requirements.max_angle;
+}
+
 struct3d KickFactoryService::calculate_kick_start(double angle_between_robot_and_ball, double angle_between_ball_and_goal)
 {
 	/*
@@ -153,15 +167,6 @@ struct3d KickFactoryService::calculate_kick_start(double angle_between_robot_and
 	}
 
 	return kick_start_position;
-}
-
-bool KickFactoryService::check_kicking_with_right(double angle_between_robot_and_ball)
-{
-	//TODO: make dynamic (adjustable via KickEngineParameter and/or Kick)
-	//TODO: testing
-	//TODO: cleanup
-
-	return angle_between_robot_and_ball < 180;
 }
 
 struct3d KickFactoryService::get_default_kick_position()

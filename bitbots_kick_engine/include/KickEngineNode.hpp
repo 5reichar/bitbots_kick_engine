@@ -8,6 +8,9 @@
 #include <humanoid_league_msgs/RobotControlState.h>
 #include <bitbots_kick_engine/WalkingDebug.h>
 #include <bitbots_kick_engine/KickAction.h>
+#include <bitbots_kick_engine/bitbots_quintic_walk_paramsConfig.h>
+#include <bitbots_kick_engine/kick_paramsConfig.h>
+
 
 class KickEngineNode
 {
@@ -21,7 +24,8 @@ private:
 
 	void kick_callback(const bitbots_kick_engine::KickAction action);
 	void robot_state_callback(const humanoid_league_msgs::RobotControlState msg);
-	void reconfigure_callback(bitbots_kick_engine::bitbots_quintic_walk_paramsConfig& config, uint32_t level);
+	void reconfigure_kick_engine_callback(bitbots_kick_engine::bitbots_quintic_walk_paramsConfig& config, uint32_t level);
+	void reconfigure_kicks_callback(bitbots_kick_engine::kick_paramsConfig& config, uint32_t level);
 
     void initialise_ros_publisher();
     void initialise_ros_subcribtions();

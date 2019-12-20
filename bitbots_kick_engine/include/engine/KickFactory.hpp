@@ -9,9 +9,10 @@
 class KickFactory
 {
 public:
-	KickFactory(std::shared_ptr<KickEngineParameter> sp_parameter);
+	KickFactory(std::shared_ptr<KickEngineParameter> sp_engine_parameter);
 
-	KickParameter get_last_kicks_parameter();
+	std::shared_ptr<KickParameter> get_kick_parameter();
+	KickAttributes get_last_kicks_attributes();
 
 	virtual bitbots_splines::SplineContainer* make_kick_trajection(struct3d * ball_position, struct3d * goal_position, struct3d * final_foot_position = nullptr);
 
@@ -24,7 +25,8 @@ private:
 
 	std::shared_ptr<Kick> create_kick();
 
-	KickParameter m_struc_kick_parameter;
+	KickAttributes m_struc_kick_attributes;
+	std::shared_ptr<KickParameter> m_sp_kick_parameter;
 	std::shared_ptr<KickEngineParameter> m_sp_kick_engine_parameter;
 };
 

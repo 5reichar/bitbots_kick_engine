@@ -74,7 +74,7 @@ void KickEngineNode::kick_callback(const bitbots_kick_engine::KickAction action)
 	kick_ball(action.ball_pos, action.target);
 }
 
-void KickEngineNode::reconfigure_callback(bitbots_kick_engine::bitbots_quintic_walk_paramsConfig &config, uint32_t level)
+void KickEngineNode::reconfigure_kick_engine_callback(bitbots_kick_engine::bitbots_quintic_walk_paramsConfig& config, uint32_t level)
 {
 	// TODO testing
 	// TODO cleanup
@@ -82,7 +82,18 @@ void KickEngineNode::reconfigure_callback(bitbots_kick_engine::bitbots_quintic_w
 	m_sp_debug_service->set_debug(config.debugActive);
 	m_uint_odometry_publish_factor = config.odomPubFactor;
 
-	m_p_node_service->reconfigure_parameter(config, level);
+	m_p_node_service->reconfigure_engine_parameter(config, level);
+}
+
+void KickEngineNode::reconfigure_kicks_callback(bitbots_kick_engine::kick_paramsConfig& config, uint32_t level)
+{
+	// TODO testing
+	// TODO cleanup
+
+	m_sp_debug_service->set_debug(config.debugActive);
+	m_uint_odometry_publish_factor = config.odomPubFactor;
+
+	m_p_node_service->reconfigure_kick_parameter(config, level);
 }
 
 void KickEngineNode::initialise_ros_publisher()

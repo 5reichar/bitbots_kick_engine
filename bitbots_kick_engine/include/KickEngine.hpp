@@ -21,7 +21,8 @@ public:
 
 	bool update(double delta_time);
 
-	std::shared_ptr<KickEngineParameter> get_parameter();
+	std::shared_ptr<KickEngineParameter> get_engine_parameter();
+	std::shared_ptr<KickParameter> get_kick_parameter();
 	void set_robot_state(uint8_t state);
 
 	virtual void set_goal_state(std::shared_ptr<moveit::core::RobotState> &goal_state);
@@ -64,6 +65,9 @@ private:
 	std::shared_ptr<moveit::core::RobotState> m_sp_goal_state;
 	std::shared_ptr<moveit::core::RobotState> m_sp_current_state;
 	std::shared_ptr<moveit::core::RobotModel> m_sp_kinematic_model;
+
+	// Configuration Parameter
+	std::shared_ptr<KickParameter> m_sp_kick_parameter;
 	std::shared_ptr<KickEngineParameter> m_sp_kick_engine_parameter;
 
 };

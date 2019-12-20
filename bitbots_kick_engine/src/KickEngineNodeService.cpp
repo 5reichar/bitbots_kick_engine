@@ -17,7 +17,6 @@ KickEngineNodeService::KickEngineNodeService(bool simulation)
 	m_sp_kick_engine->set_goal_state(names_vec, pos_vec);
 
 	m_sp_kick_engine->reset_current_state();
-	m_sp_kick_engine_parameter.reset(m_sp_kick_engine->get_parameter());
 
 	m_bio_ik_solver = bitbots_ik::BioIKSolver(m_sp_kick_engine->get_joint_model_group("All"),
 											  m_sp_kick_engine->get_joint_model_group("LeftLeg"),
@@ -106,56 +105,65 @@ double KickEngineNodeService::calculate_time_delta()
 	return dt;
 }
 
-void KickEngineNodeService::reconfigure_parameter(bitbots_kick_engine::bitbots_quintic_walk_paramsConfig& config, uint32_t level)
+void KickEngineNodeService::reconfigure_engine_parameter(bitbots_kick_engine::bitbots_quintic_walk_paramsConfig& config, uint32_t level)
 {
 	//TODO: testing
 	//TODO: cleanup
 
-	m_sp_kick_engine_parameter->freq = config.freq;
-	m_sp_kick_engine_parameter->doubleSupportRatio = config.doubleSupportRatio;
-	m_sp_kick_engine_parameter->footDistance = config.footDistance;
-	m_sp_kick_engine_parameter->footRise = config.footRise;
-	m_sp_kick_engine_parameter->footZPause = config.footZPause;
-	m_sp_kick_engine_parameter->footPutDownZOffset = config.footPutDownZOffset;
-	m_sp_kick_engine_parameter->footPutDownPhase = config.footPutDownPhase;
-	m_sp_kick_engine_parameter->footApexPhase = config.footApexPhase;
-	m_sp_kick_engine_parameter->footOvershootRatio = config.footOvershootRatio;
-	m_sp_kick_engine_parameter->footOvershootPhase = config.footOvershootPhase;
-	m_sp_kick_engine_parameter->trunkHeight = config.trunkHeight;
-	m_sp_kick_engine_parameter->trunkPitch = config.trunkPitch;
-	m_sp_kick_engine_parameter->trunkPhase = config.trunkPhase;
-	m_sp_kick_engine_parameter->trunkXOffset = config.trunkXOffset;
-	m_sp_kick_engine_parameter->trunkYOffset = config.trunkYOffset;
-	m_sp_kick_engine_parameter->trunkSwing = config.trunkSwing;
-	m_sp_kick_engine_parameter->trunkPause = config.trunkPause;
-	m_sp_kick_engine_parameter->trunkXOffsetPCoefForward = config.trunkXOffsetPCoefForward;
-	m_sp_kick_engine_parameter->trunkXOffsetPCoefTurn = config.trunkXOffsetPCoefTurn;
-	m_sp_kick_engine_parameter->trunkPitchPCoefForward = config.trunkPitchPCoefForward;
-	m_sp_kick_engine_parameter->trunkPitchPCoefTurn = config.trunkPitchPCoefTurn;
-	m_sp_kick_engine_parameter->kickLength = config.kickLength;
-	m_sp_kick_engine_parameter->kickPhase = config.kickPhase;
-	m_sp_kick_engine_parameter->footPutDownRollOffset = config.footPutDownRollOffset;
-	m_sp_kick_engine_parameter->kickVel = config.kickVel;
+	auto engine_parameter = m_sp_kick_engine->get_engine_parameter();
 
-	m_sp_kick_engine_parameter->engineFrequency = config.engineFreq;
-
-	m_sp_kick_engine_parameter->max_step[0] = config.maxStepX;
-	m_sp_kick_engine_parameter->max_step[1] = config.maxStepY;
-	m_sp_kick_engine_parameter->max_step[2] = config.maxStepZ;
-	m_sp_kick_engine_parameter->max_step_xy = config.maxStepXY;
-
-	m_sp_kick_engine_parameter->imuActive = config.imuActive;
-	m_sp_kick_engine_parameter->imu_pitch_threshold = config.imuPitchThreshold;
-	m_sp_kick_engine_parameter->imu_roll_threshold = config.imuRollThreshold;
-
-	m_sp_kick_engine_parameter->phaseResetActive = config.phaseResetActive;
-	m_sp_kick_engine_parameter->groundMinPressure = config.groundMinPressure;
-	m_sp_kick_engine_parameter->copStopActive = config.copStopActive;
-	m_sp_kick_engine_parameter->ioPressureThreshold = config.ioPressureThreshold;
-	m_sp_kick_engine_parameter->fbPressureThreshold = config.fbPressureThreshold;
-	m_sp_kick_engine_parameter->pauseDuration = config.pauseDuration;
+	engine_parameter->freq = config.freq;
+	engine_parameter->doubleSupportRatio = config.doubleSupportRatio;
+	engine_parameter->footDistance = config.footDistance;
+	engine_parameter->footRise = config.footRise;
+	engine_parameter->footZPause = config.footZPause;
+	engine_parameter->footPutDownZOffset = config.footPutDownZOffset;
+	engine_parameter->footPutDownPhase = config.footPutDownPhase;
+	engine_parameter->footApexPhase = config.footApexPhase;
+	engine_parameter->footOvershootRatio = config.footOvershootRatio;
+	engine_parameter->footOvershootPhase = config.footOvershootPhase;
+	engine_parameter->trunkHeight = config.trunkHeight;
+	engine_parameter->trunkPitch = config.trunkPitch;
+	engine_parameter->trunkPhase = config.trunkPhase;
+	engine_parameter->trunkXOffset = config.trunkXOffset;
+	engine_parameter->trunkYOffset = config.trunkYOffset;
+	engine_parameter->trunkSwing = config.trunkSwing;
+	engine_parameter->trunkPause = config.trunkPause;
+	engine_parameter->trunkXOffsetPCoefForward = config.trunkXOffsetPCoefForward;
+	engine_parameter->trunkXOffsetPCoefTurn = config.trunkXOffsetPCoefTurn;
+	engine_parameter->trunkPitchPCoefForward = config.trunkPitchPCoefForward;
+	engine_parameter->trunkPitchPCoefTurn = config.trunkPitchPCoefTurn;
+	engine_parameter->kickLength = config.kickLength;
+	engine_parameter->kickPhase = config.kickPhase;
+	engine_parameter->footPutDownRollOffset = config.footPutDownRollOffset;
+	engine_parameter->kickVel = config.kickVel;
+	engine_parameter->engineFrequency = config.engineFreq;
+	engine_parameter->max_step[0] = config.maxStepX;
+	engine_parameter->max_step[1] = config.maxStepY;
+	engine_parameter->max_step[2] = config.maxStepZ;
+	engine_parameter->max_step_xy = config.maxStepXY;
+	engine_parameter->imuActive = config.imuActive;
+	engine_parameter->imu_pitch_threshold = config.imuPitchThreshold;
+	engine_parameter->imu_roll_threshold = config.imuRollThreshold;
+	engine_parameter->phaseResetActive = config.phaseResetActive;
+	engine_parameter->groundMinPressure = config.groundMinPressure;
+	engine_parameter->copStopActive = config.copStopActive;
+	engine_parameter->ioPressureThreshold = config.ioPressureThreshold;
+	engine_parameter->fbPressureThreshold = config.fbPressureThreshold;
+	engine_parameter->pauseDuration = config.pauseDuration;
 
 	m_bio_ik_solver.set_bioIK_timeout(config.bioIKTime);
+}
+
+void KickEngineNodeService::reconfigure_kick_parameter(bitbots_kick_engine::kick_paramsConfig& config, uint32_t level)
+{
+	//TODO: implementation
+	//TODO: testing
+	//TODO: cleanup
+
+	auto kick_parameter = m_sp_kick_engine->get_kick_parameter();
+
+
 }
 
 geometry_msgs::Vector3 KickEngineNodeService::create_vector_3(float x, float y, float z)
@@ -232,7 +240,7 @@ double KickEngineNodeService::get_engine_frequence() const
 	//TODO: testing
 	//TODO: cleanup
 
-	return m_sp_kick_engine_parameter->engineFrequency;
+	return m_sp_kick_engine->get_engine_parameter()->engineFrequency;
 }
 
 geometry_msgs::Pose KickEngineNodeService::get_trunk_result()
@@ -294,7 +302,7 @@ void KickEngineNodeService::get_odemetry_data(tf::Vector3& position_out, geometr
 	// odometry to trunk is transform to support foot * transform from support to trunk
 	auto next_step = m_sp_kick_engine->get_next_foot_step();
 	double x = next_step[0];
-	double y = next_step[1] + m_sp_kick_engine_parameter->footDistance / 2;
+	double y = next_step[1] + m_sp_kick_engine->get_engine_parameter()->footDistance / 2;
 	double yaw = next_step[2];
 
 	tf::Transform supportFootTf;

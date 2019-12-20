@@ -3,7 +3,39 @@ struct struct3d
 	double x, y, z;
 };
 
+struct AngleRequirements
+{
+	double min_angle;
+	double max_angle;
+};
+
+struct KickStartPosition
+{
+	// Name of the type of Kick
+	struct3d position;
+	// The intervall in wich the angle between the robot and the ball must be for this starting position
+	AngleRequirements angle_requiremts_robot_ball;
+	// The intervall in wich the angle between the bal and the goal must be for this starting position
+	AngleRequirements angle_requiremts_ball_goal;
+};
+
+struct KickType
+{
+	// Name of the type of Kick
+	std::string name;
+	// The intervall in wich the angle between the robot and the ball must be for this type of kick
+	AngleRequirements angle_requiremts_robot_ball;
+	// The intervall in wich the angle between the bal and the goal must be for this type of kick
+	AngleRequirements angle_requiremts_ball_goal;
+};
+
 struct KickParameter
+{
+	std::vector<KickType> v_kick_types;
+	std::vector<KickStartPosition> v_kick_start_positions;
+};
+
+struct KickAttributes
 {
 	// current position of the robots foot before the kick movements begins
 	struct3d foot_starting_position;

@@ -18,7 +18,8 @@ public:
 	bool convert_goal_coordinate_from_support_foot_to_trunk_based();
 	bool kick(geometry_msgs::Vector3 &ball_position, geometry_msgs::Vector3 &target_position);
 	double calculate_time_delta();
-	void reconfigure_parameter(bitbots_kick_engine::bitbots_quintic_walk_paramsConfig &config, uint32_t level);
+	void reconfigure_engine_parameter(bitbots_kick_engine::bitbots_quintic_walk_paramsConfig &config, uint32_t level);
+	void reconfigure_kick_parameter(bitbots_kick_engine::kick_paramsConfig& config, uint32_t level);
 
 	geometry_msgs::Vector3 create_vector_3(float x, float y, float z);
 	std_msgs::ColorRGBA create_color_rgba(float red, float green, float blue, float alpha);
@@ -54,7 +55,6 @@ private:
 	std::shared_ptr<KickEngine> m_sp_kick_engine;
 	bitbots_ik::BioIKSolver m_bio_ik_solver;
 	std::shared_ptr<KickEngineDebugService> m_sp_debug_service;
-	std::shared_ptr<KickEngineParameter> m_sp_kick_engine_parameter;
 };
 
 #endif
