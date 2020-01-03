@@ -1,10 +1,7 @@
 #ifndef KICKFACADE_HPP
 #define KICKFACADE_HPP
 
-#include <memory>
 #include "KickFactoryService.hpp"
-#include "KickEngineParameter.hpp"
-#include "../kicks/Kick.hpp"
 
 class KickFactory
 {

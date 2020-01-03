@@ -5,7 +5,6 @@
 #include <moveit/robot_state/robot_state.h>
 #include <geometry_msgs/Vector3.h>
 #include <geometry_msgs/Twist.h>
-#include "engine/KickEngineParameter.hpp"
 #include "engine/KickFactory.hpp"
 #include "Footstep.hpp"
 
