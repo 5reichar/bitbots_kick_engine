@@ -6,7 +6,7 @@ Kick::Kick(std::shared_ptr<KickEngineParameter> sp_parameter)
 	//TODO: cleanup
 
 	m_sp_parameter = sp_parameter;
-	m_sp_spline_container = init_trajectories();
+	m_sp_spline_container = std::make_shared<bitbots_splines::SplineContainer>(init_trajectories());
 }
 
 std::shared_ptr<bitbots_splines::SplineContainer> Kick::create_trajectories(KickParameter& kick_parameter)
