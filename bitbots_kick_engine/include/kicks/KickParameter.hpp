@@ -1,3 +1,6 @@
+#ifndef KICKPARAMETER_HPP
+#define KICKPARAMETER_HPP
+
 struct struct3d
 {
 	double x, y, z;
@@ -69,3 +72,5 @@ struct KickAttributes
 	// flag to show if "foot_ending_position" is set
 	bool conclude_kick_movement = false;
 };
+
+#endif

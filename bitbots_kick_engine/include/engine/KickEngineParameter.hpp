@@ -1,3 +1,6 @@
+#ifndef KICKENGINEPARAMETER_HPP
+#define KICKENGINEPARAMETER_HPP
+
 struct KickEngineParameter
 {
 	//Full walk cycle frequency
@@ -87,3 +90,5 @@ struct KickEngineParameter
 	Eigen::Vector3d max_step;
 	double max_step_xy;
 };
+
+#endif
