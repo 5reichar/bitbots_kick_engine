@@ -11,13 +11,13 @@ class Kick
 public:
 	Kick(std::shared_ptr<KickEngineParameter> sp_parameter);
 
-	std::shared_ptr<bitbots_splines::SplineContainer> create_trajectories(KickParameter & kick_parameter);
+	std::shared_ptr<bitbots_splines::SplineContainer> create_trajectories(KickAttributes & kick_attributes);
 
-	virtual bool can_execute_kick(KickParameter kick_parameter) = 0;
+	virtual bool can_execute_kick(KickAttributes & kick_attributes) = 0;
 	virtual bool use_default_calculation_for_kick_stating_position();
 
 protected:
-	virtual bool check_requirements(KickParameter & kick_parameter) = 0;
+	virtual bool check_requirements(KickAttributes & kick_attributes) = 0;
 	virtual bitbots_splines::SplineContainer init_trajectories() = 0;
 	virtual bool calculate_movement_kick_preparation(double& time, struct3d & foot_position, struct3d & kick_start_position, bool & kick_with_right) = 0;
 	virtual void calculate_movement_kick(double& time, struct3d & foot_position, struct3d & ball_position, struct3d & kick_goal_position, bool & kick_with_right) = 0;

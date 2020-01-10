@@ -1,12 +1,12 @@
 #include "kicks/SmoothSplineKick.hpp"
 #include "../../bitbots_spline/include/utils/TrajectoryService.hpp"
 
-bool SmoothSplineKick::check_requirements(KickParameter& kick_parameter)
+bool SmoothSplineKick::check_requirements(KickAttributes & kick_attributes)
 {
 	//TODO: testing
 	//TODO: cleanup
 
-	return kick_parameter.has_kick_starting_position() && kick_parameter.has_kick_ball_postion() && kick_parameter.has_kick_goal();
+	return true;
 }
 
 bitbots_splines::SplineContainer SmoothSplineKick::init_trajectories()

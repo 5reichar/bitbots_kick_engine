@@ -47,7 +47,7 @@ struct KickAttributes
 
 	// position the robots foot has to move as preparation for the kick
 	// if not used "prepare_kick_movement" should be false
-	struct3d foot_position_for_starting_kick;
+	struct3d foot_prepare_for_kick_position;
 
 	// current position of the ball the robot shall kick
 	struct3d ball_position;
