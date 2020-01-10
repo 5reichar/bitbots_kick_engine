@@ -1,6 +1,8 @@
 #ifndef KICKPARAMETER_HPP
 #define KICKPARAMETER_HPP
 
+#include<vector>
+
 struct struct3d
 {
 	double x, y, z;

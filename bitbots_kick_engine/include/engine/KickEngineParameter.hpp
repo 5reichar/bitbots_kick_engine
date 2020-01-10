@@ -1,6 +1,8 @@
 #ifndef KICKENGINEPARAMETER_HPP
 #define KICKENGINEPARAMETER_HPP
 
+#include<eigen3/Eigen/Dense>
+
 struct KickEngineParameter
 {
 	//Full walk cycle frequency
