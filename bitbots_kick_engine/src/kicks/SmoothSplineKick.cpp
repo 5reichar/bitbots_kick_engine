@@ -14,7 +14,7 @@ bitbots_splines::SplineContainer SmoothSplineKick::init_trajectories()
 	//TODO: testing
 	//TODO: cleanup
 
-	return bitbots_splines::TrajectoryService::TrajectoriesInit<bitbots_splines::SmoothSpline>()
+	return bitbots_splines::TrajectoryService::TrajectoriesInit<bitbots_splines::SmoothSpline>();
 }
 
 bool SmoothSplineKick::calculate_movement_kick_preparation(double& time, struct3d &  foot_position, struct3d &  kick_start_position, bool &  kick_with_right)
