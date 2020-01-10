@@ -8,7 +8,7 @@ KickEngine::KickEngine()
 	//TODO: cleanup
 
 	m_sp_kick_engine_parameter = std::make_shared<KickEngineParameter>();
-	m_up_kick_factory = std::make_unique<KickFactory>(m_sp_kick_engine_parameter, m_sp_kick_parameter);
+	m_up_kick_factory = std::make_unique<KickFactory>(m_sp_kick_engine_parameter);
 	m_up_footstep = std::make_unique<Footstep>(m_sp_kick_engine_parameter->footDistance, is_left_foot_support());
 
 	robot_model_loader::RobotModelLoader robot_model_loader("/robot_description", false);
