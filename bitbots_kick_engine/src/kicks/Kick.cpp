@@ -52,7 +52,7 @@ bool Kick::use_default_calculation_for_kick_stating_position()
 	return true;
 }
 
-bool Kick::check_foot_position_with_double_support(struct3d const& const foot_starting_position)
+bool Kick::check_foot_position_with_double_support(struct3d &  foot_starting_position)
 {
 	//TODO: testing
 	//TODO: cleanup

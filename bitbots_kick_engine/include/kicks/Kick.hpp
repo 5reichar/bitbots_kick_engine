@@ -19,11 +19,11 @@ public:
 protected:
 	virtual bool check_requirements(KickParameter & kick_parameter) = 0;
 	virtual bitbots_splines::SplineContainer init_trajectories() = 0;
-	virtual bool calculate_movement_kick_preparation(double& time, struct3d const& foot_position, struct3d const& kick_start_position, bool const& kick_with_right) = 0;
-	virtual void calculate_movement_kick(double& time, struct3d const& foot_position, struct3d const& ball_position, struct3d const& kick_goal_position, bool const& kick_with_right) = 0;
-	virtual void calculate_movement_kick_conclusion(double& time, struct3d const& foot_position, struct3d const& foot_ending_position, bool const& kick_with_right) = 0;
+	virtual bool calculate_movement_kick_preparation(double& time, struct3d & foot_position, struct3d & kick_start_position, bool & kick_with_right) = 0;
+	virtual void calculate_movement_kick(double& time, struct3d & foot_position, struct3d & ball_position, struct3d & kick_goal_position, bool & kick_with_right) = 0;
+	virtual void calculate_movement_kick_conclusion(double& time, struct3d & foot_position, struct3d & foot_ending_position, bool & kick_with_right) = 0;
 
-	bool check_foot_position_with_double_support(struct3d const& foot_starting_position);
+	bool check_foot_position_with_double_support(struct3d & foot_starting_position);
 	void point(bitbots_splines::CurvePurpose spline_purpose, double time, double position, double velocity = 0, double acceleration = 0);
 
 	std::shared_ptr<KickEngineParameter> m_sp_parameter;

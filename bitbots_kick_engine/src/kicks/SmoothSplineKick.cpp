@@ -17,7 +17,7 @@ bitbots_splines::SplineContainer SmoothSplineKick::init_trajectories()
 	return bitbots_splines::TrajectoryService::TrajectoriesInit<bitbots_splines::SmoothSpline>()
 }
 
-bool SmoothSplineKick::calculate_movement_kick_preparation(double& time, struct3d const& const foot_position, struct3d const& const kick_start_position, bool const& const kick_with_right)
+bool SmoothSplineKick::calculate_movement_kick_preparation(double& time, struct3d &  foot_position, struct3d &  kick_start_position, bool &  kick_with_right)
 {
 	//TODO: testing
 	//TODO: cleanup
@@ -79,7 +79,7 @@ bool SmoothSplineKick::calculate_movement_kick_preparation(double& time, struct3
 	return true;
 }
 
-void SmoothSplineKick::calculate_movement_kick(double& time, struct3d const& const foot_position, struct3d const& const ball_position, struct3d const& const kick_goal_position, bool const& const kick_with_right)
+void SmoothSplineKick::calculate_movement_kick(double& time, struct3d &  foot_position, struct3d &  ball_position, struct3d &  kick_goal_position, bool &  kick_with_right)
 {
 	//TODO: testing
 	//TODO: cleanup
@@ -142,7 +142,7 @@ void SmoothSplineKick::calculate_movement_kick(double& time, struct3d const& con
 	time += period;
 }
 
-void SmoothSplineKick::calculate_movement_kick_conclusion(double& time, struct3d const& const foot_position, struct3d const& const foot_ending_position, bool const& const kick_with_right)
+void SmoothSplineKick::calculate_movement_kick_conclusion(double& time, struct3d &  foot_position, struct3d &  foot_ending_position, bool &  kick_with_right)
 {
 	//TODO: testing
 	//TODO: cleanup
