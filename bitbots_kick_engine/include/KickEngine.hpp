@@ -66,7 +66,6 @@ private:
 	std::shared_ptr<moveit::core::RobotModel> m_sp_kinematic_model;
 
 	// Configuration Parameter
-	std::shared_ptr<KickParameter> m_sp_kick_parameter;
 	std::shared_ptr<KickEngineParameter> m_sp_kick_engine_parameter;
 
 };
