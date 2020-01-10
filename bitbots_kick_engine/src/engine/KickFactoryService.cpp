@@ -1,5 +1,5 @@
-#include "..\..\include\engine\KickFactoryService.hpp"
-#include "..\..\include\kicks\KickParameter.hpp"
+#include "engine\KickFactoryService.hpp"
+#include "kicks\KickParameter.hpp"
 
 const double KickFactoryService::north = 0.0;
 const double KickFactoryService::north_east = 45.0;

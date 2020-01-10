@@ -1,7 +1,7 @@
-#include <KickFactory.hpp>
+#include <engine/KickFactory.hpp>
 
 #include <math.h>
-#include "../kicks/SmoothSplineKick.hpp"
+#include "kicks/SmoothSplineKick.hpp"
 
 KickFactory::KickFactory(std::shared_ptr<KickEngineParameter> sp_engine_parameter)
 {
