@@ -11,7 +11,7 @@ public:
 	std::shared_ptr<KickParameter> get_kick_parameter();
 	KickAttributes get_last_kicks_attributes();
 
-	virtual bitbots_splines::SplineContainer* make_kick_trajection(struct3d * ball_position, struct3d * goal_position, struct3d * final_foot_position = nullptr);
+	virtual std::shared_ptr<bitbots_splines::SplineContainer> make_kick_trajection(struct3d * ball_position, struct3d * goal_position, struct3d * final_foot_position = nullptr);
 
 private:
 	bool check_generale_requirements();
