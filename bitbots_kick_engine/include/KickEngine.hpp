@@ -17,6 +17,7 @@ public:
 	};
 
 	KickEngine();
+	~KickEngine();
 
 	bool update(double delta_time);
 
@@ -57,13 +58,13 @@ private:
 	uint8_t m_robot_state;
 	KickFactory m_kick_factory;
 
-	std::unique_ptr<Footstep> m_up_footstep;
-	std::unique_ptr<KickFactory> m_up_kick_factory;
-	std::unique_ptr<bitbots_splines::SplineContainer> m_up_spline_container;
+	Footstep * m_p_footstep;
+	KickFactory * m_p_kick_factory;
 
 	std::shared_ptr<moveit::core::RobotState> m_sp_goal_state;
 	std::shared_ptr<moveit::core::RobotState> m_sp_current_state;
 	std::shared_ptr<moveit::core::RobotModel> m_sp_kinematic_model;
+	std::shared_ptr<bitbots_splines::SplineContainer> m_sp_spline_container;
 
 	// Configuration Parameter
 	std::shared_ptr<KickEngineParameter> m_sp_kick_engine_parameter;

@@ -3,9 +3,8 @@
 #include "../../bitbots_spline/include/utils/TrajectoryService.hpp"
 
 KickEngine::KickEngine()
-	: m_sp_kick_engine_parameter()
-	, m_up_kick_factory(std::make_unique<KickFactory>(m_sp_kick_engine_parameter))
-	, m_up_footstep(std::make_unique<Footstep>(m_sp_kick_engine_parameter->footDistance, is_left_foot_support()))
+	: m_p_kick_factory(new KickFactory(m_sp_kick_engine_parameter))
+	, m_p_footstep(new Footstep(m_sp_kick_engine_parameter->footDistance, is_left_foot_support()))
 {
 	//TODO: testing
 	//TODO: cleanup
@@ -15,6 +14,12 @@ KickEngine::KickEngine()
 		kinematics_plugin_loader::KinematicsPluginLoaderPtr(
 			new kinematics_plugin_loader::KinematicsPluginLoader()));
 	m_sp_kinematic_model = robot_model_loader.getModel();
+}
+
+KickEngine::~KickEngine()
+{
+	delete m_p_footstep;
+	delete m_p_kick_factory;
 }
 
 bool KickEngine::update(double delta_time)
@@ -39,7 +44,7 @@ std::shared_ptr<KickParameter> KickEngine::get_kick_parameter()
 	//TODO: testing
 	//TODO: cleanup
 
-	return m_up_kick_factory->get_kick_parameter();
+	return m_p_kick_factory->get_kick_parameter();
 }
 
 void KickEngine::set_robot_state(uint8_t state)
@@ -80,7 +85,7 @@ geometry_msgs::Twist KickEngine::get_twist() const
 
 	geometry_msgs::Twist twist;
 
-	auto foot_goal_position = m_up_kick_factory->get_last_kicks_attributes().foot_ending_position;
+	auto foot_goal_position = m_p_kick_factory->get_last_kicks_attributes().foot_ending_position;
 
 	twist.linear.x = foot_goal_position.x * m_sp_kick_engine_parameter->freq * 2;
 	twist.linear.y = foot_goal_position.y * m_sp_kick_engine_parameter->freq * 2;
@@ -137,7 +142,7 @@ Eigen::Vector3d KickEngine::get_trunk_axis() const
 	//TODO: testing
 	//TODO: cleanup
 
-	return bitbots_splines::TrajectoryService::GetTrajectorieAxisTrunk(calc_trajectory_time(), (*m_up_spline_container.get()));
+	return bitbots_splines::TrajectoryService::GetTrajectorieAxisTrunk(calc_trajectory_time(), (*m_sp_spline_container.get()));
 }
 
 Eigen::Vector3d KickEngine::get_fly_foot_axis() const
@@ -145,7 +150,7 @@ Eigen::Vector3d KickEngine::get_fly_foot_axis() const
 	//TODO: testing
 	//TODO: cleanup
 
-	return bitbots_splines::TrajectoryService::GetTrajectorieAxisFoot(calc_trajectory_time(), (*m_up_spline_container.get()));
+	return bitbots_splines::TrajectoryService::GetTrajectorieAxisFoot(calc_trajectory_time(), (*m_sp_spline_container.get()));
 }
 
 Eigen::Vector3d KickEngine::get_trunk_position() const
@@ -153,7 +158,7 @@ Eigen::Vector3d KickEngine::get_trunk_position() const
 	//TODO: testing
 	//TODO: cleanup
 
-	return bitbots_splines::TrajectoryService::GetTrajectoriePositionTrunk(calc_trajectory_time(), (*m_up_spline_container.get()));
+	return bitbots_splines::TrajectoryService::GetTrajectoriePositionTrunk(calc_trajectory_time(), (*m_sp_spline_container.get()));
 }
 
 Eigen::Vector3d KickEngine::get_last_foot_step() const
@@ -175,15 +180,15 @@ Eigen::Vector3d KickEngine::get_next_foot_step() const
 
 	if (is_left_foot_support())
 	{
-		x = m_up_footstep.getLeft()[0];
-		y = m_up_footstep.getLeft()[1] + m_sp_kick_engine_parameter->footDistance / 2;
-		yaw = m_up_footstep.getLeft()[2];
+		x = m_p_footstep->getLeft()[0];
+		y = m_p_footstep->getLeft()[1] + m_sp_kick_engine_parameter->footDistance / 2;
+		yaw = m_p_footstep->getLeft()[2];
 	}
 	else
 	{
-		x = m_up_footstep.getRight()[0];
-		y = m_up_footstep.getRight()[1] + m_sp_kick_engine_parameter->footDistance / 2;
-		yaw = m_up_footstep.getRight()[2];
+		x = m_p_footstep->getRight()[0];
+		y = m_p_footstep->getRight()[1] + m_sp_kick_engine_parameter->footDistance / 2;
+		yaw = m_p_footstep->getRight()[2];
 	}
 
 	return Eigen::Vector3d(x, y, yaw);
@@ -194,7 +199,7 @@ Eigen::Vector3d KickEngine::get_fly_foot_position() const
 	//TODO: testing
 	//TODO: cleanup
 
-	return bitbots_splines::TrajectoryService::GetTrajectoriePositionFoot(calc_trajectory_time(), (*m_up_spline_container.get()));
+	return bitbots_splines::TrajectoryService::GetTrajectoriePositionFoot(calc_trajectory_time(), (*m_sp_spline_container.get()));
 }
 
 bool KickEngine::is_left_foot_support() const
@@ -204,7 +209,7 @@ bool KickEngine::is_left_foot_support() const
 
 	// returns true if the value of the "is_left_support_foot" spline is currently higher than 0.5
 	// the spline should only have values of 0 or 1
-	return bitbots_splines::TrajectoryService::GetTrajectorieFootSupportLeft(calc_trajectory_time(), (*m_up_spline_container.get()));
+	return bitbots_splines::TrajectoryService::GetTrajectorieFootSupportLeft(calc_trajectory_time(), (*m_sp_spline_container.get()));
 }
 
 bool KickEngine::are_booth_feet_support() const
@@ -214,7 +219,7 @@ bool KickEngine::are_booth_feet_support() const
 
 	// returns true if the value of the "is_double_support" spline is currently higher than 0.5
 	// the spline should only have values of 0 or 1
-	return bitbots_splines::TrajectoryService::GetTrajectorieFootSupportDouble(calc_trajectory_time(), (*m_up_spline_container.get()));
+	return bitbots_splines::TrajectoryService::GetTrajectorieFootSupportDouble(calc_trajectory_time(), (*m_sp_spline_container.get()));
 }
 
 void KickEngine::reset_current_state()
@@ -268,16 +273,16 @@ bool KickEngine::kick(struct3d* ball_position, struct3d* target_position, struct
 
 	if (foot_final_position == nullptr)
 	{
-		m_up_footstep.stepFromOrders(Eigen::Vector3d(target_position.x, target_position.y, target_position.z));
+		m_p_footstep->stepFromOrders(Eigen::Vector3d(target_position->x, target_position->y, target_position->z));
 	}
 	else
 	{
-		m_up_footstep.stepFromOrders(Eigen::Vector3d(foot_final_position.x, foot_final_position.y, foot_final_position.z));
+		m_p_footstep->stepFromOrders(Eigen::Vector3d(foot_final_position->x, foot_final_position->y, foot_final_position->z));
 	}
 
-	m_up_spline_container.reset(m_kick_factory.make_kick_trajection(ball_position, target_position, foot_final_position));
+	m_sp_spline_container = m_p_kick_factory->make_kick_trajection(ball_position, target_position, foot_final_position);
 
-	return m_up_spline_container;
+	return m_sp_spline_container.get() != nullptr;
 }
 
 void KickEngine::update_phase(double delta_time)
