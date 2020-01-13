@@ -80,7 +80,7 @@ geometry_msgs::Twist KickEngine::get_twist() const
 
 	geometry_msgs::Twist twist;
 
-	auto foot_goal_position = m_up_kick_factory->get_last_kicks_parameter().foot_ending_position;
+	auto foot_goal_position = m_up_kick_factory->get_last_kicks_attributes().foot_ending_position;
 
 	twist.linear.x = foot_goal_position.x * m_sp_kick_engine_parameter->freq * 2;
 	twist.linear.y = foot_goal_position.y * m_sp_kick_engine_parameter->freq * 2;
