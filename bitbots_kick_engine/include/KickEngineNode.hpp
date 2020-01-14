@@ -8,8 +8,6 @@
 #include <humanoid_league_msgs/RobotControlState.h>
 #include <bitbots_kick_engine/WalkingDebug.h>
 #include <bitbots_kick_engine/KickAction.h>
-#include <bitbots_kick_engine/bitbots_quintic_walk_paramsConfig.h>
-#include <bitbots_kick_engine/kick_paramsConfig.h>
 
 
 class KickEngineNode

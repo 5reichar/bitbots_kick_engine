@@ -6,9 +6,10 @@
 #include "bitbots_ik/BioIKSolver.hpp"
 #include <geometry_msgs/Quaternion.h>
 #include <std_msgs/Char.h>
-#include <bitbots_kick_engine/bitbots_quintic_walk_paramsConfig.h>
 #include "KickEngineDebugService.hpp"
 #include <humanoid_league_msgs/RobotControlState.h>
+#include <bitbots_kick_engine/bitbots_quintic_walk_paramsConfig.h>
+#include <bitbots_kick_engine/kick_paramsConfig.h>
 
 class KickEngineNodeService
 {

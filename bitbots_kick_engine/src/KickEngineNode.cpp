@@ -90,9 +90,6 @@ void KickEngineNode::reconfigure_kicks_callback(bitbots_kick_engine::kick_params
 	// TODO testing
 	// TODO cleanup
 
-	m_sp_debug_service->set_debug(config.debugActive);
-	m_uint_odometry_publish_factor = config.odomPubFactor;
-
 	m_p_node_service->reconfigure_kick_parameter(config, level);
 }
 
