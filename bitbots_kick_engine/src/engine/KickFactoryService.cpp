@@ -1,5 +1,4 @@
-#include "engine\KickFactoryService.hpp"
-#include "kicks\KickParameter.hpp"
+#include "engine/KickFactoryService.hpp"
 
 const double KickFactoryService::north = 0.0;
 const double KickFactoryService::north_east = 45.0;
@@ -174,9 +173,9 @@ struct3d KickFactoryService::get_default_kick_position()
 	struct3d kick_position;
 
 	// TODO: Replace placeholder-values
-	kick_position->x = 0;
-	kick_position->y = 0;
-	kick_position->z = 0;
+	kick_position.x = 0;
+	kick_position.y = 0;
+	kick_position.z = 0;
 
 	return kick_position;
 }
@@ -186,9 +185,9 @@ struct3d KickFactoryService::get_straight_kick_position_front()
 	struct3d kick_position;
 
 	// TODO: Replace placeholder-values
-	kick_position->x = 0;
-	kick_position->y = 10;
-	kick_position->z = 5;
+	kick_position.x = 0;
+	kick_position.y = 10;
+	kick_position.z = 5;
 
 	return kick_position;
 }
@@ -198,9 +197,9 @@ struct3d KickFactoryService::get_straight_kick_position_back()
 	struct3d kick_position;
 
 	// TODO: Replace placeholder-values
-	kick_position->x = 0;
-	kick_position->y = -10;
-	kick_position->z = 10;
+	kick_position.x = 0;
+	kick_position.y = -10;
+	kick_position.z = 10;
 
 	return kick_position;
 }
@@ -210,9 +209,9 @@ struct3d KickFactoryService::get_straight_kick_position_left()
 	struct3d kick_position;
 
 	// TODO: Replace placeholder-values
-	kick_position->x = -10;
-	kick_position->y = 0;
-	kick_position->z = 10;
+	kick_position.x = -10;
+	kick_position.y = 0;
+	kick_position.z = 10;
 
 	return kick_position;
 }
@@ -222,9 +221,9 @@ struct3d KickFactoryService::get_straight_kick_position_right()
 	struct3d kick_position;
 
 	// TODO: Replace placeholder-values
-	kick_position->x = 10;
-	kick_position->y = 0;
-	kick_position->z = 10;
+	kick_position.x = 10;
+	kick_position.y = 0;
+	kick_position.z = 10;
 
 	return kick_position;
 }
@@ -234,9 +233,9 @@ struct3d KickFactoryService::get_side_kick_position_front_left()
 	struct3d kick_position;
 
 	// TODO: Replace placeholder-values
-	kick_position->x = -5;
-	kick_position->y = 5;
-	kick_position->z = 0;
+	kick_position.x = -5;
+	kick_position.y = 5;
+	kick_position.z = 0;
 
 	return kick_position;
 }
@@ -246,9 +245,9 @@ struct3d KickFactoryService::get_side_kick_position_back_left()
 	struct3d kick_position;
 
 	// TODO: Replace placeholder-values
-	kick_position->x = -5;
-	kick_position->y = -5;
-	kick_position->z = 0;
+	kick_position.x = -5;
+	kick_position.y = -5;
+	kick_position.z = 0;
 
 	return kick_position;
 }
@@ -258,9 +257,9 @@ struct3d KickFactoryService::get_side_kick_position_front_right()
 	struct3d kick_position;
 
 	// TODO: Replace placeholder-values
-	kick_position->x = 5;
-	kick_position->y = -5;
-	kick_position->z = 0;
+	kick_position.x = 5;
+	kick_position.y = -5;
+	kick_position.z = 0;
 
 	return kick_position;
 }
@@ -270,9 +269,9 @@ struct3d KickFactoryService::get_side_kick_position_back_right()
 	struct3d kick_position;
 
 	// TODO: Replace placeholder-values
-	kick_position->x = 5;
-	kick_position->y = 5;
-	kick_position->z = 0;
+	kick_position.x = 5;
+	kick_position.y = 5;
+	kick_position.z = 0;
 
 	return kick_position;
 }

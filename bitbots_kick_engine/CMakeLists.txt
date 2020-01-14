@@ -148,6 +148,7 @@ set(
   src/KickEngineNodeService.cpp
   src/Footstep.cpp
   src/engine/KickFactory.cpp
+  src/engine/KickFactoryService.cpp
   src/kicks/Kick.cpp
   src/kicks/SmoothSplineKick.cpp
 )

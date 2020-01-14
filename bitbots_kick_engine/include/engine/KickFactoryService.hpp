@@ -1,9 +1,8 @@
-#ifndef KICKFACADESERVICE_HPP
-#define KICKFACADESERVICE_HPP
+#ifndef KICKFACTORYSERVICE_HPP
+#define KICKFACTORYSERVICE_HPP
 
-#include <memory>
+
 #include "KickEngineParameter.hpp"
-#include "../kicks/Kick.hpp"
 #include "../kicks/KickParameter.hpp"
 
 class KickFactoryService
