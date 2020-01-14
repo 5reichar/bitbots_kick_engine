@@ -1,7 +1,8 @@
-#ifndef KICKFACADE_HPP
-#define KICKFACADE_HPP
+#ifndef KICKFACTORY_HPP
+#define KICKFACTORY_HPP
 
 #include "KickFactoryService.hpp"
+#include "../kicks/Kick.hpp"
 
 class KickFactory
 {
