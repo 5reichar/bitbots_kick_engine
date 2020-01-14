@@ -7,6 +7,7 @@
 class SmoothSplineKick : public Kick
 {
 public:
+	SmoothSplineKick(std::shared_ptr<KickEngineParameter> sp_parameter);
 
 protected:
 	virtual bool check_requirements(KickAttributes & kick_attributes) override;

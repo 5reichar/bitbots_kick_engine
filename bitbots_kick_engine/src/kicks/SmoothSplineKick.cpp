@@ -1,6 +1,12 @@
 #include "kicks/SmoothSplineKick.hpp"
 #include "../../bitbots_spline/include/utils/TrajectoryService.hpp"
 
+SmoothSplineKick::SmoothSplineKick(std::shared_ptr<KickEngineParameter> sp_parameter)
+	:Kick(sp_parameter)
+{
+
+}
+
 bool SmoothSplineKick::check_requirements(KickAttributes & kick_attributes)
 {
 	//TODO: testing

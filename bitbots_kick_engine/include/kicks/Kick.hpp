@@ -13,7 +13,7 @@ public:
 
 	std::shared_ptr<bitbots_splines::SplineContainer> create_trajectories(KickAttributes & kick_attributes);
 
-	virtual bool can_execute_kick(KickAttributes & kick_attributes) = 0;
+	//virtual bool can_execute_kick(KickAttributes & kick_attributes) = 0;
 	virtual bool use_default_calculation_for_kick_stating_position();
 
 protected:
