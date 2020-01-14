@@ -3,11 +3,12 @@
 #include "../../bitbots_spline/include/utils/TrajectoryService.hpp"
 
 KickEngine::KickEngine()
-	: m_p_kick_factory(new KickFactory(m_sp_kick_engine_parameter))
-	, m_p_footstep(new Footstep(m_sp_kick_engine_parameter->footDistance, is_left_foot_support()))
 {
 	//TODO: testing
 	//TODO: cleanup
+
+	m_p_kick_factory = new KickFactory(m_sp_kick_engine_parameter);
+	m_p_footstep = new Footstep(m_sp_kick_engine_parameter->footDistance, is_left_foot_support());
 
 	robot_model_loader::RobotModelLoader robot_model_loader("/robot_description", false);
 	robot_model_loader.loadKinematicsSolvers(

@@ -56,7 +56,6 @@ private:
 
 	double m_d_time_phase;
 	uint8_t m_robot_state;
-	KickFactory m_kick_factory;
 
 	Footstep * m_p_footstep;
 	KickFactory * m_p_kick_factory;
