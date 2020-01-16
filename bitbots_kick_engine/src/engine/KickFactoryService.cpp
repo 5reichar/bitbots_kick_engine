@@ -1,4 +1,5 @@
 #include "engine/KickFactoryService.hpp"
+#include <math.h>
 
 const double KickFactoryService::north = 0.0;
 const double KickFactoryService::north_east = 45.0;
