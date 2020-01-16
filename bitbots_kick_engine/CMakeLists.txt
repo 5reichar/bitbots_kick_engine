@@ -106,7 +106,7 @@ generate_messages(
 #   cfg/DynReconf2.cfg
 # )
 generate_dynamic_reconfigure_options(
-  cfg/bitbots_quintic_walk_params.cfg
+  cfg/kick_engine_params.cfg
   cfg/kick_params.cfg
 )
 
