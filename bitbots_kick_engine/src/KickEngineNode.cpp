@@ -74,7 +74,7 @@ void KickEngineNode::kick_callback(const bitbots_kick_engine::KickAction action)
 	kick_ball(action.ball_pos, action.target);
 }
 
-void KickEngineNode::reconfigure_kick_engine_callback(bitbots_kick_engine::bitbots_quintic_walk_paramsConfig& config, uint32_t level)
+void KickEngineNode::reconfigure_kick_engine_callback(bitbots_kick_engine::kick_engine_paramsConfig& config, uint32_t level)
 {
 	// TODO testing
 	// TODO cleanup

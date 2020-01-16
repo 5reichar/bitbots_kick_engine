@@ -105,7 +105,7 @@ double KickEngineNodeService::calculate_time_delta()
 	return dt;
 }
 
-void KickEngineNodeService::reconfigure_engine_parameter(bitbots_kick_engine::bitbots_quintic_walk_paramsConfig& config, uint32_t level)
+void KickEngineNodeService::reconfigure_engine_parameter(bitbots_kick_engine::kick_engine_paramsConfig& config, uint32_t level)
 {
 	//TODO: testing
 	//TODO: cleanup
@@ -113,44 +113,8 @@ void KickEngineNodeService::reconfigure_engine_parameter(bitbots_kick_engine::bi
 	auto engine_parameter = m_sp_kick_engine->get_engine_parameter();
 
 	engine_parameter->freq = config.freq;
-	engine_parameter->doubleSupportRatio = config.doubleSupportRatio;
 	engine_parameter->footDistance = config.footDistance;
-	engine_parameter->footRise = config.footRise;
-	engine_parameter->footZPause = config.footZPause;
-	engine_parameter->footPutDownZOffset = config.footPutDownZOffset;
-	engine_parameter->footPutDownPhase = config.footPutDownPhase;
-	engine_parameter->footApexPhase = config.footApexPhase;
-	engine_parameter->footOvershootRatio = config.footOvershootRatio;
-	engine_parameter->footOvershootPhase = config.footOvershootPhase;
-	engine_parameter->trunkHeight = config.trunkHeight;
-	engine_parameter->trunkPitch = config.trunkPitch;
-	engine_parameter->trunkPhase = config.trunkPhase;
-	engine_parameter->trunkXOffset = config.trunkXOffset;
-	engine_parameter->trunkYOffset = config.trunkYOffset;
-	engine_parameter->trunkSwing = config.trunkSwing;
-	engine_parameter->trunkPause = config.trunkPause;
-	engine_parameter->trunkXOffsetPCoefForward = config.trunkXOffsetPCoefForward;
-	engine_parameter->trunkXOffsetPCoefTurn = config.trunkXOffsetPCoefTurn;
-	engine_parameter->trunkPitchPCoefForward = config.trunkPitchPCoefForward;
-	engine_parameter->trunkPitchPCoefTurn = config.trunkPitchPCoefTurn;
-	engine_parameter->kickLength = config.kickLength;
-	engine_parameter->kickPhase = config.kickPhase;
-	engine_parameter->footPutDownRollOffset = config.footPutDownRollOffset;
-	engine_parameter->kickVel = config.kickVel;
 	engine_parameter->engineFrequency = config.engineFreq;
-	engine_parameter->max_step[0] = config.maxStepX;
-	engine_parameter->max_step[1] = config.maxStepY;
-	engine_parameter->max_step[2] = config.maxStepZ;
-	engine_parameter->max_step_xy = config.maxStepXY;
-	engine_parameter->imuActive = config.imuActive;
-	engine_parameter->imu_pitch_threshold = config.imuPitchThreshold;
-	engine_parameter->imu_roll_threshold = config.imuRollThreshold;
-	engine_parameter->phaseResetActive = config.phaseResetActive;
-	engine_parameter->groundMinPressure = config.groundMinPressure;
-	engine_parameter->copStopActive = config.copStopActive;
-	engine_parameter->ioPressureThreshold = config.ioPressureThreshold;
-	engine_parameter->fbPressureThreshold = config.fbPressureThreshold;
-	engine_parameter->pauseDuration = config.pauseDuration;
 
 	m_bio_ik_solver.set_bioIK_timeout(config.bioIKTime);
 }
@@ -162,8 +126,6 @@ void KickEngineNodeService::reconfigure_kick_parameter(bitbots_kick_engine::kick
 	//TODO: cleanup
 
 	auto kick_parameter = m_sp_kick_engine->get_kick_parameter();
-
-
 }
 
 geometry_msgs::Vector3 KickEngineNodeService::create_vector_3(float x, float y, float z)
