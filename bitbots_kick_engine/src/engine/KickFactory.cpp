@@ -48,7 +48,7 @@ std::shared_ptr<bitbots_splines::SplineContainer> KickFactory::make_kick_traject
 		m_struc_kick_attributes.prepare_kick_movement = true;
 	}
 
-	return ((sp_kick && check_generale_requirements()) ? sp_kick->create_trajectories(m_struc_kick_attributes) : nullptr);
+	return ((sp_kick && check_generale_requirements()) ? sp_kick->calculate_trajectories(m_struc_kick_attributes) : nullptr);
 }
 
 void KickFactory::init_kick_parameter(struct3d * ball_position, struct3d * goal_position, struct3d * final_foot_position)

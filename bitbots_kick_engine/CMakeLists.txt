@@ -122,7 +122,7 @@ generate_dynamic_reconfigure_options(
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES ${PROJECT_NAME}
-  CATKIN_DEPENDS roscpp std_msgs visualization_msgs humanoid_league_msgs geometry_msgs bitbots_ik bitbots_splines message_runtime
+  CATKIN_DEPENDS roscpp std_msgs visualization_msgs humanoid_league_msgs geometry_msgs bitbots_ik bitbots_spline message_runtime
 #  DEPENDS system_lib
 )
 

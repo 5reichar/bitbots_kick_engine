@@ -41,7 +41,7 @@ bool KickFactoryService::check_kicking_with_right(double angle_between_robot_and
 	return angle_between_robot_and_ball < 180;
 }
 
-bool check_angle_requirements(double angle, AngleRequirements requirements)
+bool KickFactoryService::check_angle_requirements(double angle, AngleRequirements requirements)
 {
 	return requirements.min_angle <= angle && angle <= requirements.max_angle;
 }

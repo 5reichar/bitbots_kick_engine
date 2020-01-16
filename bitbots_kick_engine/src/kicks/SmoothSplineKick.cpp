@@ -4,7 +4,7 @@
 SmoothSplineKick::SmoothSplineKick(std::shared_ptr<KickEngineParameter> sp_parameter)
 	:Kick(sp_parameter)
 {
-
+	m_sp_spline_container = std::make_shared<bitbots_splines::SplineContainer>(bitbots_splines::TrajectoryService::TrajectoriesInit<bitbots_splines::SmoothSpline>());
 }
 
 bool SmoothSplineKick::check_requirements(KickAttributes & kick_attributes)
@@ -13,14 +13,6 @@ bool SmoothSplineKick::check_requirements(KickAttributes & kick_attributes)
 	//TODO: cleanup
 
 	return true;
-}
-
-bitbots_splines::SplineContainer SmoothSplineKick::init_trajectories()
-{
-	//TODO: testing
-	//TODO: cleanup
-
-	return bitbots_splines::TrajectoryService::TrajectoriesInit<bitbots_splines::SmoothSpline>();
 }
 
 bool SmoothSplineKick::calculate_movement_kick_preparation(double& time, struct3d &  foot_position, struct3d &  kick_start_position, bool &  kick_with_right)
