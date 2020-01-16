@@ -5,33 +5,14 @@ https://github.com/Rhoban/model/
 */
 
 #include "utils/TrajectoryService.hpp"
+#include "utils/SplineContainerFactory.hpp"
 
 namespace bitbots_splines
 {
 
-template <class T>
 SplineContainer TrajectoryService::TrajectoriesInit()
 {
-    static_assert(std::is_base_of<Curve, T>::value, "TrajectoriesInit<T>(): T must derive from Curve");
-
-    SplineContainer traj;
-
-    traj.add(CurvePurpose::is_double_support, new T());
-    traj.add(CurvePurpose::is_left_support_foot, new T());
-    traj.add(CurvePurpose::trunk_position_x, new T());
-    traj.add(CurvePurpose::trunk_position_y, new T());
-    traj.add(CurvePurpose::trunk_position_z, new T());
-    traj.add(CurvePurpose::trunk_axis_x, new T());
-    traj.add(CurvePurpose::trunk_axis_y, new T());
-    traj.add(CurvePurpose::trunk_axis_z, new T());
-    traj.add(CurvePurpose::foot_position_x, new T());
-    traj.add(CurvePurpose::foot_position_y, new T());
-    traj.add(CurvePurpose::foot_position_z, new T());
-    traj.add(CurvePurpose::foot_axis_x, new T());
-    traj.add(CurvePurpose::foot_axis_y, new T());
-    traj.add(CurvePurpose::foot_axis_z, new T());
-
-    return traj;
+    return SplineContainerFactory::create_smooth_spline_container();
 }
 
 void TrajectoryService::TrajectoriesTrunkFootPos(

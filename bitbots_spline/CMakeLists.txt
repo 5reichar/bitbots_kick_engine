@@ -131,6 +131,7 @@ set(SOURCES
   src/utils/Combination.cpp
   src/utils/NewtonBinomial.cpp
   src/utils/Polynom.cpp
+  src/utils/SplineContainerFactory.cpp
   src/utils/TrajectoryService.cpp
   src/spline/Curve.cpp
   src/spline/Spline.cpp

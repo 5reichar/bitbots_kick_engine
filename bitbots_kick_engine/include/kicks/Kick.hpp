@@ -4,7 +4,7 @@
 #include <memory>
 #include "KickParameter.hpp"
 #include "../engine/KickEngineParameter.hpp"
-#include "../../../bitbots_spline/include/utils/SplineContainer.hpp"
+#include "../../bitbots_spline/include/utils/SplineContainerFactory.hpp"
 
 class Kick
 {

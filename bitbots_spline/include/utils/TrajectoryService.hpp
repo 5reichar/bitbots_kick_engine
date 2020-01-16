@@ -19,7 +19,6 @@ public:
      * Return initialized trajectories for
      * trunk/foot ik cartesian with empty splines
      */
-    template <class T>
     static SplineContainer TrajectoriesInit();
 
     /**

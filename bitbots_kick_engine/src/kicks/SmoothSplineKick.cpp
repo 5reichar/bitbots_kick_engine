@@ -1,10 +1,10 @@
 #include "kicks/SmoothSplineKick.hpp"
-#include "../../bitbots_spline/include/utils/TrajectoryService.hpp"
 
 SmoothSplineKick::SmoothSplineKick(std::shared_ptr<KickEngineParameter> sp_parameter)
 	:Kick(sp_parameter)
 {
-	m_sp_spline_container = std::make_shared<bitbots_splines::SplineContainer>(bitbots_splines::TrajectoryService::TrajectoriesInit<bitbots_splines::SmoothSpline>());
+	auto s_container = bitbots_splines::SplineContainerFactory::create_smooth_spline_container();
+	m_sp_spline_container = std::make_shared<bitbots_splines::SplineContainer>(s_container);
 }
 
 bool SmoothSplineKick::check_requirements(KickAttributes & kick_attributes)
