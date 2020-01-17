@@ -15,7 +15,7 @@ struct AngleRequirements
 	double max_angle;
 };
 
-struct KickStartPosition
+struct KickPreparationPosition
 {
 	// Name of the type of Kick
 	struct3d position;
@@ -37,8 +37,11 @@ struct KickType
 
 struct KickParameter
 {
+	std::string default_kick_type;
+	struct3d default_kick_preparation_position;
+
 	std::vector<KickType> v_kick_types;
-	std::vector<KickStartPosition> v_kick_start_positions;
+	std::vector<KickPreparationPosition> v_kick_preparation_positions;
 };
 
 struct KickAttributes

@@ -10,6 +10,7 @@
 #include <humanoid_league_msgs/RobotControlState.h>
 #include <bitbots_kick_engine/kick_engine_paramsConfig.h>
 #include <bitbots_kick_engine/kick_paramsConfig.h>
+#include <bitbots_kick_engine/kick_preparation_positionsConfig.h>
 
 class KickEngineNodeService
 {
@@ -19,6 +20,8 @@ public:
 	bool convert_goal_coordinate_from_support_foot_to_trunk_based();
 	bool kick(geometry_msgs::Vector3 &ball_position, geometry_msgs::Vector3 &target_position);
 	double calculate_time_delta();
+	KickPreparationPosition make_position(struct3d position, double robot_sector_min, double robot_sector_max, double ball_sector_min, double ball_sector_max);
+	void reconfigure_kick_preparation_positions(bitbots_kick_engine::kick_preparation_positionsConfig &config, uint32_t level);
 	void reconfigure_engine_parameter(bitbots_kick_engine::kick_engine_paramsConfig &config, uint32_t level);
 	void reconfigure_kick_parameter(bitbots_kick_engine::kick_paramsConfig& config, uint32_t level);
 

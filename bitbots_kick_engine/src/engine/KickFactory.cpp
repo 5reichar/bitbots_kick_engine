@@ -35,16 +35,10 @@ std::shared_ptr<bitbots_splines::SplineContainer> KickFactory::make_kick_traject
 
 	if (sp_kick->use_default_calculation_for_kick_stating_position())
 	{
-		for (auto it = m_sp_kick_parameter->v_kick_start_positions.begin(); it != m_sp_kick_parameter->v_kick_start_positions.end(); ++it)
-		{
-			if (KickFactoryService::check_angle_requirements(m_struc_kick_attributes.angle_between_robot_and_ball, it->angle_requiremts_robot_ball)
-				&& KickFactoryService::check_angle_requirements(m_struc_kick_attributes.angle_between_ball_and_goal, it->angle_requiremts_ball_goal))
-			{
-				m_struc_kick_attributes.foot_prepare_for_kick_position = it->position;
-				break;
-			}
-		}
-
+		m_struc_kick_attributes.foot_prepare_for_kick_position =
+					KickFactoryService::get_kick_preparation_position(m_struc_kick_attributes.angle_between_robot_and_ball,
+																	  m_struc_kick_attributes.angle_between_ball_and_goal,
+																	  m_sp_kick_parameter);
 		m_struc_kick_attributes.prepare_kick_movement = true;
 	}
 
