@@ -134,25 +134,89 @@ void KickEngineNodeService::reconfigure_kick_preparation_positions(bitbots_kick_
 
 	kick_parameter->default_kick_preparation_position = positions[0];
 
-	kick_parameter->v_kick_preparation_positions.push_back(make_position(positions[config.rs1_ball_sector_1_use_kp_position], config.robot_sector_1_angle_min, config.robot_sector_1_angle_max, config.rs1_ball_sector_1_angle_min, config.rs1_ball_sector_1_angle_max));
-	kick_parameter->v_kick_preparation_positions.push_back(make_position(positions[config.rs1_ball_sector_2_use_kp_position], config.robot_sector_1_angle_min, config.robot_sector_1_angle_max, config.rs1_ball_sector_2_angle_min, config.rs1_ball_sector_2_angle_max));
-	kick_parameter->v_kick_preparation_positions.push_back(make_position(positions[config.rs1_ball_sector_3_use_kp_position], config.robot_sector_1_angle_min, config.robot_sector_1_angle_max, config.rs1_ball_sector_3_angle_min, config.rs1_ball_sector_3_angle_max));
-	kick_parameter->v_kick_preparation_positions.push_back(make_position(positions[config.rs1_ball_sector_4_use_kp_position], config.robot_sector_1_angle_min, config.robot_sector_1_angle_max, config.rs1_ball_sector_4_angle_min, config.rs1_ball_sector_4_angle_max));
+	kick_parameter->v_kick_preparation_positions.push_back(make_position(positions[config.rs1_ball_sector_1_use_kp_position],
+																		 config.robot_sector_1_angle_min,
+																		 config.robot_sector_1_angle_max,
+																		 config.rs1_ball_sector_1_angle_min,
+																		 config.rs1_ball_sector_1_angle_max));
+	kick_parameter->v_kick_preparation_positions.push_back(make_position(positions[config.rs1_ball_sector_2_use_kp_position],
+																		 config.robot_sector_1_angle_min,
+																		 config.robot_sector_1_angle_max,
+																		 config.rs1_ball_sector_2_angle_min,
+																		 config.rs1_ball_sector_2_angle_max));
+	kick_parameter->v_kick_preparation_positions.push_back(make_position(positions[config.rs1_ball_sector_3_use_kp_position],
+																		 config.robot_sector_1_angle_min,
+																		 config.robot_sector_1_angle_max,
+																		 config.rs1_ball_sector_3_angle_min,
+																		 config.rs1_ball_sector_3_angle_max));
+	kick_parameter->v_kick_preparation_positions.push_back(make_position(positions[config.rs1_ball_sector_4_use_kp_position],
+																		 config.robot_sector_1_angle_min,
+																		 config.robot_sector_1_angle_max,
+																		 config.rs1_ball_sector_4_angle_min,
+																		 config.rs1_ball_sector_4_angle_max));
 
-	kick_parameter->v_kick_preparation_positions.push_back(make_position(positions[config.rs2_ball_sector_1_use_kp_position], config.robot_sector_2_angle_min, config.robot_sector_2_angle_max, config.rs2_ball_sector_1_angle_min, config.rs2_ball_sector_1_angle_max));
-	kick_parameter->v_kick_preparation_positions.push_back(make_position(positions[config.rs2_ball_sector_2_use_kp_position], config.robot_sector_2_angle_min, config.robot_sector_2_angle_max, config.rs2_ball_sector_2_angle_min, config.rs2_ball_sector_2_angle_max));
-	kick_parameter->v_kick_preparation_positions.push_back(make_position(positions[config.rs2_ball_sector_3_use_kp_position], config.robot_sector_2_angle_min, config.robot_sector_2_angle_max, config.rs2_ball_sector_3_angle_min, config.rs2_ball_sector_3_angle_max));
-	kick_parameter->v_kick_preparation_positions.push_back(make_position(positions[config.rs2_ball_sector_4_use_kp_position], config.robot_sector_2_angle_min, config.robot_sector_2_angle_max, config.rs2_ball_sector_4_angle_min, config.rs2_ball_sector_4_angle_max));
+	kick_parameter->v_kick_preparation_positions.push_back(make_position(positions[config.rs2_ball_sector_1_use_kp_position],
+																		 config.robot_sector_2_angle_min,
+																		 config.robot_sector_2_angle_max,
+																		 config.rs2_ball_sector_1_angle_min,
+																		 config.rs2_ball_sector_1_angle_max));
+	kick_parameter->v_kick_preparation_positions.push_back(make_position(positions[config.rs2_ball_sector_2_use_kp_position],
+																		 config.robot_sector_2_angle_min,
+																		 config.robot_sector_2_angle_max,
+																		 config.rs2_ball_sector_2_angle_min,
+																		 config.rs2_ball_sector_2_angle_max));
+	kick_parameter->v_kick_preparation_positions.push_back(make_position(positions[config.rs2_ball_sector_3_use_kp_position],
+																		 config.robot_sector_2_angle_min,
+																		 config.robot_sector_2_angle_max,
+																		 config.rs2_ball_sector_3_angle_min,
+																		 config.rs2_ball_sector_3_angle_max));
+	kick_parameter->v_kick_preparation_positions.push_back(make_position(positions[config.rs2_ball_sector_4_use_kp_position],
+																		 config.robot_sector_2_angle_min,
+																		 config.robot_sector_2_angle_max,
+																		 config.rs2_ball_sector_4_angle_min,
+																		 config.rs2_ball_sector_4_angle_max));
 
-	kick_parameter->v_kick_preparation_positions.push_back(make_position(positions[config.rs3_ball_sector_1_use_kp_position], config.robot_sector_3_angle_min, config.robot_sector_3_angle_max, config.rs3_ball_sector_1_angle_min, config.rs3_ball_sector_1_angle_max));
-	kick_parameter->v_kick_preparation_positions.push_back(make_position(positions[config.rs3_ball_sector_2_use_kp_position], config.robot_sector_3_angle_min, config.robot_sector_3_angle_max, config.rs3_ball_sector_2_angle_min, config.rs3_ball_sector_2_angle_max));
-	kick_parameter->v_kick_preparation_positions.push_back(make_position(positions[config.rs3_ball_sector_3_use_kp_position], config.robot_sector_3_angle_min, config.robot_sector_3_angle_max, config.rs3_ball_sector_3_angle_min, config.rs3_ball_sector_3_angle_max));
-	kick_parameter->v_kick_preparation_positions.push_back(make_position(positions[config.rs3_ball_sector_4_use_kp_position], config.robot_sector_3_angle_min, config.robot_sector_3_angle_max, config.rs3_ball_sector_4_angle_min, config.rs3_ball_sector_4_angle_max));
+	kick_parameter->v_kick_preparation_positions.push_back(make_position(positions[config.rs3_ball_sector_1_use_kp_position],
+																		 config.robot_sector_3_angle_min,
+																		 config.robot_sector_3_angle_max,
+																		 config.rs3_ball_sector_1_angle_min,
+																		 config.rs3_ball_sector_1_angle_max));
+	kick_parameter->v_kick_preparation_positions.push_back(make_position(positions[config.rs3_ball_sector_2_use_kp_position],
+																		 config.robot_sector_3_angle_min,
+																		 config.robot_sector_3_angle_max,
+																		 config.rs3_ball_sector_2_angle_min,
+																		 config.rs3_ball_sector_2_angle_max));
+	kick_parameter->v_kick_preparation_positions.push_back(make_position(positions[config.rs3_ball_sector_3_use_kp_position],
+																		 config.robot_sector_3_angle_min,
+																		 config.robot_sector_3_angle_max,
+																		 config.rs3_ball_sector_3_angle_min,
+																		 config.rs3_ball_sector_3_angle_max));
+	kick_parameter->v_kick_preparation_positions.push_back(make_position(positions[config.rs3_ball_sector_4_use_kp_position],
+																		 config.robot_sector_3_angle_min,
+																		 config.robot_sector_3_angle_max,
+																		 config.rs3_ball_sector_4_angle_min,
+																		 config.rs3_ball_sector_4_angle_max));
 
-	kick_parameter->v_kick_preparation_positions.push_back(make_position(positions[config.rs4_ball_sector_1_use_kp_position], config.robot_sector_4_angle_min, config.robot_sector_4_angle_max, config.rs4_ball_sector_1_angle_min, config.rs4_ball_sector_1_angle_max));
-	kick_parameter->v_kick_preparation_positions.push_back(make_position(positions[config.rs4_ball_sector_2_use_kp_position], config.robot_sector_4_angle_min, config.robot_sector_4_angle_max, config.rs4_ball_sector_2_angle_min, config.rs4_ball_sector_2_angle_max));
-	kick_parameter->v_kick_preparation_positions.push_back(make_position(positions[config.rs4_ball_sector_3_use_kp_position], config.robot_sector_4_angle_min, config.robot_sector_4_angle_max, config.rs4_ball_sector_3_angle_min, config.rs4_ball_sector_3_angle_max));
-	kick_parameter->v_kick_preparation_positions.push_back(make_position(positions[config.rs4_ball_sector_4_use_kp_position], config.robot_sector_4_angle_min, config.robot_sector_4_angle_max, config.rs4_ball_sector_4_angle_min, config.rs4_ball_sector_4_angle_max));
+	kick_parameter->v_kick_preparation_positions.push_back(make_position(positions[config.rs4_ball_sector_1_use_kp_position],
+																		 config.robot_sector_4_angle_min,
+																		 config.robot_sector_4_angle_max,
+																		 config.rs4_ball_sector_1_angle_min,
+																		 config.rs4_ball_sector_1_angle_max));
+	kick_parameter->v_kick_preparation_positions.push_back(make_position(positions[config.rs4_ball_sector_2_use_kp_position],
+																		 config.robot_sector_4_angle_min,
+																		 config.robot_sector_4_angle_max,
+																		 config.rs4_ball_sector_2_angle_min,
+																		 config.rs4_ball_sector_2_angle_max));
+	kick_parameter->v_kick_preparation_positions.push_back(make_position(positions[config.rs4_ball_sector_3_use_kp_position],
+																		 config.robot_sector_4_angle_min,
+																		 config.robot_sector_4_angle_max,
+																		 config.rs4_ball_sector_3_angle_min,
+																		 config.rs4_ball_sector_3_angle_max));
+	kick_parameter->v_kick_preparation_positions.push_back(make_position(positions[config.rs4_ball_sector_4_use_kp_position],
+																		 config.robot_sector_4_angle_min,
+																		 config.robot_sector_4_angle_max,
+																		 config.rs4_ball_sector_4_angle_min,
+																		 config.rs4_ball_sector_4_angle_max));
 
 }
 
@@ -170,13 +234,50 @@ void KickEngineNodeService::reconfigure_engine_parameter(bitbots_kick_engine::ki
 	m_bio_ik_solver.set_bioIK_timeout(config.bioIKTime);
 }
 
+KickType KickEngineNodeService::make_kick_type(KickTypeId id, bool active,  double robot_req_angle_min, double robot_req_angle_max, double ball_req_angle_min, double ball_req_angle_max)
+{
+	AngleRequirements robot_req_angle = {robot_req_angle_min, robot_req_angle_max};
+	AngleRequirements ball_req_angle = {ball_req_angle_min, ball_req_angle_max};
+	KickType type = {id, active, robot_req_angle, ball_req_angle};
+	return type;
+}
+
 void KickEngineNodeService::reconfigure_kick_parameter(bitbots_kick_engine::kick_paramsConfig& config, uint32_t level)
 {
-	//TODO: implementation
 	//TODO: testing
 	//TODO: cleanup
 
 	auto kick_parameter = m_sp_kick_engine->get_kick_parameter();
+
+	kick_parameter->default_kick_id =(KickTypeId) config.default_kick_use_kick_enum;
+
+	kick_parameter->v_kick_types.push_back(make_kick_type((KickTypeId) config.beziercurve_kick_enum,
+										   				  config.beziercurve_kick_active,
+										   				  config.beziercurve_kick_angle_requirement_min_robot_ball,
+										   				  config.beziercurve_kick_angle_requirement_max_robot_ball,
+										   				  config.beziercurve_kick_angle_requirement_min_ball_goal,
+										   				  config.beziercurve_kick_angle_requirement_max_ball_goal));
+
+	kick_parameter->v_kick_types.push_back(make_kick_type((KickTypeId) config.linear_spline_kick_enum,
+										   				  config.linear_spline_kick_active,
+										   				  config.linear_spline_kick_angle_requirement_min_robot_ball,
+										   				  config.linear_spline_kick_angle_requirement_max_robot_ball,
+										   				  config.linear_spline_kick_angle_requirement_min_ball_goal,
+										   				  config.linear_spline_kick_angle_requirement_max_ball_goal));
+
+	kick_parameter->v_kick_types.push_back(make_kick_type((KickTypeId) config.cubic_spline_kick_enum,
+										   				  config.cubic_spline_kick_active,
+										   				  config.cubic_spline_kick_angle_requirement_min_robot_ball,
+										   				  config.cubic_spline_kick_angle_requirement_max_robot_ball,
+										   				  config.cubic_spline_kick_angle_requirement_min_ball_goal,
+										   				  config.cubic_spline_kick_angle_requirement_max_ball_goal));
+
+	kick_parameter->v_kick_types.push_back(make_kick_type((KickTypeId) config.smooth_spline_kick_enum,
+										   				  config.smooth_spline_kick_active,
+										   				  config.smooth_spline_kick_angle_requirement_min_robot_ball,
+										   				  config.smooth_spline_kick_angle_requirement_max_robot_ball,
+										   				  config.smooth_spline_kick_angle_requirement_min_ball_goal,
+										   				  config.smooth_spline_kick_angle_requirement_max_ball_goal));
 }
 
 geometry_msgs::Vector3 KickEngineNodeService::create_vector_3(float x, float y, float z)

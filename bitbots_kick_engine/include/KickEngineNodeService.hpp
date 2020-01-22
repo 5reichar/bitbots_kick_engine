@@ -20,7 +20,6 @@ public:
 	bool convert_goal_coordinate_from_support_foot_to_trunk_based();
 	bool kick(geometry_msgs::Vector3 &ball_position, geometry_msgs::Vector3 &target_position);
 	double calculate_time_delta();
-	KickPreparationPosition make_position(struct3d position, double robot_sector_min, double robot_sector_max, double ball_sector_min, double ball_sector_max);
 	void reconfigure_kick_preparation_positions(bitbots_kick_engine::kick_preparation_positionsConfig &config, uint32_t level);
 	void reconfigure_engine_parameter(bitbots_kick_engine::kick_engine_paramsConfig &config, uint32_t level);
 	void reconfigure_kick_parameter(bitbots_kick_engine::kick_paramsConfig& config, uint32_t level);
@@ -48,6 +47,8 @@ public:
 private:
 	tf::Transform get_support_foot_transformation(Eigen::Vector3d position, Eigen::Vector3d axis);
 
+	KickPreparationPosition make_position(struct3d position, double robot_sector_min, double robot_sector_max, double ball_sector_min, double ball_sector_max);
+	KickType make_kick_type(KickTypeId id, bool active,  double robot_req_angle_min, double robot_req_angle_max, double ball_req_angle_min, double ball_req_angle_max);
 
 	bool m_b_first_run;
 	bool m_b_simulation_active;

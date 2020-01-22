@@ -25,10 +25,20 @@ struct KickPreparationPosition
 	AngleRequirements angle_requiremts_ball_goal;
 };
 
+enum KickTypeId
+{
+	beziercurve = 1,
+	linear_spline = 2,
+	cubic_spline = 3,
+	smooth_spline = 4
+};
+
 struct KickType
 {
-	// Name of the type of Kick
-	std::string name;
+	// Id of the type of Kick
+	KickTypeId id;
+	// Shall this kick be used
+	bool active;
 	// The intervall in wich the angle between the robot and the ball must be for this type of kick
 	AngleRequirements angle_requiremts_robot_ball;
 	// The intervall in wich the angle between the bal and the goal must be for this type of kick
@@ -37,7 +47,7 @@ struct KickType
 
 struct KickParameter
 {
-	std::string default_kick_type;
+	KickTypeId default_kick_id;
 	struct3d default_kick_preparation_position;
 
 	std::vector<KickType> v_kick_types;

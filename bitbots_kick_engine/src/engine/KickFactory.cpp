@@ -109,25 +109,39 @@ std::shared_ptr<Kick> KickFactory::create_kick()
 
 	std::shared_ptr<Kick> sp_return_kick;
 
-	std::string str_kick_type = "";
+	KickTypeId enum_kick_type = m_sp_kick_parameter->default_kick_id;
+
 	for (auto it = m_sp_kick_parameter->v_kick_types.begin(); it != m_sp_kick_parameter->v_kick_types.end(); ++it)
 	{
-		if (KickFactoryService::check_angle_requirements(m_struc_kick_attributes.angle_between_robot_and_ball, it->angle_requiremts_robot_ball)
+		if (it->active
+			&& KickFactoryService::check_angle_requirements(m_struc_kick_attributes.angle_between_robot_and_ball, it->angle_requiremts_robot_ball)
 			&& KickFactoryService::check_angle_requirements(m_struc_kick_attributes.angle_between_ball_and_goal, it->angle_requiremts_ball_goal))
 		{
-			str_kick_type = it->name;
+			enum_kick_type = it->id;
 			break;
 		}
 	}
 
-	if ("SmoothSplineKick" == str_kick_type)
+	switch (enum_kick_type)
 	{
-		//TODO: impolement test for when to use this Kick
+	case KickTypeId::beziercurve:
+		// TODO: implement
+		/* code */
+		//break;
+	case KickTypeId::linear_spline:
+		// TODO: implement
+		/* code */
+		//break;
+	case KickTypeId::cubic_spline:
+		// TODO: implement
+		/* code */
+		//break;
+	case KickTypeId::smooth_spline:
 		sp_return_kick = std::make_shared<SmoothSplineKick>(m_sp_kick_engine_parameter);
-	}
-	else
-	{
+		break;
+	default:
 		sp_return_kick = std::make_shared<SmoothSplineKick>(m_sp_kick_engine_parameter);
+		break;
 	}
 
 	return sp_return_kick;
