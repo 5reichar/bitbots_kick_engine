@@ -126,15 +126,12 @@ std::shared_ptr<Kick> KickFactory::create_kick()
 	{
 	case KickTypeId::beziercurve:
 		// TODO: implement
-		/* code */
 		//break;
 	case KickTypeId::linear_spline:
 		// TODO: implement
-		/* code */
 		//break;
 	case KickTypeId::cubic_spline:
 		// TODO: implement
-		/* code */
 		//break;
 	case KickTypeId::smooth_spline:
 		sp_return_kick = std::make_shared<SmoothSplineKick>(m_sp_kick_engine_parameter);
