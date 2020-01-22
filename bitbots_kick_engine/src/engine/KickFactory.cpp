@@ -75,13 +75,10 @@ bool KickFactory::check_generale_requirements()
 	//TODO: testing
 	//TODO: cleanup
 
-	bool requirements_meet = true;
-
 	// check if the Robot is in the way
-	requirements_meet &= !(m_struc_kick_attributes.angle_between_robot_and_ball == 90 && m_struc_kick_attributes.angle_between_ball_and_goal == 270);
-	requirements_meet &= !(m_struc_kick_attributes.angle_between_robot_and_ball == 270 && m_struc_kick_attributes.angle_between_ball_and_goal == 90);
+	double angle_difference = std::abs(m_struc_kick_attributes.angle_between_robot_and_ball - m_struc_kick_attributes.angle_between_ball_and_goal);
 
-	return requirements_meet;
+	return angle_difference < 185 && angle_difference > 175;
 }
 
 struct3d KickFactory::get_current_left_foot_position() const
