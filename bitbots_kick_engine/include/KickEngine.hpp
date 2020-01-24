@@ -21,38 +21,38 @@ public:
 
 	bool update(double delta_time);
 
-	std::shared_ptr<KickEngineParameter> get_engine_parameter();
-	std::shared_ptr<KickParameter> get_kick_parameter();
-	void set_robot_state(uint8_t state);
+	std::shared_ptr<KickEngineParameter> getEngineParameter();
+	std::shared_ptr<KickParameter> getKickParameter();
+	void setRobotState(uint8_t state);
 
-	virtual void set_goal_state(std::shared_ptr<moveit::core::RobotState> &goal_state);
-	virtual void set_goal_state(std::vector<std::string> vec_joint_names, std::vector<double> vec_position);
+	virtual void setGoalState(std::shared_ptr<moveit::core::RobotState> &goal_state);
+	virtual void setGoalState(std::vector<std::string> vec_joint_names, std::vector<double> vec_position);
 
-	geometry_msgs::Twist get_twist() const;
-	std::string get_support_foot_sole() const;
-	moveit::core::JointModelGroup &get_joint_model_group(std::string name);
-	Eigen::Isometry3d get_goal_global_link_transform(std::string link_name) const;
-	Eigen::Isometry3d get_current_global_link_transform(std::string link_name) const;
-	void get_goal_joint_group(std::string joint_group_name, std::vector<double> &joint_goals_out, std::vector<std::string> &joint_names_out);
+	geometry_msgs::Twist getTwist() const;
+	std::string getSupportFootSole() const;
+	moveit::core::JointModelGroup &getJointModelGroup(std::string name);
+	Eigen::Isometry3d getGoalGlobalLinkTransform(std::string link_name) const;
+	Eigen::Isometry3d getCurrentGlobalLinkTransform(std::string link_name) const;
+	void getGoalJointGroup(std::string joint_group_name, std::vector<double> &joint_goals_out, std::vector<std::string> &joint_names_out);
 
-	Eigen::Vector3d get_trunk_axis() const;
-	Eigen::Vector3d get_fly_foot_axis() const;
-	Eigen::Vector3d get_trunk_position() const;
-	Eigen::Vector3d get_last_foot_step() const;
-	Eigen::Vector3d get_next_foot_step() const;
-	Eigen::Vector3d get_fly_foot_position() const;
+	Eigen::Vector3d getTrunkAxis() const;
+	Eigen::Vector3d getFlyFootAxis() const;
+	Eigen::Vector3d getTrunkPosition() const;
+	Eigen::Vector3d getLastFootStep() const;
+	Eigen::Vector3d getNextFootStep() const;
+	Eigen::Vector3d getFlyFootPosition() const;
 
-	bool is_left_foot_support() const;
-	bool are_booth_feet_support() const;
+	bool isLeftFootSupport() const;
+	bool areBoothFeetSupport() const;
 
-	void reset_current_state();
-	double calc_trajectory_time() const;
-	double get_engine_phase_time() const;
+	void resetCurrentState();
+	double calcTrajectoryTime() const;
+	double getEnginePhaseTime() const;
 	bool kick(geometry_msgs::Vector3& ball_position, geometry_msgs::Vector3& target_position);
 
 private:
 	bool kick(struct3d* ball_position, struct3d* target_position, struct3d* foot_final_position = nullptr);
-	void update_phase(double delta_time);
+	void updatePhase(double delta_time);
 
 	double m_d_time_phase;
 	uint8_t m_robot_state;

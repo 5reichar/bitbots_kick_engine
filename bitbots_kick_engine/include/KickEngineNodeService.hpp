@@ -17,45 +17,45 @@ class KickEngineNodeService
 public:
 	KickEngineNodeService(bool simulation);
 
-	bool convert_goal_coordinate_from_support_foot_to_trunk_based();
+	bool convertGoalCoordinateFromSupportFootToTrunkBased();
 	bool kick(geometry_msgs::Vector3 &ball_position, geometry_msgs::Vector3 &target_position);
-	double calculate_time_delta();
-	void reconfigure_kick_preparation_positions(bitbots_kick_engine::kick_preparation_positionsConfig &config, uint32_t level);
-	void reconfigure_engine_parameter(bitbots_kick_engine::kick_engine_paramsConfig &config, uint32_t level);
-	void reconfigure_kick_parameter(bitbots_kick_engine::kick_paramsConfig& config, uint32_t level);
+	double calculateTimeDelta();
+	void reconfigureKickPreparationPositions(bitbots_kick_engine::kick_preparation_positionsConfig &config, uint32_t level);
+	void reconfigureEngineParameter(bitbots_kick_engine::kick_engine_paramsConfig &config, uint32_t level);
+	void reconfigureKickParameter(bitbots_kick_engine::kick_paramsConfig& config, uint32_t level);
 
-	geometry_msgs::Vector3 create_vector_3(float x, float y, float z);
-	std_msgs::ColorRGBA create_color_rgba(float red, float green, float blue, float alpha);
+	geometry_msgs::Vector3 createVector3(float x, float y, float z);
+	std_msgs::ColorRGBA createColorRGBA(float red, float green, float blue, float alpha);
 
-	bool is_left_foot_support();
-	bool are_booth_feet_support();
+	bool isLeftFootSupport();
+	bool areBoothFeetSupport();
 
-	void set_robot_state(const humanoid_league_msgs::RobotControlState msg);
+	void setRobotState(const humanoid_league_msgs::RobotControlState msg);
 
-	std::string get_support_foot_sole() const;
-	geometry_msgs::Twist get_twist() const;
-	double get_engine_frequence() const;
-	geometry_msgs::Pose get_trunk_result();
-	std_msgs::Char get_support_foot_state();
-	std::shared_ptr<KickEngineDebugService> get_debug_service();
-	void get_odemetry_data(tf::Vector3 &position_out, geometry_msgs::Quaternion &quaternion_msg_out);
-	void get_goal_feet_joints(std::vector<double> &joint_goals_out, std::vector<std::string> &joint_names_out);
+	std::string getSupportFootSole() const;
+	geometry_msgs::Twist getTwist() const;
+	double getEngineFrequence() const;
+	geometry_msgs::Pose getTrunkResult();
+	std_msgs::Char getSupportFootState();
+	std::shared_ptr<KickEngineDebugService> getDebugService();
+	void getOdemetryData(tf::Vector3 &position_out, geometry_msgs::Quaternion &quaternion_msg_out);
+	void getGoalFeetJoints(std::vector<double> &joint_goals_out, std::vector<std::string> &joint_names_out);
 
-	geometry_msgs::Pose get_last_footstep_pose();
-	geometry_msgs::Pose get_next_footstep_pose();
+	geometry_msgs::Pose getLastFootstepPose();
+	geometry_msgs::Pose getNextFootstepPose();
 
 private:
-	tf::Transform get_support_foot_transformation(Eigen::Vector3d position, Eigen::Vector3d axis);
+	tf::Transform getSupportFootTransformation(Eigen::Vector3d position, Eigen::Vector3d axis);
 
-	KickPreparationPosition make_position(struct3d position, double robot_sector_min, double robot_sector_max, double ball_sector_min, double ball_sector_max);
-	KickType make_kick_type(KickTypeId id, bool active,  double robot_req_angle_min, double robot_req_angle_max, double ball_req_angle_min, double ball_req_angle_max);
+	KickPreparationPosition makePosition(struct3d position, double robot_sector_min, double robot_sector_max, double ball_sector_min, double ball_sector_max);
+	KickType makeKickType(KickTypeId id, bool active,  double robot_req_angle_min, double robot_req_angle_max, double ball_req_angle_min, double ball_req_angle_max);
 
 	bool m_b_first_run;
 	bool m_b_simulation_active;
 	double m_d_ros_time_last_update;
 	std::chrono::time_point<std::chrono::steady_clock> m_time_point_last_update;
 
-	geometry_msgs::Pose get_pose_from_step(Eigen::Vector3d step_position);
+	geometry_msgs::Pose getPoseFromStep(Eigen::Vector3d step_position);
 
 	std::shared_ptr<KickEngine> m_sp_kick_engine;
 	bitbots_ik::BioIKSolver m_bio_ik_solver;

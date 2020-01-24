@@ -7,7 +7,7 @@ SmoothSplineKick::SmoothSplineKick(std::shared_ptr<KickEngineParameter> sp_param
 	m_sp_spline_container = std::make_shared<bitbots_splines::SplineContainer>(s_container);
 }
 
-bool SmoothSplineKick::check_requirements(KickAttributes & kick_attributes)
+bool SmoothSplineKick::checkRequirements(KickAttributes & kick_attributes)
 {
 	//TODO: testing
 	//TODO: cleanup
@@ -15,7 +15,7 @@ bool SmoothSplineKick::check_requirements(KickAttributes & kick_attributes)
 	return true;
 }
 
-bool SmoothSplineKick::calculate_movement_kick_preparation(double& time, struct3d &  foot_position, struct3d &  kick_start_position, bool &  kick_with_right)
+bool SmoothSplineKick::calculateMovementKickPreparation(double& time, struct3d &  foot_position, struct3d &  kick_start_position, bool &  kick_with_right)
 {
 	//TODO: testing
 	//TODO: cleanup
@@ -26,7 +26,7 @@ bool SmoothSplineKick::calculate_movement_kick_preparation(double& time, struct3
 	double period = 2.0 * halfPeriod;
 
 
-	point(bitbots_splines::CurvePurpose::is_double_support, time, check_foot_position_with_double_support(foot_position));
+	point(bitbots_splines::CurvePurpose::is_double_support, time, checkFootPositionWithDoubleSupport(foot_position));
 	point(bitbots_splines::CurvePurpose::is_double_support, time + halfPeriod, 0.0);
 	point(bitbots_splines::CurvePurpose::is_double_support, time + period, 0.0);
 
@@ -77,7 +77,7 @@ bool SmoothSplineKick::calculate_movement_kick_preparation(double& time, struct3
 	return true;
 }
 
-void SmoothSplineKick::calculate_movement_kick(double& time, struct3d &  foot_position, struct3d &  ball_position, struct3d &  kick_goal_position, bool &  kick_with_right)
+void SmoothSplineKick::calculateMovementKick(double& time, struct3d &  foot_position, struct3d &  ball_position, struct3d &  kick_goal_position, bool &  kick_with_right)
 {
 	//TODO: testing
 	//TODO: cleanup
@@ -88,7 +88,7 @@ void SmoothSplineKick::calculate_movement_kick(double& time, struct3d &  foot_po
 	double period = 2.0 * halfPeriod;
 
 
-	point(bitbots_splines::CurvePurpose::is_double_support, time, check_foot_position_with_double_support(foot_position));
+	point(bitbots_splines::CurvePurpose::is_double_support, time, checkFootPositionWithDoubleSupport(foot_position));
 	point(bitbots_splines::CurvePurpose::is_double_support, time + halfPeriod, 0.0);
 	point(bitbots_splines::CurvePurpose::is_double_support, time + period, 0.0);
 
@@ -140,7 +140,7 @@ void SmoothSplineKick::calculate_movement_kick(double& time, struct3d &  foot_po
 	time += period;
 }
 
-void SmoothSplineKick::calculate_movement_kick_conclusion(double& time, struct3d &  foot_position, struct3d &  foot_ending_position, bool &  kick_with_right)
+void SmoothSplineKick::calculateMovementKickConclusion(double& time, struct3d &  foot_position, struct3d &  foot_ending_position, bool &  kick_with_right)
 {
 	//TODO: testing
 	//TODO: cleanup
@@ -151,7 +151,7 @@ void SmoothSplineKick::calculate_movement_kick_conclusion(double& time, struct3d
 	double period = 2.0 * halfPeriod;
 
 
-	point(bitbots_splines::CurvePurpose::is_double_support, time, check_foot_position_with_double_support(foot_position));
+	point(bitbots_splines::CurvePurpose::is_double_support, time, checkFootPositionWithDoubleSupport(foot_position));
 	point(bitbots_splines::CurvePurpose::is_double_support, time + halfPeriod, 0.0);
 	point(bitbots_splines::CurvePurpose::is_double_support, time + period, 0.0);
 

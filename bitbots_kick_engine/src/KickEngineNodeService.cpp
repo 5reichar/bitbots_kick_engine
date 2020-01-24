@@ -14,17 +14,17 @@ KickEngineNodeService::KickEngineNodeService(bool simulation)
 	// based method. Otherwise, the first step will be not correct
 	std::vector<std::string> names_vec = {"LHipPitch", "LKnee", "LAnklePitch", "RHipPitch", "RKnee", "RAnklePitch"};
 	std::vector<double> pos_vec = {0.7, -1.0, -0.4, -0.7, 1.0, 0.4};
-	m_sp_kick_engine->set_goal_state(names_vec, pos_vec);
+	m_sp_kick_engine->setGoalState(names_vec, pos_vec);
 
-	m_sp_kick_engine->reset_current_state();
+	m_sp_kick_engine->resetCurrentState();
 
-	m_bio_ik_solver = bitbots_ik::BioIKSolver(m_sp_kick_engine->get_joint_model_group("All"),
-											  m_sp_kick_engine->get_joint_model_group("LeftLeg"),
-											  m_sp_kick_engine->get_joint_model_group("RightLeg"));
+	m_bio_ik_solver = bitbots_ik::BioIKSolver(m_sp_kick_engine->getJointModelGroup("All"),
+											  m_sp_kick_engine->getJointModelGroup("LeftLeg"),
+											  m_sp_kick_engine->getJointModelGroup("RightLeg"));
 	m_bio_ik_solver.set_use_approximate(true);
 }
 
-bool KickEngineNodeService::convert_goal_coordinate_from_support_foot_to_trunk_based()
+bool KickEngineNodeService::convertGoalCoordinateFromSupportFootToTrunkBased()
 {
 	//TODO: testing
 	//TODO: cleanup
@@ -32,18 +32,18 @@ bool KickEngineNodeService::convert_goal_coordinate_from_support_foot_to_trunk_b
 	robot_state::RobotStatePtr goal_state;
 
 	// change goals from support foot based coordinate system to trunk based coordinate system
-	auto trunk_to_support_foot_goal = get_support_foot_transformation(m_sp_kick_engine->get_trunk_position(), m_sp_kick_engine->get_trunk_axis()).inverse();
-	auto trunk_to_flying_foot_goal = trunk_to_support_foot_goal * get_support_foot_transformation(m_sp_kick_engine->get_fly_foot_position(), m_sp_kick_engine->get_fly_foot_axis());
+	auto trunk_to_support_foot_goal = getSupportFootTransformation(m_sp_kick_engine->getTrunkPosition(), m_sp_kick_engine->getTrunkAxis()).inverse();
+	auto trunk_to_flying_foot_goal = trunk_to_support_foot_goal * getSupportFootTransformation(m_sp_kick_engine->getFlyFootPosition(), m_sp_kick_engine->getFlyFootAxis());
 
 	// call ik solver
-	bool success = m_bio_ik_solver.solve(trunk_to_support_foot_goal, trunk_to_flying_foot_goal, is_left_foot_support(), goal_state);
+	bool success = m_bio_ik_solver.solve(trunk_to_support_foot_goal, trunk_to_flying_foot_goal, isLeftFootSupport(), goal_state);
 
-	m_sp_kick_engine->set_goal_state(goal_state);
+	m_sp_kick_engine->setGoalState(goal_state);
 
-	if (m_sp_debug_service->is_debug_on())
+	if (m_sp_debug_service->isDebugOn())
 	{
-		m_sp_debug_service->set_trunk_to_support_foot_goal(trunk_to_support_foot_goal);
-		m_sp_debug_service->set_trunk_to_flying_foot_goal(trunk_to_flying_foot_goal);
+		m_sp_debug_service->setTrunkToSupportFootGoal(trunk_to_support_foot_goal);
+		m_sp_debug_service->setTrunkToFlyingFootGoal(trunk_to_flying_foot_goal);
 	}
 
 	return success;
@@ -56,7 +56,7 @@ bool KickEngineNodeService::kick(geometry_msgs::Vector3& ball_position, geometry
 
 	bool success = false;
 
-	if (m_sp_kick_engine->update(calculate_time_delta()))
+	if (m_sp_kick_engine->update(calculateTimeDelta()))
 	{
 		m_sp_kick_engine->kick(ball_position, target_position);
 		success = true;
@@ -65,7 +65,7 @@ bool KickEngineNodeService::kick(geometry_msgs::Vector3& ball_position, geometry
 	return success;
 }
 
-double KickEngineNodeService::calculate_time_delta()
+double KickEngineNodeService::calculateTimeDelta()
 {
 	//TODO: testing
 	//TODO: cleanup
@@ -105,7 +105,7 @@ double KickEngineNodeService::calculate_time_delta()
 	return dt;
 }
 
-KickPreparationPosition KickEngineNodeService::make_position(struct3d position, double robot_sector_min, double robot_sector_max, double ball_sector_min, double ball_sector_max)
+KickPreparationPosition KickEngineNodeService::makePosition(struct3d position, double robot_sector_min, double robot_sector_max, double ball_sector_min, double ball_sector_max)
 {
 	AngleRequirements robot_sector = {robot_sector_min, robot_sector_max};
 	AngleRequirements ball_sector = {ball_sector_min, ball_sector_max};
@@ -113,12 +113,12 @@ KickPreparationPosition KickEngineNodeService::make_position(struct3d position, 
 	return prepare_position;
 }
 
-void KickEngineNodeService::reconfigure_kick_preparation_positions(bitbots_kick_engine::kick_preparation_positionsConfig& config, uint32_t level)
+void KickEngineNodeService::reconfigureKickPreparationPositions(bitbots_kick_engine::kick_preparation_positionsConfig& config, uint32_t level)
 {
 	//TODO: testing
 	//TODO: cleanup
 
-	auto kick_parameter = m_sp_kick_engine->get_kick_parameter();
+	auto kick_parameter = m_sp_kick_engine->getKickParameter();
 
 	// Positions are put in the array, so now the index matches the enum int of the position in the config file
 	struct3d positions[9];
@@ -134,85 +134,85 @@ void KickEngineNodeService::reconfigure_kick_preparation_positions(bitbots_kick_
 
 	kick_parameter->default_kick_preparation_position = positions[0];
 
-	kick_parameter->v_kick_preparation_positions.push_back(make_position(positions[config.rs1_ball_sector_1_use_kp_position],
+	kick_parameter->v_kick_preparation_positions.push_back(makePosition(positions[config.rs1_ball_sector_1_use_kp_position],
 																		 config.robot_sector_1_angle_min,
 																		 config.robot_sector_1_angle_max,
 																		 config.rs1_ball_sector_1_angle_min,
 																		 config.rs1_ball_sector_1_angle_max));
-	kick_parameter->v_kick_preparation_positions.push_back(make_position(positions[config.rs1_ball_sector_2_use_kp_position],
+	kick_parameter->v_kick_preparation_positions.push_back(makePosition(positions[config.rs1_ball_sector_2_use_kp_position],
 																		 config.robot_sector_1_angle_min,
 																		 config.robot_sector_1_angle_max,
 																		 config.rs1_ball_sector_2_angle_min,
 																		 config.rs1_ball_sector_2_angle_max));
-	kick_parameter->v_kick_preparation_positions.push_back(make_position(positions[config.rs1_ball_sector_3_use_kp_position],
+	kick_parameter->v_kick_preparation_positions.push_back(makePosition(positions[config.rs1_ball_sector_3_use_kp_position],
 																		 config.robot_sector_1_angle_min,
 																		 config.robot_sector_1_angle_max,
 																		 config.rs1_ball_sector_3_angle_min,
 																		 config.rs1_ball_sector_3_angle_max));
-	kick_parameter->v_kick_preparation_positions.push_back(make_position(positions[config.rs1_ball_sector_4_use_kp_position],
+	kick_parameter->v_kick_preparation_positions.push_back(makePosition(positions[config.rs1_ball_sector_4_use_kp_position],
 																		 config.robot_sector_1_angle_min,
 																		 config.robot_sector_1_angle_max,
 																		 config.rs1_ball_sector_4_angle_min,
 																		 config.rs1_ball_sector_4_angle_max));
 
-	kick_parameter->v_kick_preparation_positions.push_back(make_position(positions[config.rs2_ball_sector_1_use_kp_position],
+	kick_parameter->v_kick_preparation_positions.push_back(makePosition(positions[config.rs2_ball_sector_1_use_kp_position],
 																		 config.robot_sector_2_angle_min,
 																		 config.robot_sector_2_angle_max,
 																		 config.rs2_ball_sector_1_angle_min,
 																		 config.rs2_ball_sector_1_angle_max));
-	kick_parameter->v_kick_preparation_positions.push_back(make_position(positions[config.rs2_ball_sector_2_use_kp_position],
+	kick_parameter->v_kick_preparation_positions.push_back(makePosition(positions[config.rs2_ball_sector_2_use_kp_position],
 																		 config.robot_sector_2_angle_min,
 																		 config.robot_sector_2_angle_max,
 																		 config.rs2_ball_sector_2_angle_min,
 																		 config.rs2_ball_sector_2_angle_max));
-	kick_parameter->v_kick_preparation_positions.push_back(make_position(positions[config.rs2_ball_sector_3_use_kp_position],
+	kick_parameter->v_kick_preparation_positions.push_back(makePosition(positions[config.rs2_ball_sector_3_use_kp_position],
 																		 config.robot_sector_2_angle_min,
 																		 config.robot_sector_2_angle_max,
 																		 config.rs2_ball_sector_3_angle_min,
 																		 config.rs2_ball_sector_3_angle_max));
-	kick_parameter->v_kick_preparation_positions.push_back(make_position(positions[config.rs2_ball_sector_4_use_kp_position],
+	kick_parameter->v_kick_preparation_positions.push_back(makePosition(positions[config.rs2_ball_sector_4_use_kp_position],
 																		 config.robot_sector_2_angle_min,
 																		 config.robot_sector_2_angle_max,
 																		 config.rs2_ball_sector_4_angle_min,
 																		 config.rs2_ball_sector_4_angle_max));
 
-	kick_parameter->v_kick_preparation_positions.push_back(make_position(positions[config.rs3_ball_sector_1_use_kp_position],
+	kick_parameter->v_kick_preparation_positions.push_back(makePosition(positions[config.rs3_ball_sector_1_use_kp_position],
 																		 config.robot_sector_3_angle_min,
 																		 config.robot_sector_3_angle_max,
 																		 config.rs3_ball_sector_1_angle_min,
 																		 config.rs3_ball_sector_1_angle_max));
-	kick_parameter->v_kick_preparation_positions.push_back(make_position(positions[config.rs3_ball_sector_2_use_kp_position],
+	kick_parameter->v_kick_preparation_positions.push_back(makePosition(positions[config.rs3_ball_sector_2_use_kp_position],
 																		 config.robot_sector_3_angle_min,
 																		 config.robot_sector_3_angle_max,
 																		 config.rs3_ball_sector_2_angle_min,
 																		 config.rs3_ball_sector_2_angle_max));
-	kick_parameter->v_kick_preparation_positions.push_back(make_position(positions[config.rs3_ball_sector_3_use_kp_position],
+	kick_parameter->v_kick_preparation_positions.push_back(makePosition(positions[config.rs3_ball_sector_3_use_kp_position],
 																		 config.robot_sector_3_angle_min,
 																		 config.robot_sector_3_angle_max,
 																		 config.rs3_ball_sector_3_angle_min,
 																		 config.rs3_ball_sector_3_angle_max));
-	kick_parameter->v_kick_preparation_positions.push_back(make_position(positions[config.rs3_ball_sector_4_use_kp_position],
+	kick_parameter->v_kick_preparation_positions.push_back(makePosition(positions[config.rs3_ball_sector_4_use_kp_position],
 																		 config.robot_sector_3_angle_min,
 																		 config.robot_sector_3_angle_max,
 																		 config.rs3_ball_sector_4_angle_min,
 																		 config.rs3_ball_sector_4_angle_max));
 
-	kick_parameter->v_kick_preparation_positions.push_back(make_position(positions[config.rs4_ball_sector_1_use_kp_position],
+	kick_parameter->v_kick_preparation_positions.push_back(makePosition(positions[config.rs4_ball_sector_1_use_kp_position],
 																		 config.robot_sector_4_angle_min,
 																		 config.robot_sector_4_angle_max,
 																		 config.rs4_ball_sector_1_angle_min,
 																		 config.rs4_ball_sector_1_angle_max));
-	kick_parameter->v_kick_preparation_positions.push_back(make_position(positions[config.rs4_ball_sector_2_use_kp_position],
+	kick_parameter->v_kick_preparation_positions.push_back(makePosition(positions[config.rs4_ball_sector_2_use_kp_position],
 																		 config.robot_sector_4_angle_min,
 																		 config.robot_sector_4_angle_max,
 																		 config.rs4_ball_sector_2_angle_min,
 																		 config.rs4_ball_sector_2_angle_max));
-	kick_parameter->v_kick_preparation_positions.push_back(make_position(positions[config.rs4_ball_sector_3_use_kp_position],
+	kick_parameter->v_kick_preparation_positions.push_back(makePosition(positions[config.rs4_ball_sector_3_use_kp_position],
 																		 config.robot_sector_4_angle_min,
 																		 config.robot_sector_4_angle_max,
 																		 config.rs4_ball_sector_3_angle_min,
 																		 config.rs4_ball_sector_3_angle_max));
-	kick_parameter->v_kick_preparation_positions.push_back(make_position(positions[config.rs4_ball_sector_4_use_kp_position],
+	kick_parameter->v_kick_preparation_positions.push_back(makePosition(positions[config.rs4_ball_sector_4_use_kp_position],
 																		 config.robot_sector_4_angle_min,
 																		 config.robot_sector_4_angle_max,
 																		 config.rs4_ball_sector_4_angle_min,
@@ -220,12 +220,12 @@ void KickEngineNodeService::reconfigure_kick_preparation_positions(bitbots_kick_
 
 }
 
-void KickEngineNodeService::reconfigure_engine_parameter(bitbots_kick_engine::kick_engine_paramsConfig& config, uint32_t level)
+void KickEngineNodeService::reconfigureEngineParameter(bitbots_kick_engine::kick_engine_paramsConfig& config, uint32_t level)
 {
 	//TODO: testing
 	//TODO: cleanup
 
-	auto engine_parameter = m_sp_kick_engine->get_engine_parameter();
+	auto engine_parameter = m_sp_kick_engine->getEngineParameter();
 
 	engine_parameter->freq = config.freq;
 	engine_parameter->footDistance = config.footDistance;
@@ -234,7 +234,7 @@ void KickEngineNodeService::reconfigure_engine_parameter(bitbots_kick_engine::ki
 	m_bio_ik_solver.set_bioIK_timeout(config.bioIKTime);
 }
 
-KickType KickEngineNodeService::make_kick_type(KickTypeId id, bool active,  double robot_req_angle_min, double robot_req_angle_max, double ball_req_angle_min, double ball_req_angle_max)
+KickType KickEngineNodeService::makeKickType(KickTypeId id, bool active,  double robot_req_angle_min, double robot_req_angle_max, double ball_req_angle_min, double ball_req_angle_max)
 {
 	AngleRequirements robot_req_angle = {robot_req_angle_min, robot_req_angle_max};
 	AngleRequirements ball_req_angle = {ball_req_angle_min, ball_req_angle_max};
@@ -242,37 +242,37 @@ KickType KickEngineNodeService::make_kick_type(KickTypeId id, bool active,  doub
 	return type;
 }
 
-void KickEngineNodeService::reconfigure_kick_parameter(bitbots_kick_engine::kick_paramsConfig& config, uint32_t level)
+void KickEngineNodeService::reconfigureKickParameter(bitbots_kick_engine::kick_paramsConfig& config, uint32_t level)
 {
 	//TODO: testing
 	//TODO: cleanup
 
-	auto kick_parameter = m_sp_kick_engine->get_kick_parameter();
+	auto kick_parameter = m_sp_kick_engine->getKickParameter();
 
 	kick_parameter->default_kick_id =(KickTypeId) config.default_kick_use_kick_enum;
 
-	kick_parameter->v_kick_types.push_back(make_kick_type((KickTypeId) config.beziercurve_kick_enum,
+	kick_parameter->v_kick_types.push_back(makeKickType((KickTypeId) config.beziercurve_kick_enum,
 										   				  config.beziercurve_kick_active,
 										   				  config.beziercurve_kick_angle_requirement_min_robot_ball,
 										   				  config.beziercurve_kick_angle_requirement_max_robot_ball,
 										   				  config.beziercurve_kick_angle_requirement_min_ball_goal,
 										   				  config.beziercurve_kick_angle_requirement_max_ball_goal));
 
-	kick_parameter->v_kick_types.push_back(make_kick_type((KickTypeId) config.linear_spline_kick_enum,
+	kick_parameter->v_kick_types.push_back(makeKickType((KickTypeId) config.linear_spline_kick_enum,
 										   				  config.linear_spline_kick_active,
 										   				  config.linear_spline_kick_angle_requirement_min_robot_ball,
 										   				  config.linear_spline_kick_angle_requirement_max_robot_ball,
 										   				  config.linear_spline_kick_angle_requirement_min_ball_goal,
 										   				  config.linear_spline_kick_angle_requirement_max_ball_goal));
 
-	kick_parameter->v_kick_types.push_back(make_kick_type((KickTypeId) config.cubic_spline_kick_enum,
+	kick_parameter->v_kick_types.push_back(makeKickType((KickTypeId) config.cubic_spline_kick_enum,
 										   				  config.cubic_spline_kick_active,
 										   				  config.cubic_spline_kick_angle_requirement_min_robot_ball,
 										   				  config.cubic_spline_kick_angle_requirement_max_robot_ball,
 										   				  config.cubic_spline_kick_angle_requirement_min_ball_goal,
 										   				  config.cubic_spline_kick_angle_requirement_max_ball_goal));
 
-	kick_parameter->v_kick_types.push_back(make_kick_type((KickTypeId) config.smooth_spline_kick_enum,
+	kick_parameter->v_kick_types.push_back(makeKickType((KickTypeId) config.smooth_spline_kick_enum,
 										   				  config.smooth_spline_kick_active,
 										   				  config.smooth_spline_kick_angle_requirement_min_robot_ball,
 										   				  config.smooth_spline_kick_angle_requirement_max_robot_ball,
@@ -280,7 +280,7 @@ void KickEngineNodeService::reconfigure_kick_parameter(bitbots_kick_engine::kick
 										   				  config.smooth_spline_kick_angle_requirement_max_ball_goal));
 }
 
-geometry_msgs::Vector3 KickEngineNodeService::create_vector_3(float x, float y, float z)
+geometry_msgs::Vector3 KickEngineNodeService::createVector3(float x, float y, float z)
 {
 	// TODO testing
 	// TODO cleanup
@@ -294,7 +294,7 @@ geometry_msgs::Vector3 KickEngineNodeService::create_vector_3(float x, float y, 
 	return scale;
 }
 
-std_msgs::ColorRGBA KickEngineNodeService::create_color_rgba(float red, float green, float blue, float alpha)
+std_msgs::ColorRGBA KickEngineNodeService::createColorRGBA(float red, float green, float blue, float alpha)
 {
 	// TODO testing
 	// TODO cleanup
@@ -309,55 +309,55 @@ std_msgs::ColorRGBA KickEngineNodeService::create_color_rgba(float red, float gr
 	return color;
 }
 
-bool KickEngineNodeService::is_left_foot_support()
+bool KickEngineNodeService::isLeftFootSupport()
 {
 	//TODO: testing
 	//TODO: cleanup
 
-	return m_sp_kick_engine->is_left_foot_support();
+	return m_sp_kick_engine->isLeftFootSupport();
 }
 
-bool KickEngineNodeService::are_booth_feet_support()
+bool KickEngineNodeService::areBoothFeetSupport()
 {
 	//TODO: testing
 	//TODO: cleanup
 
-	return m_sp_kick_engine->are_booth_feet_support();
+	return m_sp_kick_engine->areBoothFeetSupport();
 }
 
-void KickEngineNodeService::set_robot_state(const humanoid_league_msgs::RobotControlState msg)
+void KickEngineNodeService::setRobotState(const humanoid_league_msgs::RobotControlState msg)
 {
 	//TODO: testing
 	//TODO: cleanup
 
-	m_sp_kick_engine->set_robot_state(msg.state);
+	m_sp_kick_engine->setRobotState(msg.state);
 }
 
-std::string KickEngineNodeService::get_support_foot_sole() const
+std::string KickEngineNodeService::getSupportFootSole() const
 {
 	//TODO: testing
 	//TODO: cleanup
 
-	return m_sp_kick_engine->get_support_foot_sole();
+	return m_sp_kick_engine->getSupportFootSole();
 }
 
-geometry_msgs::Twist KickEngineNodeService::get_twist() const
+geometry_msgs::Twist KickEngineNodeService::getTwist() const
 {
 	//TODO: testing
 	//TODO: cleanup
 
-	return m_sp_kick_engine->get_twist();
+	return m_sp_kick_engine->getTwist();
 }
 
-double KickEngineNodeService::get_engine_frequence() const
+double KickEngineNodeService::getEngineFrequence() const
 {
 	//TODO: testing
 	//TODO: cleanup
 
-	return m_sp_kick_engine->get_engine_parameter()->engineFrequency;
+	return m_sp_kick_engine->getEngineParameter()->engineFrequency;
 }
 
-geometry_msgs::Pose KickEngineNodeService::get_trunk_result()
+geometry_msgs::Pose KickEngineNodeService::getTrunkResult()
 {
 	//TODO: testing
 	//TODO: cleanup
@@ -372,18 +372,18 @@ geometry_msgs::Pose KickEngineNodeService::get_trunk_result()
 	return pose;
 }
 
-std_msgs::Char KickEngineNodeService::get_support_foot_state()
+std_msgs::Char KickEngineNodeService::getSupportFootState()
 {
 	//TODO: testing
 	//TODO: cleanup
 
 	std_msgs::Char support_foot_state;
 
-	if (are_booth_feet_support())
+	if (areBoothFeetSupport())
 	{
 		support_foot_state.data = 'd';
 	}
-	else if (is_left_foot_support())
+	else if (isLeftFootSupport())
 	{
 		support_foot_state.data = 'l';
 	}
@@ -395,7 +395,7 @@ std_msgs::Char KickEngineNodeService::get_support_foot_state()
 	return support_foot_state;
 }
 
-std::shared_ptr<KickEngineDebugService> KickEngineNodeService::get_debug_service()
+std::shared_ptr<KickEngineDebugService> KickEngineNodeService::getDebugService()
 {
 	//TODO: testing
 	//TODO: cleanup
@@ -403,20 +403,20 @@ std::shared_ptr<KickEngineDebugService> KickEngineNodeService::get_debug_service
 	return m_sp_debug_service;
 }
 
-void KickEngineNodeService::get_odemetry_data(tf::Vector3& position_out, geometry_msgs::Quaternion& quaternion_msg_out)
+void KickEngineNodeService::getOdemetryData(tf::Vector3& position_out, geometry_msgs::Quaternion& quaternion_msg_out)
 {
 	//TODO: testing
 	//TODO: cleanup
 
 	// transformation from support leg to trunk
-	auto support_to_trunk = m_sp_kick_engine->get_goal_global_link_transform(m_sp_kick_engine->get_support_foot_sole()).inverse();
+	auto support_to_trunk = m_sp_kick_engine->getGoalGlobalLinkTransform(m_sp_kick_engine->getSupportFootSole()).inverse();
 	tf::Transform tf_support_to_trunk;
 	tf::transformEigenToTF(support_to_trunk, tf_support_to_trunk);
 
 	// odometry to trunk is transform to support foot * transform from support to trunk
-	auto next_step = m_sp_kick_engine->get_next_foot_step();
+	auto next_step = m_sp_kick_engine->getNextFootStep();
 	double x = next_step[0];
-	double y = next_step[1] + m_sp_kick_engine->get_engine_parameter()->footDistance / 2;
+	double y = next_step[1] + m_sp_kick_engine->getEngineParameter()->footDistance / 2;
 	double yaw = next_step[2];
 
 	tf::Transform supportFootTf;
@@ -430,31 +430,31 @@ void KickEngineNodeService::get_odemetry_data(tf::Vector3& position_out, geometr
 	tf::quaternionTFToMsg(odom_to_trunk.getRotation().normalize(), quaternion_msg_out);
 }
 
-void KickEngineNodeService::get_goal_feet_joints(std::vector<double> &joint_goals_out, std::vector<std::string> &joint_names_out)
+void KickEngineNodeService::getGoalFeetJoints(std::vector<double> &joint_goals_out, std::vector<std::string> &joint_names_out)
 {
 	//TODO: testing
 	//TODO: cleanup
 
-	m_sp_kick_engine->get_goal_joint_group("Legs", joint_goals_out, joint_names_out);
+	m_sp_kick_engine->getGoalJointGroup("Legs", joint_goals_out, joint_names_out);
 }
 
-geometry_msgs::Pose KickEngineNodeService::get_last_footstep_pose()
+geometry_msgs::Pose KickEngineNodeService::getLastFootstepPose()
 {
 	//TODO: testing
 	//TODO: cleanup
 
-	return get_pose_from_step(m_sp_kick_engine->get_last_foot_step());
+	return getPoseFromStep(m_sp_kick_engine->getLastFootStep());
 }
 
-geometry_msgs::Pose KickEngineNodeService::get_next_footstep_pose()
+geometry_msgs::Pose KickEngineNodeService::getNextFootstepPose()
 {
 	//TODO: testing
 	//TODO: cleanup
 
-	return get_pose_from_step(m_sp_kick_engine->get_next_foot_step());
+	return getPoseFromStep(m_sp_kick_engine->getNextFootStep());
 }
 
-tf::Transform KickEngineNodeService::get_support_foot_transformation(Eigen::Vector3d position, Eigen::Vector3d axis)
+tf::Transform KickEngineNodeService::getSupportFootTransformation(Eigen::Vector3d position, Eigen::Vector3d axis)
 {
 	//TODO: testing
 	//TODO: cleanup
@@ -471,7 +471,7 @@ tf::Transform KickEngineNodeService::get_support_foot_transformation(Eigen::Vect
 	return support_foot_transformation;
 }
 
-geometry_msgs::Pose KickEngineNodeService::get_pose_from_step(Eigen::Vector3d step_position)
+geometry_msgs::Pose KickEngineNodeService::getPoseFromStep(Eigen::Vector3d step_position)
 {
 	//TODO: testing
 	//TODO: cleanup

@@ -1,7 +1,7 @@
 #include "engine/KickFactoryService.hpp"
 #include <math.h>
 
-double KickFactoryService::calculate_angle(double const x, double const y)
+double KickFactoryService::calculateAngle(double const x, double const y)
 {
 	//TODO: testing
 	//TODO: cleanup
@@ -24,7 +24,7 @@ double KickFactoryService::calculate_angle(double const x, double const y)
 	return angle;
 }
 
-bool KickFactoryService::check_kicking_with_right(double angle_between_robot_and_ball)
+bool KickFactoryService::checkKickingWithRight(double angle_between_robot_and_ball)
 {
 	//TODO: make dynamic (adjustable via KickEngineParameter and/or Kick)
 	//TODO: testing
@@ -33,7 +33,7 @@ bool KickFactoryService::check_kicking_with_right(double angle_between_robot_and
 	return angle_between_robot_and_ball < 180;
 }
 
-bool KickFactoryService::check_angle_requirements(double angle, AngleRequirements requirements)
+bool KickFactoryService::checkAngleRequirements(double angle, AngleRequirements requirements)
 {
 	bool result = false;
 
@@ -51,14 +51,14 @@ bool KickFactoryService::check_angle_requirements(double angle, AngleRequirement
 	return result;
 }
 
-struct3d KickFactoryService::get_kick_preparation_position(double angle_between_robot_and_ball, double angle_between_ball_and_goal, std::shared_ptr<KickParameter> params)
+struct3d KickFactoryService::getKickPreparationPosition(double angle_between_robot_and_ball, double angle_between_ball_and_goal, std::shared_ptr<KickParameter> params)
 {
 	struct3d result = params->default_kick_preparation_position;
 	
 	for(auto it = params->v_kick_preparation_positions.begin(); it != params->v_kick_preparation_positions.end(); ++it)
 	{
-		if(check_angle_requirements(angle_between_robot_and_ball, it->angle_requiremts_robot_ball)
-		&& check_angle_requirements(angle_between_ball_and_goal, it->angle_requiremts_ball_goal))
+		if(checkAngleRequirements(angle_between_robot_and_ball, it->angle_requiremts_robot_ball)
+		&& checkAngleRequirements(angle_between_ball_and_goal, it->angle_requiremts_ball_goal))
 		{
 			result = it->position;
 			break;

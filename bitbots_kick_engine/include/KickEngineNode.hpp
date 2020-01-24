@@ -18,26 +18,26 @@ public:
 	~KickEngineNode();
 
 private:
-    void kick_ball(geometry_msgs::Vector3 ball_position, geometry_msgs::Vector3 target_position);
+    void kickBall(geometry_msgs::Vector3 ball_position, geometry_msgs::Vector3 target_position);
 
-	void kick_callback(const bitbots_kick_engine::KickAction action);
-	void robot_state_callback(const humanoid_league_msgs::RobotControlState msg);
-	void reconfigure_kick_preparation_positions(bitbots_kick_engine::kick_preparation_positionsConfig &config, uint32_t level);
-	void reconfigure_kick_engine_callback(bitbots_kick_engine::kick_engine_paramsConfig& config, uint32_t level);
-	void reconfigure_kicks_callback(bitbots_kick_engine::kick_paramsConfig& config, uint32_t level);
+	void kickCallback(const bitbots_kick_engine::KickAction action);
+	void robotStateCallback(const humanoid_league_msgs::RobotControlState msg);
+	void reconfigureKickPreparationPositions(bitbots_kick_engine::kick_preparation_positionsConfig &config, uint32_t level);
+	void reconfigureKickEngineCallback(bitbots_kick_engine::kick_engine_paramsConfig& config, uint32_t level);
+	void reconfigureKicksCallback(bitbots_kick_engine::kick_paramsConfig& config, uint32_t level);
 
-    void initialise_ros_publisher();
-    void initialise_ros_subcribtions();
+    void initialiseRosPublisher();
+    void initialiseRosSubcribtions();
 
-    void publish_kick();
-    void publish_odemetry();
-    void publish_controler_commands();
+    void publishKick();
+    void publishOdemetry();
+    void publishControlerCommands();
 
-    void publish_debug();
-    void publish_markers();
-    void publish_marker(std::string name_space, std::string frame, geometry_msgs::Pose pose, std_msgs::ColorRGBA color);
+    void publishDebug();
+    void publishMarkers();
+    void publishMarker(std::string name_space, std::string frame, geometry_msgs::Pose pose, std_msgs::ColorRGBA color);
 
-	bitbots_kick_engine::WalkingDebug create_debug_message();
+	bitbots_kick_engine::WalkingDebug createDebugMessage();
 
     int32_t m_int_marker_id;
     uint16_t m_uint_odometry_publish_factor;
