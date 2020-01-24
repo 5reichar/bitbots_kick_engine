@@ -1,12 +1,12 @@
-#ifndef SMOOTHSPLINEKICK_HPP
-#define SMOOTHSPLINEKICK_HPP
+#ifndef BEZIERCURVEKICK_HPP
+#define BEZIERCURVEKICK_HPP
 
 #include "Kick.hpp"
 
-class SmoothSplineKick : public Kick
+class BeziercurveKick : public Kick
 {
 public:
-	SmoothSplineKick(std::shared_ptr<KickEngineParameter> sp_parameter);
+	BeziercurveKick(std::shared_ptr<KickEngineParameter> sp_parameter);
 
 protected:
 	virtual bool check_requirements(KickAttributes & kick_attributes) override;

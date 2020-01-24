@@ -1,7 +1,10 @@
 #include <engine/KickFactory.hpp>
 
 #include <math.h>
+#include "kicks/LinearSplineKick.hpp"
+#include "kicks/CubicSplineKick.hpp"
 #include "kicks/SmoothSplineKick.hpp"
+#include "kicks/BeziercurveKick.hpp"
 
 KickFactory::KickFactory(std::shared_ptr<KickEngineParameter> sp_engine_parameter)
 {
@@ -122,14 +125,14 @@ std::shared_ptr<Kick> KickFactory::create_kick()
 	switch (enum_kick_type)
 	{
 	case KickTypeId::beziercurve:
-		// TODO: implement
-		//break;
+		sp_return_kick = std::make_shared<BeziercurveKick>(m_sp_kick_engine_parameter);
+		break;
 	case KickTypeId::linear_spline:
-		// TODO: implement
-		//break;
+		sp_return_kick = std::make_shared<LinearSplineKick>(m_sp_kick_engine_parameter);
+		break;
 	case KickTypeId::cubic_spline:
-		// TODO: implement
-		//break;
+		sp_return_kick = std::make_shared<CubicSplineKick>(m_sp_kick_engine_parameter);
+		break;
 	case KickTypeId::smooth_spline:
 		sp_return_kick = std::make_shared<SmoothSplineKick>(m_sp_kick_engine_parameter);
 		break;

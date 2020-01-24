@@ -151,6 +151,9 @@ set(
   src/engine/KickFactory.cpp
   src/engine/KickFactoryService.cpp
   src/kicks/Kick.cpp
+  src/kicks/BeziercurveKick.cpp
+  src/kicks/LinearSplineKick.cpp
+  src/kicks/CubicSplineKick.cpp
   src/kicks/SmoothSplineKick.cpp
 )
 

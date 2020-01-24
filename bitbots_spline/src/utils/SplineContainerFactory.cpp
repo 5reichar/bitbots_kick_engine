@@ -1,8 +1,55 @@
 #include "utils/SplineContainerFactory.hpp"
+#include "spline/LinearSpline.hpp"
+#include "spline/CubicSpline.hpp"
 #include "spline/SmoothSpline.hpp"
+#include "spline/Beziercurve.hpp"
 
 namespace bitbots_splines
 {
+    SplineContainer SplineContainerFactory::create_linear_spline_container()
+    {
+        SplineContainer traj;
+
+        traj.add(CurvePurpose::is_double_support, new LinearSpline());
+        traj.add(CurvePurpose::is_left_support_foot, new LinearSpline());
+        traj.add(CurvePurpose::trunk_position_x, new LinearSpline());
+        traj.add(CurvePurpose::trunk_position_y, new LinearSpline());
+        traj.add(CurvePurpose::trunk_position_z, new LinearSpline());
+        traj.add(CurvePurpose::trunk_axis_x, new LinearSpline());
+        traj.add(CurvePurpose::trunk_axis_y, new LinearSpline());
+        traj.add(CurvePurpose::trunk_axis_z, new LinearSpline());
+        traj.add(CurvePurpose::foot_position_x, new LinearSpline());
+        traj.add(CurvePurpose::foot_position_y, new LinearSpline());
+        traj.add(CurvePurpose::foot_position_z, new LinearSpline());
+        traj.add(CurvePurpose::foot_axis_x, new LinearSpline());
+        traj.add(CurvePurpose::foot_axis_y, new LinearSpline());
+        traj.add(CurvePurpose::foot_axis_z, new LinearSpline());
+
+        return traj;
+    }
+
+    SplineContainer SplineContainerFactory::create_cubic_spline_container()
+    {
+        SplineContainer traj;
+
+        traj.add(CurvePurpose::is_double_support, new CubicSpline());
+        traj.add(CurvePurpose::is_left_support_foot, new CubicSpline());
+        traj.add(CurvePurpose::trunk_position_x, new CubicSpline());
+        traj.add(CurvePurpose::trunk_position_y, new CubicSpline());
+        traj.add(CurvePurpose::trunk_position_z, new CubicSpline());
+        traj.add(CurvePurpose::trunk_axis_x, new CubicSpline());
+        traj.add(CurvePurpose::trunk_axis_y, new CubicSpline());
+        traj.add(CurvePurpose::trunk_axis_z, new CubicSpline());
+        traj.add(CurvePurpose::foot_position_x, new CubicSpline());
+        traj.add(CurvePurpose::foot_position_y, new CubicSpline());
+        traj.add(CurvePurpose::foot_position_z, new CubicSpline());
+        traj.add(CurvePurpose::foot_axis_x, new CubicSpline());
+        traj.add(CurvePurpose::foot_axis_y, new CubicSpline());
+        traj.add(CurvePurpose::foot_axis_z, new CubicSpline());
+
+        return traj;
+    }
+
     SplineContainer SplineContainerFactory::create_smooth_spline_container()
     {
         SplineContainer traj;
@@ -21,6 +68,28 @@ namespace bitbots_splines
         traj.add(CurvePurpose::foot_axis_x, new SmoothSpline());
         traj.add(CurvePurpose::foot_axis_y, new SmoothSpline());
         traj.add(CurvePurpose::foot_axis_z, new SmoothSpline());
+
+        return traj;
+    }
+
+    SplineContainer SplineContainerFactory::create_beziercurve_container()
+    {
+        SplineContainer traj;
+
+        traj.add(CurvePurpose::is_double_support, new Beziercurve());
+        traj.add(CurvePurpose::is_left_support_foot, new Beziercurve());
+        traj.add(CurvePurpose::trunk_position_x, new Beziercurve());
+        traj.add(CurvePurpose::trunk_position_y, new Beziercurve());
+        traj.add(CurvePurpose::trunk_position_z, new Beziercurve());
+        traj.add(CurvePurpose::trunk_axis_x, new Beziercurve());
+        traj.add(CurvePurpose::trunk_axis_y, new Beziercurve());
+        traj.add(CurvePurpose::trunk_axis_z, new Beziercurve());
+        traj.add(CurvePurpose::foot_position_x, new Beziercurve());
+        traj.add(CurvePurpose::foot_position_y, new Beziercurve());
+        traj.add(CurvePurpose::foot_position_z, new Beziercurve());
+        traj.add(CurvePurpose::foot_axis_x, new Beziercurve());
+        traj.add(CurvePurpose::foot_axis_y, new Beziercurve());
+        traj.add(CurvePurpose::foot_axis_z, new Beziercurve());
 
         return traj;
     }

@@ -1,12 +1,12 @@
-#ifndef SMOOTHSPLINEKICK_HPP
-#define SMOOTHSPLINEKICK_HPP
+#ifndef CUBICSPLINEKICK_HPP
+#define CUBICSPLINEKICK_HPP
 
 #include "Kick.hpp"
 
-class SmoothSplineKick : public Kick
+class CubicSplineKick : public Kick
 {
 public:
-	SmoothSplineKick(std::shared_ptr<KickEngineParameter> sp_parameter);
+	CubicSplineKick(std::shared_ptr<KickEngineParameter> sp_parameter);
 
 protected:
 	virtual bool check_requirements(KickAttributes & kick_attributes) override;
