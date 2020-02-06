@@ -6,10 +6,10 @@
 #include "kicks/SmoothSplineKick.hpp"
 #include "kicks/BeziercurveKick.hpp"
 
-KickFactory::KickFactory(std::shared_ptr<KickEngineParameter> sp_engine_parameter)
+KickFactory::KickFactory(std::shared_ptr<KickEngineParameter> sp_engine_parameter, std::shared_ptr<Footstep> footstep)
 {
 	//TODO: testing
-
+	m_sp_footstep = footstep;
 	m_sp_kick_engine_parameter = sp_engine_parameter;
 	m_sp_kick_parameter = std::make_shared<KickParameter>();
 }
@@ -58,7 +58,7 @@ void KickFactory::initKickParameter(struct3d * ball_position, struct3d * goal_po
 	m_struc_kick_attributes.angle_between_robot_and_ball = angle_between_robot_and_ball;
 	m_struc_kick_attributes.angle_between_ball_and_goal = KickFactoryService::calculateAngle((goal_position->x - ball_position->x), (goal_position->y - ball_position->y));
 	m_struc_kick_attributes.kick_ball_with_right = kick_ball_with_right;
-	m_struc_kick_attributes.foot_starting_position = kick_ball_with_right ? getCurrentRightFootPosition() : getCurrentRightFootPosition();
+	m_struc_kick_attributes.foot_starting_position = kick_ball_with_right ? getCurrentRightFootPosition() : getCurrentLeftFootPosition();
 	m_struc_kick_attributes.ball_position = *ball_position;
 	m_struc_kick_attributes.kick_goal_position = *goal_position;
 
@@ -86,20 +86,20 @@ bool KickFactory::checkGeneraleRequirements()
 
 struct3d KickFactory::getCurrentLeftFootPosition() const
 {
-	//TODO: implementation
 	//TODO: testing
 	//TODO: cleanup
 
-	return struct3d();
+	auto position = m_sp_footstep->getLeft();
+	return struct3d{position[0], position[1], position[2]};
 }
 
 struct3d KickFactory::getCurrentRightFootPosition() const
 {
-	//TODO: implementation
 	//TODO: testing
 	//TODO: cleanup
-
-	return struct3d();
+	
+	auto position = m_sp_footstep->getRight();
+	return struct3d{position[0], position[1], position[2]};
 }
 
 std::shared_ptr<Kick> KickFactory::createKick()

@@ -6,7 +6,6 @@
 #include <geometry_msgs/Vector3.h>
 #include <geometry_msgs/Twist.h>
 #include "engine/KickFactory.hpp"
-#include "Footstep.hpp"
 
 class KickEngine
 {
@@ -57,9 +56,9 @@ private:
 	double m_d_time_phase;
 	uint8_t m_robot_state;
 
-	Footstep * m_p_footstep;
 	KickFactory * m_p_kick_factory;
 
+	std::shared_ptr<Footstep> m_sp_footstep;
 	std::shared_ptr<moveit::core::RobotState> m_sp_goal_state;
 	std::shared_ptr<moveit::core::RobotState> m_sp_current_state;
 	std::shared_ptr<moveit::core::RobotModel> m_sp_kinematic_model;

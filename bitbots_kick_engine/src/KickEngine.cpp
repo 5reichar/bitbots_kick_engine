@@ -7,8 +7,9 @@ KickEngine::KickEngine()
 	//TODO: testing
 	//TODO: cleanup
 
-	m_p_kick_factory = new KickFactory(m_sp_kick_engine_parameter);
-	m_p_footstep = new Footstep(m_sp_kick_engine_parameter->footDistance, isLeftFootSupport());
+	m_p_kick_factory = new KickFactory(m_sp_kick_engine_parameter, m_sp_footstep);
+	m_sp_footstep->setFootDistance(m_sp_kick_engine_parameter->footDistance);
+	m_sp_footstep->reset(isLeftFootSupport());
 
 	robot_model_loader::RobotModelLoader robot_model_loader("/robot_description", false);
 	robot_model_loader.loadKinematicsSolvers(
@@ -19,7 +20,6 @@ KickEngine::KickEngine()
 
 KickEngine::~KickEngine()
 {
-	delete m_p_footstep;
 	delete m_p_kick_factory;
 }
 
@@ -164,11 +164,10 @@ Eigen::Vector3d KickEngine::getTrunkPosition() const
 
 Eigen::Vector3d KickEngine::getLastFootStep() const
 {
-	//TODO: implementation
 	//TODO: testing
 	//TODO: cleanup
 
-	return Eigen::Vector3d();
+	return m_sp_footstep->getLast();
 }
 
 Eigen::Vector3d KickEngine::getNextFootStep() const
@@ -181,15 +180,15 @@ Eigen::Vector3d KickEngine::getNextFootStep() const
 
 	if (isLeftFootSupport())
 	{
-		x = m_p_footstep->getLeft()[0];
-		y = m_p_footstep->getLeft()[1] + m_sp_kick_engine_parameter->footDistance / 2;
-		yaw = m_p_footstep->getLeft()[2];
+		x = m_sp_footstep->getLeft()[0];
+		y = m_sp_footstep->getLeft()[1] + m_sp_kick_engine_parameter->footDistance / 2;
+		yaw = m_sp_footstep->getLeft()[2];
 	}
 	else
 	{
-		x = m_p_footstep->getRight()[0];
-		y = m_p_footstep->getRight()[1] + m_sp_kick_engine_parameter->footDistance / 2;
-		yaw = m_p_footstep->getRight()[2];
+		x = m_sp_footstep->getRight()[0];
+		y = m_sp_footstep->getRight()[1] + m_sp_kick_engine_parameter->footDistance / 2;
+		yaw = m_sp_footstep->getRight()[2];
 	}
 
 	return Eigen::Vector3d(x, y, yaw);
@@ -274,11 +273,11 @@ bool KickEngine::kick(struct3d* ball_position, struct3d* target_position, struct
 
 	if (foot_final_position == nullptr)
 	{
-		m_p_footstep->stepFromOrders(Eigen::Vector3d(target_position->x, target_position->y, target_position->z));
+		m_sp_footstep->stepFromOrders(Eigen::Vector3d(target_position->x, target_position->y, target_position->z));
 	}
 	else
 	{
-		m_p_footstep->stepFromOrders(Eigen::Vector3d(foot_final_position->x, foot_final_position->y, foot_final_position->z));
+		m_sp_footstep->stepFromOrders(Eigen::Vector3d(foot_final_position->x, foot_final_position->y, foot_final_position->z));
 	}
 
 	m_sp_spline_container = m_p_kick_factory->makeKickTrajection(ball_position, target_position, foot_final_position);

@@ -3,11 +3,12 @@
 
 #include "KickFactoryService.hpp"
 #include "../kicks/Kick.hpp"
+#include "../Footstep.hpp"
 
 class KickFactory
 {
 public:
-	KickFactory(std::shared_ptr<KickEngineParameter> sp_engine_parameter);
+	KickFactory(std::shared_ptr<KickEngineParameter> sp_engine_parameter, std::shared_ptr<Footstep> footstep);
 
 	std::shared_ptr<KickParameter> getKickParameter();
 	KickAttributes getLastKicksAttributes();
@@ -24,6 +25,7 @@ private:
 	std::shared_ptr<Kick> createKick();
 
 	KickAttributes m_struc_kick_attributes;
+	std::shared_ptr<Footstep> m_sp_footstep;
 	std::shared_ptr<KickParameter> m_sp_kick_parameter;
 	std::shared_ptr<KickEngineParameter> m_sp_kick_engine_parameter;
 };
