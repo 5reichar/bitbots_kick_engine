@@ -161,12 +161,12 @@ void ThrowCurve::calculate_throw_movement(double & time, std::shared_ptr<ThrowPa
 
 	add_point_to_spline(bitbots_splines::CurvePurpose::trunk_axis_y, start_time, 0.0);
 	add_point_to_spline(bitbots_splines::CurvePurpose::trunk_axis_y, pick_up_ball_time, throw_parameter->pick_up_bow_angle);
-	add_point_to_spline(bitbots_splines::CurvePurpose::trunk_axis_y, begin_throw_time, 0.0);
-	add_point_to_spline(bitbots_splines::CurvePurpose::trunk_axis_y, release_throw_time, 0.0);
+	add_point_to_spline(bitbots_splines::CurvePurpose::trunk_axis_y, begin_throw_time, throw_parameter->throw_start_pitch);
+	add_point_to_spline(bitbots_splines::CurvePurpose::trunk_axis_y, release_throw_time, throw_parameter->throw_release_pitch);
 	add_point_to_spline(bitbots_splines::CurvePurpose::trunk_axis_y, finish_time, 0.0);
 
 	add_point_to_spline(bitbots_splines::CurvePurpose::trunk_axis_z, start_time, 0.0);
-	add_point_to_spline(bitbots_splines::CurvePurpose::trunk_axis_z, pick_up_ball_time, 0.0);
+	add_point_to_spline(bitbots_splines::CurvePurpose::trunk_axis_z, pick_up_ball_time, throw_parameter->pick_up_orientation);
 	add_point_to_spline(bitbots_splines::CurvePurpose::trunk_axis_z, begin_throw_time, throw_parameter->throw_orientation);
 	add_point_to_spline(bitbots_splines::CurvePurpose::trunk_axis_z, release_throw_time, throw_parameter->throw_orientation);
 	add_point_to_spline(bitbots_splines::CurvePurpose::trunk_axis_z, finish_time, 0.0);
