@@ -1,0 +1,2 @@
+geometry_msgs/Vector3 ball_position
+geometry_msgs/Vector3 throw_target

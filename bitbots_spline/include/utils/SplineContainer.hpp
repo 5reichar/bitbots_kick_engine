@@ -33,7 +33,19 @@ enum class CurvePurpose
     foot_position_z,
     foot_axis_x,
     foot_axis_y,
-    foot_axis_z
+    foot_axis_z,
+    left_hand_position_x,
+    left_hand_position_y,
+    left_hand_position_z,
+    left_hand_axis_x,
+    left_hand_axis_y,
+    left_hand_axis_z,
+    right_hand_position_x,
+    right_hand_position_y,
+    right_hand_position_z,
+    right_hand_axis_x,
+    right_hand_axis_y,
+    right_hand_axis_z
 };
 
 /*
