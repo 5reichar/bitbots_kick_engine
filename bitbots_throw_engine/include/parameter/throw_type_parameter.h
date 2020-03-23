@@ -21,6 +21,12 @@ struct ThrowType
 	double min_throw_distance_;
 	// The maximum distance this throw should be used for
 	double max_throw_distance_;
+	// The share of the movement cycle dedicated to picking up the ball
+	double pick_up_duration_share;
+	// The share of the movement cycle dedicated to prepare the throwing the ball
+	double throw_preparation_duration_share;
+	// The share of the movement cycle dedicated to throwing the ball
+	double throw_duration_share;
 };
 
 struct ThrowTypeParameter

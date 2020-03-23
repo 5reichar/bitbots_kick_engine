@@ -3,7 +3,7 @@
 
 struct struct3d
 {
-	double x, y, z;
+	double x_, y_, z_;
 };
 
 #endif
