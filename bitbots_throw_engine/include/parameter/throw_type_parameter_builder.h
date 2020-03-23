@@ -1,13 +1,14 @@
 #ifndef THROW_TYPE_PARAMETER_BUILDER_H
 #define THROW_TYPE_PARAMETER_BUILDER_H
 
+#include <memory>
 #include "parameter/throw_type_parameter.h"
 #include <bitbots_throw_engine/throw_paramsConfig.h>
 
 class ThrowTypeParameterBuilder
 {
 public:
-    static ThrowTypeParameter build_from_dynamic_reconf(bitbots_throw_engine::throw_paramsConfig& config, uint32_t level)
+    static std::shared_ptr<ThrowTypeParameter> build_from_dynamic_reconf(bitbots_throw_engine::throw_paramsConfig& config, uint32_t level)
     {
         std::shared_ptr<ThrowTypeParameter> sp_parameter;
         sp_parameter->default_throw_id_ = (ThrowTypeId)config.default_throw_enum;
