@@ -17,6 +17,9 @@ struct ThrowType
 	ThrowTypeId id_;
 	// Shall this kick be used
 	bool active_;
+	// Parameter to control if there are two or more throws that are eligable which shall be used first.
+	// the rule is: the throw with the lowest level will be used
+	int throw_priority_level_;
 	// The minimum distance this throw should be used for
 	double min_throw_distance_;
 	// The maximum distance this throw should be used for

@@ -15,21 +15,25 @@ public:
 
         sp_parameter->v_throw_types_.push_back(ThrowTypeParameterBuilder::build_throw_type((ThrowTypeId)config.beziercurve_throw_enum,
                                                                                     config.beziercurve_throw_active,
+                                                                                    config.beziercurve_throw_priority_level,
                                                                                     config.beziercurve_throw_min_distance,
                                                                                     config.beziercurve_throw_max_distance));
                                                                                     
         sp_parameter->v_throw_types_.push_back(ThrowTypeParameterBuilder::build_throw_type((ThrowTypeId)config.linear_spline_throw_enum,
                                                                                     config.linear_spline_throw_active,
+                                                                                    config.linear_spline_throw_priority_level,
                                                                                     config.linear_spline_throw_min_distance,
                                                                                     config.linear_spline_throw_max_distance));
                                                                                     
         sp_parameter->v_throw_types_.push_back(ThrowTypeParameterBuilder::build_throw_type((ThrowTypeId)config.cubic_spline_throw_enum,
                                                                                     config.cubic_spline_throw_active,
+                                                                                    config.cubic_spline_throw_priority_level,
                                                                                     config.cubic_spline_throw_min_distance,
                                                                                     config.cubic_spline_throw_max_distance));
                                                                                     
         sp_parameter->v_throw_types_.push_back(ThrowTypeParameterBuilder::build_throw_type((ThrowTypeId)config.smooth_spline_throw_enum,
                                                                                     config.smooth_spline_throw_active,
+                                                                                    config.smooth_spline_throw_priority_level,
                                                                                     config.smooth_spline_throw_min_distance,
                                                                                     config.smooth_spline_throw_max_distance));
 
@@ -37,9 +41,9 @@ public:
     };
 
 protected:
-    static ThrowTypeParameter build_throw_type(ThrowTypeId id, bool active,  double min_throw_distance, double max_throw_distance)
+    static ThrowTypeParameter build_throw_type(ThrowTypeId id, bool active, int priority_level,  double min_throw_distance, double max_throw_distance)
     {
-        ThrowTypeParameter type = {id, active,  min_throw_distance, max_throw_distance};
+        ThrowTypeParameter type = {id, active, priority_level, min_throw_distance, max_throw_distance};
         return type;
     };
 };
