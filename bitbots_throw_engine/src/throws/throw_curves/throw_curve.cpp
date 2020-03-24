@@ -13,9 +13,11 @@ bool ThrowCurve::calculate_trajectories(std::shared_ptr<ThrowParameter> & throw_
         // build and return spline container
         double d_time = 0.0;
 
-        calculate_pick_up_ball_movement(d_time, throw_parameter); // Optional
+        calculate_pick_up_ball_movement(d_time, throw_parameter);
         calculate_throw_movement(d_time, throw_parameter);
-        calculate_throw_conclusion_movement(d_time, throw_parameter); // Optional
+        calculate_throw_conclusion_movement(d_time, throw_parameter);
+
+		b_succ = true;
 	}
 
     // implement ROS Error
