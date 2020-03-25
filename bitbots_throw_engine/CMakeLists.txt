@@ -17,6 +17,7 @@ find_package(catkin REQUIRED COMPONENTS
   bitbots_spline
   humanoid_league_msgs
   bitbots_msgs
+  visualization_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -56,6 +57,7 @@ find_package(catkin REQUIRED COMPONENTS
 add_message_files(
   FILES
   throw_action.msg
+  throw_debug.msg
 )
 
 ## Generate services in the 'srv' folder
@@ -77,6 +79,7 @@ generate_messages(
   DEPENDENCIES
   std_msgs
   geometry_msgs
+  visualization_msgs
 )
 
 ################################################
@@ -114,7 +117,7 @@ generate_dynamic_reconfigure_options(
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES ${PROJECT_NAME}
-  CATKIN_DEPENDS roscpp std_msgs geometry_msgs humanoid_league_msgs bitbots_spline message_runtime
+  CATKIN_DEPENDS roscpp std_msgs geometry_msgs humanoid_league_msgs bitbots_spline visualization_msgs message_runtime
 #  DEPENDS system_lib
 )
 
@@ -135,7 +138,11 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 set(
   SOURCES
   src/ros_interface/throw_node.cpp
-  src/ros_interface/throw_ros.cpp
+  src/ros_interface/publisher/ros_publisher_facade
+  src/ros_interface/publisher/controler_command_publisher
+  src/ros_interface/publisher/odometry_publisher
+  src/ros_interface/publisher/support_publisher
+  src/ros_interface/publisher/debug_publisher
   src/throws/throw_factory.cpp
   src/throws/throw_curves/throw_curve.cpp
   src/throws/throw_curves/beziercurve_throw.cpp
