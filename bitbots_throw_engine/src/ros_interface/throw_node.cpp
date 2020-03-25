@@ -5,8 +5,7 @@ ThrowNode::ThrowNode()
 	// TODO testing
 	// TODO cleanup
 
-	bool simulation = false;
-	ros_node_handle_.param<bool>("/simulation_active", simulation, false);
+	ros_node_handle_.param<bool>("/simulation_active", sp_node_parameter_->simulation_active_, false);
 
 	up_publisher_facade_.reset(new RosPublisherFacade(ros_node_handle_));
 	init_ros_subcribtions();

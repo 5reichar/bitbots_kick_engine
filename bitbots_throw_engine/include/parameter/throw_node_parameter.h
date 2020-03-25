@@ -10,6 +10,8 @@ struct ThrowNodeParameter
     int odom_publish_factor_;
     // Timeout time for bioIK [s]
     double bio_ik_time_;
+    // Show if the code is run in a simulation or on the robot
+    bool simulation_active_ = false;
 };
 
 #endif
