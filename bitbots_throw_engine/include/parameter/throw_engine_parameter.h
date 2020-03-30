@@ -11,8 +11,10 @@ struct ThrowEngineParameter
 	// Lateral distance between the feet center
 	// (in m, >= 0)
 	double hand_distance_;
+	// the radius of the ball
+	double ball_radius_;
     // value used as gravity for calculations
-    double gravity_
+    double gravity_;
 	// The maximal distance the robot can throw (in m, >= 0)
 	double max_throw_distance_;
 	// the position the robot shall move the ball after picking it up,
