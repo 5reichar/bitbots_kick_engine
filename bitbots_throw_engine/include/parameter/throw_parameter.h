@@ -6,47 +6,47 @@
 struct ThrowParameter
 {
 	// current position of the left hand
-	struct3d left_hand_start_position_;
-
-	// the position the left hand should go to after the the throw
-	struct3d left_hand_end_position_;
+	struct3d start_left_hand_position_;
 
 	// current position of the right hand
-	struct3d right_hand_start_position_;
+	struct3d start_right_hand_position_;
+
+	// the position the left hand should go to after the the throw
+	struct3d end_left_hand_position_;
 
 	// the position the right hand should go to after the the throw
-	struct3d right_hand_end_position_;
+	struct3d end_right_hand_position_;
 
 	// current position of the ball, which the robot shall throw
 	struct3d ball_position_;
 
-	// position to which the ball shall be thrown
-	struct3d throw_goal_position_;
+	// the rotation which the hands should be when the ball will be picked up
+	struct3d pick_up_hand_axis_;
+
+	// the rotation which the trunk should be when the ball will be picked up
+	struct3d pick_up_trunk_axis_;
+
+	// the rotation which the trunk should be when the ball will be thrown
+	struct3d throw_trunk_axis_;
 
 	// the position the robot shall move the ball after picking it up,
     // and before starting to throw it
-	struct3d throw_start_position_;
+	struct3d throw_start_hand_position_;
+
+	// the rotation which the hands should be when the throw is been started
+	struct3d throw_start_hand_axis_;
 
     // the positon the robot release the ball to throw it
-	struct3d throw_release_position_;
+	struct3d throw_release_hand_position_;
+
+	// the rotation which the hands should be when the ball will released in the throw movement
+	struct3d throw_release_hand_axis_;
 
 	// the velocity the ball should have when the robot throw it
-	double throw_velocity_;
+	struct3d throw_velocity_;
 
-	// the angle in which the upper body must be, to pick up the ball
-	double pick_up_orientation_;
-
-	// the angle in which the upper body shall bow to pick up the ball
-	double pick_up_bow_angle_;
-
-	// the angle at which the upper body must be, to make the throw
-	double throw_orientation_;
-
-	// the angle the in which the upper boddy should be when the throw movement starts 
-	double throw_start_pitch_;
-
-	// the angle the in which the upper boddy should be when the ball is release in the throw movement
-	double throw_release_pitch_;
+	// position to which the ball shall be thrown
+	struct3d throw_goal_position_;
 
 	// The share of the movement cycle dedicated to picking up the ball
 	double pick_up_duration_share_;
@@ -60,6 +60,9 @@ struct ThrowParameter
 	// Full movement cycle frequency
 	// (in Hz, > 0)
 	double movement_cycle_frequence_;
+
+	// the radius of the ball to calculate hand positions
+	double ball_radius_;
 };
 
 #endif

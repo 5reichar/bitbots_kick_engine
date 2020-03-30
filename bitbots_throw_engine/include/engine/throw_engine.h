@@ -15,7 +15,7 @@ public:
 	virtual bool throw_ball(struct3d & ball_position, struct3d & goal_position);
 
 private:
-    std::shared_ptr<ThrowParameter> build_throw_parameter();
+    std::shared_ptr<ThrowParameter> build_throw_parameter(struct3d & ball_position, struct3d & target_position);
     double calculate_distace(struct3d & point);
 
     std::shared_ptr<ThrowCurve> sp_current_throw_;
