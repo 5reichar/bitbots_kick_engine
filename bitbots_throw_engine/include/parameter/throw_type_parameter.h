@@ -36,7 +36,7 @@ struct ThrowType
 
 struct ThrowTypeParameter
 {
-	ThrowTypeId default_throw_id_;
+	ThrowType default_throw_;
 
 	std::vector<ThrowType> v_throw_types_;
 };

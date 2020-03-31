@@ -103,6 +103,7 @@ generate_messages(
 # )
 generate_dynamic_reconfigure_options(
   cfg/throw_params.cfg
+  cfg/throw_engine_params.cfg
 )
 
 ###################################
@@ -137,6 +138,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 
 set(
   SOURCES
+  src/engine/throw_engine.cpp
   src/ros_interface/throw_node.cpp
   src/ros_interface/publisher/ros_publisher_facade
   src/ros_interface/publisher/controler_command_publisher

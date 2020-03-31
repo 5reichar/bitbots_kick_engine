@@ -1,4 +1,5 @@
 #include "ros_interface/throw_node.h"
+#include <dynamic_reconfigure/server.h>
 
 ThrowNode::ThrowNode()
 {
@@ -9,6 +10,7 @@ ThrowNode::ThrowNode()
 
 	up_publisher_facade_.reset(new RosPublisherFacade(ros_node_handle_));
 	init_ros_subcribtions();
+	init_dynamic_reconfiguration();
 }
 
 void ThrowNode::init_ros_subcribtions()
@@ -17,6 +19,22 @@ void ThrowNode::init_ros_subcribtions()
 	// TODO cleanup
 
 	ros_subsciber_throw_ = ros_node_handle_.subscribe("throw", 1, &ThrowNode::throw_callback, this, ros::TransportHints().tcpNoDelay());
+}
+
+void ThrowNode::init_dynamic_reconfiguration()
+{
+	// TODO testing
+	// TODO cleanup
+
+	dynamic_reconfigure::Server<bitbots_throw_engine::throw_engine_paramsConfig> engine_param_server;
+	dynamic_reconfigure::Server<bitbots_throw_engine::throw_engine_paramsConfig>::CallbackType engine_params;
+	engine_params = boost::bind(&ThrowNode::throw_engine_params_config_callback, this, _1, _2);
+	engine_param_server.setCallback(engine_params);
+
+	dynamic_reconfigure::Server<bitbots_throw_engine::throw_paramsConfig> throw_param_server;
+	dynamic_reconfigure::Server<bitbots_throw_engine::throw_paramsConfig>::CallbackType throw_params;
+	throw_params = boost::bind(&ThrowNode::throw_params_config_callback, this, _1, _2);
+	throw_param_server.setCallback(throw_params);
 }
 
 void ThrowNode::throw_callback(const bitbots_throw_engine::throw_action action)
@@ -33,7 +51,7 @@ void ThrowNode::throw_callback(const bitbots_throw_engine::throw_action action)
 
 	while (ros::ok())
 	{
-		if (sp_throw_engine_->throw_ball(ball_position, goal_position))
+		if (up_throw_engine_->throw_ball(ball_position, goal_position))
 		{
 			up_publisher_facade_->publish_throw(sp_node_parameter_->debug_active_);
 		}
@@ -52,4 +70,27 @@ void ThrowNode::throw_callback(const bitbots_throw_engine::throw_action action)
 		loopRate.sleep();
 	}
 
+}
+
+void ThrowNode::robot_state_callback(const humanoid_league_msgs::RobotControlState msg)
+{
+
+}
+
+void ThrowNode::throw_engine_params_config_callback(bitbots_throw_engine::throw_engine_paramsConfig & config , uint32_t level)
+{
+	sp_node_parameter_ = ThrowNodeParameterBuilder::build_from_dynamic_reconf(config, level);
+	up_throw_engine_->set_engine_parameter(ThrowEngineParameterBuilder::build_from_dynamic_reconf(config, level));
+}
+
+void ThrowNode::throw_params_config_callback(bitbots_throw_engine::throw_paramsConfig & config , uint32_t level)
+{
+	up_throw_engine_->set_throw_types(ThrowTypeParameterBuilder::build_from_dynamic_reconf(config, level));
+}
+
+int main(int argc, char **argv)
+{
+	ros::init(argc, argv, "bitbots_throw_engine");
+
+	return 0;
 }

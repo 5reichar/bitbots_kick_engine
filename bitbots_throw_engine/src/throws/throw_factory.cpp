@@ -5,40 +5,14 @@
 #include "throws/throw_curves/cubic_spline_throw.h"
 #include "throws/throw_curves/smooth_spline_throw.h"
 
-std::shared_ptr<ThrowCurve> ThrowFactory::create_throw(std::shared_ptr<ThrowTypeParameter> & throw_type_parameter, double const & throw_distance)
+std::shared_ptr<ThrowCurve> ThrowFactory::create_throw(std::shared_ptr<ThrowType> throw_type)
 {
 	//TODO: testing
 	//TODO: cleanup
 	std::shared_ptr<ThrowCurve> sp_return;
-
-	sp_return.reset(create_throw_curve(get_throw_type_id(throw_type_parameter, throw_distance)));
-
-	return sp_return;
-}
-
-ThrowTypeId ThrowFactory::get_throw_type_id(std::shared_ptr<ThrowTypeParameter> & throw_type_parameter, double const & throw_distance)
-{
-	ThrowTypeId enum_throw_type = throw_type_parameter->default_throw_id_;
-
-	for (auto it = throw_type_parameter->v_throw_types_.begin(); it != throw_type_parameter->v_throw_types_.end(); ++it)
-	{
-		if (it->active_ &&
-			it->min_throw_distance_ < throw_distance &&
-			it->max_throw_distance_ > throw_distance)
-		{
-			enum_throw_type = it->id_;
-			break;
-		}
-	}
-
-	return enum_throw_type;
-}
-
-ThrowCurve * ThrowFactory::create_throw_curve(ThrowTypeId type)
-{
 	ThrowCurve * p_return_throw = nullptr;
 
-	switch (type)
+	switch (throw_type->id_)
 	{
 	case ThrowTypeId::beziercurve:
 		p_return_throw = new BeziercurveThrow();
@@ -57,5 +31,24 @@ ThrowCurve * ThrowFactory::create_throw_curve(ThrowTypeId type)
 		break;
 	}
 
-	return p_return_throw;
+	sp_return.reset(p_return_throw);
+	return sp_return;
+}
+
+std::shared_ptr<ThrowType> ThrowFactory::get_throw_type(std::shared_ptr<ThrowTypeParameter> throw_type_parameter, double const & throw_distance)
+{
+	std::shared_ptr<ThrowType> sp_throw_type = std::make_shared<ThrowType>(throw_type_parameter->default_throw_);
+
+	for (auto it = throw_type_parameter->v_throw_types_.begin(); it != throw_type_parameter->v_throw_types_.end(); ++it)
+	{
+		if (it->active_ &&
+			it->min_throw_distance_ < throw_distance &&
+			it->max_throw_distance_ > throw_distance)
+		{
+			sp_throw_type = std::make_shared<ThrowType>(*it);
+			break;
+		}
+	}
+
+	return sp_throw_type;
 }

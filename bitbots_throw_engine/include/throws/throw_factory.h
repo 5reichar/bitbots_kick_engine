@@ -7,11 +7,10 @@
 class ThrowFactory
 {
 public:
-	std::shared_ptr<ThrowCurve> create_throw(std::shared_ptr<ThrowTypeParameter> & throw_type_parameter, double const & throw_distance);
+	std::shared_ptr<ThrowCurve> create_throw(std::shared_ptr<ThrowType> throw_type);
+	std::shared_ptr<ThrowType> get_throw_type(std::shared_ptr<ThrowTypeParameter> throw_type_parameter, double const & throw_distance);
 
 private:
-	ThrowTypeId get_throw_type_id(std::shared_ptr<ThrowTypeParameter> & throw_type_parameter, double const & throw_distance);
-	ThrowCurve * create_throw_curve(ThrowTypeId type);
 };
 
 #endif
