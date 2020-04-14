@@ -64,11 +64,6 @@ void ThrowNode::throw_callback(const bitbots_throw_engine::throw_action action)
 
 }
 
-void ThrowNode::robot_state_callback(const humanoid_league_msgs::RobotControlState msg)
-{
-
-}
-
 void ThrowNode::throw_engine_params_config_callback(bitbots_throw_engine::throw_engine_paramsConfig & config , uint32_t level)
 {
 	sp_node_parameter_ = ThrowNodeParameterBuilder::build_from_dynamic_reconf(config, level);
