@@ -7,9 +7,12 @@ class ControllerCommandPublisher
 {
     // TODO cleanup
 public:
-    ControllerCommandPublisher(ros::NodeHandle & ros_node_handle);
+    ControllerCommandPublisher(ros::NodeHandle & ros_node_handle, std::string topic = "throw_motor_goals");
 
-    void publish();
+    virtual void publish(int32_t time, std::vector<std::string> joint_names, std::vector<double> positions);
+    virtual void publish(int32_t time, std::vector<std::string> joint_names, std::vector<double> positions, std::vector<double> velocities);
+    virtual void publish(int32_t time, std::vector<std::string> joint_names, std::vector<double> positions, std::vector<double> velocities, std::vector<double> accelerations);
+    virtual void publish(int32_t time, std::vector<std::string> joint_names, std::vector<double> positions, std::vector<double> velocities, std::vector<double> accelerations, std::vector<double> max_currents);
 
 private:
     ros::Publisher ros_publisher_controller_command_;
