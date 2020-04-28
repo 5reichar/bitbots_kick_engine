@@ -20,36 +20,33 @@ namespace bitbots_splines
 class SmoothSpline : public Spline
 {
 public:
-    using Spline::addPoint;
-    /**
-         * Add a new point with its time, position value,
-         * velocity and acceleration
-         */
-    virtual void addPoint(double time,
-                          double position,
-                          double velocity = 0.0,
-                          double acceleration = 0.0);
+    using Spline::add_point;
+      /**
+      * Add a new point with its time, position value,
+      * velocity and acceleration
+      */
+    virtual void add_point(double time, double position, double velocity = 0.0, double acceleration = 0.0);
 
-    /**
-         * Recompute splines interpolation model
-         */
-    virtual void computeSplines() override;
+     /**
+      * Recompute splines interpolation model
+      */
+    virtual void compute_splines() override;
 
 protected:
-    /**
-         * Inherit
-         * Load Points
-         */
-    virtual void importCallBack() override;
+     /**
+      * Inherit
+      * Load Points
+      */
+    virtual void import_call_back() override;
 
 private:
-    /**
-         * Fit a polynom between 0 and t with given
-         * pos, vel and acc initial and final conditions
-         */
-    Polynom polynomFit(double t,
-                       double pos1, double vel1, double acc1,
-                       double pos2, double vel2, double acc2) const;
+     /**
+      * Fit a polynom between 0 and t with given
+      * pos, vel and acc initial and final conditions
+      */
+    Polynom polynom_fit(double t,
+                        double pos1, double vel1, double acc1,
+                        double pos2, double vel2, double acc2) const;
 };
 
 } // namespace bitbots_splines

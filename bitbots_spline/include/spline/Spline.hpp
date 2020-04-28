@@ -48,10 +48,10 @@ public:
          * value, first, second and third derivative
          * with given t bound between 0 and 1
          */
-     virtual double posMod(double t) const override;
-     virtual double velMod(double t) const override;
-     virtual double accMod(double t) const override;
-     virtual double jerkMod(double t) const override;
+     virtual double pos_mod(double t) const override;
+     virtual double vel_mod(double t) const override;
+     virtual double acc_mod(double t) const override;
+     virtual double jerk_mod(double t) const override;
 
      /**
          * Return minimum and maximum abscisse
@@ -60,14 +60,14 @@ public:
      double min() const;
      double max() const;
 
-     virtual void computeSplines() = 0;
+     virtual void compute_splines() = 0;
 
      /**
          * Write and read splines data into given
          * iostream in ascii format
          */
-     void exportData(std::ostream &os) const;
-     void importData(std::istream &is);
+     void export_data(std::ostream &os) const;
+     void import_data(std::istream &is);
 
      /**
          * Return the number of internal polynom
@@ -83,28 +83,27 @@ public:
          * Add a part with given polynom
          * and min/max time range
          */
-     void addPart(const Polynom &poly,
-                  double min, double max);
+     void add_part(const Polynom &poly, double min, double max);
 
      /**
          * Replace this spline part with the
          * internal data of given spline
          */
-     void copyData(const Spline &sp);
+     void copy_data(const Spline &sp);
 
 protected:
      /**
          * Spline part container
          */
-     std::vector<Spline_t> _splines;
+     std::vector<Spline_t> splines_;
 
      /**
          * Possible override callback
          * after importation
          */
-     virtual void importCallBack();
+     virtual void import_call_back();
 
-     virtual void addPointCallBack() override;
+     virtual void add_point_call_back() override;
 
 private:
      /**
@@ -112,15 +111,13 @@ private:
          * used given polynom evaluation function
          * (member function pointer)
          */
-     double interpolation(double x,
-                          double (Polynom::*func)(double) const) const;
+     double interpolation(double x, double (Polynom::*func)(double) const) const;
 
      /**
          * Return interpolation with x
          * bound between 0 and 1
          */
-     double interpolationMod(double x,
-                             double (Polynom::*func)(double) const) const;
+     double interpolation_mod(double x, double (Polynom::*func)(double) const) const;
 };
 
 } // namespace bitbots_splines

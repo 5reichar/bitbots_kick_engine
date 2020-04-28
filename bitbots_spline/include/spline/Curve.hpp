@@ -7,6 +7,7 @@ https://github.com/Rhoban/model/
 #define CURVE_HPP
 
 #include <vector>
+#include <string>
 
 namespace bitbots_splines
 {
@@ -19,20 +20,20 @@ public:
     virtual double acc(double t) const = 0;
     virtual double jerk(double t) const = 0;
 
-    virtual double posMod(double t) const = 0;
-    virtual double velMod(double t) const = 0;
-    virtual double accMod(double t) const = 0;
-    virtual double jerkMod(double t) const = 0;
+    virtual double pos_mod(double t) const = 0;
+    virtual double vel_mod(double t) const = 0;
+    virtual double acc_mod(double t) const = 0;
+    virtual double jerk_mod(double t) const = 0;
 
     struct Point
     {
-        double time;
-        double position;
-        double velocity;
-        double acceleration;
+        double time_;
+        double position_;
+        double velocity_;
+        double acceleration_;
     };
 
-    static Point createPoint(double time, double position, double velocity = 0.0, double acceleration = 0.0)
+    static Point create_point(double time, double position, double velocity = 0.0, double acceleration = 0.0)
     {
         Point point = {time, position, velocity, acceleration};
         return point;
@@ -41,8 +42,8 @@ public:
     /**
      * Add a new point
      */
-	virtual void addPoint(Point point);
-	virtual void addPoint(double time, double position, double velocity = 0.0, double acceleration = 0.0);
+	virtual void add_point(Point point);
+	virtual void add_point(double time, double position, double velocity = 0.0, double acceleration = 0.0);
 
     /**
      * Access to points container
@@ -50,13 +51,20 @@ public:
     const std::vector<Point> &points() const;
     std::vector<Point> &points();
 
+
+    /**
+     * Returns a string representation of the Spline to get inside while debugging.
+     * @return
+     */
+    std::string get_debug_string();
+
 protected:
+    virtual void add_point_call_back();
+
     /**
      * Points container
      */
-    std::vector<Point> _points;
-
-    virtual void addPointCallBack();
+    std::vector<Point> points_;
 
 private:
 };

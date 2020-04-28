@@ -13,7 +13,7 @@ double Beziercurve::pos(double t) const
     return calc_bezier_curve(t, &Beziercurve::calc_bernstein_polynomial);
 }
 
-double Beziercurve::posMod(double t) const
+double Beziercurve::pos_mod(double t) const
 {
     return calc_bezier_curve(t, &Beziercurve::calc_bernstein_polynomial_mod);
 }
@@ -21,11 +21,11 @@ double Beziercurve::posMod(double t) const
 double Beziercurve::calc_bezier_curve(double const time, double (Beziercurve::*bernstein_func)(double, uint32_t, uint32_t) const) const
 {
     double return_value = 0;
-    uint32_t degree = this->_points.size() - 1;
+    uint32_t degree = this->points_.size() - 1;
 
     for (uint32_t i = 0; i <= degree; ++i)
     {
-        return_value += (this->*bernstein_func)(time, i, degree) * this->_points[i].position;
+        return_value += (this->*bernstein_func)(time, i, degree) * this->points_[i].position_;
     }
 
     return return_value;
@@ -40,7 +40,7 @@ double Beziercurve::vel(double t) const
     return calc_bezier_curve_derivative(t, &Beziercurve::calc_bernstein_polynomial);
 }
 
-double Beziercurve::velMod(double t) const
+double Beziercurve::vel_mod(double t) const
 {
     return calc_bezier_curve_derivative(t, &Beziercurve::calc_bernstein_polynomial_mod);
 }
@@ -48,11 +48,11 @@ double Beziercurve::velMod(double t) const
 double Beziercurve::calc_bezier_curve_derivative(double const time, double (Beziercurve::*bernstein_func)(double const, uint32_t const, uint32_t const) const) const
 {
     double return_value = 0;
-    uint32_t degree = this->_points.size() - 1;
+    uint32_t degree = this->points_.size() - 1;
 
     for (uint32_t i = 0; i <= degree; ++i)
     {
-        return_value += (this->*bernstein_func)(time, i, degree - 1) * (this->_points[i + 1].position - this->_points[i].position);
+        return_value += (this->*bernstein_func)(time, i, degree - 1) * (this->points_[i + 1].position_ - this->points_[i].position_);
     }
 
     return degree * return_value;
@@ -67,7 +67,7 @@ double Beziercurve::acc(double t) const
     return calc_bezier_curve_second_derivative(t, &Beziercurve::calc_bernstein_polynomial);
 }
 
-double Beziercurve::accMod(double t) const
+double Beziercurve::acc_mod(double t) const
 {
     return calc_bezier_curve_second_derivative(t, &Beziercurve::calc_bernstein_polynomial_mod);
 }
@@ -75,11 +75,11 @@ double Beziercurve::accMod(double t) const
 double Beziercurve::calc_bezier_curve_second_derivative(double const time, double (Beziercurve::*bernstein_func)(double const, uint32_t const, uint32_t const) const) const
 {
     double return_value = 0;
-    uint32_t degree = this->_points.size() - 1;
+    uint32_t degree = this->points_.size() - 1;
 
     for (uint32_t i = 0; i <= degree; ++i)
     {
-        return_value += (this->*bernstein_func)(time, i, degree - 2) * (this->_points[i + 2].position - 2 * this->_points[i + 1].position + this->_points[i].position);
+        return_value += (this->*bernstein_func)(time, i, degree - 2) * (this->points_[i + 2].position_ - 2 * this->points_[i + 1].position_ + this->points_[i].position_);
     }
 
     return degree * (degree - 1) * return_value;
@@ -94,7 +94,7 @@ double Beziercurve::jerk(double t) const
     return calc_bezier_curve_third_derivative(t, &Beziercurve::calc_bernstein_polynomial);
 }
 
-double Beziercurve::jerkMod(double t) const
+double Beziercurve::jerk_mod(double t) const
 {
     return calc_bezier_curve_third_derivative(t, &Beziercurve::calc_bernstein_polynomial_mod);
 }
@@ -102,11 +102,11 @@ double Beziercurve::jerkMod(double t) const
 double Beziercurve::calc_bezier_curve_third_derivative(double const time, double (Beziercurve::*bernstein_func)(double const, uint32_t const, uint32_t const) const) const
 {
     double return_value = 0;
-    uint32_t degree = this->_points.size() - 1;
+    uint32_t degree = this->points_.size() - 1;
 
     for (uint32_t i = 0; i <= degree; ++i)
     {
-        return_value += (this->*bernstein_func)(time, i, degree - 3) * (this->_points[i + 3].position - 3 * this->_points[i + 2].position + 3 * this->_points[i + 1].position - this->_points[i].position);
+        return_value += (this->*bernstein_func)(time, i, degree - 3) * (this->points_[i + 3].position_ - 3 * this->points_[i + 2].position_ + 3 * this->points_[i + 1].position_ - this->points_[i].position_);
     }
 
     return degree * (degree - 1) * (degree - 2) * return_value;
@@ -118,8 +118,8 @@ double Beziercurve::calc_bezier_curve_third_derivative(double const time, double
 
 double Beziercurve::calc_bernstein_polynomial(double const time, uint32_t const i, uint32_t const degree) const
 {
-    uint32_t intervall_start = this->_points.front().time;
-    uint32_t intervall_end = this->_points.back().time;
+    uint32_t intervall_start = this->points_.front().time_;
+    uint32_t intervall_end = this->points_.back().time_;
 
     double p1 = pow((intervall_end - intervall_start), degree);
     double p2 = calc_binomial_coefficient(degree, i);
@@ -167,13 +167,13 @@ uint32_t Beziercurve::calc_factorial(uint32_t start, uint32_t end) const
  *  CallBacks
  */
 
-void Beziercurve::addPointCallBack()
+void Beziercurve::add_point_call_back()
 {
     std::sort(
-        _points.begin(),
-        _points.end(),
+        points_.begin(),
+        points_.end(),
         [](const Point &p1, const Point &p2) -> bool {
-            return p1.time < p2.time;
+            return p1.time_ < p2.time_;
         });
 }
 

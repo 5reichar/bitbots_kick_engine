@@ -21,17 +21,17 @@ namespace bitbots_splines
 class LinearSpline : public Spline
 {
 public:
-    using Spline::addPoint;
+    using Spline::add_point;
     /**
-         * Add a new point with its time and position value,
-         */
-    virtual void addPoint(double time, double position);
+     * Add a new point with its time and position value,
+     */
+    virtual void add_point(double time, double position);
 
 private:
     /**
-         * Recompute splines interpolation model
-         */
-    virtual void computeSplines() override;
+     * Recompute splines interpolation model
+     */
+    virtual void compute_splines() override;
 };
 
 } // namespace bitbots_splines

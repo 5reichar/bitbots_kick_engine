@@ -105,8 +105,8 @@ void VisualSplinesMaterial::add_point(bitbots_splines::Curve *curve, double cons
 {
     assert(curve);
 
-    auto point = bitbots_splines::Curve::createPoint(time, position, velocity, acceleration);
-    curve->addPoint(point);
+    auto point = bitbots_splines::Curve::create_point(time, position, velocity, acceleration);
+    curve->add_point(point);
 }
 
 std::vector<std::vector<bitbots_splines::Curve::Point>> VisualSplinesMaterial::get_points() const

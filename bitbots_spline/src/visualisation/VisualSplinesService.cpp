@@ -124,7 +124,7 @@ void VisualSplinesService::calc_and_add_points_from_curve(visualization_msgs::Ma
                                                           VisualSplinesMaterial *vs_material,
                                                           double const sampling_rate)
 {
-    auto intervall_end = vs_material->get_points()[0].back().time;
+    auto intervall_end = vs_material->get_points()[0].back().time_;
     auto step = 1 / sampling_rate;
 
     for (double time = 0; time < intervall_end; time += step)
@@ -146,7 +146,7 @@ void VisualSplinesService::add_points_from_curve(visualization_msgs::Marker &mar
 
     while (it_points_x != vec_points[0].end() && it_points_y != vec_points[1].end() && it_points_z != vec_points[2].end())
     {
-        add_point_to_marker(marker_points, (*it_points_x).position, (*it_points_y).position, (*it_points_z).position);
+        add_point_to_marker(marker_points, (*it_points_x).position_, (*it_points_y).position_, (*it_points_z).position_);
 
         ++it_points_x;
         ++it_points_y;

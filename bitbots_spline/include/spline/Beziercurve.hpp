@@ -15,10 +15,10 @@ public:
     double acc(double t) const override;
     double jerk(double t) const override;
 
-    double posMod(double t) const override;
-    double velMod(double t) const override;
-    double accMod(double t) const override;
-    double jerkMod(double t) const override;
+    double pos_mod(double t) const override;
+    double vel_mod(double t) const override;
+    double acc_mod(double t) const override;
+    double jerk_mod(double t) const override;
 
 private:
     double calc_bezier_curve(double const time, double (Beziercurve::*bernstein_func)(double, uint32_t, uint32_t) const) const;
@@ -33,7 +33,7 @@ private:
     uint32_t calc_factorial(uint32_t start, uint32_t end) const;
     double calc_power(double base, uint32_t exponent) const;
 
-    void addPointCallBack() override;
+    void add_point_call_back() override;
 };
 
 } // namespace bitbots_splines

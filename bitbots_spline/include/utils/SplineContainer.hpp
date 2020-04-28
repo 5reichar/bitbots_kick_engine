@@ -6,14 +6,12 @@ https://github.com/Rhoban/model/
 #ifndef SPLINECONTAINER_HPP
 #define SPLINECONTAINER_HPP
 
-#include <string>
 #include <map>
 #include <stdexcept>
 #include <fstream>
-#include "spline/Curve.hpp"
 #include <set>
 #include <algorithm>
-#include <vector>
+#include "spline/Curve.hpp"
 
 namespace bitbots_splines
 {
@@ -135,7 +133,7 @@ public:
     /*
      * Returns all time points where a point in any spline exists.
      */
-    std::vector<double> getTimes()
+    std::vector<double> get_times()
     {
         std::set<double> times;
         std::vector<double> times_sorted;
@@ -145,7 +143,7 @@ public:
             // go trough all points of the spline
             for (Curve::Point point : sp.second->points())
             {
-                times.insert(point.time);
+                times.insert(point.time_);
             }
         }
         //insert set into vector
@@ -153,121 +151,7 @@ public:
         std::sort(times_sorted.begin(), times_sorted.end());
         return times_sorted;
     }
-
-    /*
-     * Return minimum and maximum abscisse values
-     * of all registered splines parts
-     */
-    /*
-    double min() const
-    {
-        if (_container.size() == 0)
-        {
-            return 0.0;
-        }
-        bool isFirst = true;
-        double m = 0.0;
-        for (const auto &sp : _container)
-        {
-            if (isFirst || m > sp.second.min())
-            {
-                m = sp.second.min();
-                isFirst = false;
-            }
-        }
-        return m;
-    }
-    double max() const
-    {
-        if (_container.size() == 0)
-        {
-            return 0.0;
-        }
-        bool isFirst = true;
-        double m = 0.0;
-        for (const auto &sp : _container)
-        {
-            if (isFirst || m < sp.second.max())
-            {
-                m = sp.second.max();
-                isFirst = false;
-            }
-        }
-        return m;
-    }
-
-    /*
-     * Export to and Import from given file name
-     * in "spline" CSV format prefixed with spline name
-     */
-    /*
-    void exportData(const std::string &fileName) const
-    {
-        if (_container.size() == 0)
-        {
-            throw std::logic_error("SplineContainer empty");
-        }
-
-        std::ofstream file(fileName);
-        if (!file.is_open())
-        {
-            throw std::runtime_error(
-                "SplineContainer unable to write file: " + fileName);
-        }
-
-        for (const auto &sp : _container)
-        {
-            file << "'" << sp.first << "' ";
-            sp.second->exportData(file);
-        }
-
-        file.close();
-    }
-    void importData(const std::string &fileName)
-    {
-        std::ifstream file(fileName);
-        if (!file.is_open())
-        {
-            throw std::runtime_error(
-                "SplineContainer unable to read file: " + fileName);
-        }
-
-        bool isParseError;
-        while (file.good())
-        {
-            isParseError = true;
-            //Skip name delimitor
-            if (file.peek() != '\'')
-                break;
-            file.ignore();
-            if (!file.good())
-                break;
-            //Parse spline name
-            char name[256];
-            file.getline(name, 256, '\'');
-            //Import founded spline
-            add(std::string(name));
-            if (!file.good())
-                break;
-            _container.at(std::string(name)).importData(file);
-            isParseError = false;
-            //Skip end line
-            while (file.peek() == ' ' || file.peek() == '\n')
-            {
-                if (!file.good())
-                    break;
-                file.ignore();
-            }
-        }
-        if (isParseError)
-        {
-            throw std::logic_error(
-                "SplineContainer invalid input format");
-        }
-
-        file.close();
-    }
-    */
+    
 private:
     /*
      * Spline container indexed

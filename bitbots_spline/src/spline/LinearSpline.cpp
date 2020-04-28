@@ -11,38 +11,38 @@ https://github.com/Rhoban/model/
 namespace bitbots_splines
 {
 
-void LinearSpline::addPoint(double time, double position)
+void LinearSpline::add_point(double time, double position)
 {
     Spline::Point point = {time, position, 0.0, 0.0};
-    addPoint(point);
+    add_point(point);
 }
 
-void LinearSpline::computeSplines()
+void LinearSpline::compute_splines()
 {
-    Spline::_splines.clear();
-    if (_points.size() < 2)
+    Spline::splines_.clear();
+    if (points_.size() < 2)
     {
         return;
     }
 
     std::sort(
-        _points.begin(),
-        _points.end(),
+        points_.begin(),
+        points_.end(),
         [](const Point &p1, const Point &p2) -> bool {
-            return p1.time < p2.time;
+            return p1.time_ < p2.time_;
         });
 
-    for (size_t i = 1; i < _points.size(); i++)
+    for (size_t i = 1; i < points_.size(); i++)
     {
-        double time = _points[i].time - _points[i - 1].time;
+        double time = points_[i].time_ - points_[i - 1].time_;
         if (time > 0.00001)
         {
             Polynom poly(1);
-            poly(0) = _points[i - 1].position;
-            poly(1) = (_points[i].position - _points[i - 1].position) / time;
-            Spline::_splines.push_back({poly,
-                                        _points[i - 1].time,
-                                        _points[i].time});
+            poly(0) = points_[i - 1].position_;
+            poly(1) = (points_[i].position_ - points_[i - 1].position_) / time;
+            Spline::splines_.push_back({poly,
+                                        points_[i - 1].time_,
+                                        points_[i].time_});
         }
     }
 }

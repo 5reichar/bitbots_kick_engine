@@ -11,60 +11,60 @@ https://github.com/Rhoban/model/
 namespace bitbots_splines
 {
 
-void SmoothSpline::addPoint(double time, double position,
+void SmoothSpline::add_point(double time, double position,
                             double velocity, double acceleration)
 {
     Spline::Point point = {time, position, velocity, acceleration};
-    addPoint(point);
+    add_point(point);
 }
 
-void SmoothSpline::computeSplines()
+void SmoothSpline::compute_splines()
 {
-    Spline::_splines.clear();
-    if (_points.size() < 2)
+    Spline::splines_.clear();
+    if (points_.size() < 2)
     {
         return;
     }
 
     std::sort(
-        _points.begin(),
-        _points.end(),
+        points_.begin(),
+        points_.end(),
         [](const Point &p1, const Point &p2) -> bool {
-            return p1.time < p2.time;
+            return p1.time_ < p2.time_;
         });
 
-    for (size_t i = 1; i < _points.size(); i++)
+    for (size_t i = 1; i < points_.size(); i++)
     {
-        double time = _points[i].time - _points[i - 1].time;
+        double time = points_[i].time_ - points_[i - 1].time_;
         if (time > 0.00001)
         {
-            Spline::_splines.push_back({polynomFit(time,
-                                                   _points[i - 1].position, _points[i - 1].velocity, _points[i - 1].acceleration,
-                                                   _points[i].position, _points[i].velocity, _points[i].acceleration),
-                                        _points[i - 1].time,
-                                        _points[i].time});
+            Spline::splines_.push_back({polynom_fit(time,
+                                                    points_[i - 1].position_, points_[i - 1].velocity_, points_[i - 1].acceleration_,
+                                                    points_[i].position_, points_[i].velocity_, points_[i].acceleration_),
+                                        points_[i - 1].time_,
+                                        points_[i].time_});
         }
     }
 }
 
-void SmoothSpline::importCallBack()
+void SmoothSpline::import_call_back()
 {
-    size_t size = Spline::_splines.size();
+    size_t size = Spline::splines_.size();
     if (size == 0)
     {
         return;
     }
 
-    double tBegin = Spline::_splines.front().min;
-    _points.push_back({tBegin,
+    double tBegin = Spline::splines_.front().min;
+    points_.push_back({tBegin,
                        Spline::pos(tBegin),
                        Spline::vel(tBegin),
                        Spline::acc(tBegin)});
 
     for (size_t i = 1; i < size; i++)
     {
-        double t1 = Spline::_splines[i - 1].max;
-        double t2 = Spline::_splines[i].min;
+        double t1 = Spline::splines_[i - 1].max;
+        double t2 = Spline::splines_[i].min;
         double pos1 = Spline::pos(t1);
         double vel1 = Spline::vel(t1);
         double acc1 = Spline::acc(t1);
@@ -78,25 +78,25 @@ void SmoothSpline::importCallBack()
             fabs(vel2 - vel1) < 0.0001 &&
             fabs(acc2 - acc1) < 0.0001)
         {
-            _points.push_back({t1, pos1, vel1, acc1});
+            points_.push_back({t1, pos1, vel1, acc1});
         }
         else
         {
-            _points.push_back({t1, pos1, vel1, acc1});
-            _points.push_back({t2, pos2, vel2, acc2});
+            points_.push_back({t1, pos1, vel1, acc1});
+            points_.push_back({t2, pos2, vel2, acc2});
         }
     }
 
-    double tEnd = Spline::_splines.back().max;
-    _points.push_back({tEnd,
+    double tEnd = Spline::splines_.back().max;
+    points_.push_back({tEnd,
                        Spline::pos(tEnd),
                        Spline::vel(tEnd),
                        Spline::acc(tEnd)});
 }
 
-Polynom SmoothSpline::polynomFit(double t,
-                                 double pos1, double vel1, double acc1,
-                                 double pos2, double vel2, double acc2) const
+Polynom SmoothSpline::polynom_fit(double t,
+                                  double pos1, double vel1, double acc1,
+                                  double pos2, double vel2, double acc2) const
 {
     if (t <= 0.00001)
     {
