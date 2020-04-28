@@ -237,5 +237,5 @@ void ThrowCurve::add_point_to_spline(bitbots_splines::CurvePurpose spline_purpos
 	//TODO: testing
 	//TODO: cleanup
 
-	sp_spline_container_->get(spline_purpose)->addPoint(time, position, velocity, acceleration);
+	sp_spline_container_->get(spline_purpose)->add_point(time, position, velocity, acceleration);
 }

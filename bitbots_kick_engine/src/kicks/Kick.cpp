@@ -64,5 +64,5 @@ void Kick::point(bitbots_splines::CurvePurpose spline_purpose, double time, doub
 	//TODO: testing
 	//TODO: cleanup
 
-	m_sp_spline_container->get(spline_purpose)->addPoint(time, position, velocity, acceleration);
+	m_sp_spline_container->get(spline_purpose)->add_point(time, position, velocity, acceleration);
 }
