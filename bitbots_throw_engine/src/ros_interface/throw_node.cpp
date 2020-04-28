@@ -53,6 +53,8 @@ void ThrowNode::throw_callback(const bitbots_throw_engine::throw_action action)
 	{
 		if (up_throw_engine_->throw_ball(ball_position, goal_position))
 		{
+			auto throw_curve = up_throw_engine_->get_current_throw();
+			
 			up_publisher_facade_->publish_throw();
 		}
 

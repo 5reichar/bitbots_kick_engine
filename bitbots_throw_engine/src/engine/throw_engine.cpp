@@ -11,6 +11,11 @@ void ThrowEngine::set_engine_parameter(std::shared_ptr<ThrowEngineParameter> par
 	sp_engine_parameter_ = parameter;
 }
 
+std::shared_ptr<ThrowCurve> ThrowEngine::get_current_throw() const
+{
+	return sp_current_throw_;
+}
+
 bool ThrowEngine::throw_ball(struct3d & ball_position, struct3d & target_position)
 {
 	//TODO: testing

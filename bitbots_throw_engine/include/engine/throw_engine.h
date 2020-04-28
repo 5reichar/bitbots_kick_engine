@@ -12,11 +12,11 @@ public:
     void set_throw_types(std::shared_ptr<ThrowTypeParameter> types);
     void set_engine_parameter(std::shared_ptr<ThrowEngineParameter> parameter);
 
+    std::shared_ptr<ThrowCurve> get_current_throw() const;
+
 	virtual bool throw_ball(struct3d & ball_position, struct3d & goal_position);
 
 private:
-    std::shared_ptr<ThrowParameter> build_throw_parameter(struct3d & ball_position, struct3d & target_position);
-    double calculate_distace(struct3d & point);
 
     std::shared_ptr<ThrowCurve> sp_current_throw_;
     std::shared_ptr<ThrowFactory> sp_throw_factory_;
