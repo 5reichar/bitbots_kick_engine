@@ -14,7 +14,10 @@ RosPublisherFacade::RosPublisherFacade(ros::NodeHandle & ros_node_handle, std::s
 
 void RosPublisherFacade::publish_throw()
 {
-    sp_controller_command_publisher_->publish();
+	auto time = ros::Time::now();
+
+	// TODO Replace Placeholder
+    sp_controller_command_publisher_->publish(time, std::vector<std::string>(), std::vector<double>());
 	sp_support_publisher_->publish();
 
 	if(sp_node_parameter_->debug_active_)

@@ -6,28 +6,28 @@ ControllerCommandPublisher::ControllerCommandPublisher(ros::NodeHandle & ros_nod
     ros_publisher_controller_command_ = ros_node_handle.advertise<bitbots_msgs::JointCommand>(topic, 1);
 }
 
-void ControllerCommandPublisher::publish(int32_t time, std::vector<std::string> joint_names, std::vector<double> positions)
+void ControllerCommandPublisher::publish(ros::Time time, std::vector<std::string> joint_names, std::vector<double> positions)
 {
     //TODO: implement
 
-    publish(joint_names, positions, std::vector<double>());
+    publish(time, joint_names, positions, std::vector<double>());
 }
 
-void ControllerCommandPublisher::publish(int32_t time, std::vector<std::string> joint_names, std::vector<double> positions, std::vector<double> velocities)
+void ControllerCommandPublisher::publish(ros::Time time, std::vector<std::string> joint_names, std::vector<double> positions, std::vector<double> velocities)
 {
     //TODO: implement
 
-    publish(joint_names, positions, velocities, std::vector<double>());
+    publish(time, joint_names, positions, velocities, std::vector<double>());
 }
 
-void ControllerCommandPublisher::publish(int32_t time, std::vector<std::string> joint_names, std::vector<double> positions, std::vector<double> velocities, std::vector<double> accelerations)
+void ControllerCommandPublisher::publish(ros::Time time, std::vector<std::string> joint_names, std::vector<double> positions, std::vector<double> velocities, std::vector<double> accelerations)
 {
     //TODO: implement
 
-    publish(joint_names, positions, velocities, accelerations, std::vector<double>());
+    publish(time, joint_names, positions, velocities, accelerations, std::vector<double>());
 }
 
-void ControllerCommandPublisher::publish(int32_t time, std::vector<std::string> joint_names, std::vector<double> positions, std::vector<double> velocities, std::vector<double> accelerations, std::vector<double> max_currents)
+void ControllerCommandPublisher::publish(ros::Time time, std::vector<std::string> joint_names, std::vector<double> positions, std::vector<double> velocities, std::vector<double> accelerations, std::vector<double> max_currents)
 {
     //TODO: implement
 
