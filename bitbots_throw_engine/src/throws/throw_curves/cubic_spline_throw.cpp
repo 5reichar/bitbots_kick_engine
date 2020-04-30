@@ -1,5 +1,5 @@
 #include "throws/throw_curves/cubic_spline_throw.h"
-#include "../../bitbots_spline/include/spline/CubicSpline.hpp"
+#include "../../bitbots_spline/include/spline/cubic_spline.hpp"
 
 CubicSplineThrow::CubicSplineThrow()
 {

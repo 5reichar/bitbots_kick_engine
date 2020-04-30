@@ -1,4 +1,4 @@
-#include "visualisation/VisualSplinesService.hpp"
+#include "visualisation/visual_splines_service.hpp"
 
 VisualSplinesService::VisualSplinesService(int argc, char **argv, std::string node_name, std::string publisher_topic)
 {

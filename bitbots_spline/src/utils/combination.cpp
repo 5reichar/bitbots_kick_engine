@@ -5,7 +5,7 @@ https://github.com/Rhoban/model/
 */
 #include <limits>
 #include <stdexcept>
-#include "utils/Combination.hpp"
+#include "utils/combination.hpp"
 
 namespace bitbots_splines
 {

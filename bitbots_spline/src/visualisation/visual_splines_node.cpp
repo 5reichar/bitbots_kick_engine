@@ -1,10 +1,10 @@
 #include <tuple>
 #include <ros/ros.h>
-#include "visualisation/VisualSplinesService.hpp"
-#include "spline/LinearSpline.hpp"
-#include "spline/CubicSpline.hpp"
-#include "spline/SmoothSpline.hpp"
-#include "spline/Beziercurve.hpp"
+#include "visualisation/visual_splines_service.hpp"
+#include "spline/linear_spline.hpp"
+#include "spline/cubic_spline.hpp"
+#include "spline/smooth_spline.hpp"
+#include "spline/beziercurve.hpp"
 
 void add_points(VisualSplinesMaterial *vs_material)
 {

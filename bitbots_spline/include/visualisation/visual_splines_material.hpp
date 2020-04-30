@@ -2,7 +2,7 @@
 #define VISUALSPLINESMATERIAL_HPP
 
 #include <string>
-#include "spline/Curve.hpp"
+#include "spline/curve.hpp"
 
 enum Color
 {

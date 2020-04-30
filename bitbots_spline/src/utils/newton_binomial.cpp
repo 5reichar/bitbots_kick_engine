@@ -4,7 +4,7 @@ The original files can be found at:
 https://github.com/Rhoban/model/
 */
 #include <cmath>
-#include "utils/NewtonBinomial.hpp"
+#include "utils/newton_binomial.hpp"
 
 #include <iostream>
 

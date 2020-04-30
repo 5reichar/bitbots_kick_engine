@@ -6,7 +6,7 @@ https://github.com/Rhoban/model/
 #ifndef SMOOTHSPLINE_HPP
 #define LEPH_SMOOTHSPLINE_HPP
 
-#include "Spline.hpp"
+#include "spline.hpp"
 
 namespace bitbots_splines
 {

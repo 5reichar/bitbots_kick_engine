@@ -7,8 +7,8 @@ https://github.com/Rhoban/model/
 #define SPLINE_HPP
 
 #include <iostream>
-#include "utils/Polynom.hpp"
-#include "Curve.hpp"
+#include "utils/polynom.hpp"
+#include "curve.hpp"
 
 namespace bitbots_splines
 {

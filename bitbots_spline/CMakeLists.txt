@@ -125,20 +125,20 @@ set (CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 
 set(SOURCES
-  src/visualisation/VisualSplinesService.cpp
-  src/visualisation/VisualSplinesNode.cpp
-  src/visualisation/VisualSplinesMaterial.cpp
-  src/utils/Combination.cpp
-  src/utils/NewtonBinomial.cpp
-  src/utils/Polynom.cpp
-  src/utils/SplineContainerFactory.cpp
-  src/utils/TrajectoryService.cpp
-  src/spline/Curve.cpp
-  src/spline/Spline.cpp
-  src/spline/LinearSpline.cpp
-  src/spline/CubicSpline.cpp
-  src/spline/SmoothSpline.cpp
-  src/spline/Beziercurve.cpp
+  src/visualisation/visual_splines_service.cpp
+  src/visualisation/visual_splines_node.cpp
+  src/visualisation/visual_splines_material.cpp
+  src/utils/combination.cpp
+  src/utils/newton_binomial.cpp
+  src/utils/polynom.cpp
+  src/utils/spline_container_factory.cpp
+  src/utils/trajectory_service.cpp
+  src/spline/curve.cpp
+  src/spline/spline.cpp
+  src/spline/linear_spline.cpp
+  src/spline/cubic_spline.cpp
+  src/spline/smooth_spline.cpp
+  src/spline/beziercurve.cpp
 )
 
 ## Declare a C++ library
@@ -156,7 +156,7 @@ add_library(${PROJECT_NAME}
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/bitbots_kick_engine_node.cpp)
 add_executable(
-    VisualSplinesNode src/visualisation/VisualSplinesNode.cpp
+    VisualSplinesNode src/visualisation/visual_splines_node.cpp
 )
 
 ## Rename C++ executable without prefix

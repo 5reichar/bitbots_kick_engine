@@ -1,7 +1,7 @@
 #ifndef BEZIERCURVE_HPP
 #define BEZIERCURVE_HPP
 
-#include "Curve.hpp"
+#include "curve.hpp"
 #include <cstdint>
 
 namespace bitbots_splines

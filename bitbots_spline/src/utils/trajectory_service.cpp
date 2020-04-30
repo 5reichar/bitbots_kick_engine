@@ -4,8 +4,8 @@ The original files can be found at:
 https://github.com/Rhoban/model/
 */
 
-#include "utils/TrajectoryService.hpp"
-#include "utils/SplineContainerFactory.hpp"
+#include "utils/trajectory_service.hpp"
+#include "utils/spline_container_factory.hpp"
 
 namespace bitbots_splines
 {
