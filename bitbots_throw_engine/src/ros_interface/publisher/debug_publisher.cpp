@@ -1,6 +1,7 @@
 #include "ros_interface/publisher/debug_publisher.h"
-#include <bitbots_throw_engine/throw_debug.h>
 #include <visualization_msgs/Marker.h>
+#include <bitbots_throw_engine/throw_debug.h>
+#include <bitbots_throw_engine/throw_engine_debug.h>
 
 DebugPublisher::DebugPublisher(ros::NodeHandle & ros_node_handle)
 {
