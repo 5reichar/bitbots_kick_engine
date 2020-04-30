@@ -14,8 +14,10 @@ public:
     void publish_markers();
 
 private:
+    int32_t marker_id_;
+
     ros::Publisher ros_publisher_debug_;
-    ros::Publisher pub_engine_debug_;
+    ros::Publisher ros_publisher_debug_engine_;
     ros::Publisher ros_publisher_debug_marker_;
 };
 
