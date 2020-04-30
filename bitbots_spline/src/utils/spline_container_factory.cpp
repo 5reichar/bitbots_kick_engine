@@ -1,8 +1,8 @@
-#include "utils/spline_container_factory.hpp"
-#include "spline/linear_spline.hpp"
-#include "spline/cubic_spline.hpp"
-#include "spline/smooth_spline.hpp"
-#include "spline/beziercurve.hpp"
+#include "utils/spline_container_factory.h"
+#include "spline/linear_spline.h"
+#include "spline/cubic_spline.h"
+#include "spline/smooth_spline.h"
+#include "spline/beziercurve.h"
 
 namespace bitbots_splines
 {

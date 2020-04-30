@@ -6,8 +6,8 @@ https://github.com/Rhoban/model/
 #ifndef NEWTONBINOMIAL_HPP
 #define NEWTONBINOMIAL_HPP
 
-#include "combination.hpp"
-#include "polynom.hpp"
+#include "combination.h"
+#include "polynom.h"
 
 namespace bitbots_splines
 {

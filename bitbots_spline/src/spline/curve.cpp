@@ -3,7 +3,7 @@ This code is largely based on the original code by Quentin "Leph" Rouxel and Tea
 The original files can be found at:
 https://github.com/Rhoban/model/
 */
-#include "spline/curve.hpp"
+#include "spline/curve.h"
 #include <string>
 
 namespace bitbots_splines

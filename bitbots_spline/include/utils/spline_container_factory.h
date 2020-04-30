@@ -1,7 +1,7 @@
 #ifndef SPLINECONTAINERFACTORY_HPP
 #define SPLINECONTAINERFACTORY_HPP
 
-#include "utils/spline_container.hpp"
+#include "utils/spline_container.h"
 
 namespace bitbots_splines
 {

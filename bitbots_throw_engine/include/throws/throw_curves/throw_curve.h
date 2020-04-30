@@ -3,7 +3,7 @@
 
 #include <memory>
 #include "parameter/throw_parameter.h"
-#include "../../bitbots_spline/include/utils/spline_container.hpp"
+#include "../../bitbots_spline/include/utils/spline_container.h"
 
 class ThrowCurve
 {

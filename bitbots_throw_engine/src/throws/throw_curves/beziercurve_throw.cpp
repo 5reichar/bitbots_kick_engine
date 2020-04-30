@@ -1,5 +1,5 @@
 #include "throws/throw_curves/beziercurve_throw.h"
-#include "../../bitbots_spline/include/spline/beziercurve.hpp"
+#include "../../bitbots_spline/include/spline/beziercurve.h"
 
 BeziercurveThrow::BeziercurveThrow()
 {

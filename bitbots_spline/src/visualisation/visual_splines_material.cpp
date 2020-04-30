@@ -1,5 +1,5 @@
 #include <assert.h>
-#include "visualisation/visual_splines_material.hpp"
+#include "visualisation/visual_splines_material.h"
 
 VisualSplinesMaterial::VisualSplinesMaterial(bitbots_splines::Curve *curve_x, bitbots_splines::Curve *curve_y, bitbots_splines::Curve *curve_z)
     : m_p_curve_x(curve_x),

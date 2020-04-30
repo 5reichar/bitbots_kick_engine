@@ -5,7 +5,7 @@
 #include <string>
 #include <ros/ros.h>
 #include <visualization_msgs/Marker.h>
-#include "visualisation/visual_splines_material.hpp"
+#include "visualisation/visual_splines_material.h"
 
 class VisualSplinesService
 {

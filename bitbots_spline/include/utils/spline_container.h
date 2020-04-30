@@ -11,7 +11,7 @@ https://github.com/Rhoban/model/
 #include <fstream>
 #include <set>
 #include <algorithm>
-#include "spline/curve.hpp"
+#include "spline/curve.h"
 
 namespace bitbots_splines
 {

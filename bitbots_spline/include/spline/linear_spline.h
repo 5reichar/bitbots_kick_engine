@@ -7,7 +7,7 @@ https://github.com/Rhoban/model/
 #ifndef LEPH_LINEARSPLINE_HPP
 #define LEPH_LINEARSPLINE_HPP
 
-#include "spline.hpp"
+#include "spline.h"
 
 namespace bitbots_splines
 {

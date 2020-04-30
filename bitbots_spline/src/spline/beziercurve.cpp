@@ -1,6 +1,6 @@
 #include <algorithm>
 #include <cmath>
-#include "spline/beziercurve.hpp"
+#include "spline/beziercurve.h"
 
 namespace bitbots_splines
 {

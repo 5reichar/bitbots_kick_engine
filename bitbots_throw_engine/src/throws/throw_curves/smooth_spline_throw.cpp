@@ -1,5 +1,5 @@
 #include "throws/throw_curves/smooth_spline_throw.h"
-#include "../../bitbots_spline/include/spline/smooth_spline.hpp"
+#include "../../bitbots_spline/include/spline/smooth_spline.h"
 
 SmoothSplineThrow::SmoothSplineThrow()
 {

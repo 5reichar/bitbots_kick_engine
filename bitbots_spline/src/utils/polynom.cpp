@@ -3,8 +3,8 @@ This code is largely based on the original code by Quentin "Leph" Rouxel and Tea
 The original files can be found at:
 https://github.com/Rhoban/model/
 */
-#include "utils/polynom.hpp"
-#include "utils/newton_binomial.hpp"
+#include "utils/polynom.h"
+#include "utils/newton_binomial.h"
 
 namespace bitbots_splines
 {

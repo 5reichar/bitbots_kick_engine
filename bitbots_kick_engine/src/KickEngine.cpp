@@ -1,6 +1,6 @@
 #include "KickEngine.hpp"
 #include <moveit/robot_model_loader/robot_model_loader.h>
-#include "../../bitbots_spline/include/utils/trajectory_service.hpp"
+#include "../../bitbots_spline/include/utils/trajectory_service.h"
 
 KickEngine::KickEngine()
 {
