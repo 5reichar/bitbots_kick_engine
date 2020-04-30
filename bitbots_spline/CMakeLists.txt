@@ -131,6 +131,7 @@ set(SOURCES
   src/utils/combination.cpp
   src/utils/newton_binomial.cpp
   src/utils/polynom.cpp
+  src/utils/pose_spline.cpp
   src/utils/spline_container_factory.cpp
   src/utils/trajectory_service.cpp
   src/spline/curve.cpp
