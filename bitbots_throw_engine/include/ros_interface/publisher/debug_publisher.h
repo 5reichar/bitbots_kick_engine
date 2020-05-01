@@ -2,9 +2,9 @@
 #define DUBUG_PUBLISHER_H
 
 #include "ros/ros.h"
-#include "../../bitbots_spline/include/utils/abstract_visualizer.h"
+//#include "../../bitbots_spline/include/utils/abstract_visualizer.h"
 
-class DebugPublisher : public bitbots_splines::AbstractVisualizer
+class DebugPublisher //: public bitbots_splines::AbstractVisualizer
 {
     // TODO cleanup
 public:
