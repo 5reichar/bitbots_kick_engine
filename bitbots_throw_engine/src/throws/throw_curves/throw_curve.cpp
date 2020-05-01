@@ -1,5 +1,13 @@
 #include "throws/throw_curves/throw_curve.h"
 
+ThrowCurve::ThrowCurve(std::shared_ptr<bitbots_splines::PoseHandle> left_hand, std::shared_ptr<bitbots_splines::PoseHandle> right_hand, std::shared_ptr<bitbots_splines::PoseHandle> trunk)
+		: sp_pose_left_hand_(std::move(left_hand)),
+		  sp_pose_right_hand_(std::move(right_hand)),
+		  sp_pose_trunk_(std::move(trunk))
+{
+
+}
+
 bool ThrowCurve::calculate_trajectories(std::shared_ptr<ThrowParameter> & throw_parameter)
 {
 	//TODO: testing
@@ -30,13 +38,22 @@ bool ThrowCurve::check_requirements(std::shared_ptr<ThrowParameter> & throw_para
 	return true;
 }
 
-std::shared_ptr<bitbots_splines::SplineContainer> ThrowCurve::get_spline_container()const
-{
-	//TODO: testing
-	//TODO: cleanup
 
-    return sp_spline_container_;
+std::shared_ptr<bitbots_splines::PoseHandle> ThrowCurve::get_pose_left_hand() const
+{
+	return std::move(sp_pose_left_hand_);
 }
+
+std::shared_ptr<bitbots_splines::PoseHandle> ThrowCurve::get_pose_right_hand() const
+{
+	return std::move(sp_pose_right_hand_);
+}
+
+std::shared_ptr<bitbots_splines::PoseHandle> ThrowCurve::get_pose_trunk() const
+{
+	return std::move(sp_pose_trunk_);
+}
+
 
 void ThrowCurve::calculate_pick_up_ball_movement(double & time, std::shared_ptr<ThrowParameter> & throw_parameter)
 {
@@ -49,65 +66,62 @@ void ThrowCurve::calculate_pick_up_ball_movement(double & time, std::shared_ptr<
 	double start_time = time;
 	double pick_up_ball_time = time + (throw_parameter->pick_up_duration_share_ * throw_parameter->movement_cycle_frequence_);
 
-	/////  Left Hand Position
-	add_point_to_spline(bitbots_splines::CurvePurpose::left_hand_position_x, start_time, throw_parameter->start_left_hand_position_.x_);
-	add_point_to_spline(bitbots_splines::CurvePurpose::left_hand_position_x, pick_up_ball_time, throw_parameter->pick_up_left_hand_position_.x_);
+	/////  Left Hand
+	sp_pose_left_hand_->x()->add_point(start_time, throw_parameter->start_left_hand_position_.x_);
+	sp_pose_left_hand_->x()->add_point(pick_up_ball_time, throw_parameter->pick_up_left_hand_position_.x_);
 
-	add_point_to_spline(bitbots_splines::CurvePurpose::left_hand_position_y, start_time, throw_parameter->start_left_hand_position_.y_);
-	add_point_to_spline(bitbots_splines::CurvePurpose::left_hand_position_y, pick_up_ball_time, throw_parameter->pick_up_left_hand_position_.y_);
+	sp_pose_left_hand_->y()->add_point(start_time, throw_parameter->start_left_hand_position_.y_);
+	sp_pose_left_hand_->y()->add_point(pick_up_ball_time, throw_parameter->pick_up_left_hand_position_.y_);
 
-	add_point_to_spline(bitbots_splines::CurvePurpose::left_hand_position_z, start_time, throw_parameter->start_left_hand_position_.z_);
-	add_point_to_spline(bitbots_splines::CurvePurpose::left_hand_position_z, pick_up_ball_time, throw_parameter->pick_up_left_hand_position_.z_);
+	sp_pose_left_hand_->z()->add_point(start_time, throw_parameter->start_left_hand_position_.z_);
+	sp_pose_left_hand_->z()->add_point(pick_up_ball_time, throw_parameter->pick_up_left_hand_position_.z_);
 
-	/////  Left Hand Axis
-	add_point_to_spline(bitbots_splines::CurvePurpose::left_hand_axis_x, start_time, 0.0);
-	add_point_to_spline(bitbots_splines::CurvePurpose::left_hand_axis_x, pick_up_ball_time, throw_parameter->pick_up_left_hand_axis_.x_);
+	sp_pose_left_hand_->roll()->add_point(start_time, 0.0);
+	sp_pose_left_hand_->roll()->add_point(pick_up_ball_time, throw_parameter->pick_up_left_hand_axis_.x_);
 
-	add_point_to_spline(bitbots_splines::CurvePurpose::left_hand_axis_y, start_time, 0.0);
-	add_point_to_spline(bitbots_splines::CurvePurpose::left_hand_axis_y, pick_up_ball_time, throw_parameter->pick_up_left_hand_axis_.y_);
+	sp_pose_left_hand_->pitch()->add_point(start_time, 0.0);
+	sp_pose_left_hand_->pitch()->add_point(pick_up_ball_time, throw_parameter->pick_up_left_hand_axis_.y_);
 
-	add_point_to_spline(bitbots_splines::CurvePurpose::left_hand_axis_z, start_time, 0.0);
-	add_point_to_spline(bitbots_splines::CurvePurpose::left_hand_axis_z, pick_up_ball_time, throw_parameter->pick_up_left_hand_axis_.z_);
+	sp_pose_left_hand_->yaw()->add_point(start_time, 0.0);
+	sp_pose_left_hand_->yaw()->add_point(pick_up_ball_time, throw_parameter->pick_up_left_hand_axis_.z_);
 
-	/////  Right Hand Position
-	add_point_to_spline(bitbots_splines::CurvePurpose::right_hand_position_x, start_time, throw_parameter->end_right_hand_position_.x_);
-	add_point_to_spline(bitbots_splines::CurvePurpose::right_hand_position_x, pick_up_ball_time, throw_parameter->pick_up_right_hand_position_.x_);
+	/////  Right Hand
+	sp_pose_right_hand_->x()->add_point(start_time, throw_parameter->end_right_hand_position_.x_);
+	sp_pose_right_hand_->x()->add_point(pick_up_ball_time, throw_parameter->pick_up_right_hand_position_.x_);
 
-	add_point_to_spline(bitbots_splines::CurvePurpose::right_hand_position_y, start_time, throw_parameter->end_right_hand_position_.y_);
-	add_point_to_spline(bitbots_splines::CurvePurpose::right_hand_position_y, pick_up_ball_time, throw_parameter->pick_up_right_hand_position_.y_);
+	sp_pose_right_hand_->y()->add_point(start_time, throw_parameter->end_right_hand_position_.y_);
+	sp_pose_right_hand_->y()->add_point(pick_up_ball_time, throw_parameter->pick_up_right_hand_position_.y_);
 
-	add_point_to_spline(bitbots_splines::CurvePurpose::right_hand_position_z, start_time, throw_parameter->end_right_hand_position_.z_);
-	add_point_to_spline(bitbots_splines::CurvePurpose::right_hand_position_z, pick_up_ball_time, throw_parameter->pick_up_right_hand_position_.z_);
+	sp_pose_right_hand_->z()->add_point(start_time, throw_parameter->end_right_hand_position_.z_);
+	sp_pose_right_hand_->z()->add_point(pick_up_ball_time, throw_parameter->pick_up_right_hand_position_.z_);
 
-	/////  Right Hand Axis
-	add_point_to_spline(bitbots_splines::CurvePurpose::right_hand_axis_x, start_time, 0.0);
-	add_point_to_spline(bitbots_splines::CurvePurpose::right_hand_axis_x, pick_up_ball_time, throw_parameter->pick_up_right_hand_axis_.x_);
+	sp_pose_right_hand_->roll()->add_point(start_time, 0.0);
+	sp_pose_right_hand_->roll()->add_point(pick_up_ball_time, throw_parameter->pick_up_right_hand_axis_.x_);
 
-	add_point_to_spline(bitbots_splines::CurvePurpose::right_hand_axis_y, start_time, 0.0);
-	add_point_to_spline(bitbots_splines::CurvePurpose::right_hand_axis_y, pick_up_ball_time, throw_parameter->pick_up_right_hand_axis_.y_);
+	sp_pose_right_hand_->pitch()->add_point(start_time, 0.0);
+	sp_pose_right_hand_->pitch()->add_point(pick_up_ball_time, throw_parameter->pick_up_right_hand_axis_.y_);
 
-	add_point_to_spline(bitbots_splines::CurvePurpose::right_hand_axis_z, start_time, 0.0);
-	add_point_to_spline(bitbots_splines::CurvePurpose::right_hand_axis_z, pick_up_ball_time, throw_parameter->pick_up_right_hand_axis_.z_);
+	sp_pose_right_hand_->yaw()->add_point(start_time, 0.0);
+	sp_pose_right_hand_->yaw()->add_point(pick_up_ball_time, throw_parameter->pick_up_right_hand_axis_.z_);
 
-	/////  Trunk Position
-	add_point_to_spline(bitbots_splines::CurvePurpose::trunk_position_x, start_time, 0.0);
-	add_point_to_spline(bitbots_splines::CurvePurpose::trunk_position_x, pick_up_ball_time, 0.0);
+	/////  Trunk
+	sp_pose_trunk_->x()->add_point(start_time, 0.0);
+	sp_pose_trunk_->x()->add_point(pick_up_ball_time, 0.0);
 
-	add_point_to_spline(bitbots_splines::CurvePurpose::trunk_position_y, start_time, 0.0);
-	add_point_to_spline(bitbots_splines::CurvePurpose::trunk_position_y, pick_up_ball_time, 0.0);
+	sp_pose_trunk_->y()->add_point(start_time, 0.0);
+	sp_pose_trunk_->y()->add_point(pick_up_ball_time, 0.0);
 
-	add_point_to_spline(bitbots_splines::CurvePurpose::trunk_position_z, start_time, 0.0);
-	add_point_to_spline(bitbots_splines::CurvePurpose::trunk_position_z, pick_up_ball_time, 0.0);
+	sp_pose_trunk_->z()->add_point(start_time, 0.0);
+	sp_pose_trunk_->z()->add_point(pick_up_ball_time, 0.0);
 
-	/////  Trunk Axis
-	add_point_to_spline(bitbots_splines::CurvePurpose::trunk_axis_x, start_time, 0.0);
-	add_point_to_spline(bitbots_splines::CurvePurpose::trunk_axis_x, pick_up_ball_time, throw_parameter->pick_up_trunk_axis_.x_);
+	sp_pose_trunk_->roll()->add_point(start_time, 0.0);
+	sp_pose_trunk_->roll()->add_point(pick_up_ball_time, throw_parameter->pick_up_trunk_axis_.x_);
 
-	add_point_to_spline(bitbots_splines::CurvePurpose::trunk_axis_y, start_time, 0.0);
-	add_point_to_spline(bitbots_splines::CurvePurpose::trunk_axis_y, pick_up_ball_time, throw_parameter->pick_up_trunk_axis_.y_); // Bow Angle
+	sp_pose_trunk_->pitch()->add_point(start_time, 0.0);
+	sp_pose_trunk_->pitch()->add_point(pick_up_ball_time, throw_parameter->pick_up_trunk_axis_.y_); // Bow Angle
 
-	add_point_to_spline(bitbots_splines::CurvePurpose::trunk_axis_z, start_time, 0.0);
-	add_point_to_spline(bitbots_splines::CurvePurpose::trunk_axis_z, pick_up_ball_time, throw_parameter->pick_up_trunk_axis_.z_); // Orientation
+	sp_pose_trunk_->yaw()->add_point(start_time, 0.0);
+	sp_pose_trunk_->yaw()->add_point(pick_up_ball_time, throw_parameter->pick_up_trunk_axis_.z_); // Orientation
 
 	/////  Clean Up
 	time = pick_up_ball_time;
@@ -124,65 +138,62 @@ void ThrowCurve::calculate_throw_movement(double & time, std::shared_ptr<ThrowPa
 	double begin_throw_time = time + (throw_parameter->throw_preparation_duration_share_ * throw_parameter->movement_cycle_frequence_);
 	double release_throw_time = time + (throw_parameter->throw_duration_share_ * throw_parameter->movement_cycle_frequence_);
 
-	/////  Left Hand Position
-	add_point_to_spline(bitbots_splines::CurvePurpose::left_hand_position_x, begin_throw_time, throw_parameter->throw_start_left_hand_position_.x_);
-	add_point_to_spline(bitbots_splines::CurvePurpose::left_hand_position_x, release_throw_time, throw_parameter->throw_release_left_hand_position_.x_, throw_parameter->throw_velocity_.x_);
+	/////  Left Hand
+	sp_pose_left_hand_->x()->add_point(begin_throw_time, throw_parameter->throw_start_left_hand_position_.x_);
+	sp_pose_left_hand_->x()->add_point(release_throw_time, throw_parameter->throw_release_left_hand_position_.x_, throw_parameter->throw_velocity_.x_);
 
-	add_point_to_spline(bitbots_splines::CurvePurpose::left_hand_position_y, begin_throw_time, throw_parameter->throw_start_left_hand_position_.y_);
-	add_point_to_spline(bitbots_splines::CurvePurpose::left_hand_position_y, release_throw_time, throw_parameter->throw_release_left_hand_position_.y_, throw_parameter->throw_velocity_.y_);
+	sp_pose_left_hand_->y()->add_point(begin_throw_time, throw_parameter->throw_start_left_hand_position_.y_);
+	sp_pose_left_hand_->y()->add_point(release_throw_time, throw_parameter->throw_release_left_hand_position_.y_, throw_parameter->throw_velocity_.y_);
 
-	add_point_to_spline(bitbots_splines::CurvePurpose::left_hand_position_z, begin_throw_time, throw_parameter->throw_start_left_hand_position_.z_);
-	add_point_to_spline(bitbots_splines::CurvePurpose::left_hand_position_z, release_throw_time, throw_parameter->throw_release_left_hand_position_.z_, throw_parameter->throw_velocity_.z_);
+	sp_pose_left_hand_->z()->add_point(begin_throw_time, throw_parameter->throw_start_left_hand_position_.z_);
+	sp_pose_left_hand_->z()->add_point(release_throw_time, throw_parameter->throw_release_left_hand_position_.z_, throw_parameter->throw_velocity_.z_);
 
-	/////  Left Hand Axis
-	add_point_to_spline(bitbots_splines::CurvePurpose::left_hand_axis_x, begin_throw_time, throw_parameter->throw_start_left_hand_axis_.x_);
-	add_point_to_spline(bitbots_splines::CurvePurpose::left_hand_axis_x, release_throw_time, throw_parameter->throw_release_left_hand_axis_.x_);
+	sp_pose_left_hand_->roll()->add_point(begin_throw_time, throw_parameter->throw_start_left_hand_axis_.x_);
+	sp_pose_left_hand_->roll()->add_point(release_throw_time, throw_parameter->throw_release_left_hand_axis_.x_);
 
-	add_point_to_spline(bitbots_splines::CurvePurpose::left_hand_axis_y, begin_throw_time, throw_parameter->throw_start_left_hand_axis_.y_);
-	add_point_to_spline(bitbots_splines::CurvePurpose::left_hand_axis_y, release_throw_time, throw_parameter->throw_release_left_hand_axis_.y_);
+	sp_pose_left_hand_->pitch()->add_point(begin_throw_time, throw_parameter->throw_start_left_hand_axis_.y_);
+	sp_pose_left_hand_->pitch()->add_point(release_throw_time, throw_parameter->throw_release_left_hand_axis_.y_);
 
-	add_point_to_spline(bitbots_splines::CurvePurpose::left_hand_axis_z, begin_throw_time, throw_parameter->throw_start_left_hand_axis_.z_);
-	add_point_to_spline(bitbots_splines::CurvePurpose::left_hand_axis_z, release_throw_time, throw_parameter->throw_release_left_hand_axis_.z_);
+	sp_pose_left_hand_->yaw()->add_point(begin_throw_time, throw_parameter->throw_start_left_hand_axis_.z_);
+	sp_pose_left_hand_->yaw()->add_point(release_throw_time, throw_parameter->throw_release_left_hand_axis_.z_);
 
-	/////  Right Hand Position
-	add_point_to_spline(bitbots_splines::CurvePurpose::right_hand_position_x, begin_throw_time, throw_parameter->throw_start_right_hand_position_.x_);
-	add_point_to_spline(bitbots_splines::CurvePurpose::right_hand_position_x, release_throw_time, throw_parameter->throw_release_right_hand_position_.x_, throw_parameter->throw_velocity_.x_);
+	/////  Right Hand
+	sp_pose_right_hand_->x()->add_point(begin_throw_time, throw_parameter->throw_start_right_hand_position_.x_);
+	sp_pose_right_hand_->x()->add_point(release_throw_time, throw_parameter->throw_release_right_hand_position_.x_, throw_parameter->throw_velocity_.x_);
 
-	add_point_to_spline(bitbots_splines::CurvePurpose::right_hand_position_y, begin_throw_time, throw_parameter->throw_start_right_hand_position_.y_);
-	add_point_to_spline(bitbots_splines::CurvePurpose::right_hand_position_y, release_throw_time, throw_parameter->throw_release_right_hand_position_.y_, throw_parameter->throw_velocity_.y_);
+	sp_pose_right_hand_->y()->add_point(begin_throw_time, throw_parameter->throw_start_right_hand_position_.y_);
+	sp_pose_right_hand_->y()->add_point(release_throw_time, throw_parameter->throw_release_right_hand_position_.y_, throw_parameter->throw_velocity_.y_);
 
-	add_point_to_spline(bitbots_splines::CurvePurpose::right_hand_position_z, begin_throw_time, throw_parameter->throw_start_right_hand_position_.z_);
-	add_point_to_spline(bitbots_splines::CurvePurpose::right_hand_position_z, release_throw_time, throw_parameter->throw_release_right_hand_position_.z_, throw_parameter->throw_velocity_.z_);
+	sp_pose_right_hand_->z()->add_point(begin_throw_time, throw_parameter->throw_start_right_hand_position_.z_);
+	sp_pose_right_hand_->z()->add_point(release_throw_time, throw_parameter->throw_release_right_hand_position_.z_, throw_parameter->throw_velocity_.z_);
 
-	/////  Right Hand Axis
-	add_point_to_spline(bitbots_splines::CurvePurpose::right_hand_axis_x, begin_throw_time, throw_parameter->throw_start_right_hand_axis_.x_);
-	add_point_to_spline(bitbots_splines::CurvePurpose::right_hand_axis_x, release_throw_time, throw_parameter->throw_release_right_hand_axis_.x_);
+	sp_pose_right_hand_->roll()->add_point(begin_throw_time, throw_parameter->throw_start_right_hand_axis_.x_);
+	sp_pose_right_hand_->roll()->add_point(release_throw_time, throw_parameter->throw_release_right_hand_axis_.x_);
 
-	add_point_to_spline(bitbots_splines::CurvePurpose::right_hand_axis_y, begin_throw_time, throw_parameter->throw_start_right_hand_axis_.y_);
-	add_point_to_spline(bitbots_splines::CurvePurpose::right_hand_axis_y, release_throw_time, throw_parameter->throw_release_right_hand_axis_.y_);
+	sp_pose_right_hand_->pitch()->add_point(begin_throw_time, throw_parameter->throw_start_right_hand_axis_.y_);
+	sp_pose_right_hand_->pitch()->add_point(release_throw_time, throw_parameter->throw_release_right_hand_axis_.y_);
 
-	add_point_to_spline(bitbots_splines::CurvePurpose::right_hand_axis_z, begin_throw_time, throw_parameter->throw_start_right_hand_axis_.z_);
-	add_point_to_spline(bitbots_splines::CurvePurpose::right_hand_axis_z, release_throw_time, throw_parameter->throw_release_right_hand_axis_.z_);
+	sp_pose_right_hand_->yaw()->add_point(begin_throw_time, throw_parameter->throw_start_right_hand_axis_.z_);
+	sp_pose_right_hand_->yaw()->add_point(release_throw_time, throw_parameter->throw_release_right_hand_axis_.z_);
 
-	/////  Trunk Position
-	add_point_to_spline(bitbots_splines::CurvePurpose::trunk_position_x, begin_throw_time, 0.0);
-	add_point_to_spline(bitbots_splines::CurvePurpose::trunk_position_x, release_throw_time, 0.0);
+	/////  Trunk
+	sp_pose_trunk_->x()->add_point(begin_throw_time, 0.0);
+	sp_pose_trunk_->x()->add_point(release_throw_time, 0.0);
 
-	add_point_to_spline(bitbots_splines::CurvePurpose::trunk_position_y, begin_throw_time, 0.0);
-	add_point_to_spline(bitbots_splines::CurvePurpose::trunk_position_y, release_throw_time, 0.0);
+	sp_pose_trunk_->y()->add_point(begin_throw_time, 0.0);
+	sp_pose_trunk_->y()->add_point(release_throw_time, 0.0);
 
-	add_point_to_spline(bitbots_splines::CurvePurpose::trunk_position_z, begin_throw_time, 0.0);
-	add_point_to_spline(bitbots_splines::CurvePurpose::trunk_position_z, release_throw_time, 0.0);
+	sp_pose_trunk_->z()->add_point(begin_throw_time, 0.0);
+	sp_pose_trunk_->z()->add_point(release_throw_time, 0.0);
 
-	/////  Trunk Axis
-	add_point_to_spline(bitbots_splines::CurvePurpose::trunk_axis_x, begin_throw_time, throw_parameter->throw_start_trunk_axis_.x_);
-	add_point_to_spline(bitbots_splines::CurvePurpose::trunk_axis_x, release_throw_time, throw_parameter->throw_release_trunk_axis_.x_);
+	sp_pose_trunk_->roll()->add_point(begin_throw_time, throw_parameter->throw_start_trunk_axis_.x_);
+	sp_pose_trunk_->roll()->add_point(release_throw_time, throw_parameter->throw_release_trunk_axis_.x_);
 
-	add_point_to_spline(bitbots_splines::CurvePurpose::trunk_axis_y, begin_throw_time, throw_parameter->throw_start_trunk_axis_.y_); // pitch
-	add_point_to_spline(bitbots_splines::CurvePurpose::trunk_axis_y, release_throw_time, throw_parameter->throw_release_trunk_axis_.y_); // pitch
+	sp_pose_trunk_->pitch()->add_point(begin_throw_time, throw_parameter->throw_start_trunk_axis_.y_); // pitch
+	sp_pose_trunk_->pitch()->add_point(release_throw_time, throw_parameter->throw_release_trunk_axis_.y_); // pitch
 
-	add_point_to_spline(bitbots_splines::CurvePurpose::trunk_axis_z, begin_throw_time, throw_parameter->throw_start_trunk_axis_.z_); // orientation
-	add_point_to_spline(bitbots_splines::CurvePurpose::trunk_axis_z, release_throw_time, throw_parameter->throw_release_trunk_axis_.z_); // orientation
+	sp_pose_trunk_->yaw()->add_point(begin_throw_time, throw_parameter->throw_start_trunk_axis_.z_); // orientation
+	sp_pose_trunk_->yaw()->add_point(release_throw_time, throw_parameter->throw_release_trunk_axis_.z_); // orientation
 
 	/////  Clean Up
 	time = release_throw_time;
@@ -198,44 +209,30 @@ void ThrowCurve::calculate_throw_conclusion_movement(double & time, std::shared_
 	//Set up the trajectories for the half cycle (single step)
 	double finish_time = time + ((1 - throw_parameter->pick_up_duration_share_ - throw_parameter->throw_duration_share_) * throw_parameter->movement_cycle_frequence_);
 
-	/////  Left Hand Position
-	add_point_to_spline(bitbots_splines::CurvePurpose::left_hand_position_x, finish_time, throw_parameter->end_left_hand_position_.x_);
-	add_point_to_spline(bitbots_splines::CurvePurpose::left_hand_position_y, finish_time, throw_parameter->end_left_hand_position_.y_);
-	add_point_to_spline(bitbots_splines::CurvePurpose::left_hand_position_z, finish_time, throw_parameter->end_left_hand_position_.z_);
+	/////  Left Hand
+	sp_pose_left_hand_->x()->add_point(finish_time, throw_parameter->end_left_hand_position_.x_);
+	sp_pose_left_hand_->y()->add_point(finish_time, throw_parameter->end_left_hand_position_.y_);
+	sp_pose_left_hand_->z()->add_point(finish_time, throw_parameter->end_left_hand_position_.z_);
+	sp_pose_left_hand_->roll()->add_point(finish_time, 0.0);
+	sp_pose_left_hand_->pitch()->add_point(finish_time, 0.0);
+	sp_pose_left_hand_->yaw()->add_point(finish_time, 0.0);
 
-	/////  Left Hand Axis
-	add_point_to_spline(bitbots_splines::CurvePurpose::left_hand_axis_x, finish_time, 0.0);
-	add_point_to_spline(bitbots_splines::CurvePurpose::left_hand_axis_y, finish_time, 0.0);
-	add_point_to_spline(bitbots_splines::CurvePurpose::left_hand_axis_z, finish_time, 0.0);
+	/////  Right Hand
+	sp_pose_right_hand_->x()->add_point(finish_time, throw_parameter->end_right_hand_position_.x_);
+	sp_pose_right_hand_->y()->add_point(finish_time, throw_parameter->end_right_hand_position_.y_);
+	sp_pose_right_hand_->z()->add_point(finish_time, throw_parameter->end_right_hand_position_.z_);
+	sp_pose_right_hand_->roll()->add_point(finish_time, 0.0);
+	sp_pose_right_hand_->pitch()->add_point(finish_time, 0.0);
+	sp_pose_right_hand_->yaw()->add_point(finish_time, 0.0);
 
-	/////  Right Hand Position
-	add_point_to_spline(bitbots_splines::CurvePurpose::right_hand_position_x, finish_time, throw_parameter->end_right_hand_position_.x_);
-	add_point_to_spline(bitbots_splines::CurvePurpose::right_hand_position_y, finish_time, throw_parameter->end_right_hand_position_.y_);
-	add_point_to_spline(bitbots_splines::CurvePurpose::right_hand_position_z, finish_time, throw_parameter->end_right_hand_position_.z_);
-
-	/////  Right Hand Axis
-	add_point_to_spline(bitbots_splines::CurvePurpose::right_hand_axis_x, finish_time, 0.0);
-	add_point_to_spline(bitbots_splines::CurvePurpose::right_hand_axis_y, finish_time, 0.0);
-	add_point_to_spline(bitbots_splines::CurvePurpose::right_hand_axis_z, finish_time, 0.0);
-
-	/////  Trunk Position
-	add_point_to_spline(bitbots_splines::CurvePurpose::trunk_position_x, finish_time, 0.0);
-	add_point_to_spline(bitbots_splines::CurvePurpose::trunk_position_y, finish_time, 0.0);
-	add_point_to_spline(bitbots_splines::CurvePurpose::trunk_position_z, finish_time, 0.0);
-
-	/////  Trunk Axis
-	add_point_to_spline(bitbots_splines::CurvePurpose::trunk_axis_x, finish_time, 0.0);
-	add_point_to_spline(bitbots_splines::CurvePurpose::trunk_axis_y, finish_time, 0.0);
-	add_point_to_spline(bitbots_splines::CurvePurpose::trunk_axis_z, finish_time, 0.0);
+	/////  Trunk
+	sp_pose_trunk_->x()->add_point(finish_time, 0.0);
+	sp_pose_trunk_->y()->add_point(finish_time, 0.0);
+	sp_pose_trunk_->z()->add_point(finish_time, 0.0);
+	sp_pose_trunk_->roll()->add_point(finish_time, 0.0);
+	sp_pose_trunk_->pitch()->add_point(finish_time, 0.0);
+	sp_pose_trunk_->yaw()->add_point(finish_time, 0.0);
 
 	/////  Clean Up
 	time = finish_time;
-}
-
-void ThrowCurve::add_point_to_spline(bitbots_splines::CurvePurpose spline_purpose, double time, double position, double velocity, double acceleration)
-{
-	//TODO: testing
-	//TODO: cleanup
-
-	sp_spline_container_->get(spline_purpose)->add_point(time, position, velocity, acceleration);
 }

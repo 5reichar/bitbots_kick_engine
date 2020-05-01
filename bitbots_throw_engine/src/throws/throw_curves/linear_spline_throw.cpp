@@ -2,23 +2,35 @@
 #include "../../bitbots_spline/include/spline/linear_spline.h"
 
 LinearSplineThrow::LinearSplineThrow()
+	:ThrowCurve
+	(
+		std::make_shared<bitbots_splines::PoseHandle> // Left Hand
+		(
+			std::make_shared<bitbots_splines::LinearSpline>(), // x
+			std::make_shared<bitbots_splines::LinearSpline>(), // y
+			std::make_shared<bitbots_splines::LinearSpline>(), // z
+			std::make_shared<bitbots_splines::LinearSpline>(), // roll
+			std::make_shared<bitbots_splines::LinearSpline>(), // pitch
+			std::make_shared<bitbots_splines::LinearSpline>()  // yaw
+		),
+		std::make_shared<bitbots_splines::PoseHandle> // Right Hand
+		(
+			std::make_shared<bitbots_splines::LinearSpline>(), // x
+			std::make_shared<bitbots_splines::LinearSpline>(), // y
+			std::make_shared<bitbots_splines::LinearSpline>(), // z
+			std::make_shared<bitbots_splines::LinearSpline>(), // roll
+			std::make_shared<bitbots_splines::LinearSpline>(), // pitch
+			std::make_shared<bitbots_splines::LinearSpline>()  // yaw
+		),
+		std::make_shared<bitbots_splines::PoseHandle> // Trunk
+		(
+			std::make_shared<bitbots_splines::LinearSpline>(), // x
+			std::make_shared<bitbots_splines::LinearSpline>(), // y
+			std::make_shared<bitbots_splines::LinearSpline>(), // z
+			std::make_shared<bitbots_splines::LinearSpline>(), // roll
+			std::make_shared<bitbots_splines::LinearSpline>(), // pitch
+			std::make_shared<bitbots_splines::LinearSpline>()  // yaw
+		)
+	)
 {
-	sp_spline_container_->add(bitbots_splines::CurvePurpose::trunk_position_x, new bitbots_splines::LinearSpline());
-	sp_spline_container_->add(bitbots_splines::CurvePurpose::trunk_position_y, new bitbots_splines::LinearSpline());
-	sp_spline_container_->add(bitbots_splines::CurvePurpose::trunk_position_z, new bitbots_splines::LinearSpline());
-	sp_spline_container_->add(bitbots_splines::CurvePurpose::trunk_axis_x, new bitbots_splines::LinearSpline());
-	sp_spline_container_->add(bitbots_splines::CurvePurpose::trunk_axis_y, new bitbots_splines::LinearSpline());
-	sp_spline_container_->add(bitbots_splines::CurvePurpose::trunk_axis_z, new bitbots_splines::LinearSpline());
-	sp_spline_container_->add(bitbots_splines::CurvePurpose::left_hand_position_x, new bitbots_splines::LinearSpline());
-	sp_spline_container_->add(bitbots_splines::CurvePurpose::left_hand_position_y, new bitbots_splines::LinearSpline());
-	sp_spline_container_->add(bitbots_splines::CurvePurpose::left_hand_position_z, new bitbots_splines::LinearSpline());
-	sp_spline_container_->add(bitbots_splines::CurvePurpose::left_hand_axis_x, new bitbots_splines::LinearSpline());
-	sp_spline_container_->add(bitbots_splines::CurvePurpose::left_hand_axis_y, new bitbots_splines::LinearSpline());
-	sp_spline_container_->add(bitbots_splines::CurvePurpose::left_hand_axis_z, new bitbots_splines::LinearSpline());
-	sp_spline_container_->add(bitbots_splines::CurvePurpose::right_hand_position_x, new bitbots_splines::LinearSpline());
-	sp_spline_container_->add(bitbots_splines::CurvePurpose::right_hand_position_y, new bitbots_splines::LinearSpline());
-	sp_spline_container_->add(bitbots_splines::CurvePurpose::right_hand_position_z, new bitbots_splines::LinearSpline());
-	sp_spline_container_->add(bitbots_splines::CurvePurpose::right_hand_axis_x, new bitbots_splines::LinearSpline());
-	sp_spline_container_->add(bitbots_splines::CurvePurpose::right_hand_axis_y, new bitbots_splines::LinearSpline());
-	sp_spline_container_->add(bitbots_splines::CurvePurpose::right_hand_axis_z, new bitbots_splines::LinearSpline());
 }

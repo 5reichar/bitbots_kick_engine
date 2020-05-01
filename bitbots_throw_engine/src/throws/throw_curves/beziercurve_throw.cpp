@@ -2,23 +2,35 @@
 #include "../../bitbots_spline/include/spline/beziercurve.h"
 
 BeziercurveThrow::BeziercurveThrow()
+	:ThrowCurve
+	(
+		std::make_shared<bitbots_splines::PoseHandle> // Left Hand
+		(
+			std::make_shared<bitbots_splines::Beziercurve>(), // x
+			std::make_shared<bitbots_splines::Beziercurve>(), // y
+			std::make_shared<bitbots_splines::Beziercurve>(), // z
+			std::make_shared<bitbots_splines::Beziercurve>(), // roll
+			std::make_shared<bitbots_splines::Beziercurve>(), // pitch
+			std::make_shared<bitbots_splines::Beziercurve>()  // yaw
+		),
+		std::make_shared<bitbots_splines::PoseHandle> // Right Hand
+		(
+			std::make_shared<bitbots_splines::Beziercurve>(), // x
+			std::make_shared<bitbots_splines::Beziercurve>(), // y
+			std::make_shared<bitbots_splines::Beziercurve>(), // z
+			std::make_shared<bitbots_splines::Beziercurve>(), // roll
+			std::make_shared<bitbots_splines::Beziercurve>(), // pitch
+			std::make_shared<bitbots_splines::Beziercurve>()  // yaw
+		),
+		std::make_shared<bitbots_splines::PoseHandle> // Trunk
+		(
+			std::make_shared<bitbots_splines::Beziercurve>(), // x
+			std::make_shared<bitbots_splines::Beziercurve>(), // y
+			std::make_shared<bitbots_splines::Beziercurve>(), // z
+			std::make_shared<bitbots_splines::Beziercurve>(), // roll
+			std::make_shared<bitbots_splines::Beziercurve>(), // pitch
+			std::make_shared<bitbots_splines::Beziercurve>()  // yaw
+		)
+	)
 {
-	sp_spline_container_->add(bitbots_splines::CurvePurpose::trunk_position_x, new bitbots_splines::Beziercurve());
-	sp_spline_container_->add(bitbots_splines::CurvePurpose::trunk_position_y, new bitbots_splines::Beziercurve());
-	sp_spline_container_->add(bitbots_splines::CurvePurpose::trunk_position_z, new bitbots_splines::Beziercurve());
-	sp_spline_container_->add(bitbots_splines::CurvePurpose::trunk_axis_x, new bitbots_splines::Beziercurve());
-	sp_spline_container_->add(bitbots_splines::CurvePurpose::trunk_axis_y, new bitbots_splines::Beziercurve());
-	sp_spline_container_->add(bitbots_splines::CurvePurpose::trunk_axis_z, new bitbots_splines::Beziercurve());
-	sp_spline_container_->add(bitbots_splines::CurvePurpose::left_hand_position_x, new bitbots_splines::Beziercurve());
-	sp_spline_container_->add(bitbots_splines::CurvePurpose::left_hand_position_y, new bitbots_splines::Beziercurve());
-	sp_spline_container_->add(bitbots_splines::CurvePurpose::left_hand_position_z, new bitbots_splines::Beziercurve());
-	sp_spline_container_->add(bitbots_splines::CurvePurpose::left_hand_axis_x, new bitbots_splines::Beziercurve());
-	sp_spline_container_->add(bitbots_splines::CurvePurpose::left_hand_axis_y, new bitbots_splines::Beziercurve());
-	sp_spline_container_->add(bitbots_splines::CurvePurpose::left_hand_axis_z, new bitbots_splines::Beziercurve());
-	sp_spline_container_->add(bitbots_splines::CurvePurpose::right_hand_position_x, new bitbots_splines::Beziercurve());
-	sp_spline_container_->add(bitbots_splines::CurvePurpose::right_hand_position_y, new bitbots_splines::Beziercurve());
-	sp_spline_container_->add(bitbots_splines::CurvePurpose::right_hand_position_z, new bitbots_splines::Beziercurve());
-	sp_spline_container_->add(bitbots_splines::CurvePurpose::right_hand_axis_x, new bitbots_splines::Beziercurve());
-	sp_spline_container_->add(bitbots_splines::CurvePurpose::right_hand_axis_y, new bitbots_splines::Beziercurve());
-	sp_spline_container_->add(bitbots_splines::CurvePurpose::right_hand_axis_z, new bitbots_splines::Beziercurve());
 }
