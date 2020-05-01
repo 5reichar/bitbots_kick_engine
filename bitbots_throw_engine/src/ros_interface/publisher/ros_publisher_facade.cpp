@@ -6,7 +6,7 @@ RosPublisherFacade::RosPublisherFacade(ros::NodeHandle & ros_node_handle, std::s
 	// TODO testing
 	// TODO cleanup
 
-	sp_controller_command_publisher_.reset(new ControllerCommandPublisher(ros_node_handle));
+	sp_controller_command_publisher_.reset(new ControllerCommandPublisher(ros_node_handle, "throwing_motor_goals"));
 	sp_odometry_publisher_.reset(new OdometryPublisher(ros_node_handle));
 	sp_support_publisher_.reset(new SupportPublisher(ros_node_handle));
 	sp_debug_publisher_.reset(new DebugPublisher(ros_node_handle));
