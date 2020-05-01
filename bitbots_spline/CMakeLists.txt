@@ -140,6 +140,8 @@ set(SOURCES
   src/spline/cubic_spline.cpp
   src/spline/smooth_spline.cpp
   src/spline/beziercurve.cpp
+  src/handle/position_handle.cpp
+  src/handle/pose_handle.cpp
 )
 
 ## Declare a C++ library
