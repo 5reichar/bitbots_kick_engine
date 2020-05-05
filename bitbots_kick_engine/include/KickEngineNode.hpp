@@ -10,7 +10,7 @@
 #include <bitbots_kick_engine/KickAction.h>
 
 
-class KickEngineNode
+class [[deprecated]] KickEngineNode
 {
     // TODO cleanup
 public:

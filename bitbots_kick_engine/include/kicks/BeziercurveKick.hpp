@@ -3,7 +3,7 @@
 
 #include "Kick.hpp"
 
-class BeziercurveKick : public Kick
+class [[deprecated]] BeziercurveKick : public Kick
 {
 public:
 	BeziercurveKick(std::shared_ptr<KickEngineParameter> sp_parameter);

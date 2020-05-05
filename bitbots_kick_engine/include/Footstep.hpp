@@ -17,7 +17,7 @@ https://github.com/Rhoban/model/
  * Manage humanoid footstep
  * generation and state
  */
-class Footstep
+class [[deprecated]] Footstep
 {
     public:
 

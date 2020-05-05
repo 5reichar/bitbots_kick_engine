@@ -53,7 +53,7 @@ enum class CurvePurpose
  * types indexed by string name
  * Implementation of implort/export from files
  */
-class SplineContainer
+class [[deprecated]] SplineContainer
 {
 public:
     ~SplineContainer()

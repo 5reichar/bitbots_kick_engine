@@ -5,7 +5,7 @@
 
 namespace bitbots_splines
 {
-    class SplineContainerFactory
+    class [[deprecated]] SplineContainerFactory
     {
         public:
             static SplineContainer create_linear_spline_container();

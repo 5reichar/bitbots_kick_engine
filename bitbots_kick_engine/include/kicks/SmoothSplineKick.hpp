@@ -3,7 +3,7 @@
 
 #include "Kick.hpp"
 
-class SmoothSplineKick : public Kick
+class [[deprecated]] SmoothSplineKick : public Kick
 {
 public:
 	SmoothSplineKick(std::shared_ptr<KickEngineParameter> sp_parameter);

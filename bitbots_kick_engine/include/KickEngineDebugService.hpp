@@ -7,7 +7,7 @@
 #include <tf/transform_broadcaster.h>
 #include <std_msgs/Char.h>
 
-class KickEngineDebugService
+class [[deprecated]] KickEngineDebugService
 {
 public:
 	KickEngineDebugService(std::shared_ptr<KickEngine> kick_engine);

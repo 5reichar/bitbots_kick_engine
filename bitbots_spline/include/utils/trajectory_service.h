@@ -12,7 +12,7 @@ https://github.com/Rhoban/model/
 namespace bitbots_splines
 {
 
-class TrajectoryService
+class [[deprecated]] TrajectoryService
 {
 public:
     /**

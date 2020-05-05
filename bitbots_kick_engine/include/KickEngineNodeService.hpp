@@ -12,7 +12,7 @@
 #include <bitbots_kick_engine/kick_paramsConfig.h>
 #include <bitbots_kick_engine/kick_preparation_positionsConfig.h>
 
-class KickEngineNodeService
+class [[deprecated]] KickEngineNodeService
 {
 public:
 	KickEngineNodeService(bool simulation);

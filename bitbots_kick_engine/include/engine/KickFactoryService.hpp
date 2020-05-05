@@ -6,7 +6,7 @@
 #include "../kicks/KickParameter.hpp"
 #include <memory>
 
-class KickFactoryService
+class [[deprecated]] KickFactoryService
 {
 public:
 	static double calculateAngle(double const x, double const y);

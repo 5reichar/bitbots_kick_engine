@@ -7,7 +7,7 @@
 #include <geometry_msgs/Twist.h>
 #include "engine/KickFactory.hpp"
 
-class KickEngine
+class [[deprecated]] KickEngine
 {
 public:
 	enum class KickType : uint16_t

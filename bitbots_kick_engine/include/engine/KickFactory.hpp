@@ -5,7 +5,7 @@
 #include "../kicks/Kick.hpp"
 #include "../Footstep.hpp"
 
-class KickFactory
+class [[deprecated]] KickFactory
 {
 public:
 	KickFactory(std::shared_ptr<KickEngineParameter> sp_engine_parameter, std::shared_ptr<Footstep> footstep);

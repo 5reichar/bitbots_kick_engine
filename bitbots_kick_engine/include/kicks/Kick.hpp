@@ -6,7 +6,7 @@
 #include "../engine/KickEngineParameter.hpp"
 #include "../../bitbots_spline/include/utils/spline_container_factory.h"
 
-class Kick
+class [[deprecated]] Kick
 {
 public:
 	Kick(std::shared_ptr<KickEngineParameter> sp_parameter);
