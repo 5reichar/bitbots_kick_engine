@@ -106,7 +106,7 @@ public:
         sp_parameter->pick_up_duration_share_ = throw_type->pick_up_duration_share_ == 0 ? engine_parameter->pick_up_duration_share_ : throw_type->pick_up_duration_share_;
         sp_parameter->throw_preparation_duration_share_ = throw_type->throw_preparation_duration_share_ == 0 ? engine_parameter->throw_preparation_duration_share_ : throw_type->throw_preparation_duration_share_;
         sp_parameter->throw_duration_share_ = throw_type->throw_duration_share_ == 0 ? engine_parameter->throw_duration_share_ : throw_type->throw_duration_share_;
-        sp_parameter->throw_anlge_ = throw_type->throw_anlge_ == 0 ? engine_parameter->throw_anlge_ : throw_type->throw_anlge_
+        sp_parameter->throw_anlge_ = throw_type->throw_anlge_ == 0 ? engine_parameter->throw_anlge_ : throw_type->throw_anlge_;
 
         return sp_parameter;
     };

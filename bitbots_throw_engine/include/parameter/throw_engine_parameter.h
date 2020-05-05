@@ -29,7 +29,7 @@ struct ThrowEngineParameter
 	// The share of the movement cycle dedicated to throwing the ball
 	double throw_duration_share_;
 	// The Angle at which the ball shall thrown
-	double throw_anlge;
+	double throw_anlge_;
 };
 
 #endif
