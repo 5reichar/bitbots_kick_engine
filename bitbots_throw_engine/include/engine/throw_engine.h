@@ -14,7 +14,7 @@ public:
 
     std::shared_ptr<ThrowCurve> get_current_throw() const;
 
-	virtual bool throw_ball(struct3d & ball_position, struct3d & goal_position);
+	virtual bool throw_ball(Struct3d & ball_position, Struct3d & goal_position);
 
 private:
 

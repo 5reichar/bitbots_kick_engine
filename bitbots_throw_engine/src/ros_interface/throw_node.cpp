@@ -44,8 +44,8 @@ void ThrowNode::throw_callback(const bitbots_throw_engine::throw_action action)
 
 	up_publisher_facade_->prepare_publisher_for_throw();
 
-	struct3d ball_position = {action.ball_position.x, action.ball_position.y, action.ball_position.z };
-	struct3d goal_position = {action.throw_target.x, action.throw_target.y, action.throw_target.z };
+	Struct3d ball_position = {action.ball_position.x, action.ball_position.y, action.ball_position.z };
+	Struct3d goal_position = {action.throw_target.x, action.throw_target.y, action.throw_target.z };
 
 	ros::Rate loopRate(sp_node_parameter_->engine_frequency_);
 

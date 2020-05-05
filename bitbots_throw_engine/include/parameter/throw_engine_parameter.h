@@ -19,15 +19,17 @@ struct ThrowEngineParameter
 	double max_throw_distance_;
 	// the position the robot shall move the ball after picking it up,
     // and before starting to throw it
-	struct3d throw_start_position_;
+	Struct3d throw_start_position_;
     // the positon the robot release the ball to throw it
-	struct3d throw_release_position_;
+	Struct3d throw_release_position_;
 	// The share of the movement cycle dedicated to picking up the ball
 	double pick_up_duration_share_;
 	// The share of the movement cycle dedicated to prepare the throwing the ball
 	double throw_preparation_duration_share_;
 	// The share of the movement cycle dedicated to throwing the ball
 	double throw_duration_share_;
+	// The Angle at which the ball shall thrown
+	double throw_anlge;
 };
 
 #endif

@@ -16,8 +16,8 @@ public:
         sp_parameter->hand_distance_ = config.hand_distance;
         sp_parameter->max_throw_distance_ = config.max_throw_distance;
 
-        sp_parameter->throw_start_position_ = struct3d{config.throw_starting_position_x, config.throw_starting_position_y, config.throw_starting_position_z};
-        sp_parameter->throw_release_position_ = struct3d{config.throw_release_position_x, config.throw_release_position_y, config.throw_release_position_z};
+        sp_parameter->throw_start_position_ = Struct3d{config.throw_starting_position_x, config.throw_starting_position_y, config.throw_starting_position_z};
+        sp_parameter->throw_release_position_ = Struct3d{config.throw_release_position_x, config.throw_release_position_y, config.throw_release_position_z};
 
         sp_parameter->pick_up_duration_share_ = config.pick_up_ball_duration_share;
         sp_parameter->throw_preparation_duration_share_ = config.throw_preparation_duration_share;

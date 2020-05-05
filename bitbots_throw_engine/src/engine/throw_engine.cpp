@@ -16,7 +16,7 @@ std::shared_ptr<ThrowCurve> ThrowEngine::get_current_throw() const
 	return sp_current_throw_;
 }
 
-bool ThrowEngine::throw_ball(struct3d & ball_position, struct3d & target_position)
+bool ThrowEngine::throw_ball(Struct3d & ball_position, Struct3d & target_position)
 {
 	//TODO: testing
 	//TODO: cleanup

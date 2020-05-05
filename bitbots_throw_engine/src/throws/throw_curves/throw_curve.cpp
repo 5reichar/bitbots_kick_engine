@@ -77,13 +77,13 @@ void ThrowCurve::calculate_pick_up_ball_movement(double & time, std::shared_ptr<
 	sp_pose_left_hand_->z()->add_point(pick_up_ball_time, throw_parameter->pick_up_left_hand_position_.z_);
 
 	sp_pose_left_hand_->roll()->add_point(start_time, 0.0);
-	sp_pose_left_hand_->roll()->add_point(pick_up_ball_time, throw_parameter->pick_up_left_hand_axis_.x_);
+	sp_pose_left_hand_->roll()->add_point(pick_up_ball_time, throw_parameter->pick_up_left_hand_axis_.roll_);
 
 	sp_pose_left_hand_->pitch()->add_point(start_time, 0.0);
-	sp_pose_left_hand_->pitch()->add_point(pick_up_ball_time, throw_parameter->pick_up_left_hand_axis_.y_);
+	sp_pose_left_hand_->pitch()->add_point(pick_up_ball_time, throw_parameter->pick_up_left_hand_axis_.pitch_);
 
 	sp_pose_left_hand_->yaw()->add_point(start_time, 0.0);
-	sp_pose_left_hand_->yaw()->add_point(pick_up_ball_time, throw_parameter->pick_up_left_hand_axis_.z_);
+	sp_pose_left_hand_->yaw()->add_point(pick_up_ball_time, throw_parameter->pick_up_left_hand_axis_.yaw_);
 
 	/////  Right Hand
 	sp_pose_right_hand_->x()->add_point(start_time, throw_parameter->end_right_hand_position_.x_);
@@ -96,13 +96,13 @@ void ThrowCurve::calculate_pick_up_ball_movement(double & time, std::shared_ptr<
 	sp_pose_right_hand_->z()->add_point(pick_up_ball_time, throw_parameter->pick_up_right_hand_position_.z_);
 
 	sp_pose_right_hand_->roll()->add_point(start_time, 0.0);
-	sp_pose_right_hand_->roll()->add_point(pick_up_ball_time, throw_parameter->pick_up_right_hand_axis_.x_);
+	sp_pose_right_hand_->roll()->add_point(pick_up_ball_time, throw_parameter->pick_up_right_hand_axis_.roll_);
 
 	sp_pose_right_hand_->pitch()->add_point(start_time, 0.0);
-	sp_pose_right_hand_->pitch()->add_point(pick_up_ball_time, throw_parameter->pick_up_right_hand_axis_.y_);
+	sp_pose_right_hand_->pitch()->add_point(pick_up_ball_time, throw_parameter->pick_up_right_hand_axis_.pitch_);
 
 	sp_pose_right_hand_->yaw()->add_point(start_time, 0.0);
-	sp_pose_right_hand_->yaw()->add_point(pick_up_ball_time, throw_parameter->pick_up_right_hand_axis_.z_);
+	sp_pose_right_hand_->yaw()->add_point(pick_up_ball_time, throw_parameter->pick_up_right_hand_axis_.yaw_);
 
 	/////  Trunk
 	sp_pose_trunk_->x()->add_point(start_time, 0.0);
@@ -115,13 +115,13 @@ void ThrowCurve::calculate_pick_up_ball_movement(double & time, std::shared_ptr<
 	sp_pose_trunk_->z()->add_point(pick_up_ball_time, 0.0);
 
 	sp_pose_trunk_->roll()->add_point(start_time, 0.0);
-	sp_pose_trunk_->roll()->add_point(pick_up_ball_time, throw_parameter->pick_up_trunk_axis_.x_);
+	sp_pose_trunk_->roll()->add_point(pick_up_ball_time, throw_parameter->pick_up_trunk_axis_.roll_);
 
 	sp_pose_trunk_->pitch()->add_point(start_time, 0.0);
-	sp_pose_trunk_->pitch()->add_point(pick_up_ball_time, throw_parameter->pick_up_trunk_axis_.y_); // Bow Angle
+	sp_pose_trunk_->pitch()->add_point(pick_up_ball_time, throw_parameter->pick_up_trunk_axis_.pitch_); // Bow Angle
 
 	sp_pose_trunk_->yaw()->add_point(start_time, 0.0);
-	sp_pose_trunk_->yaw()->add_point(pick_up_ball_time, throw_parameter->pick_up_trunk_axis_.z_); // Orientation
+	sp_pose_trunk_->yaw()->add_point(pick_up_ball_time, throw_parameter->pick_up_trunk_axis_.yaw_); // Orientation
 
 	/////  Clean Up
 	time = pick_up_ball_time;
@@ -148,14 +148,14 @@ void ThrowCurve::calculate_throw_movement(double & time, std::shared_ptr<ThrowPa
 	sp_pose_left_hand_->z()->add_point(begin_throw_time, throw_parameter->throw_start_left_hand_position_.z_);
 	sp_pose_left_hand_->z()->add_point(release_throw_time, throw_parameter->throw_release_left_hand_position_.z_, throw_parameter->throw_velocity_.z_);
 
-	sp_pose_left_hand_->roll()->add_point(begin_throw_time, throw_parameter->throw_start_left_hand_axis_.x_);
-	sp_pose_left_hand_->roll()->add_point(release_throw_time, throw_parameter->throw_release_left_hand_axis_.x_);
+	sp_pose_left_hand_->roll()->add_point(begin_throw_time, throw_parameter->throw_start_left_hand_axis_.roll_);
+	sp_pose_left_hand_->roll()->add_point(release_throw_time, throw_parameter->throw_release_left_hand_axis_.roll_);
 
-	sp_pose_left_hand_->pitch()->add_point(begin_throw_time, throw_parameter->throw_start_left_hand_axis_.y_);
-	sp_pose_left_hand_->pitch()->add_point(release_throw_time, throw_parameter->throw_release_left_hand_axis_.y_);
+	sp_pose_left_hand_->pitch()->add_point(begin_throw_time, throw_parameter->throw_start_left_hand_axis_.pitch_);
+	sp_pose_left_hand_->pitch()->add_point(release_throw_time, throw_parameter->throw_release_left_hand_axis_.pitch_);
 
-	sp_pose_left_hand_->yaw()->add_point(begin_throw_time, throw_parameter->throw_start_left_hand_axis_.z_);
-	sp_pose_left_hand_->yaw()->add_point(release_throw_time, throw_parameter->throw_release_left_hand_axis_.z_);
+	sp_pose_left_hand_->yaw()->add_point(begin_throw_time, throw_parameter->throw_start_left_hand_axis_.yaw_);
+	sp_pose_left_hand_->yaw()->add_point(release_throw_time, throw_parameter->throw_release_left_hand_axis_.yaw_);
 
 	/////  Right Hand
 	sp_pose_right_hand_->x()->add_point(begin_throw_time, throw_parameter->throw_start_right_hand_position_.x_);
@@ -167,14 +167,14 @@ void ThrowCurve::calculate_throw_movement(double & time, std::shared_ptr<ThrowPa
 	sp_pose_right_hand_->z()->add_point(begin_throw_time, throw_parameter->throw_start_right_hand_position_.z_);
 	sp_pose_right_hand_->z()->add_point(release_throw_time, throw_parameter->throw_release_right_hand_position_.z_, throw_parameter->throw_velocity_.z_);
 
-	sp_pose_right_hand_->roll()->add_point(begin_throw_time, throw_parameter->throw_start_right_hand_axis_.x_);
-	sp_pose_right_hand_->roll()->add_point(release_throw_time, throw_parameter->throw_release_right_hand_axis_.x_);
+	sp_pose_right_hand_->roll()->add_point(begin_throw_time, throw_parameter->throw_start_right_hand_axis_.roll_);
+	sp_pose_right_hand_->roll()->add_point(release_throw_time, throw_parameter->throw_release_right_hand_axis_.roll_);
 
-	sp_pose_right_hand_->pitch()->add_point(begin_throw_time, throw_parameter->throw_start_right_hand_axis_.y_);
-	sp_pose_right_hand_->pitch()->add_point(release_throw_time, throw_parameter->throw_release_right_hand_axis_.y_);
+	sp_pose_right_hand_->pitch()->add_point(begin_throw_time, throw_parameter->throw_start_right_hand_axis_.pitch_);
+	sp_pose_right_hand_->pitch()->add_point(release_throw_time, throw_parameter->throw_release_right_hand_axis_.pitch_);
 
-	sp_pose_right_hand_->yaw()->add_point(begin_throw_time, throw_parameter->throw_start_right_hand_axis_.z_);
-	sp_pose_right_hand_->yaw()->add_point(release_throw_time, throw_parameter->throw_release_right_hand_axis_.z_);
+	sp_pose_right_hand_->yaw()->add_point(begin_throw_time, throw_parameter->throw_start_right_hand_axis_.yaw_);
+	sp_pose_right_hand_->yaw()->add_point(release_throw_time, throw_parameter->throw_release_right_hand_axis_.yaw_);
 
 	/////  Trunk
 	sp_pose_trunk_->x()->add_point(begin_throw_time, 0.0);
@@ -186,14 +186,14 @@ void ThrowCurve::calculate_throw_movement(double & time, std::shared_ptr<ThrowPa
 	sp_pose_trunk_->z()->add_point(begin_throw_time, 0.0);
 	sp_pose_trunk_->z()->add_point(release_throw_time, 0.0);
 
-	sp_pose_trunk_->roll()->add_point(begin_throw_time, throw_parameter->throw_start_trunk_axis_.x_);
-	sp_pose_trunk_->roll()->add_point(release_throw_time, throw_parameter->throw_release_trunk_axis_.x_);
+	sp_pose_trunk_->roll()->add_point(begin_throw_time, throw_parameter->throw_start_trunk_axis_.roll_);
+	sp_pose_trunk_->roll()->add_point(release_throw_time, throw_parameter->throw_release_trunk_axis_.roll_);
 
-	sp_pose_trunk_->pitch()->add_point(begin_throw_time, throw_parameter->throw_start_trunk_axis_.y_); // pitch
-	sp_pose_trunk_->pitch()->add_point(release_throw_time, throw_parameter->throw_release_trunk_axis_.y_); // pitch
+	sp_pose_trunk_->pitch()->add_point(begin_throw_time, throw_parameter->throw_start_trunk_axis_.pitch_); // Bow Angle
+	sp_pose_trunk_->pitch()->add_point(release_throw_time, throw_parameter->throw_release_trunk_axis_.pitch_); // Bow Angle
 
-	sp_pose_trunk_->yaw()->add_point(begin_throw_time, throw_parameter->throw_start_trunk_axis_.z_); // orientation
-	sp_pose_trunk_->yaw()->add_point(release_throw_time, throw_parameter->throw_release_trunk_axis_.z_); // orientation
+	sp_pose_trunk_->yaw()->add_point(begin_throw_time, throw_parameter->throw_start_trunk_axis_.yaw_); // Orientation
+	sp_pose_trunk_->yaw()->add_point(release_throw_time, throw_parameter->throw_release_trunk_axis_.yaw_); // Orientation
 
 	/////  Clean Up
 	time = release_throw_time;
