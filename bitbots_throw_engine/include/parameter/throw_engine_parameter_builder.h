@@ -22,7 +22,7 @@ public:
         sp_parameter->pick_up_duration_share_ = config.pick_up_ball_duration_share;
         sp_parameter->throw_preparation_duration_share_ = config.throw_preparation_duration_share;
         sp_parameter->throw_duration_share_ = config.throw_duration_share;
-        sp_parameter->throw_conclusion_duration_share_ = config.throw_conclusion_share;
+        sp_parameter->throw_conclusion_duration_share_ = config.throw_conclusion_duration_share;
         sp_parameter->throw_anlge_ = config.throw_angle;
 
         return sp_parameter;

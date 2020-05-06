@@ -67,7 +67,7 @@ public:
 protected:
     static ThrowType build_throw_type(ThrowTypeId id, bool active, int priority_level,  double min_throw_distance, double max_throw_distance, double pick_up_duration_share, double throw_preparation_duration_share, double throw_duration_share, double throw_conclusion_duration_share, double throw_anlge)
     {
-        ThrowType type = {id, active, priority_level, min_throw_distance, max_throw_distance, pick_up_duration_share, throw_preparation_duration_share, throw_duration_share, double throw_conclusion_duration_share, throw_anlge};
+        ThrowType type = {id, active, priority_level, min_throw_distance, max_throw_distance, pick_up_duration_share, throw_preparation_duration_share, throw_duration_share, throw_conclusion_duration_share, throw_anlge};
         return type;
     };
 
