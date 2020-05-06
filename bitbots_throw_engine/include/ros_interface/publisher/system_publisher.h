@@ -1,8 +1,8 @@
 #ifndef SYSTEM_PUBLISHER_H
 #define SYSTEM_PUBLISHER_H
 
-#include "ros/ros.h"
 #include <string>
+#include <ros/console.h>
 
 class SystemPublisher
 {
@@ -12,11 +12,11 @@ public:
 
     static void publish_warning(std::string messsage)
     {
-        ROS_WARN(messsage);
+        ROS_WARN_STREAM(messsage);
     };
 
 private:
-    ros::Publisher ros_publisher_support_;
+    //ros::Publisher ros_publisher_support_;
 };
 
 #endif
