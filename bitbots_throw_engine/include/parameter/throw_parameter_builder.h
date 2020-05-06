@@ -6,6 +6,7 @@
 #include "parameter/throw_parameter.h"
 #include "parameter/throw_type_parameter.h"
 #include "parameter/throw_engine_parameter.h"
+#include "ros_interface/publisher/system_publisher.h"
 
 class ThrowParameterBuilder
 {
@@ -100,13 +101,17 @@ public:
         sp_parameter->end_right_hand_position_.z_ = 0.0;
 
         sp_parameter->throw_goal_position_ = throw_goal_position;
-
+        
     	sp_parameter->movement_cycle_frequence_ = engine_parameter->frequency_;
 
         sp_parameter->pick_up_duration_share_ = throw_type->pick_up_duration_share_ == 0 ? engine_parameter->pick_up_duration_share_ : throw_type->pick_up_duration_share_;
         sp_parameter->throw_preparation_duration_share_ = throw_type->throw_preparation_duration_share_ == 0 ? engine_parameter->throw_preparation_duration_share_ : throw_type->throw_preparation_duration_share_;
         sp_parameter->throw_duration_share_ = throw_type->throw_duration_share_ == 0 ? engine_parameter->throw_duration_share_ : throw_type->throw_duration_share_;
+        sp_parameter->throw_conclusion_duration_share_ = throw_type->throw_conclusion_duration_share_ == 0 ? engine_parameter->throw_conclusion_duration_share_ : throw_type->throw_conclusion_duration_share_;
+        check_duration_share(sp_parameter, engine_parameter);
+
         sp_parameter->throw_anlge_ = throw_type->throw_anlge_ == 0 ? engine_parameter->throw_anlge_ : throw_type->throw_anlge_;
+
 
         return sp_parameter;
     };
@@ -126,6 +131,21 @@ protected:
     static double calculate_angle(Struct3d & point)
     {
         return atan((point.y_ / point.x_));
+    }
+
+    static void check_duration_share(std::shared_ptr<ThrowParameter> & sp_parameter, std::shared_ptr<ThrowEngineParameter> & engine_parameter)
+    {
+        double total_share_div = sp_parameter->pick_up_duration_share_ + sp_parameter->throw_preparation_duration_share_ + sp_parameter->throw_duration_share_ + sp_parameter->throw_conclusion_duration_share_ - 1;
+        if (total_share_div > 0.0000001f) // check if total share is bigger than 1
+        {
+            // Reduce the shares equality to remain the proportion of the shares 
+            sp_parameter->pick_up_duration_share_ -= total_share_div / 4;
+            sp_parameter->throw_preparation_duration_share_ -= total_share_div / 4;
+            sp_parameter->throw_duration_share_ -= total_share_div / 4;
+            sp_parameter->throw_conclusion_duration_share_ -= total_share_div / 4;
+
+            SystemPublisher::publish_warning("The Shares of the throw movement steps are reduced, becase the shares added up to a bigger value than 1");
+        }
     }
 };
 

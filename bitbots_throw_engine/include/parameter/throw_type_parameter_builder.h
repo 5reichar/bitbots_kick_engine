@@ -21,6 +21,7 @@ public:
                                                                                    config.beziercurve_pick_up_duration_share,
                                                                                    config.beziercurve_throw_preparation_duration_share,
                                                                                    config.beziercurve_throw_duration_share,
+                                                                                   config.beziercurve_throw_conclusion_duration_share,
                                                                                    config.beziercurve_throw_angle);
         check_and_set_default_throw(sp_parameter, default_id, throw_type);
                                                                                     
@@ -32,6 +33,7 @@ public:
                                                                  config.linear_spline_pick_up_duration_share,
                                                                  config.linear_spline_throw_preparation_duration_share,
                                                                  config.linear_spline_throw_duration_share,
+                                                                 config.linear_spline_throw_conclusion_duration_share,
                                                                  config.linear_spline_throw_angle);
         check_and_set_default_throw(sp_parameter, default_id, throw_type);
                                                                                     
@@ -43,6 +45,7 @@ public:
                                                                  config.cubic_spline_pick_up_duration_share,
                                                                  config.cubic_spline_throw_preparation_duration_share,
                                                                  config.cubic_spline_throw_duration_share,
+                                                                 config.cubic_spline_throw_conclusion_duration_share,
                                                                  config.cubic_spline_throw_angle);
         check_and_set_default_throw(sp_parameter, default_id, throw_type);
                                                                                     
@@ -54,6 +57,7 @@ public:
                                                                  config.smooth_spline_pick_up_duration_share,
                                                                  config.smooth_spline_throw_preparation_duration_share,
                                                                  config.smooth_spline_throw_duration_share,
+                                                                 config.smooth_spline_throw_conclusion_duration_share,
                                                                  config.smooth_spline_throw_angle);
         check_and_set_default_throw(sp_parameter, default_id, throw_type);
 
@@ -61,9 +65,9 @@ public:
     };
 
 protected:
-    static ThrowType build_throw_type(ThrowTypeId id, bool active, int priority_level,  double min_throw_distance, double max_throw_distance, double pick_up_duration_share, double throw_preparation_duration_share, double throw_duration_share, double throw_anlge)
+    static ThrowType build_throw_type(ThrowTypeId id, bool active, int priority_level,  double min_throw_distance, double max_throw_distance, double pick_up_duration_share, double throw_preparation_duration_share, double throw_duration_share, double throw_conclusion_duration_share, double throw_anlge)
     {
-        ThrowType type = {id, active, priority_level, min_throw_distance, max_throw_distance, pick_up_duration_share, throw_preparation_duration_share, throw_duration_share, throw_anlge};
+        ThrowType type = {id, active, priority_level, min_throw_distance, max_throw_distance, pick_up_duration_share, throw_preparation_duration_share, throw_duration_share, double throw_conclusion_duration_share, throw_anlge};
         return type;
     };
 

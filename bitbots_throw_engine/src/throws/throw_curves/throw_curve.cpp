@@ -207,7 +207,7 @@ void ThrowCurve::calculate_throw_conclusion_movement(double & time, std::shared_
 
 	/////  Preparation
 	//Set up the trajectories for the half cycle (single step)
-	double finish_time = time + ((1 - throw_parameter->pick_up_duration_share_ - throw_parameter->throw_duration_share_) * throw_parameter->movement_cycle_frequence_);
+	double finish_time = time + (throw_parameter->throw_conclusion_duration_share_ * throw_parameter->movement_cycle_frequence_);
 
 	/////  Left Hand
 	sp_pose_left_hand_->x()->add_point(finish_time, throw_parameter->end_left_hand_position_.x_);
