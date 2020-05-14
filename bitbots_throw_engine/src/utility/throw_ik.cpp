@@ -1,9 +1,17 @@
 #include "utility/throw_ik.h"
 
 ThrowIK::ThrowIK()
-    : bio_ik_timeout_(0.01)
 {
+  bio_ik_timeout_ = 0.01;
+}
 
+ThrowIK::~ThrowIK()
+{
+  if (arms_joints_group_)
+  {
+    delete arms_joints_group_;
+  }
+  
 }
 
 void ThrowIK::init(moveit::core::RobotModelPtr kinematic_model)
@@ -56,7 +64,7 @@ void ThrowIK::reset()
   }
 }
 
-void WalkIK::setBioIKTimeout(double timeout)
+void ThrowIK::set_bio_ik_timeout(double timeout)
 {
   bio_ik_timeout_ = timeout;
-};
+}

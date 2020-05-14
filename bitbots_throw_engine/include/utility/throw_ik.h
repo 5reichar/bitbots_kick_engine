@@ -8,12 +8,13 @@ class ThrowIK : public bitbots_splines::AbstractIK
 {
 public:
   ThrowIK();
+  ~ThrowIK();
 
   bitbots_splines::JointGoals calculate(std::unique_ptr<bio_ik::BioIKKinematicsQueryOptions> ik_goals) override;
   void init(moveit::core::RobotModelPtr kinematic_model) override;
   void reset() override;
   
-  void setBioIKTimeout(double timeout);
+  void set_bio_ik_timeout(double timeout);
 
 private:
   robot_state::RobotStatePtr goal_state_;
