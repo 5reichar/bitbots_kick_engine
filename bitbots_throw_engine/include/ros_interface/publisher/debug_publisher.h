@@ -6,7 +6,7 @@
 
 class DebugPublisher //: public bitbots_splines::AbstractVisualizer
 {
-    // TODO cleanup
+    //TODO: cleanup
 public:
     DebugPublisher(ros::NodeHandle & ros_node_handle);
 

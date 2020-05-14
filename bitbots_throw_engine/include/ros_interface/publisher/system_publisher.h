@@ -6,7 +6,7 @@
 
 class SystemPublisher
 {
-    // TODO cleanup
+    //TODO: cleanup
 public:
     //SystemPublisher(ros::NodeHandle & ros_node_handle);
 

@@ -5,7 +5,7 @@
 
 class OdometryPublisher
 {
-    // TODO cleanup
+    //TODO: cleanup
 public:
     OdometryPublisher(ros::NodeHandle & ros_node_handle);
 

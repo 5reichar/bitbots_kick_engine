@@ -5,7 +5,7 @@
 
 class SupportPublisher
 {
-    // TODO cleanup
+    //TODO: cleanup
 public:
     SupportPublisher(ros::NodeHandle & ros_node_handle);
 
