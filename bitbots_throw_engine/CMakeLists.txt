@@ -14,6 +14,8 @@ find_package(catkin REQUIRED COMPONENTS
   dynamic_reconfigure
   eigen_conversions
   geometry_msgs
+  tf2
+  bio_ik
   bitbots_spline
   humanoid_league_msgs
   bitbots_msgs
@@ -152,6 +154,8 @@ set(
   src/throws/throw_curves/linear_spline_throw.cpp
   src/throws/throw_curves/cubic_spline_throw.cpp
   src/throws/throw_curves/smooth_spline_throw.cpp
+  src/utility/throw_ik.cpp
+  src/utility/throw_stabilizer.cpp
 )
 
 ## Declare a C++ library

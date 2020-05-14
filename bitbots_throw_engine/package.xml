@@ -61,6 +61,8 @@
   <depend>dynamic_reconfigure</depend>
   <depend>message_runtime</depend>
 
+  <depend>tf2</depend>
+  <depend>bio_ik</depend>
   <depend>eigen_conversions</depend>
   <depend>geometry_msgs</depend>
   <depend>humanoid_league_msgs</depend>
