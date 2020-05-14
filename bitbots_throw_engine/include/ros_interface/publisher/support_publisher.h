@@ -9,10 +9,12 @@ class SupportPublisher
 public:
     SupportPublisher(ros::NodeHandle & ros_node_handle);
 
-    void publish();
+    virtual void publish();
+    virtual void publish(char const support_foot);
 
 private:
     ros::Publisher ros_publisher_support_;
+    char current_support_foot_;
 };
 
 #endif
