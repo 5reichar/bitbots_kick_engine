@@ -78,11 +78,11 @@ public:
 
         sp_parameter->throw_release_left_hand_axis_.roll_ = 0.0;
         sp_parameter->throw_release_left_hand_axis_.pitch_ = 0.0;
-        sp_parameter->throw_release_left_hand_axis_.yaw_ = 0.0;
+        sp_parameter->throw_release_left_hand_axis_.yaw_ = -90.0;
 
         sp_parameter->throw_release_right_hand_axis_.roll_ = 0.0;
         sp_parameter->throw_release_right_hand_axis_.pitch_ = 0.0;
-        sp_parameter->throw_release_right_hand_axis_.yaw_ = 0.0;
+        sp_parameter->throw_release_right_hand_axis_.yaw_ = 90.0;
 
         sp_parameter->throw_release_trunk_axis_.roll_ = 0.0;
         sp_parameter->throw_release_trunk_axis_.pitch_ = 0.0;
