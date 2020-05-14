@@ -6,6 +6,11 @@ ControllerCommandPublisher::ControllerCommandPublisher(ros::NodeHandle & ros_nod
     ros_publisher_controller_command_ = ros_node_handle.advertise<bitbots_msgs::JointCommand>(topic, 1);
 }
 
+void ControllerCommandPublisher::publish(ros::Time time, bitbots_splines::JointGoals joint_goals)
+{
+    publish(time, joint_goals);
+}
+
 void ControllerCommandPublisher::publish(ros::Time time, std::vector<std::string> joint_names, std::vector<double> positions)
 {
     //TODO: implement
