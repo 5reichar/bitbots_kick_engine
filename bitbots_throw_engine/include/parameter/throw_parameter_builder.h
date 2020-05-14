@@ -11,7 +11,7 @@
 class ThrowParameterBuilder
 {
 public:
-    static std::shared_ptr<ThrowParameter> build_from_dynamic_reconf(std::shared_ptr<ThrowEngineParameter> & engine_parameter, std::shared_ptr<ThrowType> & throw_type, Struct3d & ball_position, Struct3d & throw_goal_position)
+    static std::shared_ptr<ThrowParameter> build_from_dynamic_reconf(std::shared_ptr<ThrowEngineParameter> & engine_parameter, std::shared_ptr<ThrowType> & throw_type, Struct3d ball_position, Struct3d throw_goal_position)
     {
         std::shared_ptr<ThrowParameter> sp_parameter;
 
@@ -116,13 +116,13 @@ public:
         return sp_parameter;
     };
 
-    static double calculate_distace(Struct3d & point)
+    static double calculate_distace(Struct3d point)
     {
         return sqrt(pow(point.x_, 2) + pow(point.y_, 2));
     }
 
 protected:
-    static double calculate_velocity(std::shared_ptr<ThrowEngineParameter> & engine_parameter, Struct3d & throw_goal_position)
+    static double calculate_velocity(std::shared_ptr<ThrowEngineParameter> & engine_parameter, Struct3d throw_goal_position)
     {
         auto time = engine_parameter->throw_release_position_.z_ / engine_parameter->gravity_;
         return calculate_distace(throw_goal_position) / time;

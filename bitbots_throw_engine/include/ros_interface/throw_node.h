@@ -8,10 +8,12 @@
 #include "parameter/throw_engine_parameter_builder.h"
 #include "parameter/throw_node_parameter_builder.h"
 #include "parameter/throw_type_parameter_builder.h"
+#include "utility/throw_stabilizer.h"
+#include "utility/throw_ik.h"
 
 class ThrowNode
 {
-    // TODO cleanup
+    //TODO: cleanup
 public:
     ThrowNode(/* args */);
 
@@ -29,6 +31,8 @@ private:
 
     ros::NodeHandle ros_node_handle_;
     std::unique_ptr<RosPublisherFacade> up_publisher_facade_;
+    std::unique_ptr<ThrowStabilizer> up_throw_stabilizer;
+    std::unique_ptr<ThrowIK> up_throw_ik;
 
     ros::Subscriber ros_subsciber_throw_;
     ros::Subscriber ros_subsciber_robot_state_;
