@@ -10,28 +10,26 @@ std::shared_ptr<ThrowCurve> ThrowFactory::create_throw(std::shared_ptr<ThrowType
 	//TODO: testing
 	//TODO: cleanup
 	std::shared_ptr<ThrowCurve> sp_return;
-	ThrowCurve * p_return_throw = nullptr;
 
 	switch (throw_type->id_)
 	{
 	case ThrowTypeId::beziercurve:
-		p_return_throw = new BeziercurveThrow();
+		sp_return.reset(new BeziercurveThrow());
 		break;
 	case ThrowTypeId::linear_spline:
-		p_return_throw = new LinearSplineThrow();
+		sp_return.reset(new LinearSplineThrow());
 		break;
 	case ThrowTypeId::cubic_spline:
-		p_return_throw = new CubicSplineThrow();
+		sp_return.reset(new CubicSplineThrow());
 		break;
 	case ThrowTypeId::smooth_spline:
-		p_return_throw = new SmoothSplineThrow();
+		sp_return.reset(new SmoothSplineThrow());
 		break;
 	default:
-		p_return_throw = new SmoothSplineThrow();
+		sp_return.reset(new SmoothSplineThrow());
 		break;
 	}
 
-	sp_return.reset(p_return_throw);
 	return sp_return;
 }
 
