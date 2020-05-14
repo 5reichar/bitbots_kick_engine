@@ -3,7 +3,7 @@
 
 SupportPublisher::SupportPublisher(ros::NodeHandle & ros_node_handle)
 {
-    current_support_foot_ = '';
+    current_support_foot_ = '\0';
     ros_publisher_support_ = ros_node_handle.advertise<std_msgs::Char>("throw_support_foot_state", 1);
 }
 
