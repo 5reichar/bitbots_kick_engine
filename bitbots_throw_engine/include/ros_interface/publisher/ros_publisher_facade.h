@@ -10,13 +10,14 @@
 
 class RosPublisherFacade
 {
-    // TODO cleanup
+    //TODO: cleanup
 public:
     RosPublisherFacade(ros::NodeHandle & ros_node_handle, std::shared_ptr<ThrowNodeParameter> parameter);
-
-    void publish_throw();
-    void publish_odometry();
     void prepare_publisher_for_throw();
+
+    void publish_throw(bitbots_splines::JointGoals & joint_goals);
+    void publish_odometry();
+    void publish_debug();
 
 private:
     std::shared_ptr<DebugPublisher> sp_debug_publisher_;
