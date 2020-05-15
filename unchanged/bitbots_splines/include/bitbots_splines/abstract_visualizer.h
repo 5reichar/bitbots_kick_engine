@@ -3,7 +3,7 @@
 
 #include <tf2/LinearMath/Vector3.h>
 #include <visualization_msgs/Marker.h>
-#include <utils/pose_spline.h>
+#include <bitbots_splines/pose_spline.h>
 
 namespace bitbots_splines {
 

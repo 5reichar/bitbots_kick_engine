@@ -1,4 +1,5 @@
 #include "handle/pose_handle.h"
+#include "tf2_geometry_msgs/tf2_geometry_msgs.h"
 
 namespace bitbots_splines {
 

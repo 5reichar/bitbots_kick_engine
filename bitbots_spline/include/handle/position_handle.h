@@ -1,5 +1,5 @@
-#ifndef POSITION_HANDLE_H
-#define POSITION_HANDLE_H
+#ifndef BITBOTS_SPLINES_EXTENSION_POSITION_HANDLE_H
+#define BITBOTS_SPLINES_EXTENSION_POSITION_HANDLE_H
 
 #include "spline/curve.h"
 #include <tf2/LinearMath/Vector3.h>

@@ -3,8 +3,8 @@ This code is largely based on the original code by Quentin "Leph" Rouxel and Tea
 The original files can be found at:
 https://github.com/Rhoban/model/
 */
-#ifndef SMOOTHSPLINE_HPP
-#define LEPH_SMOOTHSPLINE_HPP
+#ifndef BITBOTS_SPLINES_EXTENSION_SMOOTH_SPLINE_H
+#define BITBOTS_SPLINES_EXTENSION_SMOOTH_SPLINE_H
 
 #include "spline.h"
 

@@ -1,5 +1,5 @@
-#ifndef BEZIERCURVE_HPP
-#define BEZIERCURVE_HPP
+#ifndef BITBOTS_SPLINES_EXTENSION_BEZIERCURVE_H
+#define BITBOTS_SPLINES_EXTENSION_BEZIERCURVE_H
 
 #include "curve.h"
 #include <cstdint>

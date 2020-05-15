@@ -1,4 +1,4 @@
-#include "utils/pose_spline.h"
+#include "bitbots_splines/pose_spline.h"
 
 namespace bitbots_splines {
 
@@ -109,12 +109,12 @@ SmoothSpline *PoseSpline::yaw() {
 
 std::string PoseSpline::getDebugString() {
   std::string output;
-  output += "x:\n" + x_.get_debug_string() + "\n";
-  output += "y:\n" + y_.get_debug_string() + "\n";
-  output += "z:\n" + z_.get_debug_string() + "\n";
-  output += "roll:\n" + roll_.get_debug_string() + "\n";
-  output += "pitch:\n" + pitch_.get_debug_string() + "\n";
-  output += "yaw:\n" + yaw_.get_debug_string() + "\n";
+  output += "x:\n" + x_.getDebugString() + "\n";
+  output += "y:\n" + y_.getDebugString() + "\n";
+  output += "z:\n" + z_.getDebugString() + "\n";
+  output += "roll:\n" + roll_.getDebugString() + "\n";
+  output += "pitch:\n" + pitch_.getDebugString() + "\n";
+  output += "yaw:\n" + yaw_.getDebugString() + "\n";
   return output;
 }
 

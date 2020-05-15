@@ -3,8 +3,8 @@ This code is largely based on the original code by Quentin "Leph" Rouxel and Tea
 The original files can be found at:
 https://github.com/Rhoban/model/
 */
-#ifndef CURVE_HPP
-#define CURVE_HPP
+#ifndef BITBOTS_SPLINES_EXTENSION_CURVE_H
+#define BITBOTS_SPLINES_EXTENSION_CURVE_H
 
 #include <vector>
 #include <string>

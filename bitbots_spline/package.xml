@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>bitbots_spline</name>
+  <name>bitbots_splines_extension</name>
   <version>0.0.0</version>
   <description>The bitbots_spline package</description>
 
@@ -16,11 +16,11 @@
   <buildtool_depend>catkin</buildtool_depend>
 
   <depend>roscpp</depend>
-  <depend>std_msgs</depend>
   <depend>rosconsole</depend>
-  <depend>eigen_conversions</depend>
-  <depend>bio_ik</depend>
+  <depend>tf2</depend>
+  <depend>geometry_msgs</depend>
   <depend>visualization_msgs</depend>
+  <depend>bitbots_splines</depend>
 
   <export>
      <bitbots_documentation>

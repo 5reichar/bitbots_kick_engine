@@ -3,11 +3,11 @@ This code is largely based on the original code by Quentin "Leph" Rouxel and Tea
 The original files can be found at:
 https://github.com/Rhoban/model/
 */
-#ifndef SPLINE_HPP
-#define SPLINE_HPP
+#ifndef BITBOTS_SPLINES_EXTENSION_SPLINE_H
+#define BITBOTS_SPLINES_EXTENSION_SPLINE_H
 
 #include <iostream>
-#include "utils/polynom.h"
+#include "bitbots_splines/polynom.h"
 #include "curve.h"
 
 namespace bitbots_splines

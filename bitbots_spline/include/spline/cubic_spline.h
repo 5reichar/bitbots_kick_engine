@@ -4,8 +4,8 @@ The original files can be found at:
 https://github.com/Rhoban/model/
 */
 
-#ifndef LEPH_CUBICSPLINE_HPP
-#define LEPH_CUBICSPLINE_HPP
+#ifndef BITBOTS_SPLINES_EXTENSION_CUBIC_SPLINE_H
+#define BITBOTS_SPLINES_EXTENSION_CUBIC_SPLINE_H
 
 #include "spline.h"
 

@@ -1,12 +1,12 @@
-#ifndef BITBOTS_SPLINES_INCLUDE_BITBOTS_SPLINES_POSE_SPLINE_H_
-#define BITBOTS_SPLINES_INCLUDE_BITBOTS_SPLINES_POSE_SPLINE_H_
+#ifndef BITBOTS_SPLINES_EXTENSION_POSE_HANDLE_H
+#define BITBOTS_SPLINES_EXTENSION_POSE_HANDLE_H
 
 #include "handle/position_handle.h"
-#include <tf2/LinearMath/Transform.h>
-#include <tf2/LinearMath/Quaternion.h>
+
 #include <geometry_msgs/Pose.h>
 #include <geometry_msgs/Quaternion.h>
-#include "tf2_geometry_msgs/tf2_geometry_msgs.h"
+#include <tf2/LinearMath/Transform.h>
+#include <tf2/LinearMath/Quaternion.h>
 
 namespace bitbots_splines {
 

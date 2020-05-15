@@ -1,40 +1,30 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>bitbots_throw_engine</name>
-  <version>0.0.0</version>
-  <description>The bitbots_throw_engine package</description>
-  
+  <name>bitbots_splines</name>
+  <version>1.0.0</version>
+  <description>This package provides a library for splines which is based on the code by team Rhoban FC</description>
+
   <maintainer email="bestmann@informatik.uni-hamburg.de">Marc Bestmann</maintainer>
   <maintainer email="info@bit-bots.de">Hamburg Bit-Bots</maintainer>
-  <maintainer email="5reichar@informatik.uni-hamburg.de">W. Adrian Reichardt</maintainer>
 
   <author email="bestmann@informatik.uni-hamburg.de">Marc Bestmann</author>
   <author email="info@bit-bots.de">Hamburg Bit-Bots</author>
-  <author email="5reichar@informatik.uni-hamburg.de">W. Adrian Reichardt</author>
   <author>Rhoban FC</author>
-  
+
   <license>MIT</license>
+
 
   <buildtool_depend>catkin</buildtool_depend>
 
   <depend>roscpp</depend>
   <depend>std_msgs</depend>
-  <depend>dynamic_reconfigure</depend>
-  <depend>message_runtime</depend>
-
-  <depend>tf2</depend>
-  <depend>bio_ik</depend>
+  <depend>rosconsole</depend>
   <depend>eigen_conversions</depend>
-  <depend>geometry_msgs</depend>
-  <depend>humanoid_league_msgs</depend>
-  <depend>visualization_msgs</depend>
-  
-  <depend>bitbots_splines_extention</depend>
-  <depend>bitbots_msgs</depend>
+  <depend>bio_ik</depend>
 
   <export>
     <bitbots_documentation>
-      <status>TODO</status>
+      <status>stable</status>
       <language>c++</language>
     </bitbots_documentation>
   </export>
