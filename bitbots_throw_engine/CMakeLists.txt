@@ -121,7 +121,7 @@ generate_dynamic_reconfigure_options(
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES ${PROJECT_NAME}
-  CATKIN_DEPENDS roscpp std_msgs geometry_msgs humanoid_league_msgs bitbots_spline visualization_msgs message_runtime
+  CATKIN_DEPENDS 
 #  DEPENDS system_lib
 )
 
@@ -158,11 +158,6 @@ set(
   src/utility/throw_stabilizer.cpp
 )
 
-## Declare a C++ library
-add_library(
-  ${PROJECT_NAME}
-  ${SOURCES}
-)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -173,7 +168,7 @@ add_library(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 add_executable(
-    throw_engine_node src/ros_interface/throw_node.cpp
+    throw_engine_node ${SOURCES}
 )
 
 ## Rename C++ executable without prefix
@@ -187,12 +182,11 @@ add_executable(
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 add_dependencies(throw_engine_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} ${PROJECT_NAME}_gencfg)
-add_dependencies(${PROJECT_NAME} ${catkin_EXPORTED_TARGETS} ${PROJECT_NAME}_generate_messages_cpp)
+
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(
     throw_engine_node
-    ${PROJECT_NAME}
     ${catkin_LIBRARIES}
 )
 
