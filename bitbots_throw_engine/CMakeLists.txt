@@ -16,7 +16,7 @@ find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   tf2
   bio_ik
-  bitbots_splines_extention
+  bitbots_splines_extension
   humanoid_league_msgs
   bitbots_msgs
   visualization_msgs

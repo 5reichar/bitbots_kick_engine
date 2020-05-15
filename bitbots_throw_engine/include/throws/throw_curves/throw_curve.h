@@ -3,7 +3,7 @@
 
 #include <memory>
 #include "parameter/throw_parameter.h"
-#include "../../bitbots_spline/include/handle/pose_handle.h"
+#include "../../bitbots_splines_extension/include/handle/pose_handle.h"
 
 class ThrowCurve
 {

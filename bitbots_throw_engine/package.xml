@@ -29,7 +29,7 @@
   <depend>humanoid_league_msgs</depend>
   <depend>visualization_msgs</depend>
   
-  <depend>bitbots_splines_extention</depend>
+  <depend>bitbots_splines_extension</depend>
   <depend>bitbots_msgs</depend>
 
   <export>
