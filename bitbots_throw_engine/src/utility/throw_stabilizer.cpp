@@ -1,5 +1,5 @@
 #include "utility/throw_stabilizer.h"
-//#include "../../bitbots_spline/include/utils/reference_goals.h"
+#include "unchanged/bitbots_splines/include/bitbots_splines/reference_goals.h"
 
 ThrowStabilizer::ThrowStabilizer()
 {

@@ -6,7 +6,7 @@
 #include "parameter/throw_parameter_builder.h"
 #include "parameter/throw_type_parameter.h"
 #include "parameter/throw_engine_parameter.h"
-#include "../../bitbots_spline/include/utils/abstract_engine.h"
+#include "../../unchanged/bitbots_splines/include/bitbots_splines/abstract_engine.h"
 
 class ThrowEngine : public bitbots_splines::AbstractEngine<ThrowRequest, ThrowResponse>
 {
