@@ -2,7 +2,7 @@
 #define THROW_IK_H
 
 #include "throws/throw_curves/throw_curve.h"
-#include "../../unchanged/bitbots_splines/include/bitbots_splines/abstract_ik.h"
+#include "bitbots_splines/abstract_ik.h"
 
 class ThrowIK : public bitbots_splines::AbstractIK
 {

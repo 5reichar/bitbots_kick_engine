@@ -2,7 +2,7 @@
 #define CONTROLER_COMMAND_PUBLISHER_H
 
 #include "ros/ros.h"
-#include "../../unchanged/bitbots_splines/include/bitbots_splines/abstract_ik.h"
+#include "bitbots_splines/abstract_ik.h"
 
 class ControllerCommandPublisher
 {

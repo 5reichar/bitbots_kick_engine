@@ -3,7 +3,7 @@
 
 #include <memory>
 #include "utility/throw_utilities.h"
-#include "../../unchanged/bitbots_splines/include/bitbots_splines/abstract_stabilizer.h"
+#include "bitbots_splines/abstract_stabilizer.h"
 
 class ThrowStabilizer : public bitbots_splines::AbstractStabilizer<ThrowResponse>
 {

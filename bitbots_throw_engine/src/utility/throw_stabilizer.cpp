@@ -1,5 +1,5 @@
 #include "utility/throw_stabilizer.h"
-#include "unchanged/bitbots_splines/include/bitbots_splines/reference_goals.h"
+#include "bitbots_splines/reference_goals.h"
 
 ThrowStabilizer::ThrowStabilizer()
 {
@@ -16,7 +16,6 @@ std::unique_ptr<bio_ik::BioIKKinematicsQueryOptions> ThrowStabilizer::stabilize(
   ik_options->replace = true;
   ik_options->return_approximate_solution = true;
 
-  /*
   //TODO: Fixing this; ReferencePoseGoal creates errors in compiler, don't know why
   // trunk goal
   auto *trunk_goal = new ReferencePoseGoal();
@@ -44,7 +43,6 @@ std::unique_ptr<bio_ik::BioIKKinematicsQueryOptions> ThrowStabilizer::stabilize(
   right_hand_goal->setReferenceLinkName("r_sole"); //TODO: rework maybe
   right_hand_goal->setWeight(1);
   ik_options->goals.emplace_back(right_hand_goal);
-  */
 
   return std::move(ik_options);
 }
