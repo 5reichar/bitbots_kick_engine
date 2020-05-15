@@ -62,6 +62,7 @@ private:
     IKParams params;
     RobotInfo modelInfo;
     double dpos, drot, dtwist;
+#if (MOVEIT_FCL_VERSION < FCL_VERSION_CHECK(0, 6, 0))
     struct CollisionShape
     {
         std::vector<Vector3> vertices;
@@ -83,6 +84,7 @@ private:
         }
     };
     std::vector<CollisionLink> collision_links;
+#endif
     size_t addTipLink(const moveit::core::LinkModel* link_model);
 
 public:
@@ -103,9 +105,9 @@ public:
         double rotation_scale;
         double rotation_scale_sq;
         Frame frame;
-        tf::Vector3 target;
-        tf::Vector3 direction;
-        tf::Vector3 axis;
+        tf2::Vector3 target;
+        tf2::Vector3 direction;
+        tf2::Vector3 axis;
         double distance;
         ssize_t active_variable_index;
         double variable_position;
