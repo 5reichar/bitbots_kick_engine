@@ -1,5 +1,5 @@
 #include "throws/throw_curves/linear_spline_throw.h"
-#include "../../bitbots_spline/include/spline/linear_spline.h"
+#include "../../bitbots_splines_extension/include/spline/linear_spline.h"
 
 LinearSplineThrow::LinearSplineThrow()
 	:ThrowCurve
