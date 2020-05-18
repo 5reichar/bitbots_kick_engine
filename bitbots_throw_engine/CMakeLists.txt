@@ -72,7 +72,7 @@ set(
   src/utility/throw_stabilizer.cpp
 )
 
-add_executable(throw_engine_node src/ros_interface/throw_node.cpp)
+add_executable(throw_engine_node ${SOURCES})
 
 add_dependencies(throw_engine_node ${PROJECT_NAME}_gencfg)
 
