@@ -11,7 +11,6 @@ ThrowIK::~ThrowIK()
   {
     delete arms_joints_group_;
   }
-  
 }
 
 void ThrowIK::init(moveit::core::RobotModelPtr kinematic_model)
@@ -25,30 +24,26 @@ void ThrowIK::init(moveit::core::RobotModelPtr kinematic_model)
 
 bitbots_splines::JointGoals ThrowIK::calculate(const std::unique_ptr<bio_ik::BioIKKinematicsQueryOptions> ik_goals)
 {
-  bool success = goal_state_->setFromIK(arms_joints_group_,
-                                        EigenSTL::vector_Isometry3d(),
-                                        std::vector<std::string>(),
-                                        bio_ik_timeout_,
-                                        moveit::core::GroupStateValidityCallbackFn(),
-                                        *ik_goals);
-  if (success)
+  if (!goal_state_->setFromIK(arms_joints_group_,
+                              EigenSTL::vector_Isometry3d(),
+                              std::vector<std::string>(),
+                              bio_ik_timeout_,
+                              moveit::core::GroupStateValidityCallbackFn(),
+                              *ik_goals))
   {
-    /* retrieve joint names and associated positions from  */
-    std::vector<std::string> joint_names = arms_joints_group_->getActiveJointModelNames();
-    std::vector<double> joint_goals;
-    goal_state_->copyJointGroupPositions(arms_joints_group_, joint_goals);
+    throw std::runtime_error("ThrowIK::calculate: Calculation failed");
+  }
 
-    /* construct result object */
-    bitbots_splines::JointGoals result;
-    result.first = joint_names;
-    result.second = joint_goals;
-    return result;
-  }
-  else
-  {
-    /* maybe do something better here? */
-    return bitbots_splines::JointGoals();
-  }
+  /* retrieve joint names and associated positions from  */
+  std::vector<std::string> joint_names = arms_joints_group_->getActiveJointModelNames();
+  std::vector<double> joint_goals;
+  goal_state_->copyJointGroupPositions(arms_joints_group_, joint_goals);
+
+  /* construct result object */
+  bitbots_splines::JointGoals result;
+  result.first = joint_names;
+  result.second = joint_goals;
+  return result;
 }
 
 void ThrowIK::reset()

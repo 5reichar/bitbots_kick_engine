@@ -68,7 +68,18 @@ void ThrowNode::throw_callback(const bitbots_throw_engine::throw_action action)
 	{
 		auto response = up_throw_engine_->update(1/sp_node_parameter_->engine_frequency_);
 		auto ik_goals = stabilizer.stabilize(response);
-		auto joint_goals = up_throw_ik_->calculate(std::move(ik_goals));
+		bitbots_splines::JointGoals joint_goals;
+
+		try
+		{
+			joint_goals = up_throw_ik_->calculate(std::move(ik_goals));
+		}
+		catch(const std::runtime_error& e)
+		{
+			std::cerr << e.what() << '\n';
+			// maybe add some more diagnostic logic
+			joint_goals = bitbots_splines::JointGoals();
+		}
 		
 		up_publisher_facade_->publish_throw(joint_goals);
 		up_publisher_facade_->publish_odometry();
