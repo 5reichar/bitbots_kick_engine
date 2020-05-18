@@ -17,7 +17,7 @@ public:
 
     void publish_throw(bitbots_splines::JointGoals & joint_goals);
     void publish_odometry();
-    void publish_debug();
+    void publish_debug(ThrowResponse response, bitbots_splines::JointGoals joint_goals);
 
 private:
     std::shared_ptr<DebugPublisher> sp_debug_publisher_;

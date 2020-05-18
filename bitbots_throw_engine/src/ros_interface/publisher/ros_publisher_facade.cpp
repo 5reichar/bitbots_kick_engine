@@ -30,11 +30,13 @@ void RosPublisherFacade::publish_odometry()
 	sp_odometry_publisher_->publish(sp_node_parameter_->odom_publish_factor_);
 }
 
-void RosPublisherFacade::publish_debug()
+void RosPublisherFacade::publish_debug(ThrowResponse response, bitbots_splines::JointGoals joint_goals)
 {
+	sp_debug_publisher_->publish_engine_debug(response);
+
 	if(sp_node_parameter_->debug_active_)
 	{
-		sp_debug_publisher_->publish();
-		sp_debug_publisher_->publish_markers();
+		sp_debug_publisher_->publish_ik_debug(response, joint_goals);
+		sp_debug_publisher_->publish_throw_markers(response);
 	}
 }

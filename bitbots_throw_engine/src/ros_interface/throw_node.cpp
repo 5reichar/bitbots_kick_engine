@@ -27,7 +27,7 @@ ThrowNode::ThrowNode()
 		ROS_FATAL("No robot model loaded, killing quintic walk.");
 		exit(1);
 	}
-	up_throw_ik->init(kinematic_model);
+	up_throw_ik_->init(kinematic_model);
 }
 
 void ThrowNode::init_ros_subcribtions()
@@ -68,11 +68,11 @@ void ThrowNode::throw_callback(const bitbots_throw_engine::throw_action action)
 	{
 		auto response = up_throw_engine_->update(1/sp_node_parameter_->engine_frequency_);
 		auto ik_goals = stabilizer.stabilize(response);
-		auto joint_goals = up_throw_ik->calculate(std::move(ik_goals));
+		auto joint_goals = up_throw_ik_->calculate(std::move(ik_goals));
 		
 		up_publisher_facade_->publish_throw(joint_goals);
 		up_publisher_facade_->publish_odometry();
-		up_publisher_facade_->publish_debug();
+		up_publisher_facade_->publish_debug(response, joint_goals);
 
 		ros::spinOnce();
 		loopRate.sleep();
@@ -91,7 +91,7 @@ void ThrowNode::throw_engine_params_config_callback(bitbots_throw_engine::throw_
 {
 	sp_node_parameter_ = ThrowNodeParameterBuilder::build_from_dynamic_reconf(config, level);
 
-	up_throw_ik->set_bio_ik_timeout(sp_node_parameter_->bio_ik_time_);
+	up_throw_ik_->set_bio_ik_timeout(sp_node_parameter_->bio_ik_time_);
 	up_throw_engine_->set_engine_parameter(ThrowEngineParameterBuilder::build_from_dynamic_reconf(config, level));
 }
 

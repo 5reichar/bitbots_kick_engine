@@ -32,7 +32,7 @@ private:
 
     ros::NodeHandle ros_node_handle_;
     std::unique_ptr<RosPublisherFacade> up_publisher_facade_;
-    std::unique_ptr<ThrowIK> up_throw_ik;
+    std::unique_ptr<ThrowIK> up_throw_ik_;
 
     ros::Subscriber ros_subsciber_throw_;
     ros::Subscriber ros_subsciber_robot_state_;
