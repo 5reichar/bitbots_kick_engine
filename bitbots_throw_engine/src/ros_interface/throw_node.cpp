@@ -1,9 +1,11 @@
 #include "ros_interface/throw_node.h"
-#include <dynamic_reconfigure/server.h>
-#include "utility/throw_utilities.h"
 
-#include <moveit/robot_model_loader/robot_model_loader.h>
+#include <dynamic_reconfigure/server.h>
 #include <moveit/kinematics_base/kinematics_base.h>
+#include <moveit/robot_model_loader/robot_model_loader.h>
+
+#include "utility/throw_utilities.h"
+#include "utility/throw_stabilizer.h"
 
 ThrowNode::ThrowNode()
 {
@@ -57,19 +59,15 @@ void ThrowNode::throw_callback(const bitbots_throw_engine::throw_action action)
 	//TODO: testing
 	//TODO: cleanup
 
-	up_publisher_facade_->prepare_publisher_for_throw();
-
-	ThrowRequest request;
-	request.ball_position_ = {action.ball_position.x, action.ball_position.y, action.ball_position.z };
-	request.goal_position_ = {action.throw_target.x, action.throw_target.y, action.throw_target.z };
-	up_throw_engine_->set_goals(request);
-
+	ThrowStabilizer stabilizer;
 	ros::Rate loopRate(sp_node_parameter_->engine_frequency_);
+	up_publisher_facade_->prepare_publisher_for_throw();
+	up_throw_engine_->set_goals(create_throw_request(action));
 
 	while (ros::ok())
 	{
 		auto response = up_throw_engine_->update(1/sp_node_parameter_->engine_frequency_);
-		auto ik_goals = up_throw_stabilizer->stabilize(response);
+		auto ik_goals = stabilizer.stabilize(response);
 		auto joint_goals = up_throw_ik->calculate(std::move(ik_goals));
 		
 		up_publisher_facade_->publish_throw(joint_goals);
@@ -79,7 +77,14 @@ void ThrowNode::throw_callback(const bitbots_throw_engine::throw_action action)
 		ros::spinOnce();
 		loopRate.sleep();
 	}
+}
 
+ThrowRequest ThrowNode::create_throw_request(const bitbots_throw_engine::throw_action action)
+{
+	ThrowRequest request;
+	request.ball_position_ = {action.ball_position.x, action.ball_position.y, action.ball_position.z };
+	request.goal_position_ = {action.throw_target.x, action.throw_target.y, action.throw_target.z };
+	return request;
 }
 
 void ThrowNode::throw_engine_params_config_callback(bitbots_throw_engine::throw_engine_paramsConfig & config , uint32_t level)
