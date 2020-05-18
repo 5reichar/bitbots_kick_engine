@@ -57,11 +57,11 @@ set(
   SOURCES
   src/engine/throw_engine.cpp
   src/ros_interface/throw_node.cpp
-  src/ros_interface/publisher/ros_publisher_facade
-  src/ros_interface/publisher/controler_command_publisher
-  src/ros_interface/publisher/odometry_publisher
-  src/ros_interface/publisher/support_publisher
-  src/ros_interface/publisher/debug_publisher
+  src/ros_interface/publisher/ros_publisher_facade.cpp
+  src/ros_interface/publisher/controler_command_publisher.cpp
+  src/ros_interface/publisher/odometry_publisher.cpp
+  src/ros_interface/publisher/support_publisher.cpp
+  src/ros_interface/publisher/debug_publisher.cpp
   src/throws/throw_factory.cpp
   src/throws/throw_curves/throw_curve.cpp
   src/throws/throw_curves/beziercurve_throw.cpp
