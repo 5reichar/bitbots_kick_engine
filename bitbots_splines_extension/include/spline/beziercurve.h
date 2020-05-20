@@ -10,14 +10,14 @@ namespace bitbots_splines
 class Beziercurve : public Curve
 {
 public:
-    double pos(double t) const override;
-    double vel(double t) const override;
-    double acc(double t) const override;
+    double position(double t) const override;
+    double velocity(double t) const override;
+    double acceleration(double t) const override;
     double jerk(double t) const override;
 
-    double pos_mod(double t) const override;
-    double vel_mod(double t) const override;
-    double acc_mod(double t) const override;
+    double position_mod(double t) const override;
+    double velocity_mod(double t) const override;
+    double acceleration_mod(double t) const override;
     double jerk_mod(double t) const override;
 
 private:

@@ -15,14 +15,14 @@ namespace bitbots_splines
 class Curve
 {
 public:
-    virtual double pos(double t) const = 0;
-    virtual double vel(double t) const = 0;
-    virtual double acc(double t) const = 0;
+    virtual double position(double t) const = 0;
+    virtual double velocity(double t) const = 0;
+    virtual double acceleration(double t) const = 0;
     virtual double jerk(double t) const = 0;
 
-    virtual double pos_mod(double t) const = 0;
-    virtual double vel_mod(double t) const = 0;
-    virtual double acc_mod(double t) const = 0;
+    virtual double position_mod(double t) const = 0;
+    virtual double velocity_mod(double t) const = 0;
+    virtual double acceleration_mod(double t) const = 0;
     virtual double jerk_mod(double t) const = 0;
 
     struct Point

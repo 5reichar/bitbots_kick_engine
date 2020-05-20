@@ -6,7 +6,7 @@ https://github.com/Rhoban/model/
 #ifndef BITBOTS_SPLINES_EXTENSION_SMOOTH_SPLINE_H
 #define BITBOTS_SPLINES_EXTENSION_SMOOTH_SPLINE_H
 
-#include "spline.h"
+#include "spline_base.h"
 
 namespace bitbots_splines
 {
@@ -17,10 +17,10 @@ namespace bitbots_splines
  * Implementation of 5th order polynomial
  * splines trajectory known to minimize jerk
  */
-class SmoothSpline : public Spline
+class SmoothSpline : public SplineBase
 {
 public:
-    using Spline::add_point;
+    using SplineBase::add_point;
       /**
       * Add a new point with its time, position value,
       * velocity and acceleration

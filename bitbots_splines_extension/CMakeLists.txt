@@ -32,7 +32,7 @@ set(SOURCES
   src/visualisation/visual_splines_node.cpp
   src/visualisation/visual_splines_material.cpp
   src/spline/curve.cpp
-  src/spline/spline.cpp
+  src/spline/spline_base.cpp
   src/spline/linear_spline.cpp
   src/spline/cubic_spline.cpp
   src/spline/smooth_spline.cpp

@@ -7,7 +7,7 @@ https://github.com/Rhoban/model/
 #ifndef BITBOTS_SPLINES_EXTENSION_CUBIC_SPLINE_H
 #define BITBOTS_SPLINES_EXTENSION_CUBIC_SPLINE_H
 
-#include "spline.h"
+#include "spline_base.h"
 
 namespace bitbots_splines
 {
@@ -18,10 +18,10 @@ namespace bitbots_splines
  * Implementation of 3th order
  * polynomial splines
  */
-class CubicSpline : public Spline
+class CubicSpline : public SplineBase
 {
 public:
-    using Spline::add_point;
+    using SplineBase::add_point;
      /**
       * Add a new point with its time, position value,
       * and velocity

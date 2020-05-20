@@ -13,13 +13,13 @@ namespace bitbots_splines
 
 void LinearSpline::add_point(double time, double position)
 {
-    Spline::Point point = {time, position, 0.0, 0.0};
+    SplineBase::Point point = {time, position, 0.0, 0.0};
     add_point(point);
 }
 
 void LinearSpline::compute_splines()
 {
-    Spline::splines_.clear();
+    SplineBase::splines_.clear();
     if (points_.size() < 2)
     {
         return;
@@ -40,9 +40,9 @@ void LinearSpline::compute_splines()
             Polynom poly(1);
             poly(0) = points_[i - 1].position_;
             poly(1) = (points_[i].position_ - points_[i - 1].position_) / time;
-            Spline::splines_.push_back({poly,
-                                        points_[i - 1].time_,
-                                        points_[i].time_});
+            SplineBase::splines_.push_back({poly,
+                                            points_[i - 1].time_,
+                                            points_[i].time_});
         }
     }
 }

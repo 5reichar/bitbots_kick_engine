@@ -8,12 +8,12 @@ namespace bitbots_splines
  *  Position in time t
  */
 
-double Beziercurve::pos(double t) const
+double Beziercurve::position(double t) const
 {
     return calc_bezier_curve(t, &Beziercurve::calc_bernstein_polynomial);
 }
 
-double Beziercurve::pos_mod(double t) const
+double Beziercurve::position_mod(double t) const
 {
     return calc_bezier_curve(t, &Beziercurve::calc_bernstein_polynomial_mod);
 }
@@ -35,12 +35,12 @@ double Beziercurve::calc_bezier_curve(double const time, double (Beziercurve::*b
  *  Velocity in time t
  */
 
-double Beziercurve::vel(double t) const
+double Beziercurve::velocity(double t) const
 {
     return calc_bezier_curve_derivative(t, &Beziercurve::calc_bernstein_polynomial);
 }
 
-double Beziercurve::vel_mod(double t) const
+double Beziercurve::velocity_mod(double t) const
 {
     return calc_bezier_curve_derivative(t, &Beziercurve::calc_bernstein_polynomial_mod);
 }
@@ -62,12 +62,12 @@ double Beziercurve::calc_bezier_curve_derivative(double const time, double (Bezi
  *  Accelaration in time t
  */
 
-double Beziercurve::acc(double t) const
+double Beziercurve::acceleration(double t) const
 {
     return calc_bezier_curve_second_derivative(t, &Beziercurve::calc_bernstein_polynomial);
 }
 
-double Beziercurve::acc_mod(double t) const
+double Beziercurve::acceleration_mod(double t) const
 {
     return calc_bezier_curve_second_derivative(t, &Beziercurve::calc_bernstein_polynomial_mod);
 }

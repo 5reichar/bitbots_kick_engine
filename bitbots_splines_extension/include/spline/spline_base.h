@@ -19,7 +19,7 @@ namespace bitbots_splines
  * Generic one dimentional
  * polynomial spline generator
  */
-class Spline : public Curve
+class SplineBase : public Curve
 {
 public:
      /**
@@ -38,9 +38,9 @@ public:
          * at given t. Compute spline value,
          * its first, second and third derivative
          */
-     virtual double pos(double t) const override;
-     virtual double vel(double t) const override;
-     virtual double acc(double t) const override;
+     virtual double position(double t) const override;
+     virtual double velocity(double t) const override;
+     virtual double acceleration(double t) const override;
      virtual double jerk(double t) const override;
 
      /**
@@ -48,9 +48,9 @@ public:
          * value, first, second and third derivative
          * with given t bound between 0 and 1
          */
-     virtual double pos_mod(double t) const override;
-     virtual double vel_mod(double t) const override;
-     virtual double acc_mod(double t) const override;
+     virtual double position_mod(double t) const override;
+     virtual double velocity_mod(double t) const override;
+     virtual double acceleration_mod(double t) const override;
      virtual double jerk_mod(double t) const override;
 
      /**
@@ -89,7 +89,7 @@ public:
          * Replace this spline part with the
          * internal data of given spline
          */
-     void copy_data(const Spline &sp);
+     void copy_data(const SplineBase &sp);
 
 protected:
      /**

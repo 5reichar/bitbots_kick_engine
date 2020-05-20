@@ -14,13 +14,13 @@ namespace bitbots_splines
 void SmoothSpline::add_point(double time, double position,
                             double velocity, double acceleration)
 {
-    Spline::Point point = {time, position, velocity, acceleration};
+    SplineBase::Point point = {time, position, velocity, acceleration};
     add_point(point);
 }
 
 void SmoothSpline::compute_splines()
 {
-    Spline::splines_.clear();
+    SplineBase::splines_.clear();
     if (points_.size() < 2)
     {
         return;
@@ -38,39 +38,39 @@ void SmoothSpline::compute_splines()
         double time = points_[i].time_ - points_[i - 1].time_;
         if (time > 0.00001)
         {
-            Spline::splines_.push_back({polynom_fit(time,
-                                                    points_[i - 1].position_, points_[i - 1].velocity_, points_[i - 1].acceleration_,
-                                                    points_[i].position_, points_[i].velocity_, points_[i].acceleration_),
-                                        points_[i - 1].time_,
-                                        points_[i].time_});
+            SplineBase::splines_.push_back({polynom_fit(time,
+                                                        points_[i - 1].position_, points_[i - 1].velocity_, points_[i - 1].acceleration_,
+                                                        points_[i].position_, points_[i].velocity_, points_[i].acceleration_),
+                                            points_[i - 1].time_,
+                                            points_[i].time_});
         }
     }
 }
 
 void SmoothSpline::import_call_back()
 {
-    size_t size = Spline::splines_.size();
+    size_t size = SplineBase::splines_.size();
     if (size == 0)
     {
         return;
     }
 
-    double tBegin = Spline::splines_.front().min;
+    double tBegin = SplineBase::splines_.front().min;
     points_.push_back({tBegin,
-                       Spline::pos(tBegin),
-                       Spline::vel(tBegin),
-                       Spline::acc(tBegin)});
+                       SplineBase::position(tBegin),
+                       SplineBase::velocity(tBegin),
+                       SplineBase::acceleration(tBegin)});
 
     for (size_t i = 1; i < size; i++)
     {
-        double t1 = Spline::splines_[i - 1].max;
-        double t2 = Spline::splines_[i].min;
-        double pos1 = Spline::pos(t1);
-        double vel1 = Spline::vel(t1);
-        double acc1 = Spline::acc(t1);
-        double pos2 = Spline::pos(t2);
-        double vel2 = Spline::vel(t2);
-        double acc2 = Spline::acc(t2);
+        double t1 = SplineBase::splines_[i - 1].max;
+        double t2 = SplineBase::splines_[i].min;
+        double pos1 = SplineBase::position(t1);
+        double vel1 = SplineBase::velocity(t1);
+        double acc1 = SplineBase::acceleration(t1);
+        double pos2 = SplineBase::position(t2);
+        double vel2 = SplineBase::velocity(t2);
+        double acc2 = SplineBase::acceleration(t2);
 
         if (
             fabs(t2 - t1) < 0.0001 &&
@@ -87,11 +87,11 @@ void SmoothSpline::import_call_back()
         }
     }
 
-    double tEnd = Spline::splines_.back().max;
+    double tEnd = SplineBase::splines_.back().max;
     points_.push_back({tEnd,
-                       Spline::pos(tEnd),
-                       Spline::vel(tEnd),
-                       Spline::acc(tEnd)});
+                       SplineBase::position(tEnd),
+                       SplineBase::velocity(tEnd),
+                       SplineBase::acceleration(tEnd)});
 }
 
 Polynom SmoothSpline::polynom_fit(double t,

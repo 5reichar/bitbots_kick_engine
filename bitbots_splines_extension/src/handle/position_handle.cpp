@@ -17,24 +17,24 @@ geometry_msgs::Point PositionHandle::get_geometry_msg_position(double time) {
 
 tf2::Vector3 PositionHandle::get_position(double time) {
   tf2::Vector3 pos;
-  pos[0] = x_->pos(time);
-  pos[1] = y_->pos(time);
-  pos[2] = z_->pos(time);
+  pos[0] = x_->position(time);
+  pos[1] = y_->position(time);
+  pos[2] = z_->position(time);
   return pos;
 }
 
 tf2::Vector3 PositionHandle::get_velocity(double time) {
   tf2::Vector3 vel;
-  vel[0] = x_->vel(time);
-  vel[1] = y_->vel(time);
-  vel[2] = z_->vel(time);
+  vel[0] = x_->velocity(time);
+  vel[1] = y_->velocity(time);
+  vel[2] = z_->velocity(time);
   return vel;
 }
 tf2::Vector3 PositionHandle::get_acceleration(double time) {
   tf2::Vector3 acc;
-  acc[0] = x_->acc(time);
-  acc[1] = y_->acc(time);
-  acc[2] = z_->acc(time);
+  acc[0] = x_->acceleration(time);
+  acc[1] = y_->acceleration(time);
+  acc[2] = z_->acceleration(time);
   return acc;
 }
 

@@ -31,23 +31,23 @@ geometry_msgs::Quaternion PoseHandle::get_geometry_msg_orientation(double time) 
 
 tf2::Vector3 PoseHandle::get_euler_angles(double time) {
   tf2::Vector3 pos;
-  pos[0] = roll_->pos(time);
-  pos[1] = pitch_->pos(time);
-  pos[2] = yaw_->pos(time);
+  pos[0] = roll_->position(time);
+  pos[1] = pitch_->position(time);
+  pos[2] = yaw_->position(time);
   return pos;
 }
 tf2::Vector3 PoseHandle::get_euler_velocity(double time) {
   tf2::Vector3 vel;
-  vel[0] = roll_->vel(time);
-  vel[1] = pitch_->vel(time);
-  vel[2] = yaw_->vel(time);
+  vel[0] = roll_->velocity(time);
+  vel[1] = pitch_->velocity(time);
+  vel[2] = yaw_->velocity(time);
   return vel;
 }
 tf2::Vector3 PoseHandle::get_euler_acceleration(double time) {
   tf2::Vector3 acc;
-  acc[0] = roll_->acc(time);
-  acc[1] = pitch_->acc(time);
-  acc[2] = yaw_->acc(time);
+  acc[0] = roll_->acceleration(time);
+  acc[1] = pitch_->acceleration(time);
+  acc[2] = yaw_->acceleration(time);
   return acc;
 }
 

@@ -131,15 +131,15 @@ uint32_t VisualSplinesMaterial::get_number_of_points() const
 
 double VisualSplinesMaterial::get_position_from_x(double const time)
 {
-    return m_p_curve_x == NULL ? 0.0 : m_p_curve_x->pos(time);
+    return m_p_curve_x == NULL ? 0.0 : m_p_curve_x->position(time);
 }
 
 double VisualSplinesMaterial::get_position_from_y(double const time)
 {
-    return m_p_curve_y == NULL ? 0.0 : m_p_curve_y->pos(time);
+    return m_p_curve_y == NULL ? 0.0 : m_p_curve_y->position(time);
 }
 
 double VisualSplinesMaterial::get_position_from_z(double const time)
 {
-    return m_p_curve_z == NULL ? 0.0 : m_p_curve_z->pos(time);
+    return m_p_curve_z == NULL ? 0.0 : m_p_curve_z->position(time);
 }

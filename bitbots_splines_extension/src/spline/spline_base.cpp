@@ -5,46 +5,46 @@ https://github.com/Rhoban/model/
 */
 #include <iomanip>
 #include <stdexcept>
-#include "spline/spline.h"
+#include "spline/spline_base.h"
 
 namespace bitbots_splines
 {
 
-double Spline::pos(double t) const
+double SplineBase::position(double t) const
 {
     return interpolation(t, &Polynom::pos);
 }
-double Spline::vel(double t) const
+double SplineBase::velocity(double t) const
 {
     return interpolation(t, &Polynom::vel);
 }
-double Spline::acc(double t) const
+double SplineBase::acceleration(double t) const
 {
     return interpolation(t, &Polynom::acc);
 }
-double Spline::jerk(double t) const
+double SplineBase::jerk(double t) const
 {
     return interpolation(t, &Polynom::jerk);
 }
 
-double Spline::pos_mod(double t) const
+double SplineBase::position_mod(double t) const
 {
     return interpolation_mod(t, &Polynom::pos);
 }
-double Spline::vel_mod(double t) const
+double SplineBase::velocity_mod(double t) const
 {
     return interpolation_mod(t, &Polynom::vel);
 }
-double Spline::acc_mod(double t) const
+double SplineBase::acceleration_mod(double t) const
 {
     return interpolation_mod(t, &Polynom::acc);
 }
-double Spline::jerk_mod(double t) const
+double SplineBase::jerk_mod(double t) const
 {
     return interpolation_mod(t, &Polynom::jerk);
 }
 
-double Spline::min() const
+double SplineBase::min() const
 {
     if (splines_.size() == 0)
     {
@@ -55,7 +55,7 @@ double Spline::min() const
         return splines_.front().min;
     }
 }
-double Spline::max() const
+double SplineBase::max() const
 {
     if (splines_.size() == 0)
     {
@@ -67,12 +67,12 @@ double Spline::max() const
     }
 }
 
-void Spline::add_point_call_back()
+void SplineBase::add_point_call_back()
 {
     compute_splines();
 }
 
-void Spline::export_data(std::ostream &os) const
+void SplineBase::export_data(std::ostream &os) const
 {
     for (size_t i = 0; i < splines_.size(); i++)
     {
@@ -86,7 +86,7 @@ void Spline::export_data(std::ostream &os) const
     }
     os << std::endl;
 }
-void Spline::import_data(std::istream &is)
+void SplineBase::import_data(std::istream &is)
 {
     bool isFormatError;
     while (is.good())
@@ -136,34 +136,34 @@ void Spline::import_data(std::istream &is)
     import_call_back();
 }
 
-size_t Spline::size() const
+size_t SplineBase::size() const
 {
     return splines_.size();
 }
 
-const Spline::Spline_t &Spline::part(size_t index) const
+const SplineBase::Spline_t &SplineBase::part(size_t index) const
 {
     return splines_.at(index);
 }
 
-void Spline::add_part(const Polynom &poly,
+void SplineBase::add_part(const Polynom &poly,
                      double min, double max)
 {
     splines_.push_back({poly, min, max});
 }
 
-void Spline::copy_data(const Spline &sp)
+void SplineBase::copy_data(const SplineBase &sp)
 {
     splines_ = sp.splines_;
     //Call possible post import
     import_call_back();
 }
 
-void Spline::import_call_back()
+void SplineBase::import_call_back()
 {
 }
 
-double Spline::interpolation(double x,
+double SplineBase::interpolation(double x,
                              double (Polynom::*func)(double) const) const
 {
     //Empty case
@@ -204,7 +204,7 @@ double Spline::interpolation(double x,
     return (splines_[indexUp].polynom.*func)(x - splines_[indexUp].min);
 }
 
-double Spline::interpolation_mod(double x,
+double SplineBase::interpolation_mod(double x,
                                 double (Polynom::*func)(double) const) const
 {
     if (x < 0.0)
