@@ -38,6 +38,14 @@ void DebugPublisher::publish_ik_debug(ThrowResponse response, bitbots_splines::J
 
     bitbots_throw_engine::throw_debug msg;
 
+    tf2::toMsg(response.support_foot_to_left_hand_, msg.left_hand_goal);
+    tf2::toMsg(response.support_foot_to_right_hand_, msg.right_hand_goal);
+    tf2::toMsg(response.support_foot_to_trunk_, msg.trunk_goal);
+
+    publishArrowMarker("throw_engine_left_hand_goal", "base_link", msg.left_foot_goal, 0, 1, 0, 1);
+    publishArrowMarker("throw_engine_right_hand_goal", "base_link", msg.right_foot_goal, 1, 0, 0, 1);
+    publishArrowMarker("throw_engine_trunk_goal", "base_link", msg.right_foot_goal, 0, 0, 1, 1);
+
     ros_publisher_debug_.publish(msg);
 }
 
