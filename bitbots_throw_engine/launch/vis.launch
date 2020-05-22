@@ -1,0 +1,4 @@
+<launch>
+  <param name="robot_description" command="$(find xacro)/xacro $(find wolfgang_description)/urdf/wolfgang_basler.urdf.xacro use_fake_walk:=$(arg use_fake_walk) sim_ns:=$(arg sim_ns) --inorder" />
+  <node name="throw_engine" pkg="bitbots_throw_engine" type="ThrowNode" output="screen" />
+</launch>

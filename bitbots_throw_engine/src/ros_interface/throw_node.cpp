@@ -115,5 +115,7 @@ int main(int argc, char **argv)
 {
 	ros::init(argc, argv, "bitbots_throw_engine");
 
-	return 0;
+	ThrowNode node;
+
+	ros::spin();
 }

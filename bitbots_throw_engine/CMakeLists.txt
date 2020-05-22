@@ -72,8 +72,8 @@ set(
   src/utility/throw_stabilizer.cpp
 )
 
-add_executable(throw_engine_node ${SOURCES})
+add_executable(ThrowNode ${SOURCES})
 
-add_dependencies(throw_engine_node ${PROJECT_NAME}_gencfg)
+add_dependencies(ThrowNode ${PROJECT_NAME}_gencfg)
 
-target_link_libraries(throw_engine_node ${catkin_LIBRARIES})
+target_link_libraries(ThrowNode ${catkin_LIBRARIES})
