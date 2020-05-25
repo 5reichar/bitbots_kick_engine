@@ -7,13 +7,14 @@
 #include "parameter/throw_type_parameter.h"
 #include "parameter/throw_engine_parameter.h"
 #include "ros_interface/publisher/system_publisher.h"
+#include "utility/throw_utilities.h"
 
 class ThrowParameterBuilder
 {
 public:
     static std::shared_ptr<ThrowParameter> build_from_dynamic_reconf(std::shared_ptr<ThrowEngineParameter> & engine_parameter, std::shared_ptr<ThrowType> & throw_type, Struct3d ball_position, Struct3d throw_goal_position)
     {
-        std::shared_ptr<ThrowParameter> sp_parameter;
+        auto sp_parameter = build_default();
 
         auto left_hand_position = -0.5 * engine_parameter->hand_distance_;
         auto right_hand_position = 0.5 * engine_parameter->hand_distance_;
@@ -116,10 +117,37 @@ public:
         return sp_parameter;
     };
 
-    static double calculate_distace(Struct3d point)
+    static std::shared_ptr<ThrowParameter> build_default()
     {
-        return sqrt(pow(point.x_, 2) + pow(point.y_, 2));
-    }
+        // TODO: enter better default values
+        return std::make_shared<ThrowParameter>(Struct3d{0.0, 0.0, 0.0},  //start_left_hand_position
+                                                Struct3d{0.0, 0.0, 0.0},  //start_right_hand_position
+                                                Struct3d{0.0, 0.0, 0.0},  //pick_up_left_hand_position
+                                                Struct3d{0.0, 0.0, 0.0},  //pick_up_right_hand_position
+                                                Struct3dRPY{0.0, 0.0, 0.0},  //pick_up_left_hand_axis
+                                                Struct3dRPY{0.0, 0.0, 0.0},  //pick_up_right_hand_axis
+                                                Struct3dRPY{0.0, 0.0, 0.0},  //pick_up_trunk_axis
+                                                Struct3d{0.0, 0.0, 0.0},  //throw_start_left_hand_position
+                                                Struct3d{0.0, 0.0, 0.0},  //throw_start_right_hand_position
+                                                Struct3dRPY{0.0, 0.0, 0.0},  //throw_start_left_hand_axis
+                                                Struct3dRPY{0.0, 0.0, 0.0},  //throw_start_right_hand_axis
+                                                Struct3dRPY{0.0, 0.0, 0.0},  //throw_start_trunk_axis
+                                                Struct3d{0.0, 0.0, 0.0},  //throw_release_left_hand_position
+                                                Struct3d{0.0, 0.0, 0.0},  //throw_release_right_hand_position
+                                                Struct3dRPY{0.0, 0.0, 0.0},  //throw_release_left_hand_axis
+                                                Struct3dRPY{0.0, 0.0, 0.0},  //throw_release_right_hand_axis
+                                                Struct3dRPY{0.0, 0.0, 0.0},  //throw_release_trunk_axis
+                                                Struct3d{0.0, 0.0, 0.0},  //throw_velocity
+                                                Struct3d{0.0, 0.0, 0.0},  //end_left_hand_position
+                                                Struct3d{0.0, 0.0, 0.0},  //end_right_hand_position
+                                                Struct3d{0.0, 0.0, 0.0},  //throw_goal_position
+                                                0.0,  //movement_cycle_frequence
+                                                0.25,  //pick_up_duration_share
+                                                0.25,  //throw_preparation_duration_share
+                                                0.25,  //throw_duration_share
+                                                0.25,  //throw_conclusion_duration_share
+                                                30.0);  //throw_anlge
+    };
 
 protected:
     static double calculate_velocity(std::shared_ptr<ThrowEngineParameter> & engine_parameter, Struct3d throw_goal_position)

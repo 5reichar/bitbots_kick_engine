@@ -72,4 +72,9 @@ static std::string get_joint_name(CurvePurpose joint)
   return joint_name;
 };
 
+static double calculate_distace(Struct3d point)
+{
+    return sqrt(pow(point.x_, 2) + pow(point.y_, 2));
+}
+
 #endif //THROW_UTILITIES_H
