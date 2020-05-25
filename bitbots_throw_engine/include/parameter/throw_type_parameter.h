@@ -36,6 +36,33 @@ struct ThrowType
 	double throw_conclusion_duration_share_;
 	// The Angle at which the ball shall thrown
 	double throw_anlge_;
+
+
+	//////		Constructor
+	ThrowType(ThrowTypeId id,
+			bool active,
+			int throw_priority_level,
+			double min_throw_distance,
+			double max_throw_distance,
+			bool override_movement_shares,
+			double pick_up_duration_share,
+			double throw_preparation_duration_share,
+			double throw_duration_share,
+			double throw_conclusion_duration_share,
+			double throw_anlge)
+			:
+			id_{id},
+			active_{active},
+			throw_priority_level_{throw_priority_level},
+			min_throw_distance_{min_throw_distance},
+			max_throw_distance_{max_throw_distance},
+			override_movement_shares_{override_movement_shares},
+			pick_up_duration_share_{pick_up_duration_share},
+			throw_preparation_duration_share_{throw_preparation_duration_share},
+			throw_duration_share_{throw_duration_share},
+			throw_conclusion_duration_share_{throw_conclusion_duration_share},
+			throw_anlge_{throw_anlge}
+	{}
 };
 
 struct ThrowTypeParameter
@@ -43,6 +70,13 @@ struct ThrowTypeParameter
 	ThrowType default_throw_;
 
 	std::vector<ThrowType> v_throw_types_;
+
+	ThrowTypeParameter(ThrowType default_throw,
+					std::vector<ThrowType> v_throw_types)
+					:
+					default_throw_{default_throw},
+					v_throw_types_{v_throw_types}
+	{}
 };
 
 #endif

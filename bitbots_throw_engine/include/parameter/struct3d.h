@@ -3,12 +3,28 @@
 
 struct Struct3d
 {
-	double x_, y_, z_;
+	double x_;
+	double y_;
+	double z_;
+
+
+	//////		Constructor
+	Struct3d(double x, double y, double z) 
+			: x_{x}, y_{y}, z_{z}
+	{}
 };
 
 struct Struct3dRPY
 {
-	double roll_, pitch_, yaw_;
+	double roll_;
+	double pitch_;
+	double yaw_;
+
+
+	//////		Constructor
+	Struct3dRPY(double roll, double pitch, double yaw)
+				: roll_{roll}, pitch_{pitch}, yaw_{yaw}
+	{}
 };
 
 #endif
