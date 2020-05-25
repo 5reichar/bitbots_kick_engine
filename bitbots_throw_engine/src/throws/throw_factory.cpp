@@ -4,14 +4,15 @@
 #include "throws/throw_curves/linear_spline_throw.h"
 #include "throws/throw_curves/cubic_spline_throw.h"
 #include "throws/throw_curves/smooth_spline_throw.h"
+#include "utility/throw_utilities.h"
 
-std::shared_ptr<ThrowCurve> ThrowFactory::create_throw(std::shared_ptr<ThrowType> throw_type)
+std::shared_ptr<ThrowCurve> ThrowFactory::create_throw(ThrowTypeId throw_type_id)
 {
 	//TODO: testing
 	//TODO: cleanup
 	std::shared_ptr<ThrowCurve> sp_return;
 
-	switch (throw_type->id_)
+	switch (throw_type_id)
 	{
 	case ThrowTypeId::beziercurve:
 		sp_return.reset(new BeziercurveThrow());
@@ -33,20 +34,22 @@ std::shared_ptr<ThrowCurve> ThrowFactory::create_throw(std::shared_ptr<ThrowType
 	return sp_return;
 }
 
-std::shared_ptr<ThrowType> ThrowFactory::get_throw_type(std::shared_ptr<ThrowTypeParameter> throw_type_parameter, double const & throw_distance)
+ThrowTypeId ThrowFactory::get_throw_type(std::shared_ptr<ThrowTypeParameter> throw_type_parameter, Struct3d const & throw_goal)
 {
-	std::shared_ptr<ThrowType> sp_throw_type = std::make_shared<ThrowType>(throw_type_parameter->default_throw_);
+	ThrowTypeId throw_type_id = throw_type_parameter->default_throw_id_;
+	auto throw_distance = calculate_distace(throw_goal);
 
-	for (auto it = throw_type_parameter->v_throw_types_.begin(); it != throw_type_parameter->v_throw_types_.end(); ++it)
+	for (auto it = throw_type_parameter->map_throw_types_.begin(); it != throw_type_parameter->map_throw_types_.end(); ++it)
 	{
-		if (it->active_ &&
-			it->min_throw_distance_ < throw_distance &&
-			it->max_throw_distance_ > throw_distance)
+		auto throw_type = it->second;
+		if (throw_type->active_ &&
+			throw_type->min_throw_distance_ < throw_distance &&
+			throw_type->max_throw_distance_ > throw_distance)
 		{
-			sp_throw_type = std::make_shared<ThrowType>(*it);
+			throw_type_id = it->first;
 			break;
 		}
 	}
 
-	return sp_throw_type;
+	return throw_type_id;
 }

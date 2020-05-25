@@ -1,7 +1,8 @@
 #ifndef THROW_TYPE_PARAMETER_H
 #define THROW_TYPE_PARAMETER_H
 
-#include <vector>
+#include <map>
+#include <memory>
 
 enum ThrowTypeId
 {
@@ -24,8 +25,6 @@ struct ThrowType
 	double min_throw_distance_;
 	// The maximum distance this throw should be used for
 	double max_throw_distance_;
-	// Option to override the shares of the movement
-	bool override_movement_shares_;
 	// The share of the movement cycle dedicated to picking up the ball
 	double pick_up_duration_share_;
 	// The share of the movement cycle dedicated to prepare the throwing the ball
@@ -44,7 +43,6 @@ struct ThrowType
 			int throw_priority_level,
 			double min_throw_distance,
 			double max_throw_distance,
-			bool override_movement_shares,
 			double pick_up_duration_share,
 			double throw_preparation_duration_share,
 			double throw_duration_share,
@@ -56,7 +54,6 @@ struct ThrowType
 			throw_priority_level_{throw_priority_level},
 			min_throw_distance_{min_throw_distance},
 			max_throw_distance_{max_throw_distance},
-			override_movement_shares_{override_movement_shares},
 			pick_up_duration_share_{pick_up_duration_share},
 			throw_preparation_duration_share_{throw_preparation_duration_share},
 			throw_duration_share_{throw_duration_share},
@@ -67,15 +64,13 @@ struct ThrowType
 
 struct ThrowTypeParameter
 {
-	ThrowType default_throw_;
+	ThrowTypeId default_throw_id_;
 
-	std::vector<ThrowType> v_throw_types_;
+	std::map<ThrowTypeId, std::shared_ptr<ThrowType>> map_throw_types_;
 
-	ThrowTypeParameter(ThrowType default_throw,
-					std::vector<ThrowType> v_throw_types)
+	ThrowTypeParameter(ThrowTypeId default_throw_id)
 					:
-					default_throw_{default_throw},
-					v_throw_types_{v_throw_types}
+					default_throw_id_{default_throw_id}
 	{}
 };
 

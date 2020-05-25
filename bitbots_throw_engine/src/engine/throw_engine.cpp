@@ -37,9 +37,9 @@ void ThrowEngine::setGoals(const ThrowRequest & request)
 	//TODO: testing
 	//TODO: cleanup
 
-	auto throw_type = sp_throw_factory_->get_throw_type(sp_throw_types_, ThrowParameterBuilder::calculate_distace(request.goal_position_));
-	sp_current_throw_ = sp_throw_factory_->create_throw(throw_type);
-	auto throw_parameter = ThrowParameterBuilder::build_from_dynamic_reconf(sp_engine_parameter_, throw_type, request.ball_position_, request.goal_position_);
+	auto throw_type_id = sp_throw_factory_->get_throw_type(sp_throw_types_, request.goal_position_);
+	sp_current_throw_ = sp_throw_factory_->create_throw(throw_type_id);
+	auto throw_parameter = create_throw_parameter(throw_type_id, request);
 	sp_current_throw_->calculate_trajectories(throw_parameter);
 }
 
@@ -64,4 +64,12 @@ void ThrowEngine::set_throw_types(std::shared_ptr<ThrowTypeParameter> types)
 void ThrowEngine::set_engine_parameter(std::shared_ptr<ThrowEngineParameter> parameter)
 {
 	sp_engine_parameter_ = parameter;
+}
+
+std::shared_ptr<ThrowParameter> ThrowEngine::create_throw_parameter(const ThrowTypeId throw_type_id, const ThrowRequest & request)
+{
+	return ThrowParameterBuilder::build_from_dynamic_reconf(sp_engine_parameter_,
+															sp_throw_types_->map_throw_types_[throw_type_id],
+															request.ball_position_,
+															request.goal_position_);
 }
