@@ -8,15 +8,17 @@ class SystemPublisher
 {
     //TODO: cleanup
 public:
-    //SystemPublisher(ros::NodeHandle & ros_node_handle);
-
-    static void publish_warning(std::string messsage)
+    static void publish_warning(const std::string & messsage)
     {
         ROS_WARN_STREAM(messsage);
     };
 
+    static void publish_runtime_error(const std::runtime_error& error)
+    {
+        ROS_ERROR_STREAM(error.what());
+    };
+
 private:
-    //ros::Publisher ros_publisher_support_;
 };
 
 #endif
