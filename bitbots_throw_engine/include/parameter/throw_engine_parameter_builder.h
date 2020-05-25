@@ -10,7 +10,7 @@ class ThrowEngineParameterBuilder
 public:
     static  std::shared_ptr<ThrowEngineParameter> build_from_dynamic_reconf(bitbots_throw_engine::throw_engine_paramsConfig& config, uint32_t level)
     {
-        std::shared_ptr<ThrowEngineParameter> sp_parameter;
+        auto sp_parameter = build_default();
 
         sp_parameter->frequency_ = config.frequency;
         sp_parameter->hand_distance_ = config.hand_distance;
@@ -26,6 +26,12 @@ public:
         sp_parameter->throw_anlge_ = config.throw_angle;
 
         return sp_parameter;
+    };
+
+    static  std::shared_ptr<ThrowEngineParameter> build_default()
+    {
+        // TODO: enter better default values
+        return std::make_shared<ThrowEngineParameter>(0.0, 0.0, 0.0, 0.0, 0.0, Struct3d{0.0, 0.0, 0.0}, Struct3d{0.0, 0.0, 0.0}, 0.0, 0.0, 0.0, 0.0, 0.0);
     };
 
 protected:
