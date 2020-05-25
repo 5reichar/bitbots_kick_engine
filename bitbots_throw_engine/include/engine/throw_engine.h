@@ -24,6 +24,7 @@ public:
 private:
     virtual void setGoals(const ThrowRequest & request) override;
     virtual int getPercentDone() const override;
+    std::shared_ptr<ThrowParameter> create_throw_parameter(const ThrowTypeId throw_type_id, const ThrowRequest & request);
 
     double time_;
 
