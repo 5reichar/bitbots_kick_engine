@@ -1,5 +1,11 @@
 <launch>
+  <arg name="use_fake_walk" default="False" />
+  <arg name="sim_ns" default="sim_robot" />
+  
   <param name="robot_description" command="$(find xacro)/xacro $(find wolfgang_description)/urdf/wolfgang_basler.urdf.xacro use_fake_walk:=$(arg use_fake_walk) sim_ns:=$(arg sim_ns) --inorder" />
   <param name="/simulation_active" value="true"/>
-  <node name="throw_engine" pkg="bitbots_throw_engine" type="ThrowNode" output="screen" />
+
+  <node name="throwing" pkg="bitbots_throw_engine" type="ThrowNode" output="screen" />
+  <node name="joint_goal_viz" pkg="bitbots_bringup" type="motor_goals_viz_helper.py" output="screen" args="--throw"/>
+  <node pkg="rviz" type="rviz" args="-d $(find wolfgang_description)/config/wolfgang.rviz" name="walk_rviz"/>
 </launch>
