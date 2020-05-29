@@ -18,7 +18,7 @@ public:
 
 private:
   robot_state::RobotStatePtr goal_state_;
-  const moveit::core::JointModelGroup * arms_joints_group_;
+  const moveit::core::JointModelGroup * all_joints_group_;
 
   double bio_ik_timeout_;
 };

@@ -7,24 +7,20 @@ ThrowIK::ThrowIK()
 
 ThrowIK::~ThrowIK()
 {
-  if (arms_joints_group_)
-  {
-    delete arms_joints_group_;
-  }
+  if (all_joints_group_) delete all_joints_group_;
 }
 
 void ThrowIK::init(moveit::core::RobotModelPtr kinematic_model)
 {
-  arms_joints_group_ = kinematic_model->getJointModelGroup("Arms");
+  all_joints_group_ = kinematic_model->getJointModelGroup("All");
   goal_state_.reset(new robot_state::RobotState(kinematic_model));
   goal_state_->setToDefaultValues();
-
   reset();
 }
 
 bitbots_splines::JointGoals ThrowIK::calculate(const std::unique_ptr<bio_ik::BioIKKinematicsQueryOptions> ik_goals)
 {
-  if (!goal_state_->setFromIK(arms_joints_group_,
+  if (!goal_state_->setFromIK(all_joints_group_,
                               EigenSTL::vector_Isometry3d(),
                               std::vector<std::string>(),
                               bio_ik_timeout_,
@@ -35,9 +31,9 @@ bitbots_splines::JointGoals ThrowIK::calculate(const std::unique_ptr<bio_ik::Bio
   }
 
   /* retrieve joint names and associated positions from  */
-  std::vector<std::string> joint_names = arms_joints_group_->getActiveJointModelNames();
+  std::vector<std::string> joint_names = all_joints_group_->getActiveJointModelNames();
   std::vector<double> joint_goals;
-  goal_state_->copyJointGroupPositions(arms_joints_group_, joint_goals);
+  goal_state_->copyJointGroupPositions(all_joints_group_, joint_goals);
 
   /* construct result object */
   bitbots_splines::JointGoals result;
