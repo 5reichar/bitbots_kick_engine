@@ -1,15 +1,15 @@
-#ifndef BEZIERCURVE_THROW_H
-#define BEZIERCURVE_THROW_H
+#ifndef BITBOTS_THROW_BEZIERCURVE_THROW_H
+#define BITBOTS_THROW_BEZIERCURVE_THROW_H
 
 #include "throw_curve.h"
 
-class BeziercurveThrow : public ThrowCurve
-{
-public:
-	BeziercurveThrow();
+namespace bitbots_throw{
+	class BeziercurveThrow : public ThrowCurve{
+	public:
+		BeziercurveThrow();
 
-protected:
-private:
-};
-
-#endif
+	protected:
+	private:
+	};
+} //bitbots_throw
+#endif //BITBOTS_THROW_BEZIERCURVE_THROW_H

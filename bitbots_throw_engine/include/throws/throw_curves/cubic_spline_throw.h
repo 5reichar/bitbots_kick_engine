@@ -1,15 +1,15 @@
-#ifndef CUBIC_SPLINE_THROW_H
-#define CUBIC_SPLINE_THROW_H
+#ifndef BITBOTS_THROW_CUBIC_SPLINE_THROW_H
+#define BITBOTS_THROW_CUBIC_SPLINE_THROW_H
 
 #include "throw_curve.h"
 
-class CubicSplineThrow : public ThrowCurve
-{
-public:
-	CubicSplineThrow();
+namespace bitbots_throw{
+	class CubicSplineThrow : public ThrowCurve{
+	public:
+		CubicSplineThrow();
 
-protected:
-private:
-};
-
-#endif
+	protected:
+	private:
+	};
+} //bitbots_throw
+#endif //BITBOTS_THROW_CUBIC_SPLINE_THROW_H

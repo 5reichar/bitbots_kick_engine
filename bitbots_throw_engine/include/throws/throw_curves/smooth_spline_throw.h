@@ -1,15 +1,15 @@
-#ifndef SMOOTH_SPLINE_THROW_H
-#define SMOOTH_SPLINE_THROW_H
+#ifndef BITBOTS_THROW_SMOOTH_SPLINE_THROW_H
+#define BITBOTS_THROW_SMOOTH_SPLINE_THROW_H
 
 #include "throw_curve.h"
 
-class SmoothSplineThrow : public ThrowCurve
-{
-public:
-	SmoothSplineThrow();
+namespace bitbots_throw{
+	class SmoothSplineThrow : public ThrowCurve{
+	public:
+		SmoothSplineThrow();
 
-protected:
-private:
-};
-
-#endif
+	protected:
+	private:
+	};
+} //bitbots_throw
+#endif //BITBOTS_THROW_SMOOTH_SPLINE_THROW_H

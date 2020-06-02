@@ -5,5 +5,5 @@
   <param name="robot_description" command="$(find xacro)/xacro $(find wolfgang_description)/urdf/wolfgang_basler.urdf.xacro use_fake_walk:=$(arg use_fake_walk) sim_ns:=$(arg sim_ns) --inorder" />
   <param name="/simulation_active" value="true"/>
 
-  <node name="throwing" pkg="bitbots_throw_engine" type="ThrowNode" output="screen" />
+  <node name="throwing" pkg="bitbots_throw" type="ThrowNode" output="screen" />
 </launch>

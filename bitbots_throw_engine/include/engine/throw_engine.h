@@ -1,37 +1,38 @@
-#ifndef THROW_ENGINE_H
-#define THROW_ENGINE_H
+#ifndef BITBOTS_THROW_THROW_ENGINE_H
+#define BITBOTS_THROW_THROW_ENGINE_H
+
+#include "bitbots_splines/abstract_engine.h"
+#include "utility/throw_utilities.h"
 
 #include "throws/throw_factory.h"
-#include "utility/throw_utilities.h"
-#include "parameter/throw_parameter_builder.h"
 #include "parameter/throw_type_parameter.h"
 #include "parameter/throw_engine_parameter.h"
-#include "bitbots_splines/abstract_engine.h"
+#include "parameter/throw_parameter_builder.h"
 
-class ThrowEngine : public bitbots_splines::AbstractEngine<ThrowRequest, ThrowResponse>
-{
-public:
-    virtual ThrowResponse update(double dt) override;
-    virtual void reset() override;
+namespace bitbots_throw{
+    class ThrowEngine : public bitbots_splines::AbstractEngine<ThrowRequest, ThrowResponse>{
+    public:
+        virtual ThrowResponse update(double dt) override;
+        virtual void reset() override;
 
-    // Wrapper to keep style consistence
-    void set_goals(const ThrowRequest & request);
-    int get_percent_done() const;
+        int get_percent_done() const;
 
-    void set_throw_types(std::shared_ptr<ThrowTypeParameter> types);
-    void set_engine_parameter(std::shared_ptr<ThrowEngineParameter> parameter);
+        void set_goals(const ThrowRequest & request);
+        void set_throw_types(std::shared_ptr<ThrowTypeParameter> types);
+        void set_engine_parameter(std::shared_ptr<ThrowEngineParameter> parameter);
 
-private:
-    virtual void setGoals(const ThrowRequest & request) override;
-    virtual int getPercentDone() const override;
-    std::shared_ptr<ThrowParameter> create_throw_parameter(const ThrowTypeId throw_type_id, const ThrowRequest & request);
+    private:
+        virtual int getPercentDone() const override;
+        virtual void setGoals(const ThrowRequest & request) override;
 
-    double time_;
+        std::shared_ptr<ThrowParameter> create_throw_parameter(const ThrowTypeId throw_type_id, const ThrowRequest & request);
 
-    std::shared_ptr<ThrowCurve> sp_current_throw_;
-    std::shared_ptr<ThrowFactory> sp_throw_factory_;
-    std::shared_ptr<ThrowTypeParameter> sp_throw_types_;
-    std::shared_ptr<ThrowEngineParameter> sp_engine_parameter_;
-};
+        double time_;
 
-#endif
+        std::shared_ptr<ThrowCurve> sp_current_throw_;
+        std::shared_ptr<ThrowFactory> sp_throw_factory_;
+        std::shared_ptr<ThrowTypeParameter> sp_throw_types_;
+        std::shared_ptr<ThrowEngineParameter> sp_engine_parameter_;
+    };
+} //bitbots_throw
+#endif //BITBOTS_THROW_THROW_ENGINE_H

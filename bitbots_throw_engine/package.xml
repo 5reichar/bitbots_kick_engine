@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>bitbots_throw_engine</name>
+  <name>bitbots_throw</name>
   <version>0.0.0</version>
-  <description>The bitbots_throw_engine package</description>
+  <description>The bitbots_throw package</description>
   
   <maintainer email="bestmann@informatik.uni-hamburg.de">Marc Bestmann</maintainer>
   <maintainer email="info@bit-bots.de">Hamburg Bit-Bots</maintainer>
@@ -35,7 +35,7 @@
 
   <export>
     <bitbots_documentation>
-      <status>TODO</status>
+      <status>simulation testing</status>
       <language>c++</language>
     </bitbots_documentation>
   </export>

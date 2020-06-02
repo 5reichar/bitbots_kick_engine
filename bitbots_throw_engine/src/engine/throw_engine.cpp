@@ -1,75 +1,59 @@
 #include "engine/throw_engine.h"
+
 #include <math.h>
 #include "parameter/throw_parameter_builder.h"
 
-ThrowResponse ThrowEngine::update(double dt)
-{
-	//TODO: implement
-	//TODO: testing
-	//TODO: cleanup
+namespace bitbots_throw{
+	ThrowResponse ThrowEngine::update(double dt){
+		ThrowResponse response;
 
-	ThrowResponse response;
+		response.support_foot_to_trunk_ = sp_current_throw_->get_pose_trunk()->get_tf_transform(time_);
+		response.support_foot_to_left_hand_ = sp_current_throw_->get_pose_left_hand()->get_tf_transform(time_);
+		response.support_foot_to_right_hand_ = sp_current_throw_->get_pose_right_hand()->get_tf_transform(time_);
 
-	response.support_foot_to_trunk_ = sp_current_throw_->get_pose_trunk()->get_tf_transform(time_);
-	response.support_foot_to_left_hand_ = sp_current_throw_->get_pose_left_hand()->get_tf_transform(time_);
-	response.support_foot_to_right_hand_ = sp_current_throw_->get_pose_right_hand()->get_tf_transform(time_);
+		time_ += dt;
+		return response;
+	}
 
-	time_ += dt;
-	return response;
-}
+	void ThrowEngine::reset(){
+		time_ = 0;
+	}
 
-void ThrowEngine::reset()
-{
-	//TODO: implement
-	time_ = 0;
+	int ThrowEngine::get_percent_done() const{
+		// Wrapper to keep style consistence
+		return getPercentDone();
+	}
 
-}
+	int ThrowEngine::getPercentDone() const{
+		//TODO: implement
+		return 0;
+	}
 
-void ThrowEngine::set_goals(const ThrowRequest & request)
-{
-    // Wrapper to keep style consistence
+	void ThrowEngine::set_goals(const ThrowRequest & request){
+		// Wrapper to keep style consistence
+		setGoals(request);
+	}
 
-	setGoals(request);
-}
+	void ThrowEngine::setGoals(const ThrowRequest & request){
+		auto throw_type_id = sp_throw_factory_->get_throw_type(sp_throw_types_, request.goal_position_);
+		sp_current_throw_ = sp_throw_factory_->create_throw(throw_type_id);
+		auto throw_parameter = create_throw_parameter(throw_type_id, request);
+		sp_current_throw_->calculate_trajectories(throw_parameter);
+	}
 
-void ThrowEngine::setGoals(const ThrowRequest & request)
-{
-	//TODO: testing
-	//TODO: cleanup
 
-	auto throw_type_id = sp_throw_factory_->get_throw_type(sp_throw_types_, request.goal_position_);
-	sp_current_throw_ = sp_throw_factory_->create_throw(throw_type_id);
-	auto throw_parameter = create_throw_parameter(throw_type_id, request);
-	sp_current_throw_->calculate_trajectories(throw_parameter);
-}
+	void ThrowEngine::set_throw_types(std::shared_ptr<ThrowTypeParameter> types){
+		sp_throw_types_ = types;
+	}
 
-int ThrowEngine::get_percent_done() const
-{
-    // Wrapper to keep style consistence
+	void ThrowEngine::set_engine_parameter(std::shared_ptr<ThrowEngineParameter> parameter){
+		sp_engine_parameter_ = parameter;
+	}
 
-	return getPercentDone();
-}
-
-int ThrowEngine::getPercentDone() const
-{
-	//TODO: implement
-
-	return 0;
-}
-
-void ThrowEngine::set_throw_types(std::shared_ptr<ThrowTypeParameter> types)
-{
-	sp_throw_types_ = types;
-}
-void ThrowEngine::set_engine_parameter(std::shared_ptr<ThrowEngineParameter> parameter)
-{
-	sp_engine_parameter_ = parameter;
-}
-
-std::shared_ptr<ThrowParameter> ThrowEngine::create_throw_parameter(const ThrowTypeId throw_type_id, const ThrowRequest & request)
-{
-	return ThrowParameterBuilder::build_from_dynamic_reconf(sp_engine_parameter_,
-															sp_throw_types_->map_throw_types_[throw_type_id],
-															request.ball_position_,
-															request.goal_position_);
+	std::shared_ptr<ThrowParameter> ThrowEngine::create_throw_parameter(const ThrowTypeId throw_type_id, const ThrowRequest & request){
+		return ThrowParameterBuilder::build_from_dynamic_reconf(sp_engine_parameter_,
+																sp_throw_types_->map_throw_types_[throw_type_id],
+																request.ball_position_,
+																request.goal_position_);
+	}
 }
