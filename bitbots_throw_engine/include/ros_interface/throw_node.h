@@ -13,30 +13,32 @@
 
 class ThrowNode
 {
-    //TODO: cleanup
 public:
-    ThrowNode(/* args */);
+    ThrowNode();
 
 private:
+    // Initilization methodes
+    void build_default_parameter();
+    void load_parameter();
     void init_ros_subcribtions();
     void init_dynamic_reconfiguration();
+    void init_ik();
 
+    // Callback methodes
 	void throw_callback(const bitbots_throw_engine::throw_action action);
     void throw_params_config_callback(bitbots_throw_engine::throw_paramsConfig & config , uint32_t level);
     void throw_engine_params_config_callback(bitbots_throw_engine::throw_engine_paramsConfig & config , uint32_t level);
 
+    // Helper methodes
     ThrowRequest create_throw_request(const bitbots_throw_engine::throw_action action);
 
+    // member variables
     ThrowIK ik_;
-    std::unique_ptr<ThrowEngine> up_throw_engine_;
+    ThrowEngine throw_engine_;
     std::shared_ptr<ThrowNodeParameter> sp_node_parameter_;
 
     ros::NodeHandle ros_node_handle_;
     ros::Subscriber ros_subsciber_throw_;
-    ros::Subscriber ros_subsciber_robot_state_;
-
-    dynamic_reconfigure::Server<bitbots_throw_engine::throw_paramsConfig> throw_param_server_;
-    dynamic_reconfigure::Server<bitbots_throw_engine::throw_engine_paramsConfig> engine_param_server_;
 };
 
 #endif
