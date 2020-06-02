@@ -4,6 +4,11 @@
 #include "parameter/throw_parameter_builder.h"
 
 namespace bitbots_throw{
+	ThrowEngine::ThrowEngine()
+					: sp_engine_parameter_(nullptr)
+					, sp_throw_types_(nullptr){
+	}
+
 	ThrowResponse ThrowEngine::update(double dt){
 		ThrowResponse response;
 

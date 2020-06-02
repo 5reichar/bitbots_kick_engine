@@ -12,6 +12,7 @@
 namespace bitbots_throw{
     class ThrowEngine : public bitbots_splines::AbstractEngine<ThrowRequest, ThrowResponse>{
     public:
+        ThrowEngine();
         virtual ThrowResponse update(double dt) override;
         virtual void reset() override;
 

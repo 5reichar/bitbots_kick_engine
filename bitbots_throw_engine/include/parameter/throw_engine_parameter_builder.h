@@ -34,5 +34,5 @@ namespace bitbots_throw{
 
     protected:
     };
-}
+} //bitbots_throw
 #endif //BITBOTS_THROW_THROW_ENGINE_PARAMETER_BUILDER_H

@@ -4,9 +4,9 @@ namespace bitbots_throw{
 	ThrowCurve::ThrowCurve(std::shared_ptr<bitbots_splines::PoseHandle> left_hand,
 							std::shared_ptr<bitbots_splines::PoseHandle> right_hand,
 							std::shared_ptr<bitbots_splines::PoseHandle> trunk)
-			: sp_pose_left_hand_(std::move(left_hand)),
-			sp_pose_right_hand_(std::move(right_hand)),
-			sp_pose_trunk_(std::move(trunk)){
+			: sp_pose_left_hand_(std::move(left_hand))
+			, sp_pose_right_hand_(std::move(right_hand))
+			, sp_pose_trunk_(std::move(trunk)){
 	}
 
 	bool ThrowCurve::calculate_trajectories(std::shared_ptr<ThrowParameter> & throw_parameter){
