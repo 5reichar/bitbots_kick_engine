@@ -40,6 +40,9 @@ namespace bitbots_throw{
 
         ros::NodeHandle ros_node_handle_;
         ros::Subscriber ros_subsciber_throw_;
+
+        dynamic_reconfigure::Server<bitbots_throw::throw_paramsConfig> dynamic_reconfigure_server_throw_params_;
+        dynamic_reconfigure::Server<bitbots_throw::throw_engine_paramsConfig> dynamic_reconfigure_server_engine_params_;
     };
 } //bitbots_throw
 #endif //BITBOTS_THROW_THROW_NODE_H

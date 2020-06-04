@@ -13,7 +13,9 @@
 #include "parameter/throw_type_parameter_builder.h"
 
 namespace bitbots_throw{
-	ThrowNode::ThrowNode(){
+	ThrowNode::ThrowNode()
+			: dynamic_reconfigure_server_engine_params_(ros::NodeHandle("/throw_engine"))
+			, dynamic_reconfigure_server_throw_params_(ros::NodeHandle("/throw")){
 		build_default_parameter();
 		load_parameter();
 		init_ros_subcribtions();
@@ -34,11 +36,8 @@ namespace bitbots_throw{
 	}
 
 	void ThrowNode::init_dynamic_reconfiguration(){
-		dynamic_reconfigure::Server<bitbots_throw::throw_engine_paramsConfig> engine_param_server(ros::NodeHandle("~"));
-		engine_param_server.setCallback(boost::bind(&ThrowNode::throw_engine_params_config_callback, this, _1, _2));
-
-		dynamic_reconfigure::Server<bitbots_throw::throw_paramsConfig> throw_param_server(ros::NodeHandle("~"));
-		throw_param_server.setCallback(boost::bind(&ThrowNode::throw_params_config_callback, this, _1, _2));
+		dynamic_reconfigure_server_engine_params_.setCallback(boost::bind(&ThrowNode::throw_engine_params_config_callback, this, _1, _2));
+		dynamic_reconfigure_server_throw_params_.setCallback(boost::bind(&ThrowNode::throw_params_config_callback, this, _1, _2));
 	}
 
 	void ThrowNode::init_ik(){
