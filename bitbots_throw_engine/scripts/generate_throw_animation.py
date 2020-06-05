@@ -2,10 +2,10 @@
 
 import rospy
 from geometry_msgs.msg import Vector3
-from bitbots_throw_engine import throw_action
+from bitbots_throw import throw_action
 
 rospy.init_node("throw_animation_script")
-throw_publisher = rospy.Publisher("/throw_action", throw_action)
+throw_publisher = rospy.Publisher("/throw", throw_action)
 rospy.sleep(1)
 
 throw_ball  = throw_action()
