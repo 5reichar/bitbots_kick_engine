@@ -7,7 +7,7 @@ namespace bitbots_throw{
     }
 
     void ControllerCommandPublisher::publish(ros::Time time, bitbots_splines::JointGoals joint_goals){
-        publish(time, joint_goals);
+        publish(time, joint_goals.first, joint_goals.second);
     }
 
     void ControllerCommandPublisher::publish(ros::Time time, std::vector<std::string> joint_names, std::vector<double> positions){
