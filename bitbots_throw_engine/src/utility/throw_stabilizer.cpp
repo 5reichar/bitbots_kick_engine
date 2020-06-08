@@ -10,7 +10,7 @@ namespace bitbots_throw{
   }
 
   std::unique_ptr<bio_ik::BioIKKinematicsQueryOptions> ThrowStabilizer::stabilize(const ThrowResponse & response){
-    std::unique_ptr<bio_ik::BioIKKinematicsQueryOptions> ik_options;
+    std::unique_ptr<bio_ik::BioIKKinematicsQueryOptions> ik_options(new bio_ik::BioIKKinematicsQueryOptions());
     ik_options->replace = true;
     ik_options->return_approximate_solution = true;
 

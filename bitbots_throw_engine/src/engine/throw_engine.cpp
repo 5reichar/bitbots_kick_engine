@@ -7,6 +7,7 @@ namespace bitbots_throw{
 	ThrowEngine::ThrowEngine()
 					: sp_engine_parameter_(nullptr)
 					, sp_throw_types_(nullptr){
+		reset();
 	}
 
 	ThrowResponse ThrowEngine::update(double dt){
