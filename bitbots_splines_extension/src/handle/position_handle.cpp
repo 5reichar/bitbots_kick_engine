@@ -39,15 +39,15 @@ tf2::Vector3 PositionHandle::get_acceleration(double time) {
 }
 
 std::shared_ptr<Curve> PositionHandle::x() {
-  return std::move(x_);
+  return x_;
 }
 
 std::shared_ptr<Curve> PositionHandle::y() {
-  return std::move(y_);
+  return y_;
 }
 
 std::shared_ptr<Curve> PositionHandle::z() {
-  return std::move(z_);
+  return z_;
 }
 
 }

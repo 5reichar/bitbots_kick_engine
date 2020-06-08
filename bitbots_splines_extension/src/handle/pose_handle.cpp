@@ -60,15 +60,15 @@ tf2::Quaternion PoseHandle::get_orientation(double time) {
 }
 
 std::shared_ptr<Curve> PoseHandle::roll() {
-  return std::move(roll_);
+  return roll_;
 }
 
 std::shared_ptr<Curve> PoseHandle::pitch() {
-  return std::move(pitch_);
+  return pitch_;
 }
 
 std::shared_ptr<Curve> PoseHandle::yaw() {
-  return std::move(yaw_);
+  return yaw_;
 }
 
 std::string PoseHandle::get_debug_string() {
