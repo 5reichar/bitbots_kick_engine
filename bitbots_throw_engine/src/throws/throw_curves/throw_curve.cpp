@@ -9,23 +9,19 @@ namespace bitbots_throw{
 			, sp_pose_trunk_(std::move(trunk)){
 	}
 
-	bool ThrowCurve::calculate_trajectories(std::shared_ptr<ThrowParameter> & throw_parameter){
+	double ThrowCurve::calculate_trajectories(std::shared_ptr<ThrowParameter> & throw_parameter){
 
-		bool b_succ = false;
+		double movement_time = 0.0;
 
 		//checks
 		if (check_requirements(throw_parameter)){
-			double d_time = 0.0;
-
-			calculate_pick_up_ball_movement(d_time, throw_parameter);
-			calculate_throw_movement(d_time, throw_parameter);
-			calculate_throw_conclusion_movement(d_time, throw_parameter);
-
-			b_succ = true;
+			calculate_pick_up_ball_movement(movement_time, throw_parameter);
+			calculate_throw_movement(movement_time, throw_parameter);
+			calculate_throw_conclusion_movement(movement_time, throw_parameter);
 		}
 		//TODO: implement ROS Error
 
-		return b_succ;
+		return movement_time;
 	}
 
 	bool ThrowCurve::check_requirements(std::shared_ptr<ThrowParameter> & throw_parameter){
@@ -50,7 +46,7 @@ namespace bitbots_throw{
 		/////  Preparation
 		//Set up the trajectories for the half cycle (single step)
 		double start_time = time;
-		double pick_up_ball_time = time + (throw_parameter->pick_up_duration_share_ * throw_parameter->movement_cycle_frequence_);
+		double pick_up_ball_time = time + 1 / (throw_parameter->pick_up_duration_share_ * throw_parameter->movement_cycle_frequence_);
 
 		/////  Left Hand
 		sp_pose_left_hand_->x()->add_point(start_time, throw_parameter->start_left_hand_position_.x_);
@@ -118,8 +114,8 @@ namespace bitbots_throw{
 
 		/////  Preparation
 		//Set up the trajectories for the half cycle (single step)
-		double begin_throw_time = time + (throw_parameter->throw_preparation_duration_share_ * throw_parameter->movement_cycle_frequence_);
-		double release_throw_time = time + (throw_parameter->throw_duration_share_ * throw_parameter->movement_cycle_frequence_);
+		double begin_throw_time = time + 1 / (throw_parameter->throw_preparation_duration_share_ * throw_parameter->movement_cycle_frequence_);
+		double release_throw_time = time + 1 / (throw_parameter->throw_duration_share_ * throw_parameter->movement_cycle_frequence_);
 
 		/////  Left Hand
 		sp_pose_left_hand_->x()->add_point(begin_throw_time, throw_parameter->throw_start_left_hand_position_.x_);
@@ -187,7 +183,7 @@ namespace bitbots_throw{
 
 		/////  Preparation
 		//Set up the trajectories for the half cycle (single step)
-		double finish_time = time + (throw_parameter->throw_conclusion_duration_share_ * throw_parameter->movement_cycle_frequence_);
+		double finish_time = time + 1 / (throw_parameter->throw_conclusion_duration_share_ * throw_parameter->movement_cycle_frequence_);
 
 		/////  Left Hand
 		sp_pose_left_hand_->x()->add_point(finish_time, throw_parameter->end_left_hand_position_.x_);

@@ -12,7 +12,13 @@ namespace bitbots_throw{
 				std::shared_ptr<bitbots_splines::PoseHandle> right_hand,
 				std::shared_ptr<bitbots_splines::PoseHandle> trunk);
 
-		bool calculate_trajectories(std::shared_ptr<ThrowParameter> & throw_parameter);
+		/**
+		 * Calculates the trajectory for the throw movement.
+		 *
+		 * @param throw_parameter Container with all values need for the calculate.
+		 * @return duration of the movement. Returns 0.0 if the check for the parameter fails. 
+		 */
+		double calculate_trajectories(std::shared_ptr<ThrowParameter> & throw_parameter);
 		std::shared_ptr<bitbots_splines::PoseHandle> get_pose_left_hand() const;
 		std::shared_ptr<bitbots_splines::PoseHandle> get_pose_right_hand() const;
 		std::shared_ptr<bitbots_splines::PoseHandle> get_pose_trunk() const;

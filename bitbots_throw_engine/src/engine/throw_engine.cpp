@@ -22,7 +22,9 @@ namespace bitbots_throw{
 	}
 
 	void ThrowEngine::reset(){
-		time_ = 0;
+		time_ = 0.0;
+		throw_duration_ = 0.0;
+		sp_current_throw_ = nullptr;
 	}
 
 	int ThrowEngine::get_percent_done() const{
@@ -31,8 +33,8 @@ namespace bitbots_throw{
 	}
 
 	int ThrowEngine::getPercentDone() const{
-		//TODO: implement
-		return 0;
+	    int percentage = throw_duration_ == 0.0 ? 0 : round(100 * (time_ / throw_duration_));
+	    return percentage;
 	}
 
 	void ThrowEngine::set_goals(const ThrowRequest & request){
@@ -44,7 +46,7 @@ namespace bitbots_throw{
 		auto throw_type_id = sp_throw_factory_->get_throw_type(sp_throw_types_, request.goal_position_);
 		sp_current_throw_ = sp_throw_factory_->create_throw(throw_type_id);
 		auto throw_parameter = create_throw_parameter(throw_type_id, request);
-		sp_current_throw_->calculate_trajectories(throw_parameter);
+		throw_duration_ = sp_current_throw_->calculate_trajectories(throw_parameter);
 	}
 
 

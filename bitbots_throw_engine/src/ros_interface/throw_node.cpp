@@ -57,13 +57,14 @@ namespace bitbots_throw{
 
 	void ThrowNode::throw_callback(const bitbots_throw::throw_action action){
 		ThrowStabilizer stabilizer;
+		throw_engine_.reset();
 		ros::Rate loopRate(sp_node_parameter_->engine_frequency_);
 		RosPublisherFacade publisher_facade(ros_node_handle_, sp_node_parameter_);
 
 		publisher_facade.prepare_publisher_for_throw();
 		throw_engine_.set_goals(create_throw_request(action));
 
-		while (ros::ok()){
+		while (ros::ok() && throw_engine_.get_percent_done() < 100){
 			auto response = throw_engine_.update(1/sp_node_parameter_->engine_frequency_);
 			auto ik_goals = stabilizer.stabilize(response);
 			bitbots_splines::JointGoals joint_goals;
