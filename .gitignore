@@ -31,3 +31,8 @@
 *.out
 *.app
 /.vs
+
+# Folders
+.idea/
+.vscode/
+cmake-build-debug/
