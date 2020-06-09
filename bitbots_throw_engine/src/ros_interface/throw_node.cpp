@@ -14,8 +14,8 @@
 
 namespace bitbots_throw{
 	ThrowNode::ThrowNode()
-			: dynamic_reconfigure_server_engine_params_(ros::NodeHandle("/throw_engine"))
-			, dynamic_reconfigure_server_throw_params_(ros::NodeHandle("/throw")){
+			: dynamic_reconfigure_server_engine_params_(ros::NodeHandle("/throw_engine_parameter"))
+			, dynamic_reconfigure_server_throw_params_(ros::NodeHandle("/throw_parameter")){
 		build_default_parameter();
 		load_parameter();
 		init_ros_subcribtions();

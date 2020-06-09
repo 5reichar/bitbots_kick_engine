@@ -3,7 +3,7 @@
 namespace bitbots_throw{
 	RosPublisherFacade::RosPublisherFacade(ros::NodeHandle & ros_node_handle, std::shared_ptr<ThrowNodeParameter> parameter)
 		: sp_node_parameter_(parameter)
-		, sp_controller_command_publisher_(new ControllerCommandPublisher(ros_node_handle, "throwing_motor_goals"))
+		, sp_controller_command_publisher_(new ControllerCommandPublisher(ros_node_handle, "/throwing_motor_goals"))
 		, sp_odometry_publisher_(new OdometryPublisher(ros_node_handle))
 		, sp_support_publisher_(new SupportPublisher(ros_node_handle))
 		, sp_debug_publisher_(new DebugPublisher(ros_node_handle)){
