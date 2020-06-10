@@ -14,22 +14,22 @@ namespace bitbots_throw{
             sp_parameter->frequency_ = config.frequency;
             sp_parameter->hand_distance_ = config.hand_distance;
             sp_parameter->max_throw_distance_ = config.max_throw_distance;
-
-            sp_parameter->throw_start_position_ = Struct3d{config.throw_starting_position_x, config.throw_starting_position_y, config.throw_starting_position_z};
-            sp_parameter->throw_release_position_ = Struct3d{config.throw_release_position_x, config.throw_release_position_y, config.throw_release_position_z};
-
+            sp_parameter->ball_radius_ = config.ball_radius;
+            sp_parameter->robot_height_ = config.robot_height;
+            sp_parameter->head_collision_security_radius_ = config.head_collision_security_radius;
+            sp_parameter->arm_length_ = config.arm_length;
             sp_parameter->pick_up_duration_share_ = config.pick_up_ball_duration_share;
             sp_parameter->throw_preparation_duration_share_ = config.throw_preparation_duration_share;
             sp_parameter->throw_duration_share_ = config.throw_duration_share;
             sp_parameter->throw_conclusion_duration_share_ = config.throw_conclusion_duration_share;
-            sp_parameter->throw_anlge_ = config.throw_angle;
+            sp_parameter->throw_angle_ = config.throw_angle;
 
             return sp_parameter;
         };
 
         static  std::shared_ptr<ThrowEngineParameter> build_default()    {
             // TODO: enter better default values
-            return std::make_shared<ThrowEngineParameter>(0.0, 0.0, 0.0, 0.0, 0.0, Struct3d{0.0, 0.0, 0.0}, Struct3d{0.0, 0.0, 0.0}, 0.0, 0.0, 0.0, 0.0, 0.0);
+            return std::make_shared<ThrowEngineParameter>(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
         };
 
     protected:

@@ -17,11 +17,12 @@ namespace bitbots_throw{
 		double gravity_;
 		// The maximal distance the robot can throw (in m, >= 0)
 		double max_throw_distance_;
-		// the position the robot shall move the ball after picking it up,
-		// and before starting to throw it
-		Struct3d throw_start_position_;
-		// the positon the robot release the ball to throw it
-		Struct3d throw_release_position_;
+        // The height of the robot
+        double robot_height_;
+        // The radius that objects should enter to prevent collisions with the head of the robot
+        double head_collision_security_radius_;
+        // The length of the arms of the robot
+        double arm_length_;
 		// The share of the movement cycle dedicated to picking up the ball
 		double pick_up_duration_share_;
 		// The share of the movement cycle dedicated to prepare the throwing the ball
@@ -31,7 +32,7 @@ namespace bitbots_throw{
 		// The share of the movement cycle dedicated to motion after throwing the ball
 		double throw_conclusion_duration_share_;
 		// The Angle at which the ball shall thrown
-		double throw_anlge_;
+		double throw_angle_;
 
 		//////		Constructor
 		ThrowEngineParameter(double frequency,
@@ -39,26 +40,28 @@ namespace bitbots_throw{
 							double ball_radius,
 							double gravity,
 							double max_throw_distance,
-							Struct3d throw_start_position,
-							Struct3d throw_release_position,
+                            double robot_height,
+                            double head_collision_security_radius,
+                            double arm_length,
 							double pick_up_duration_share,
 							double throw_preparation_duration_share,
 							double throw_duration_share,
 							double throw_conclusion_duration_share,
-							double throw_anlge)
+							double throw_angle)
 							:
 							frequency_{frequency},
 							hand_distance_{hand_distance},
 							ball_radius_{ball_radius},
 							gravity_{gravity},
 							max_throw_distance_{max_throw_distance},
-							throw_start_position_{throw_start_position},
-							throw_release_position_{throw_release_position},
+                            robot_height_{robot_height},
+                            head_collision_security_radius_{head_collision_security_radius},
+                            arm_length_{arm_length},
 							pick_up_duration_share_{pick_up_duration_share},
 							throw_preparation_duration_share_{throw_preparation_duration_share},
 							throw_duration_share_{throw_duration_share},
 							throw_conclusion_duration_share_{throw_conclusion_duration_share},
-							throw_anlge_{throw_anlge}{
+                            throw_angle_{throw_angle}{
 		}
 	};
 } //bitbots_throw

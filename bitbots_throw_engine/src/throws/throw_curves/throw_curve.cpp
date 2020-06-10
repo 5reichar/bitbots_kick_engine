@@ -46,45 +46,45 @@ namespace bitbots_throw{
 		/////  Preparation
 		//Set up the trajectories for the half cycle (single step)
 		double start_time = time;
-		double pick_up_ball_time = time + 1 / (throw_parameter->pick_up_duration_share_ * throw_parameter->movement_cycle_frequence_);
+		double pick_up_ball_time = time + 1 / (throw_parameter->pick_up_duration_share_ * throw_parameter->movement_cycle_frequency_);
 
 		/////  Left Hand
-		sp_pose_left_hand_->x()->add_point(start_time, throw_parameter->start_left_hand_position_.x_);
-		sp_pose_left_hand_->x()->add_point(pick_up_ball_time, throw_parameter->pick_up_left_hand_position_.x_);
+		sp_pose_left_hand_->x()->add_point(start_time, throw_parameter->start_left_arm_position_.x_);
+		sp_pose_left_hand_->x()->add_point(pick_up_ball_time, throw_parameter->pick_up_left_arm_position_.x_);
 
-		sp_pose_left_hand_->y()->add_point(start_time, throw_parameter->start_left_hand_position_.y_);
-		sp_pose_left_hand_->y()->add_point(pick_up_ball_time, throw_parameter->pick_up_left_hand_position_.y_);
+		sp_pose_left_hand_->y()->add_point(start_time, throw_parameter->start_left_arm_position_.y_);
+		sp_pose_left_hand_->y()->add_point(pick_up_ball_time, throw_parameter->pick_up_left_arm_position_.y_);
 
-		sp_pose_left_hand_->z()->add_point(start_time, throw_parameter->start_left_hand_position_.z_);
-		sp_pose_left_hand_->z()->add_point(pick_up_ball_time, throw_parameter->pick_up_left_hand_position_.z_);
+		sp_pose_left_hand_->z()->add_point(start_time, throw_parameter->start_left_arm_position_.z_);
+		sp_pose_left_hand_->z()->add_point(pick_up_ball_time, throw_parameter->pick_up_left_arm_position_.z_);
 
 		sp_pose_left_hand_->roll()->add_point(start_time, 0.0);
-		sp_pose_left_hand_->roll()->add_point(pick_up_ball_time, throw_parameter->pick_up_left_hand_axis_.roll_);
+		sp_pose_left_hand_->roll()->add_point(pick_up_ball_time, throw_parameter->pick_up_left_arm_axis_.roll_);
 
 		sp_pose_left_hand_->pitch()->add_point(start_time, 0.0);
-		sp_pose_left_hand_->pitch()->add_point(pick_up_ball_time, throw_parameter->pick_up_left_hand_axis_.pitch_);
+		sp_pose_left_hand_->pitch()->add_point(pick_up_ball_time, throw_parameter->pick_up_left_arm_axis_.pitch_);
 
 		sp_pose_left_hand_->yaw()->add_point(start_time, 0.0);
-		sp_pose_left_hand_->yaw()->add_point(pick_up_ball_time, throw_parameter->pick_up_left_hand_axis_.yaw_);
+		sp_pose_left_hand_->yaw()->add_point(pick_up_ball_time, throw_parameter->pick_up_left_arm_axis_.yaw_);
 
 		/////  Right Hand
-		sp_pose_right_hand_->x()->add_point(start_time, throw_parameter->end_right_hand_position_.x_);
-		sp_pose_right_hand_->x()->add_point(pick_up_ball_time, throw_parameter->pick_up_right_hand_position_.x_);
+		sp_pose_right_hand_->x()->add_point(start_time, throw_parameter->end_right_arm_position_.x_);
+		sp_pose_right_hand_->x()->add_point(pick_up_ball_time, throw_parameter->pick_up_right_arm_position_.x_);
 
-		sp_pose_right_hand_->y()->add_point(start_time, throw_parameter->end_right_hand_position_.y_);
-		sp_pose_right_hand_->y()->add_point(pick_up_ball_time, throw_parameter->pick_up_right_hand_position_.y_);
+		sp_pose_right_hand_->y()->add_point(start_time, throw_parameter->end_right_arm_position_.y_);
+		sp_pose_right_hand_->y()->add_point(pick_up_ball_time, throw_parameter->pick_up_right_arm_position_.y_);
 
-		sp_pose_right_hand_->z()->add_point(start_time, throw_parameter->end_right_hand_position_.z_);
-		sp_pose_right_hand_->z()->add_point(pick_up_ball_time, throw_parameter->pick_up_right_hand_position_.z_);
+		sp_pose_right_hand_->z()->add_point(start_time, throw_parameter->end_right_arm_position_.z_);
+		sp_pose_right_hand_->z()->add_point(pick_up_ball_time, throw_parameter->pick_up_right_arm_position_.z_);
 
 		sp_pose_right_hand_->roll()->add_point(start_time, 0.0);
-		sp_pose_right_hand_->roll()->add_point(pick_up_ball_time, throw_parameter->pick_up_right_hand_axis_.roll_);
+		sp_pose_right_hand_->roll()->add_point(pick_up_ball_time, throw_parameter->pick_up_right_arm_axis_.roll_);
 
 		sp_pose_right_hand_->pitch()->add_point(start_time, 0.0);
-		sp_pose_right_hand_->pitch()->add_point(pick_up_ball_time, throw_parameter->pick_up_right_hand_axis_.pitch_);
+		sp_pose_right_hand_->pitch()->add_point(pick_up_ball_time, throw_parameter->pick_up_right_arm_axis_.pitch_);
 
 		sp_pose_right_hand_->yaw()->add_point(start_time, 0.0);
-		sp_pose_right_hand_->yaw()->add_point(pick_up_ball_time, throw_parameter->pick_up_right_hand_axis_.yaw_);
+		sp_pose_right_hand_->yaw()->add_point(pick_up_ball_time, throw_parameter->pick_up_right_arm_axis_.yaw_);
 
 		/////  Trunk
 		sp_pose_trunk_->x()->add_point(start_time, 0.0);
@@ -114,46 +114,46 @@ namespace bitbots_throw{
 
 		/////  Preparation
 		//Set up the trajectories for the half cycle (single step)
-		double begin_throw_time = time + 1 / (throw_parameter->throw_preparation_duration_share_ * throw_parameter->movement_cycle_frequence_);
-		double release_throw_time = time + 1 / (throw_parameter->throw_duration_share_ * throw_parameter->movement_cycle_frequence_);
+		double begin_throw_time = time + 1 / (throw_parameter->throw_preparation_duration_share_ * throw_parameter->movement_cycle_frequency_);
+		double release_throw_time = time + 1 / (throw_parameter->throw_duration_share_ * throw_parameter->movement_cycle_frequency_);
 
 		/////  Left Hand
-		sp_pose_left_hand_->x()->add_point(begin_throw_time, throw_parameter->throw_start_left_hand_position_.x_);
-		sp_pose_left_hand_->x()->add_point(release_throw_time, throw_parameter->throw_release_left_hand_position_.x_, throw_parameter->throw_velocity_.x_);
+		sp_pose_left_hand_->x()->add_point(begin_throw_time, throw_parameter->throw_start_left_arm_position_.x_);
+		sp_pose_left_hand_->x()->add_point(release_throw_time, throw_parameter->throw_release_left_arm_position_.x_, throw_parameter->throw_velocity_.x_);
 
-		sp_pose_left_hand_->y()->add_point(begin_throw_time, throw_parameter->throw_start_left_hand_position_.y_);
-		sp_pose_left_hand_->y()->add_point(release_throw_time, throw_parameter->throw_release_left_hand_position_.y_, throw_parameter->throw_velocity_.y_);
+		sp_pose_left_hand_->y()->add_point(begin_throw_time, throw_parameter->throw_start_left_arm_position_.y_);
+		sp_pose_left_hand_->y()->add_point(release_throw_time, throw_parameter->throw_release_left_arm_position_.y_, throw_parameter->throw_velocity_.y_);
 
-		sp_pose_left_hand_->z()->add_point(begin_throw_time, throw_parameter->throw_start_left_hand_position_.z_);
-		sp_pose_left_hand_->z()->add_point(release_throw_time, throw_parameter->throw_release_left_hand_position_.z_, throw_parameter->throw_velocity_.z_);
+		sp_pose_left_hand_->z()->add_point(begin_throw_time, throw_parameter->throw_start_left_arm_position_.z_);
+		sp_pose_left_hand_->z()->add_point(release_throw_time, throw_parameter->throw_release_left_arm_position_.z_, throw_parameter->throw_velocity_.z_);
 
-		sp_pose_left_hand_->roll()->add_point(begin_throw_time, throw_parameter->throw_start_left_hand_axis_.roll_);
-		sp_pose_left_hand_->roll()->add_point(release_throw_time, throw_parameter->throw_release_left_hand_axis_.roll_);
+		sp_pose_left_hand_->roll()->add_point(begin_throw_time, throw_parameter->throw_start_left_arm_axis_.roll_);
+		sp_pose_left_hand_->roll()->add_point(release_throw_time, throw_parameter->throw_release_left_arm_axis_.roll_);
 
-		sp_pose_left_hand_->pitch()->add_point(begin_throw_time, throw_parameter->throw_start_left_hand_axis_.pitch_);
-		sp_pose_left_hand_->pitch()->add_point(release_throw_time, throw_parameter->throw_release_left_hand_axis_.pitch_);
+		sp_pose_left_hand_->pitch()->add_point(begin_throw_time, throw_parameter->throw_start_left_arm_axis_.pitch_);
+		sp_pose_left_hand_->pitch()->add_point(release_throw_time, throw_parameter->throw_release_left_arm_axis_.pitch_);
 
-		sp_pose_left_hand_->yaw()->add_point(begin_throw_time, throw_parameter->throw_start_left_hand_axis_.yaw_);
-		sp_pose_left_hand_->yaw()->add_point(release_throw_time, throw_parameter->throw_release_left_hand_axis_.yaw_);
+		sp_pose_left_hand_->yaw()->add_point(begin_throw_time, throw_parameter->throw_start_left_arm_axis_.yaw_);
+		sp_pose_left_hand_->yaw()->add_point(release_throw_time, throw_parameter->throw_release_left_arm_axis_.yaw_);
 
 		/////  Right Hand
-		sp_pose_right_hand_->x()->add_point(begin_throw_time, throw_parameter->throw_start_right_hand_position_.x_);
-		sp_pose_right_hand_->x()->add_point(release_throw_time, throw_parameter->throw_release_right_hand_position_.x_, throw_parameter->throw_velocity_.x_);
+		sp_pose_right_hand_->x()->add_point(begin_throw_time, throw_parameter->throw_start_right_arm_position_.x_);
+		sp_pose_right_hand_->x()->add_point(release_throw_time, throw_parameter->throw_release_right_arm_position_.x_, throw_parameter->throw_velocity_.x_);
 
-		sp_pose_right_hand_->y()->add_point(begin_throw_time, throw_parameter->throw_start_right_hand_position_.y_);
-		sp_pose_right_hand_->y()->add_point(release_throw_time, throw_parameter->throw_release_right_hand_position_.y_, throw_parameter->throw_velocity_.y_);
+		sp_pose_right_hand_->y()->add_point(begin_throw_time, throw_parameter->throw_start_right_arm_position_.y_);
+		sp_pose_right_hand_->y()->add_point(release_throw_time, throw_parameter->throw_release_right_arm_position_.y_, throw_parameter->throw_velocity_.y_);
 
-		sp_pose_right_hand_->z()->add_point(begin_throw_time, throw_parameter->throw_start_right_hand_position_.z_);
-		sp_pose_right_hand_->z()->add_point(release_throw_time, throw_parameter->throw_release_right_hand_position_.z_, throw_parameter->throw_velocity_.z_);
+		sp_pose_right_hand_->z()->add_point(begin_throw_time, throw_parameter->throw_start_right_arm_position_.z_);
+		sp_pose_right_hand_->z()->add_point(release_throw_time, throw_parameter->throw_release_right_arm_position_.z_, throw_parameter->throw_velocity_.z_);
 
-		sp_pose_right_hand_->roll()->add_point(begin_throw_time, throw_parameter->throw_start_right_hand_axis_.roll_);
-		sp_pose_right_hand_->roll()->add_point(release_throw_time, throw_parameter->throw_release_right_hand_axis_.roll_);
+		sp_pose_right_hand_->roll()->add_point(begin_throw_time, throw_parameter->throw_start_right_arm_axis_.roll_);
+		sp_pose_right_hand_->roll()->add_point(release_throw_time, throw_parameter->throw_release_right_arm_axis_.roll_);
 
-		sp_pose_right_hand_->pitch()->add_point(begin_throw_time, throw_parameter->throw_start_right_hand_axis_.pitch_);
-		sp_pose_right_hand_->pitch()->add_point(release_throw_time, throw_parameter->throw_release_right_hand_axis_.pitch_);
+		sp_pose_right_hand_->pitch()->add_point(begin_throw_time, throw_parameter->throw_start_right_arm_axis_.pitch_);
+		sp_pose_right_hand_->pitch()->add_point(release_throw_time, throw_parameter->throw_release_right_arm_axis_.pitch_);
 
-		sp_pose_right_hand_->yaw()->add_point(begin_throw_time, throw_parameter->throw_start_right_hand_axis_.yaw_);
-		sp_pose_right_hand_->yaw()->add_point(release_throw_time, throw_parameter->throw_release_right_hand_axis_.yaw_);
+		sp_pose_right_hand_->yaw()->add_point(begin_throw_time, throw_parameter->throw_start_right_arm_axis_.yaw_);
+		sp_pose_right_hand_->yaw()->add_point(release_throw_time, throw_parameter->throw_release_right_arm_axis_.yaw_);
 
 		/////  Trunk
 		sp_pose_trunk_->x()->add_point(begin_throw_time, 0.0);
@@ -183,20 +183,20 @@ namespace bitbots_throw{
 
 		/////  Preparation
 		//Set up the trajectories for the half cycle (single step)
-		double finish_time = time + 1 / (throw_parameter->throw_conclusion_duration_share_ * throw_parameter->movement_cycle_frequence_);
+		double finish_time = time + 1 / (throw_parameter->throw_conclusion_duration_share_ * throw_parameter->movement_cycle_frequency_);
 
 		/////  Left Hand
-		sp_pose_left_hand_->x()->add_point(finish_time, throw_parameter->end_left_hand_position_.x_);
-		sp_pose_left_hand_->y()->add_point(finish_time, throw_parameter->end_left_hand_position_.y_);
-		sp_pose_left_hand_->z()->add_point(finish_time, throw_parameter->end_left_hand_position_.z_);
+		sp_pose_left_hand_->x()->add_point(finish_time, throw_parameter->end_left_arm_position_.x_);
+		sp_pose_left_hand_->y()->add_point(finish_time, throw_parameter->end_left_arm_position_.y_);
+		sp_pose_left_hand_->z()->add_point(finish_time, throw_parameter->end_left_arm_position_.z_);
 		sp_pose_left_hand_->roll()->add_point(finish_time, 0.0);
 		sp_pose_left_hand_->pitch()->add_point(finish_time, 0.0);
 		sp_pose_left_hand_->yaw()->add_point(finish_time, 0.0);
 
 		/////  Right Hand
-		sp_pose_right_hand_->x()->add_point(finish_time, throw_parameter->end_right_hand_position_.x_);
-		sp_pose_right_hand_->y()->add_point(finish_time, throw_parameter->end_right_hand_position_.y_);
-		sp_pose_right_hand_->z()->add_point(finish_time, throw_parameter->end_right_hand_position_.z_);
+		sp_pose_right_hand_->x()->add_point(finish_time, throw_parameter->end_right_arm_position_.x_);
+		sp_pose_right_hand_->y()->add_point(finish_time, throw_parameter->end_right_arm_position_.y_);
+		sp_pose_right_hand_->z()->add_point(finish_time, throw_parameter->end_right_arm_position_.z_);
 		sp_pose_right_hand_->roll()->add_point(finish_time, 0.0);
 		sp_pose_right_hand_->pitch()->add_point(finish_time, 0.0);
 		sp_pose_right_hand_->yaw()->add_point(finish_time, 0.0);
