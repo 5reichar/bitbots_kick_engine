@@ -2,9 +2,9 @@
 #include <std_msgs/Char.h>
 
 namespace bitbots_throw{
-    SupportPublisher::SupportPublisher(ros::NodeHandle & ros_node_handle){
+    SupportPublisher::SupportPublisher(ros::NodeHandle & ros_node_handle, std::string topic){
         current_support_foot_ = '\0';
-        ros_publisher_support_ = ros_node_handle.advertise<std_msgs::Char>("throw_support_foot_state", 1);
+        ros_publisher_support_ = ros_node_handle.advertise<std_msgs::Char>(topic, 1);
     }
 
     void SupportPublisher::publish(){

@@ -10,6 +10,7 @@
 #include <bitbots_throw/throw_action.h>
 #include <bitbots_throw/throw_paramsConfig.h>
 #include <bitbots_throw/throw_engine_paramsConfig.h>
+#include "ros_interface/publisher/ros_publisher_facade.h"
 
 namespace bitbots_throw{
     class ThrowNode
@@ -19,7 +20,7 @@ namespace bitbots_throw{
 
     private:
         // Initilization methodes
-        void build_default_parameter();
+        void set_default_parameter();
         void load_parameter();
         void init_ros_subcribtions();
         void init_dynamic_reconfiguration();
@@ -37,6 +38,7 @@ namespace bitbots_throw{
         ThrowIK ik_;
         ThrowEngine throw_engine_;
         std::shared_ptr<ThrowNodeParameter> sp_node_parameter_;
+        RosPublisherFacade::RosPublisherTopics publisher_topics_;
 
         ros::NodeHandle ros_node_handle_;
         ros::Subscriber ros_subsciber_throw_;

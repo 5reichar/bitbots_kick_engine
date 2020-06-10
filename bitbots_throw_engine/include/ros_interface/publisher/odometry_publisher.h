@@ -6,7 +6,7 @@
 namespace bitbots_throw{
     class OdometryPublisher{
     public:
-        OdometryPublisher(ros::NodeHandle & ros_node_handle);
+        OdometryPublisher(ros::NodeHandle & ros_node_handle, std::string topic);
 
         void publish(uint16_t publish_factor_);
         void reset_counter();

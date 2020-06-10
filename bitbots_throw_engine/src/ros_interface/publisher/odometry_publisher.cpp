@@ -2,8 +2,8 @@
 #include <nav_msgs/Odometry.h>
 
 namespace bitbots_throw{
-    OdometryPublisher::OdometryPublisher(ros::NodeHandle & ros_node_handle){
-        ros_publisher_odometry_ = ros_node_handle.advertise<nav_msgs::Odometry>("throw_odometry", 1);
+    OdometryPublisher::OdometryPublisher(ros::NodeHandle & ros_node_handle, std::string topic){
+        ros_publisher_odometry_ = ros_node_handle.advertise<nav_msgs::Odometry>(topic, 1);
         reset_counter();
     }
 

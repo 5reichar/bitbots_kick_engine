@@ -11,7 +11,16 @@
 namespace bitbots_throw{
     class RosPublisherFacade{
     public:
-        RosPublisherFacade(ros::NodeHandle & ros_node_handle, std::shared_ptr<ThrowNodeParameter> parameter);
+        struct RosPublisherTopics{
+            std::string str_controller_command_topic_;
+            std::string str_support_topic_;
+            std::string str_odometry_topic_;
+            std::string str_debug_topic_;
+            std::string str_engine_debug_topic_;
+            std::string str_debug_marker_topic_;
+        };
+
+        RosPublisherFacade(ros::NodeHandle & ros_node_handle, std::shared_ptr<ThrowNodeParameter> parameter, RosPublisherTopics topics);
         void prepare_publisher_for_throw();
 
         void publish_throw(bitbots_splines::JointGoals & joint_goals);

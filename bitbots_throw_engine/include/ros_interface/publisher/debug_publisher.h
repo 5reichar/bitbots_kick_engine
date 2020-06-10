@@ -11,7 +11,7 @@
 namespace bitbots_throw{
     class DebugPublisher : public bitbots_splines::AbstractVisualizer{
     public:
-        explicit DebugPublisher(ros::NodeHandle & ros_node_handle);
+        explicit DebugPublisher(ros::NodeHandle & ros_node_handle, std::string topic, std::string topic_engine, std::string topic_marker);
 
         void publish_engine_debug(ThrowResponse response);
         void publish_ik_debug(ThrowResponse response, bitbots_splines::JointGoals joint_goals);

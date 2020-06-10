@@ -6,7 +6,7 @@
 namespace bitbots_throw{
     class SupportPublisher{
     public:
-        SupportPublisher(ros::NodeHandle & ros_node_handle);
+        SupportPublisher(ros::NodeHandle & ros_node_handle, std::string topic);
 
         virtual void publish();
         virtual void publish(char const support_foot);

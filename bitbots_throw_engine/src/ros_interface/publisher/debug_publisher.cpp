@@ -4,10 +4,10 @@
 #include <bitbots_throw/throw_engine_debug.h>
 
 namespace bitbots_throw{
-    DebugPublisher::DebugPublisher(ros::NodeHandle & ros_node_handle){
-        ros_publisher_debug_ = ros_node_handle.advertise<bitbots_throw::throw_debug>("throw_debug", 1);
-        ros_publisher_debug_engine_ = ros_node_handle.advertise<bitbots_throw::throw_engine_debug>("throw_engine_debug", 1);
-        ros_publisher_debug_marker_ = ros_node_handle.advertise<visualization_msgs::Marker>("throw_debug_marker", 1);
+    DebugPublisher::DebugPublisher(ros::NodeHandle & ros_node_handle, std::string topic, std::string topic_engine, std::string topic_marker){
+        ros_publisher_debug_ = ros_node_handle.advertise<bitbots_throw::throw_debug>(topic, 1);
+        ros_publisher_debug_engine_ = ros_node_handle.advertise<bitbots_throw::throw_engine_debug>(topic_engine, 1);
+        ros_publisher_debug_marker_ = ros_node_handle.advertise<visualization_msgs::Marker>(topic_marker, 1);
     }
 
     void DebugPublisher::publish_engine_debug(ThrowResponse response){

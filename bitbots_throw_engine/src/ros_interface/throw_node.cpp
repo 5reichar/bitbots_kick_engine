@@ -7,7 +7,6 @@
 #include "utility/throw_stabilizer.h"
 
 #include "ros_interface/publisher/system_publisher.h"
-#include "ros_interface/publisher/ros_publisher_facade.h"
 
 #include "parameter/throw_engine_parameter_builder.h"
 #include "parameter/throw_type_parameter_builder.h"
@@ -16,15 +15,21 @@ namespace bitbots_throw{
 	ThrowNode::ThrowNode()
 			: dynamic_reconfigure_server_engine_params_(ros::NodeHandle("/throw_engine_parameter"))
 			, dynamic_reconfigure_server_throw_params_(ros::NodeHandle("/throw_parameter")){
-		build_default_parameter();
+		set_default_parameter();
 		load_parameter();
 		init_ros_subcribtions();
 		init_dynamic_reconfiguration();
 		init_ik();
 	}
 
-	void ThrowNode::build_default_parameter(){
+	void ThrowNode::set_default_parameter(){
 		sp_node_parameter_ = ThrowNodeParameterBuilder::build_default();
+		publisher_topics_.str_controller_command_topic_ = "/throwing_motor_goals";
+		publisher_topics_.str_odometry_topic_ = "/throw_odometry";
+		publisher_topics_.str_debug_topic_ = "/throw_debug";
+		publisher_topics_.str_engine_debug_topic_ = "/throw_engine_debug";
+		publisher_topics_.str_debug_marker_topic_ = "/throw_debug_marker";
+		publisher_topics_.str_support_topic_ = "/throw_support_foot_state";
 	}
 
 	void ThrowNode::load_parameter(){
@@ -32,7 +37,7 @@ namespace bitbots_throw{
 	}
 
 	void ThrowNode::init_ros_subcribtions(){
-		ros_subsciber_throw_ = ros_node_handle_.subscribe("throw", 1, &ThrowNode::throw_callback, this, ros::TransportHints().tcpNoDelay());
+		ros_subsciber_throw_ = ros_node_handle_.subscribe("/throw", 1, &ThrowNode::throw_callback, this, ros::TransportHints().tcpNoDelay());
 	}
 
 	void ThrowNode::init_dynamic_reconfiguration(){
@@ -59,7 +64,7 @@ namespace bitbots_throw{
 		ThrowStabilizer stabilizer;
 		throw_engine_.reset();
 		ros::Rate loopRate(sp_node_parameter_->engine_frequency_);
-		RosPublisherFacade publisher_facade(ros_node_handle_, sp_node_parameter_);
+		RosPublisherFacade publisher_facade(ros_node_handle_, sp_node_parameter_, publisher_topics_);
 
 		publisher_facade.prepare_publisher_for_throw();
 		throw_engine_.set_goals(create_throw_request(action));
