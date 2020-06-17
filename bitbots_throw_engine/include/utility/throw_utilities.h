@@ -24,6 +24,11 @@ namespace bitbots_throw{
   struct ThrowRequest{
     Struct3d ball_position_;
     Struct3d goal_position_;
+
+    Struct3d left_hand_position_;
+    Struct3d right_hand_position_;
+    Struct3d left_feet_position_;
+    Struct3d right_feet_position_;
   };
 
   struct ThrowResponse{

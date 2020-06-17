@@ -14,101 +14,71 @@ namespace bitbots_throw{
     public:
         static std::shared_ptr<ThrowParameter> build_from_dynamic_reconf(std::shared_ptr<ThrowEngineParameter> & engine_parameter,
                                                                         std::shared_ptr<ThrowType> & throw_type,
-                                                                        Struct3d ball_position,
-                                                                        Struct3d throw_goal_position){
+                                                                        ThrowRequest request){
             auto sp_parameter = build_default();
+            auto throw_orientation_angle = calculate_angle(request.goal_position_);
 
-            auto left_hand_position = -0.5 * engine_parameter->hand_distance_;
-            auto right_hand_position = 0.5 * engine_parameter->hand_distance_;
-            auto throw_orientation_angle = calculate_angle(throw_goal_position);
+            sp_parameter->start_left_arm_.x_ = request.left_hand_position_.x_;
+            sp_parameter->start_left_arm_.y_ = request.left_hand_position_.y_;
+            sp_parameter->start_left_arm_.z_ = request.left_hand_position_.z_;
 
-            sp_parameter->start_left_arm_position_.x_ = left_hand_position;
-            sp_parameter->start_left_arm_position_.y_ = 0.0;
-            sp_parameter->start_left_arm_position_.z_ = 0.0;
+            sp_parameter->start_right_arm_.x_ = request.right_hand_position_.x_;
+            sp_parameter->start_right_arm_.y_ = request.right_hand_position_.y_;
+            sp_parameter->start_right_arm_.z_ = request.right_hand_position_.z_;
 
-            sp_parameter->start_right_arm_position_.x_ = right_hand_position;
-            sp_parameter->start_right_arm_position_.y_ = 0.0;
-            sp_parameter->start_right_arm_position_.z_ = 0.0;
+            sp_parameter->start_left_feet_.x_ = request.left_feet_position_.x_;
+            sp_parameter->start_left_feet_.y_ = request.left_feet_position_.y_;
+            sp_parameter->start_left_feet_.z_ = request.left_feet_position_.z_;
 
-            sp_parameter->pick_up_left_arm_position_.x_ = ball_position.x_ - engine_parameter->ball_radius_;
-            sp_parameter->pick_up_left_arm_position_.y_ = ball_position.y_;
-            sp_parameter->pick_up_left_arm_position_.z_ = ball_position.z_;
+            sp_parameter->start_right_feet_.x_ = request.right_feet_position_.x_;
+            sp_parameter->start_right_feet_.y_ = request.right_feet_position_.y_;
+            sp_parameter->start_right_feet_.z_ = request.right_feet_position_.z_;
 
-            sp_parameter->pick_up_right_arm_position_.x_ = ball_position.x_ + engine_parameter->ball_radius_;
-            sp_parameter->pick_up_right_arm_position_.y_ = ball_position.y_;
-            sp_parameter->pick_up_right_arm_position_.z_ = ball_position.z_;
+            sp_parameter->pick_up_left_arm_.x_ = request.ball_position_.x_ - engine_parameter->ball_radius_;
+            sp_parameter->pick_up_left_arm_.y_ = request.ball_position_.y_;
+            sp_parameter->pick_up_left_arm_.z_ = request.ball_position_.z_;
 
-            sp_parameter->pick_up_left_arm_axis_.roll_ = 0.0;
-            sp_parameter->pick_up_left_arm_axis_.pitch_ = 0.0;
-            sp_parameter->pick_up_left_arm_axis_.yaw_ = 0.0;
+            sp_parameter->pick_up_right_arm_.x_ = request.ball_position_.x_ + engine_parameter->ball_radius_;
+            sp_parameter->pick_up_right_arm_.y_ = request.ball_position_.y_;
+            sp_parameter->pick_up_right_arm_.z_ = request.ball_position_.z_;
 
-            sp_parameter->pick_up_right_arm_axis_.roll_ = 0.0;
-            sp_parameter->pick_up_right_arm_axis_.pitch_ = 0.0;
-            sp_parameter->pick_up_right_arm_axis_.yaw_ = 0.0;
-
-            sp_parameter->pick_up_trunk_axis_.roll_ = 0.0;
-            sp_parameter->pick_up_trunk_axis_.pitch_ = 0.0;
-            sp_parameter->pick_up_trunk_axis_.yaw_ = calculate_angle(ball_position);
+            sp_parameter->pick_up_trunk_.yaw_ = calculate_angle(request.ball_position_);
 
             auto throw_start_position_x = - 1.0 * calculate_opposite(throw_orientation_angle, engine_parameter->head_collision_security_radius_ + engine_parameter->ball_radius_);
             auto throw_start_position_y = - 1.0 * calculate_adjacent(throw_orientation_angle, engine_parameter->head_collision_security_radius_ + engine_parameter->ball_radius_);
-            sp_parameter->throw_start_left_arm_position_.x_ = throw_start_position_x;
-            sp_parameter->throw_start_left_arm_position_.y_ = throw_start_position_y;
-            sp_parameter->throw_start_left_arm_position_.z_ = engine_parameter->robot_height_;
+            sp_parameter->throw_start_left_arm_.x_ = throw_start_position_x;
+            sp_parameter->throw_start_left_arm_.y_ = throw_start_position_y;
+            sp_parameter->throw_start_left_arm_.z_ = engine_parameter->robot_height_;
 
-            sp_parameter->throw_start_right_arm_position_.x_ = throw_start_position_x;
-            sp_parameter->throw_start_right_arm_position_.y_ = throw_start_position_y;
-            sp_parameter->throw_start_right_arm_position_.z_ = engine_parameter->robot_height_;
+            sp_parameter->throw_start_right_arm_.x_ = throw_start_position_x;
+            sp_parameter->throw_start_right_arm_.y_ = throw_start_position_y;
+            sp_parameter->throw_start_right_arm_.z_ = engine_parameter->robot_height_;
 
-            sp_parameter->throw_start_left_arm_axis_.roll_ = 0.0;
-            sp_parameter->throw_start_left_arm_axis_.pitch_ = 0.0;
-            sp_parameter->throw_start_left_arm_axis_.yaw_ = 0.0;
+            sp_parameter->throw_start_trunk_.yaw_ = throw_orientation_angle;
 
-            sp_parameter->throw_start_right_arm_axis_.roll_ = 0.0;
-            sp_parameter->throw_start_right_arm_axis_.pitch_ = 0.0;
-            sp_parameter->throw_start_right_arm_axis_.yaw_ = 0.0;
+            auto throw_zenith_height = engine_parameter->robot_height_ + engine_parameter->head_collision_security_radius_;
+            sp_parameter->throw_zenith_left_arm_.z_ = throw_zenith_height;
+            sp_parameter->throw_zenith_right_arm_.z_ = throw_zenith_height;
 
-            sp_parameter->throw_start_trunk_axis_.roll_ = 0.0;
-            sp_parameter->throw_start_trunk_axis_.pitch_ = 0.0;
-            sp_parameter->throw_start_trunk_axis_.yaw_ = throw_orientation_angle;
-
+            auto throw_angle = throw_type->throw_anlge_ == 0 ? engine_parameter->throw_angle_ : throw_type->throw_anlge_;
             auto throw_release_position_x = calculate_opposite(throw_orientation_angle, engine_parameter->arm_length_ + engine_parameter->ball_radius_);
             auto throw_release_position_y = calculate_adjacent(throw_orientation_angle, engine_parameter->arm_length_ + engine_parameter->ball_radius_);
-            sp_parameter->throw_release_left_arm_position_.x_ = throw_release_position_x;
-            sp_parameter->throw_release_left_arm_position_.y_ = throw_release_position_y;
-            sp_parameter->throw_release_left_arm_position_.z_ = engine_parameter->robot_height_;
+            auto throw_release_position_z = throw_zenith_height - ((std::cos(throw_angle) / std::sin(throw_angle)) * calculate_distace(Struct3d(throw_release_position_x, throw_release_position_y, 0.0)));
 
-            sp_parameter->throw_release_right_arm_position_.x_ = throw_release_position_x;
-            sp_parameter->throw_release_right_arm_position_.y_ = throw_release_position_y;
-            sp_parameter->throw_release_right_arm_position_.z_ = engine_parameter->robot_height_;
+            sp_parameter->throw_release_left_arm_.x_ = throw_release_position_x;
+            sp_parameter->throw_release_left_arm_.y_ = throw_release_position_y;
+            sp_parameter->throw_release_left_arm_.z_ = throw_release_position_z;
 
-            sp_parameter->throw_release_left_arm_axis_.roll_ = 0.0;
-            sp_parameter->throw_release_left_arm_axis_.pitch_ = 0.0;
-            sp_parameter->throw_release_left_arm_axis_.yaw_ = -90.0;
+            sp_parameter->throw_release_right_arm_.x_ = throw_release_position_x;
+            sp_parameter->throw_release_right_arm_.y_ = throw_release_position_y;
+            sp_parameter->throw_release_right_arm_.z_ = throw_release_position_z;
 
-            sp_parameter->throw_release_right_arm_axis_.roll_ = 0.0;
-            sp_parameter->throw_release_right_arm_axis_.pitch_ = 0.0;
-            sp_parameter->throw_release_right_arm_axis_.yaw_ = 90.0;
+            sp_parameter->throw_release_trunk_.yaw_ = throw_orientation_angle;
 
-            sp_parameter->throw_release_trunk_axis_.roll_ = 0.0;
-            sp_parameter->throw_release_trunk_axis_.pitch_ = 0.0;
-            sp_parameter->throw_release_trunk_axis_.yaw_ = throw_orientation_angle;
-
-            auto velocity = calculate_velocity(engine_parameter, throw_goal_position);
+            auto velocity = calculate_velocity(throw_release_position_z, engine_parameter, request.goal_position_);
             sp_parameter->throw_velocity_.x_ = sin(throw_orientation_angle) * velocity;
             sp_parameter->throw_velocity_.y_ = cos(throw_orientation_angle) * velocity;
-            sp_parameter->throw_velocity_.z_ = 0.0;
 
-            sp_parameter->end_left_arm_position_.x_ = left_hand_position;
-            sp_parameter->end_left_arm_position_.y_ = 0.0;
-            sp_parameter->end_left_arm_position_.z_ = 0.0;
-
-            sp_parameter->end_right_arm_position_.x_ = right_hand_position;
-            sp_parameter->end_right_arm_position_.y_ = 0.0;
-            sp_parameter->end_right_arm_position_.z_ = 0.0;
-
-            sp_parameter->throw_goal_position_ = throw_goal_position;
-            
             sp_parameter->movement_cycle_frequency_ = engine_parameter->frequency_;
 
             sp_parameter->pick_up_duration_share_ = throw_type->pick_up_duration_share_ == 0 ? engine_parameter->pick_up_duration_share_ : throw_type->pick_up_duration_share_;
@@ -117,45 +87,37 @@ namespace bitbots_throw{
             sp_parameter->throw_conclusion_duration_share_ = throw_type->throw_conclusion_duration_share_ == 0 ? engine_parameter->throw_conclusion_duration_share_ : throw_type->throw_conclusion_duration_share_;
             check_duration_share(sp_parameter, engine_parameter);
 
-            sp_parameter->throw_angle_ = throw_type->throw_anlge_ == 0 ? engine_parameter->throw_angle_ : throw_type->throw_anlge_;
-
             return sp_parameter;
         };
 
         static std::shared_ptr<ThrowParameter> build_default(){
             // TODO: enter better default values
-            return std::make_shared<ThrowParameter>(Struct3d{0.0, 0.0, 0.0},  //start_left_hand_position
-                                                    Struct3d{0.0, 0.0, 0.0},  //start_right_hand_position
-                                                    Struct3d{0.0, 0.0, 0.0},  //pick_up_left_hand_position
-                                                    Struct3d{0.0, 0.0, 0.0},  //pick_up_right_hand_position
-                                                    Struct3dRPY{0.0, 0.0, 0.0},  //pick_up_left_hand_axis
-                                                    Struct3dRPY{0.0, 0.0, 0.0},  //pick_up_right_hand_axis
-                                                    Struct3dRPY{0.0, 0.0, 0.0},  //pick_up_trunk_axis
-                                                    Struct3d{0.0, 0.0, 0.0},  //throw_start_left_hand_position
-                                                    Struct3d{0.0, 0.0, 0.0},  //throw_start_right_hand_position
-                                                    Struct3dRPY{0.0, 0.0, 0.0},  //throw_start_left_hand_axis
-                                                    Struct3dRPY{0.0, 0.0, 0.0},  //throw_start_right_hand_axis
-                                                    Struct3dRPY{0.0, 0.0, 0.0},  //throw_start_trunk_axis
-                                                    Struct3d{0.0, 0.0, 0.0},  //throw_release_left_hand_position
-                                                    Struct3d{0.0, 0.0, 0.0},  //throw_release_right_hand_position
-                                                    Struct3dRPY{0.0, 0.0, 0.0},  //throw_release_left_hand_axis
-                                                    Struct3dRPY{0.0, 0.0, 0.0},  //throw_release_right_hand_axis
-                                                    Struct3dRPY{0.0, 0.0, 0.0},  //throw_release_trunk_axis
+            return std::make_shared<ThrowParameter>(Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0},  //start_left_hand
+                                                    Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0},  //start_right_hand
+                                                    Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0},  //start_left_feet
+                                                    Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0},  //start_right_feet
+                                                    Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0},  //pick_up_left_hand
+                                                    Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0},  //pick_up_right_hand
+                                                    Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0},  //pick_up_trunk
+                                                    Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0},  //throw_start_left_hand
+                                                    Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0},  //throw_start_right_hand
+                                                    Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0},  //throw_start_trunk
+                                                    Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0},  //throw_zenith_left_hand
+                                                    Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0},  //throw_zenith_right_hand
+                                                    Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0},  //throw_release_left_hand
+                                                    Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0},  //throw_release_right_hand
+                                                    Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0},  //throw_release_trunk
                                                     Struct3d{0.0, 0.0, 0.0},  //throw_velocity
-                                                    Struct3d{0.0, 0.0, 0.0},  //end_left_hand_position
-                                                    Struct3d{0.0, 0.0, 0.0},  //end_right_hand_position
-                                                    Struct3d{0.0, 0.0, 0.0},  //throw_goal_position
-                                                    0.0,  //movement_cycle_frequence
+                                                    0.0,  //movement_cycle_frequency
                                                     0.25,  //pick_up_duration_share
                                                     0.25,  //throw_preparation_duration_share
                                                     0.25,  //throw_duration_share
                                                     0.25,  //throw_conclusion_duration_share
-                                                    30.0);  //throw_angle
         };
 
     protected:
-        static double calculate_velocity(std::shared_ptr<ThrowEngineParameter> & engine_parameter, Struct3d throw_goal_position){
-            auto time = engine_parameter->robot_height_ / engine_parameter->gravity_;
+        static double calculate_velocity(double const & height, std::shared_ptr<ThrowEngineParameter> & engine_parameter, Struct3d throw_goal_position){
+            auto time = height / engine_parameter->gravity_;
             return calculate_distace(throw_goal_position) / time;
         }
 
