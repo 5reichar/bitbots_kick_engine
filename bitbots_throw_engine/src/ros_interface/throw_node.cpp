@@ -24,7 +24,7 @@ namespace bitbots_throw{
 
 	void ThrowNode::set_default_parameter(){
 		sp_node_parameter_ = ThrowNodeParameterBuilder::build_default();
-		publisher_topics_.str_controller_command_topic_ = "/throwing_motor_goals";
+		publisher_topics_.str_controller_command_topic_ = "/DynamixelController/command";
 		publisher_topics_.str_odometry_topic_ = "/throw_odometry";
 		publisher_topics_.str_debug_topic_ = "/throw_debug";
 		publisher_topics_.str_engine_debug_topic_ = "/throw_engine_debug";
