@@ -13,8 +13,8 @@ namespace bitbots_throw{
     class ThrowEngine : public bitbots_splines::AbstractEngine<ThrowRequest, ThrowResponse>{
     public:
         ThrowEngine();
-        virtual ThrowResponse update(double dt) override;
-        virtual void reset() override;
+        ThrowResponse update(double dt) override;
+        void reset() override;
 
         /**
          * @return percentage of the throw movement completed, thru the update methode.
@@ -26,8 +26,8 @@ namespace bitbots_throw{
         void set_engine_parameter(std::shared_ptr<ThrowEngineParameter> parameter);
 
     private:
-        virtual int getPercentDone() const override;
-        virtual void setGoals(const ThrowRequest & request) override;
+        int getPercentDone() const override;
+        void setGoals(const ThrowRequest & request) override;
 
         std::shared_ptr<ThrowParameter> create_throw_parameter(const ThrowTypeId throw_type_id, const ThrowRequest & request);
 

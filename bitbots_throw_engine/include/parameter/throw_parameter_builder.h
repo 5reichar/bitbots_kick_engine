@@ -112,7 +112,7 @@ namespace bitbots_throw{
                                                     0.25,  //pick_up_duration_share
                                                     0.25,  //throw_preparation_duration_share
                                                     0.25,  //throw_duration_share
-                                                    0.25,  //throw_conclusion_duration_share
+                                                    0.25);  //throw_conclusion_duration_share
         };
 
     protected:

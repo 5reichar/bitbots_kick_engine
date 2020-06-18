@@ -99,14 +99,11 @@ namespace bitbots_throw{
                        Struct3dRPY throw_release_right_hand,
                        Struct3dRPY throw_release_trunk,
                        Struct3d throw_velocity,
-                       Struct3dRPY end_left_hand,
-                       Struct3dRPY end_right_hand,
-                       Struct3d throw_goal_position,
                        double movement_cycle_frequency,
                        double pick_up_duration_share,
                        double throw_preparation_duration_share,
                        double throw_duration_share,
-                       double throw_conclusion_duration_share
+                       double throw_conclusion_duration_share)
                        :
                        start_left_arm_{start_left_hand},
                        start_right_arm_{start_right_hand},
@@ -124,15 +121,12 @@ namespace bitbots_throw{
                        throw_release_right_arm_{throw_release_right_hand},
                        throw_release_trunk_{throw_release_trunk},
                        throw_velocity_{throw_velocity},
-                       end_left_arm_{end_left_hand},
-                       end_right_arm_{end_right_hand},
-                       throw_goal_position_{throw_goal_position},
                        movement_cycle_frequency_{movement_cycle_frequency},
                        pick_up_duration_share_{pick_up_duration_share},
                        throw_preparation_duration_share_{throw_preparation_duration_share},
                        throw_duration_share_{throw_duration_share},
                        throw_conclusion_duration_share_{throw_conclusion_duration_share}{
-		}
+		};
 	};
 } //bitbots_throw
 #endif //BITBOTS_THROW_THROW_PARAMETER_H

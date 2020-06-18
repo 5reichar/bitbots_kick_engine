@@ -61,7 +61,6 @@ namespace bitbots_throw{
 	std::shared_ptr<ThrowParameter> ThrowEngine::create_throw_parameter(const ThrowTypeId throw_type_id, const ThrowRequest & request){
 		return ThrowParameterBuilder::build_from_dynamic_reconf(sp_engine_parameter_,
 																sp_throw_types_->map_throw_types_[throw_type_id],
-																request.ball_position_,
-																request.goal_position_);
+																request);
 	}
 }
