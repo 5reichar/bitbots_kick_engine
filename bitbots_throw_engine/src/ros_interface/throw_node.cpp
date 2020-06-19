@@ -22,6 +22,11 @@ namespace bitbots_throw{
 		init_ik();
 	}
 
+	ThrowNode::~ThrowNode(){
+	    if (arms_ik_) delete arms_ik_;
+	    if (legs_ik_) delete legs_ik_;
+	}
+
 	void ThrowNode::set_default_parameter(){
 		sp_node_parameter_ = ThrowNodeParameterBuilder::build_default();
 		publisher_topics_.str_controller_command_topic_ = "/DynamixelController/command";
@@ -46,6 +51,14 @@ namespace bitbots_throw{
 	}
 
 	void ThrowNode::init_ik(){
+        arms_ik_ = new ThrowIK("Arms",
+                               {"LElbow", "LShoulderPitch", "LShoulderRoll", "RElbow", "RShoulderPitch", "RShoulderRoll"},
+                               {0.7, -1.0, -0.4, -0.7, 1.0, 0.4});
+
+        legs_ik_ = new ThrowIK("Legs",
+                               {"LHipPitch", "LKnee", "LAnklePitch", "RHipPitch", "RKnee", "RAnklePitch"},
+                               {0.7, -1.0, -0.4, -0.7, 1.0, 0.4});
+
 		//load MoveIt! model
 		robot_model_loader::RobotModelLoader robot_model_loader("/robot_description", false);
 		robot_model_loader.loadKinematicsSolvers(std::make_shared<kinematics_plugin_loader::KinematicsPluginLoader>());
@@ -57,7 +70,9 @@ namespace bitbots_throw{
 			exit(1);
 		}
 
-		ik_.init(kinematic_model);
+		arms_ik_->init(kinematic_model);
+		legs_ik_->init(kinematic_model);
+
 	}
 
 	void ThrowNode::throw_callback(const bitbots_throw::throw_action action){
@@ -75,7 +90,13 @@ namespace bitbots_throw{
 			bitbots_splines::JointGoals joint_goals;
 
 			try{
-				joint_goals = ik_.calculate(std::move(ik_goals));
+				auto calc_goals = arms_ik_->calculate(std::move(ik_goals));
+                joint_goals.first.insert(joint_goals.first.end(), calc_goals.first.begin(), calc_goals.first.end());
+                joint_goals.second.insert(joint_goals.second.end(), calc_goals.second.begin(), calc_goals.second.end());
+
+                calc_goals = legs_ik_->calculate(std::move(ik_goals));
+                joint_goals.first.insert(joint_goals.first.end(), calc_goals.first.begin(), calc_goals.first.end());
+                joint_goals.second.insert(joint_goals.second.end(), calc_goals.second.begin(), calc_goals.second.end());
 			}
 			catch(const std::runtime_error& e){
 				SystemPublisher::publish_runtime_error(e);
@@ -96,7 +117,8 @@ namespace bitbots_throw{
 	void ThrowNode::throw_engine_params_config_callback(bitbots_throw::throw_engine_paramsConfig & config , uint32_t level){
 		sp_node_parameter_ = ThrowNodeParameterBuilder::build_from_dynamic_reconf(config, level);
 
-		ik_.set_bio_ik_timeout(sp_node_parameter_->bio_ik_time_);
+        arms_ik_->set_bio_ik_timeout(sp_node_parameter_->bio_ik_time_);
+        legs_ik_->set_bio_ik_timeout(sp_node_parameter_->bio_ik_time_);
 		auto t = ThrowEngineParameterBuilder::build_from_dynamic_reconf(config, level);
 		throw_engine_.set_engine_parameter(t);
 	}
@@ -106,7 +128,7 @@ namespace bitbots_throw{
 	}
 
 	ThrowRequest ThrowNode::create_throw_request(const bitbots_throw::throw_action action){
-		ThrowRequest request;
+		ThrowRequest request{};
 		request.ball_position_ = {action.ball_position.x, action.ball_position.y, action.ball_position.z };
 		request.goal_position_ = {action.throw_target.x, action.throw_target.y, action.throw_target.z };
 		return request;

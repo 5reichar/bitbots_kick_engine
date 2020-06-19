@@ -35,6 +35,8 @@ namespace bitbots_throw{
     tf2::Transform support_foot_to_left_hand_;
     tf2::Transform support_foot_to_right_hand_;
     tf2::Transform support_foot_to_trunk_;
+    tf2::Transform support_foot_to_left_foot_;
+    tf2::Transform support_foot_to_right_foot_;
 
     // additional information for visualization
     double phase_;

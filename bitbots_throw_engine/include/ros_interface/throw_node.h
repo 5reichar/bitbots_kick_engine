@@ -17,6 +17,7 @@ namespace bitbots_throw{
     {
     public:
         ThrowNode();
+        ~ThrowNode();
 
     private:
         // Initilization methodes
@@ -35,7 +36,8 @@ namespace bitbots_throw{
         ThrowRequest create_throw_request(const bitbots_throw::throw_action action);
 
         // member variables
-        ThrowIK ik_;
+        ThrowIK * arms_ik_;
+        ThrowIK * legs_ik_;
         ThrowEngine throw_engine_;
         std::shared_ptr<ThrowNodeParameter> sp_node_parameter_;
         RosPublisherFacade::RosPublisherTopics publisher_topics_;

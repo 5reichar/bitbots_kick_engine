@@ -16,6 +16,8 @@ namespace bitbots_throw{
 		response.support_foot_to_trunk_ = sp_current_throw_->get_pose_trunk()->get_tf_transform(time_);
 		response.support_foot_to_left_hand_ = sp_current_throw_->get_pose_left_hand()->get_tf_transform(time_);
 		response.support_foot_to_right_hand_ = sp_current_throw_->get_pose_right_hand()->get_tf_transform(time_);
+		response.support_foot_to_left_foot_ = sp_current_throw_->get_pose_left_feet()->get_tf_transform(time_);
+		response.support_foot_to_right_foot_ = sp_current_throw_->get_pose_right_feet()->get_tf_transform(time_);
 
 		time_ += dt;
 		return response;

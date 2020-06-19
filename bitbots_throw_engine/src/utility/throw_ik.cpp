@@ -1,23 +1,26 @@
 #include "utility/throw_ik.h"
 
 namespace bitbots_throw{
-  ThrowIK::ThrowIK(){
+  ThrowIK::ThrowIK(std::string joint_group_name, std::vector<std::string> joint_names, std::vector<double> initial_joint_position){
     bio_ik_timeout_ = 0.01;
+    joint_group_name_ = joint_group_name;
+    joint_names_ = joint_names;
+    initial_joint_position_ = initial_joint_position;
   }
 
   ThrowIK::~ThrowIK(){
-    if (all_joints_group_) delete all_joints_group_;
+    if (joints_group_) delete joints_group_;
   }
 
   void ThrowIK::init(moveit::core::RobotModelPtr kinematic_model){
-    all_joints_group_ = kinematic_model->getJointModelGroup("All");
+    joints_group_ = kinematic_model->getJointModelGroup(joint_group_name_);
     goal_state_.reset(new robot_state::RobotState(kinematic_model));
     goal_state_->setToDefaultValues();
     reset();
   }
 
   bitbots_splines::JointGoals ThrowIK::calculate(const std::unique_ptr<bio_ik::BioIKKinematicsQueryOptions> ik_goals){
-    if (!goal_state_->setFromIK(all_joints_group_,
+    if (!goal_state_->setFromIK(joints_group_,
                                 EigenSTL::vector_Isometry3d(),
                                 std::vector<std::string>(),
                                 bio_ik_timeout_,
@@ -27,9 +30,9 @@ namespace bitbots_throw{
     }
 
     /* retrieve joint names and associated positions from  */
-    std::vector<std::string> joint_names = all_joints_group_->getActiveJointModelNames();
+    std::vector<std::string> joint_names = joints_group_->getActiveJointModelNames();
     std::vector<double> joint_goals;
-    goal_state_->copyJointGroupPositions(all_joints_group_, joint_goals);
+    goal_state_->copyJointGroupPositions(joints_group_, joint_goals);
 
     /* construct result object */
     bitbots_splines::JointGoals result;
@@ -43,9 +46,9 @@ namespace bitbots_throw{
     // based method. Otherwise, the first step will be not correct
     std::vector<std::string> names_vec = {"LElbow", "LShoulderPitch", "LShoulderRoll", "RElbow", "RShoulderPitch", "RShoulderRoll"};
     std::vector<double> pos_vec = {0.7, -1.0, -0.4, -0.7, 1.0, 0.4};
-    for (int i = 0; i < names_vec.size(); i++){
+    for (int i = 0; i < joint_names_.size(); i++){
       // besides its name, this method only changes a single joint position...
-      goal_state_->setJointPositions(names_vec[i], &pos_vec[i]);
+      goal_state_->setJointPositions(joint_names_[i], &initial_joint_position_[i]);
     }
   }
 
