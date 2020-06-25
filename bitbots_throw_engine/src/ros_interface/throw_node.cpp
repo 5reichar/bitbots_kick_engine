@@ -17,14 +17,14 @@ namespace bitbots_throw{
 			, dynamic_reconfigure_server_throw_params_(ros::NodeHandle("/throw_parameter")){
 		set_default_parameter();
 		load_parameter();
-		init_ros_subcribtions();
+        init_ros_subscriptions();
 		init_dynamic_reconfiguration();
 		init_ik();
 	}
 
 	ThrowNode::~ThrowNode(){
-	    if (arms_ik_) delete arms_ik_;
-	    if (legs_ik_) delete legs_ik_;
+	    delete arms_ik_;
+	    delete legs_ik_;
 	}
 
 	void ThrowNode::set_default_parameter(){
@@ -41,13 +41,13 @@ namespace bitbots_throw{
 		ros_node_handle_.param<bool>("/simulation_active", sp_node_parameter_->simulation_active_, false);
 	}
 
-	void ThrowNode::init_ros_subcribtions(){
-		ros_subsciber_throw_ = ros_node_handle_.subscribe("/throw", 1, &ThrowNode::throw_callback, this, ros::TransportHints().tcpNoDelay());
+	void ThrowNode::init_ros_subscriptions(){
+		ros_subscriber_throw_ = ros_node_handle_.subscribe("/throw", 1, &ThrowNode::throw_callback, this, ros::TransportHints().tcpNoDelay());
 	}
 
 	void ThrowNode::init_dynamic_reconfiguration(){
-		dynamic_reconfigure_server_engine_params_.setCallback(boost::bind(&ThrowNode::throw_engine_params_config_callback, this, _1, _2));
-		dynamic_reconfigure_server_throw_params_.setCallback(boost::bind(&ThrowNode::throw_params_config_callback, this, _1, _2));
+		dynamic_reconfigure_server_engine_params_.setCallback([this](auto && PH1, auto && PH2) { throw_engine_params_config_callback(PH1, PH2); });
+		dynamic_reconfigure_server_throw_params_.setCallback([this](auto && PH1, auto && PH2) { throw_params_config_callback(PH1, PH2); });
 	}
 
 	void ThrowNode::init_ik(){
