@@ -38,13 +38,13 @@ namespace bitbots_throw{
         // member variables
         ThrowIK * arms_ik_;
         ThrowIK * legs_ik_;
+
         ThrowEngine throw_engine_;
         std::shared_ptr<ThrowNodeParameter> sp_node_parameter_;
         RosPublisherFacade::RosPublisherTopics publisher_topics_;
 
         ros::NodeHandle ros_node_handle_;
         ros::Subscriber ros_subscriber_throw_;
-
         dynamic_reconfigure::Server<bitbots_throw::throw_paramsConfig> dynamic_reconfigure_server_throw_params_;
         dynamic_reconfigure::Server<bitbots_throw::throw_engine_paramsConfig> dynamic_reconfigure_server_engine_params_;
     };

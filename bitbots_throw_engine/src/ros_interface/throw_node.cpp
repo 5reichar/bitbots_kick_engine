@@ -35,6 +35,14 @@ namespace bitbots_throw{
 		publisher_topics_.str_engine_debug_topic_ = "/throw_engine_debug";
 		publisher_topics_.str_debug_marker_topic_ = "/throw_debug_marker";
 		publisher_topics_.str_support_topic_ = "/throw_support_foot_state";
+
+        arms_ik_ = new ThrowIK("Arms",
+                               {"LElbow", "LShoulderPitch", "LShoulderRoll", "RElbow", "RShoulderPitch", "RShoulderRoll"},
+                               {0.7, -1.0, -0.4, -0.7, 1.0, 0.4});
+
+        legs_ik_ = new ThrowIK("Legs",
+                               {"LHipPitch", "LKnee", "LAnklePitch", "RHipPitch", "RKnee", "RAnklePitch"},
+                               {0.7, -1.0, -0.4, -0.7, 1.0, 0.4});
 	}
 
 	void ThrowNode::load_parameter(){
@@ -51,14 +59,6 @@ namespace bitbots_throw{
 	}
 
 	void ThrowNode::init_ik(){
-        arms_ik_ = new ThrowIK("Arms",
-                               {"LElbow", "LShoulderPitch", "LShoulderRoll", "RElbow", "RShoulderPitch", "RShoulderRoll"},
-                               {0.7, -1.0, -0.4, -0.7, 1.0, 0.4});
-
-        legs_ik_ = new ThrowIK("Legs",
-                               {"LHipPitch", "LKnee", "LAnklePitch", "RHipPitch", "RKnee", "RAnklePitch"},
-                               {0.7, -1.0, -0.4, -0.7, 1.0, 0.4});
-
 		//load MoveIt! model
 		robot_model_loader::RobotModelLoader robot_model_loader("/robot_description", false);
 		robot_model_loader.loadKinematicsSolvers(std::make_shared<kinematics_plugin_loader::KinematicsPluginLoader>());
@@ -72,7 +72,6 @@ namespace bitbots_throw{
 
 		arms_ik_->init(kinematic_model);
 		legs_ik_->init(kinematic_model);
-
 	}
 
 	void ThrowNode::throw_callback(const bitbots_throw::throw_action action){
