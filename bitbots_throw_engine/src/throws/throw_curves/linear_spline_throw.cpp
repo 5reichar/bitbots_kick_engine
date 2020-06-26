@@ -27,7 +27,23 @@ namespace bitbots_throw{
 				std::make_shared<bitbots_splines::LinearSpline>(), // roll
 				std::make_shared<bitbots_splines::LinearSpline>(), // pitch
 				std::make_shared<bitbots_splines::LinearSpline>()  // yaw
-			)
+			),
+            std::make_shared<bitbots_splines::PoseHandle>( // Left Feet
+                std::make_shared<bitbots_splines::LinearSpline>(), // x
+                std::make_shared<bitbots_splines::LinearSpline>(), // y
+                std::make_shared<bitbots_splines::LinearSpline>(), // z
+                std::make_shared<bitbots_splines::LinearSpline>(), // roll
+                std::make_shared<bitbots_splines::LinearSpline>(), // pitch
+                std::make_shared<bitbots_splines::LinearSpline>()  // yaw
+            ),
+            std::make_shared<bitbots_splines::PoseHandle>( // Right Feet
+                std::make_shared<bitbots_splines::LinearSpline>(), // x
+                std::make_shared<bitbots_splines::LinearSpline>(), // y
+                std::make_shared<bitbots_splines::LinearSpline>(), // z
+                std::make_shared<bitbots_splines::LinearSpline>(), // roll
+                std::make_shared<bitbots_splines::LinearSpline>(), // pitch
+                std::make_shared<bitbots_splines::LinearSpline>()  // yaw
+            )
 		){
 	}
 } //bitbots_throw

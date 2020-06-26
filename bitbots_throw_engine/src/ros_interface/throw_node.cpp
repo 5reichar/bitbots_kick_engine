@@ -81,7 +81,8 @@ namespace bitbots_throw{
 		RosPublisherFacade publisher_facade(ros_node_handle_, sp_node_parameter_, publisher_topics_);
 
 		publisher_facade.prepare_publisher_for_throw();
-		throw_engine_.set_goals(create_throw_request(action));
+		auto throw_request = create_throw_request(action);
+		throw_engine_.set_goals(throw_request);
 
 		while (ros::ok() && throw_engine_.get_percent_done() < 100){
 			auto response = throw_engine_.update(1/sp_node_parameter_->engine_frequency_);

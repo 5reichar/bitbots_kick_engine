@@ -27,7 +27,23 @@ namespace bitbots_throw{
 				std::make_shared<bitbots_splines::Beziercurve>(), // roll
 				std::make_shared<bitbots_splines::Beziercurve>(), // pitch
 				std::make_shared<bitbots_splines::Beziercurve>()  // yaw
-			)
+			),
+            std::make_shared<bitbots_splines::PoseHandle>( // Left Feet
+                std::make_shared<bitbots_splines::Beziercurve>(), // x
+                std::make_shared<bitbots_splines::Beziercurve>(), // y
+                std::make_shared<bitbots_splines::Beziercurve>(), // z
+                std::make_shared<bitbots_splines::Beziercurve>(), // roll
+                std::make_shared<bitbots_splines::Beziercurve>(), // pitch
+                std::make_shared<bitbots_splines::Beziercurve>()  // yaw
+            ),
+            std::make_shared<bitbots_splines::PoseHandle>( // Right Feet
+                std::make_shared<bitbots_splines::Beziercurve>(), // x
+                std::make_shared<bitbots_splines::Beziercurve>(), // y
+                std::make_shared<bitbots_splines::Beziercurve>(), // z
+                std::make_shared<bitbots_splines::Beziercurve>(), // roll
+                std::make_shared<bitbots_splines::Beziercurve>(), // pitch
+                std::make_shared<bitbots_splines::Beziercurve>()  // yaw
+            )
 		){
 	}
 } //bitbots_throw

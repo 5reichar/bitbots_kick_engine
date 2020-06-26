@@ -10,7 +10,9 @@ namespace bitbots_throw{
 	public:
 		ThrowCurve(std::shared_ptr<bitbots_splines::PoseHandle> left_hand,
 				std::shared_ptr<bitbots_splines::PoseHandle> right_hand,
-				std::shared_ptr<bitbots_splines::PoseHandle> trunk);
+                std::shared_ptr<bitbots_splines::PoseHandle> trunk,
+                std::shared_ptr<bitbots_splines::PoseHandle> left_feet,
+                std::shared_ptr<bitbots_splines::PoseHandle> right_feet);
 
 		/**
 		 * Calculates the trajectory for the throw movement.
