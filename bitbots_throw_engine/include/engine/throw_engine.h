@@ -31,8 +31,8 @@ namespace bitbots_throw{
 
         std::shared_ptr<ThrowParameter> create_throw_parameter(const ThrowTypeId throw_type_id, const ThrowRequest & request);
 
-        double time_;
-        double throw_duration_;
+        double time_{};
+        double throw_duration_{};
 
         std::shared_ptr<ThrowCurve> sp_current_throw_;
         std::shared_ptr<ThrowFactory> sp_throw_factory_;
