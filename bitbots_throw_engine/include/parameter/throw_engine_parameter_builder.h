@@ -13,11 +13,12 @@ namespace bitbots_throw{
 
             sp_parameter->frequency_ = config.frequency;
             sp_parameter->hand_distance_ = config.hand_distance;
-            sp_parameter->max_throw_distance_ = config.max_throw_distance;
+            sp_parameter->max_throw_velocity_ = config.max_throw_velocity;
             sp_parameter->ball_radius_ = config.ball_radius;
             sp_parameter->robot_height_ = config.robot_height;
             sp_parameter->head_collision_security_radius_ = config.head_collision_security_radius;
             sp_parameter->arm_length_ = config.arm_length;
+            sp_parameter->throw_strength_ = config.throw_strength;
             sp_parameter->pick_up_duration_share_ = config.pick_up_ball_duration_share;
             sp_parameter->throw_preparation_duration_share_ = config.throw_preparation_duration_share;
             sp_parameter->throw_duration_share_ = config.throw_duration_share;
@@ -30,6 +31,7 @@ namespace bitbots_throw{
         static  std::shared_ptr<ThrowEngineParameter> build_default(){
             // TODO: enter better default values
             return std::make_shared<ThrowEngineParameter>(0.0
+                                                         ,0.0
                                                          ,0.0
                                                          ,0.0
                                                          ,0.0

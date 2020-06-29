@@ -61,6 +61,12 @@ namespace bitbots_throw{
             sp_parameter->throw_zenith_right_arm_.z_ = throw_zenith_height;
 
             auto throw_angle = throw_type->throw_angle_ == 0 ? engine_parameter->throw_angle_ : throw_type->throw_angle_;
+            sp_parameter->throw_velocity_ = calculate_velocity(throw_release_position_z
+                                                              ,(0.0 == throw_type->throw_strength_ ? engine_parameter->throw_strength_ : throw_type->throw_strength_) * engine_parameter->max_throw_velocity_
+                                                              ,throw_angle
+                                                              ,request.goal_position_
+                                                              ,engine_parameter->gravity_);
+
             auto throw_release_position_x = calculate_opposite(throw_orientation_angle, engine_parameter->arm_length_ + engine_parameter->ball_radius_);
             auto throw_release_position_y = calculate_adjacent(throw_orientation_angle, engine_parameter->arm_length_ + engine_parameter->ball_radius_);
             auto throw_release_position_z = throw_zenith_height - ((std::cos(throw_angle) / std::sin(throw_angle)) * calculate_distace(Struct3d(throw_release_position_x, throw_release_position_y, 0.0)));
@@ -74,11 +80,6 @@ namespace bitbots_throw{
             sp_parameter->throw_release_right_arm_.z_ = throw_release_position_z;
 
             sp_parameter->throw_release_trunk_.yaw_ = throw_orientation_angle;
-
-            auto velocity = calculate_velocity(throw_release_position_z, engine_parameter, request.goal_position_);
-            sp_parameter->throw_velocity_.x_ = sin(throw_orientation_angle) * velocity;
-            sp_parameter->throw_velocity_.y_ = cos(throw_orientation_angle) * velocity;
-
             sp_parameter->movement_cycle_frequency_ = engine_parameter->frequency_;
 
             sp_parameter->pick_up_duration_share_ = throw_type->pick_up_duration_share_ == 0 ? engine_parameter->pick_up_duration_share_ : throw_type->pick_up_duration_share_;
@@ -116,10 +117,34 @@ namespace bitbots_throw{
         };
 
     protected:
-        static double calculate_velocity(double const & height, std::shared_ptr<ThrowEngineParameter> & engine_parameter
-                                        ,Struct3d throw_goal_position){
-            auto time = height / engine_parameter->gravity_;
+        static Struct3d calculate_velocity(double const & height
+                                          ,double velocity
+                                          ,double & angle
+                                          ,Struct3d const & goal_position
+                                          ,std::shared_ptr<ThrowEngineParameter> const & engine_parameter){
+            auto goal_distance = calculate_distace(goal_position);
+            double time = 0.0;
+
+            while(velocity != engine_parameter->max_throw_velocity_)
+            {
+                time = calculate_throw_time(height, velocity, angle, engine_parameter->gravity_);
+
+                if(0.5 < std::abs(velocity * std::cos(angle) * time)){
+                    break;
+                }
+
+                velocity += 0.5;
+            }
+            
             return calculate_distace(throw_goal_position) / time;
+        }
+
+        static double calculate_throw_time(double const & height
+                                          ,double const & velocity
+                                          ,double const & angle
+                                          ,double const & gravity){
+            double v_z = velocity * std::sin(angle);
+            return (v_z / gravity) * (1 + std::sqrt(1 + ((2 * gravity * height)/v_z)));
         }
 
         static double calculate_angle(Struct3d & point){

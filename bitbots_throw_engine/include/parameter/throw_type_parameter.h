@@ -32,6 +32,8 @@ namespace bitbots_throw{
 		double throw_duration_share_;
 		// The share of the movement cycle dedicated to motion after throwing the ball
 		double throw_conclusion_duration_share_;
+		// How many percent of the max_throw_velocity shall be used if possible
+		double throw_strength_;
 		// The Angle at which the ball shall thrown
 		double throw_angle_;
 
@@ -46,18 +48,20 @@ namespace bitbots_throw{
 		         ,double throw_preparation_duration_share
 				 ,double throw_duration_share
 				 ,double throw_conclusion_duration_share
+				 ,double throw_strength
 				 ,double throw_angle
 				 )
-				 : id_{id}
-				 , active_{active}
-                 , throw_priority_level_{throw_priority_level}
-                 , min_throw_distance_{min_throw_distance}
-                 , max_throw_distance_{max_throw_distance}
-                 , pick_up_duration_share_{pick_up_duration_share}
-                 , throw_preparation_duration_share_{throw_preparation_duration_share}
-                 , throw_duration_share_{throw_duration_share}
-                 , throw_conclusion_duration_share_{throw_conclusion_duration_share}
-                 , throw_angle_{throw_angle}{
+				 :id_{id}
+				 ,active_{active}
+                 ,throw_priority_level_{throw_priority_level}
+                 ,min_throw_distance_{min_throw_distance}
+                 ,max_throw_distance_{max_throw_distance}
+                 ,pick_up_duration_share_{pick_up_duration_share}
+                 ,throw_preparation_duration_share_{throw_preparation_duration_share}
+                 ,throw_duration_share_{throw_duration_share}
+                 ,throw_conclusion_duration_share_{throw_conclusion_duration_share}
+				 ,throw_strength_{throw_strength}
+                 ,throw_angle_{throw_angle}{
 		}
 	};
 
