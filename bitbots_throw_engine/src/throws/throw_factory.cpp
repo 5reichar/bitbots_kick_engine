@@ -21,8 +21,6 @@ namespace bitbots_throw{
 			sp_return.reset(new CubicSplineThrow());
 			break;
 		case ThrowTypeId::smooth_spline:
-			sp_return.reset(new SmoothSplineThrow());
-			break;
 		default:
 			sp_return.reset(new SmoothSplineThrow());
 			break;
@@ -31,16 +29,17 @@ namespace bitbots_throw{
 		return sp_return;
 	}
 
-	ThrowTypeId ThrowFactory::get_throw_type(std::shared_ptr<ThrowTypeParameter> throw_type_parameter, Struct3d const & throw_goal){
+	ThrowTypeId ThrowFactory::get_throw_type(std::shared_ptr<ThrowTypeParameter> throw_type_parameter
+	                                        ,Struct3d const & throw_goal){
 		ThrowTypeId throw_type_id = throw_type_parameter->default_throw_id_;
 		auto throw_distance = calculate_distace(throw_goal);
 
-		for (auto it = throw_type_parameter->map_throw_types_.begin(); it != throw_type_parameter->map_throw_types_.end(); ++it){
-			auto throw_type = it->second;
+		for (auto & map_throw_type : throw_type_parameter->map_throw_types_){
+			auto throw_type = map_throw_type.second;
 			if (throw_type->active_ &&
 				throw_type->min_throw_distance_ < throw_distance &&
 				throw_type->max_throw_distance_ > throw_distance){
-				throw_type_id = it->first;
+				throw_type_id = map_throw_type.first;
 				break;
 			}
 		}

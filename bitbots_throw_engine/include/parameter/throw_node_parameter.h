@@ -14,17 +14,17 @@ namespace bitbots_throw{
         bool simulation_active_;
 
         //////		Constructor
-        ThrowNodeParameter(bool debug_active,
-                        double engine_frequency,
-                        int odom_publish_factor,
-                        double bio_ik_time,
-                        bool simulation_active)
-                        :
-                        debug_active_{debug_active},
-                        engine_frequency_{engine_frequency},
-                        odom_publish_factor_{odom_publish_factor},
-                        bio_ik_time_{bio_ik_time},
-                        simulation_active_{simulation_active}{
+        ThrowNodeParameter(bool debug_active
+                          ,double engine_frequency
+                          ,int odom_publish_factor
+                          ,double bio_ik_time
+                          ,bool simulation_active
+                          )
+                          :debug_active_{debug_active}
+                          ,engine_frequency_{engine_frequency}
+                          ,odom_publish_factor_{odom_publish_factor}
+                          ,bio_ik_time_{bio_ik_time}
+                          ,simulation_active_{simulation_active}{
         }
     };
 } //bitbots_throw

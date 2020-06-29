@@ -7,18 +7,18 @@
 
 namespace bitbots_throw{
   enum class CurvePurpose{
-    trunk,
-    left_foot,
-    right_foot,
-    left_hand,
-    right_hand,
-    arms,
-    left_elbow,
-    left_shoulder_pitch,
-    left_shoulder_roll,
-    right_elbow,
-    right_shoulder_pitch,
-    right_shoulder_roll
+    trunk
+   ,left_foot
+   ,right_foot
+   ,left_hand
+   ,right_hand
+   ,arms
+   ,left_elbow
+   ,left_shoulder_pitch
+   ,left_shoulder_roll
+   ,right_elbow
+   ,right_shoulder_pitch
+   ,right_shoulder_roll
   };
 
   struct ThrowRequest{
@@ -44,7 +44,7 @@ namespace bitbots_throw{
   };
 
   static std::string get_joint_name(CurvePurpose joint){
-    std::string joint_name = "";
+    std::string joint_name;
 
     switch (joint)
     {
@@ -70,6 +70,7 @@ namespace bitbots_throw{
         joint_name = "RShoulderRoll";
         break;
       default:
+        joint_name = "";
         break;
     }
 

@@ -14,10 +14,10 @@ namespace bitbots_throw{
     std::unique_ptr<bio_ik::BioIKKinematicsQueryOptions> stabilize(const ThrowResponse & response) override;
 
   private:
-      ReferencePoseGoal * create_pose_goal(tf2::Transform const & support_foot_to,
-                                           std::string const & link_name,
-                                           std::string const & reference_link_name,
-                                           double const & weight);
+      ReferencePoseGoal * create_pose_goal(tf2::Transform const & support_foot_to
+                                          ,std::string const & link_name
+                                          ,std::string const & reference_link_name
+                                          ,double const & weight);
   };
 } //bitbots_throw
 #endif //BITBOTS_THROW_THROW_STABILIZER_H

@@ -1,16 +1,16 @@
 #include "throws/throw_curves/throw_curve.h"
 
 namespace bitbots_throw{
-    ThrowCurve::ThrowCurve(std::shared_ptr<bitbots_splines::PoseHandle> left_hand,
-                           std::shared_ptr<bitbots_splines::PoseHandle> right_hand,
-                           std::shared_ptr<bitbots_splines::PoseHandle> trunk,
-                           std::shared_ptr<bitbots_splines::PoseHandle> left_feet,
-                           std::shared_ptr<bitbots_splines::PoseHandle> right_feet)
-            : sp_pose_left_hand_(std::move(left_hand))
-            , sp_pose_right_hand_(std::move(right_hand))
-            , sp_pose_trunk_(std::move(trunk))
-            , sp_pose_left_feet_(std::move(left_feet))
-            , sp_pose_right_feet_(std::move(right_feet)){
+    ThrowCurve::ThrowCurve(std::shared_ptr<bitbots_splines::PoseHandle> left_hand
+                          ,std::shared_ptr<bitbots_splines::PoseHandle> right_hand
+                          ,std::shared_ptr<bitbots_splines::PoseHandle> trunk
+                          ,std::shared_ptr<bitbots_splines::PoseHandle> left_feet
+                          ,std::shared_ptr<bitbots_splines::PoseHandle> right_feet)
+            :sp_pose_left_hand_(std::move(left_hand))
+            ,sp_pose_right_hand_(std::move(right_hand))
+            ,sp_pose_trunk_(std::move(trunk))
+            ,sp_pose_left_feet_(std::move(left_feet))
+            ,sp_pose_right_feet_(std::move(right_feet)){
     }
 
     double ThrowCurve::calculate_trajectories(std::shared_ptr<ThrowParameter> & throw_parameter){

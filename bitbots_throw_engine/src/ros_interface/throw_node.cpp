@@ -13,8 +13,8 @@
 
 namespace bitbots_throw{
 	ThrowNode::ThrowNode()
-			: dynamic_reconfigure_server_engine_params_(ros::NodeHandle("/throw_engine_parameter"))
-			, dynamic_reconfigure_server_throw_params_(ros::NodeHandle("/throw_parameter")){
+			:dynamic_reconfigure_server_engine_params_(ros::NodeHandle("/throw_engine_parameter"))
+			,dynamic_reconfigure_server_throw_params_(ros::NodeHandle("/throw_parameter")){
 		set_default_parameter();
 		load_parameter();
         init_ros_subscriptions();
@@ -36,31 +36,42 @@ namespace bitbots_throw{
 		publisher_topics_.str_debug_marker_topic_ = "/throw_debug_marker";
 		publisher_topics_.str_support_topic_ = "/throw_support_foot_state";
 
-        arms_ik_ = new ThrowIK("Arms",
-                               {"LElbow", "LShoulderPitch", "LShoulderRoll", "RElbow", "RShoulderPitch", "RShoulderRoll"},
-                               {0.7, -1.0, -0.4, -0.7, 1.0, 0.4});
+        arms_ik_ = new ThrowIK("Arms"
+                              ,{"LElbow", "LShoulderPitch", "LShoulderRoll", "RElbow", "RShoulderPitch", "RShoulderRoll"}
+                              ,{0.7, -1.0, -0.4, -0.7, 1.0, 0.4});
 
-        legs_ik_ = new ThrowIK("Legs",
-                               {"LHipPitch", "LKnee", "LAnklePitch", "RHipPitch", "RKnee", "RAnklePitch"},
-                               {0.7, -1.0, -0.4, -0.7, 1.0, 0.4});
+        legs_ik_ = new ThrowIK("Legs"
+                              ,{"LHipPitch", "LKnee", "LAnklePitch", "RHipPitch", "RKnee", "RAnklePitch"}
+                              ,{0.7, -1.0, -0.4, -0.7, 1.0, 0.4});
 	}
 
 	void ThrowNode::load_parameter(){
-		ros_node_handle_.param<bool>("/simulation_active", sp_node_parameter_->simulation_active_, false);
+		ros_node_handle_.param<bool>("/simulation_active"
+		                            ,sp_node_parameter_->simulation_active_
+		                            ,false);
 	}
 
 	void ThrowNode::init_ros_subscriptions(){
-		ros_subscriber_throw_ = ros_node_handle_.subscribe("/throw", 1, &ThrowNode::throw_callback, this, ros::TransportHints().tcpNoDelay());
+		ros_subscriber_throw_ = ros_node_handle_.subscribe("/throw"
+		                                                  ,1
+		                                                  ,&ThrowNode::throw_callback
+		                                                  ,this
+		                                                  ,ros::TransportHints().tcpNoDelay());
 	}
 
 	void ThrowNode::init_dynamic_reconfiguration(){
-		dynamic_reconfigure_server_engine_params_.setCallback([this](auto && PH1, auto && PH2) { throw_engine_params_config_callback(PH1, PH2); });
-		dynamic_reconfigure_server_throw_params_.setCallback([this](auto && PH1, auto && PH2) { throw_params_config_callback(PH1, PH2); });
+		dynamic_reconfigure_server_engine_params_.setCallback([this](auto && PH1, auto && PH2){
+		                                                        throw_engine_params_config_callback(PH1, PH2);
+		                                                      });
+		dynamic_reconfigure_server_throw_params_.setCallback([this](auto && PH1, auto && PH2){
+		                                                        throw_params_config_callback(PH1, PH2);
+		                                                      });
 	}
 
 	void ThrowNode::init_ik(){
 		//load MoveIt! model
-		robot_model_loader::RobotModelLoader robot_model_loader("/robot_description", false);
+		robot_model_loader::RobotModelLoader robot_model_loader("/robot_description"
+		                                                       ,false);
 		robot_model_loader.loadKinematicsSolvers(std::make_shared<kinematics_plugin_loader::KinematicsPluginLoader>());
 		moveit::core::RobotModelPtr kinematic_model;
 		kinematic_model = robot_model_loader.getModel();

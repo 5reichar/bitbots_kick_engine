@@ -5,44 +5,44 @@ namespace bitbots_throw{
 	SmoothSplineThrow::SmoothSplineThrow()
 		:ThrowCurve(
 			std::make_shared<bitbots_splines::PoseHandle>( // Left Hand
-				std::make_shared<bitbots_splines::SmoothSpline>(), // x
-				std::make_shared<bitbots_splines::SmoothSpline>(), // y
-				std::make_shared<bitbots_splines::SmoothSpline>(), // z
-				std::make_shared<bitbots_splines::SmoothSpline>(), // roll
-				std::make_shared<bitbots_splines::SmoothSpline>(), // pitch
-				std::make_shared<bitbots_splines::SmoothSpline>()  // yaw
+				std::make_shared<bitbots_splines::SmoothSpline>() // x
+			   ,std::make_shared<bitbots_splines::SmoothSpline>() // y
+			   ,std::make_shared<bitbots_splines::SmoothSpline>() // z
+			   ,std::make_shared<bitbots_splines::SmoothSpline>() // roll
+			   ,std::make_shared<bitbots_splines::SmoothSpline>() // pitch
+			   ,std::make_shared<bitbots_splines::SmoothSpline>() // yaw
 			),
 			std::make_shared<bitbots_splines::PoseHandle>( // Right Hand
-				std::make_shared<bitbots_splines::SmoothSpline>(), // x
-				std::make_shared<bitbots_splines::SmoothSpline>(), // y
-				std::make_shared<bitbots_splines::SmoothSpline>(), // z
-				std::make_shared<bitbots_splines::SmoothSpline>(), // roll
-				std::make_shared<bitbots_splines::SmoothSpline>(), // pitch
-				std::make_shared<bitbots_splines::SmoothSpline>()  // yaw
+				std::make_shared<bitbots_splines::SmoothSpline>() // x
+			   ,std::make_shared<bitbots_splines::SmoothSpline>() // y
+			   ,std::make_shared<bitbots_splines::SmoothSpline>() // z
+			   ,std::make_shared<bitbots_splines::SmoothSpline>() // roll
+			   ,std::make_shared<bitbots_splines::SmoothSpline>() // pitch
+			   ,std::make_shared<bitbots_splines::SmoothSpline>() // yaw
 			),
             std::make_shared<bitbots_splines::PoseHandle>( // Trunk
-                std::make_shared<bitbots_splines::SmoothSpline>(), // x
-                std::make_shared<bitbots_splines::SmoothSpline>(), // y
-                std::make_shared<bitbots_splines::SmoothSpline>(), // z
-                std::make_shared<bitbots_splines::SmoothSpline>(), // roll
-                std::make_shared<bitbots_splines::SmoothSpline>(), // pitch
-                std::make_shared<bitbots_splines::SmoothSpline>()  // yaw
+                std::make_shared<bitbots_splines::SmoothSpline>() // x
+               ,std::make_shared<bitbots_splines::SmoothSpline>() // y
+               ,std::make_shared<bitbots_splines::SmoothSpline>() // z
+               ,std::make_shared<bitbots_splines::SmoothSpline>() // roll
+               ,std::make_shared<bitbots_splines::SmoothSpline>() // pitch
+               ,std::make_shared<bitbots_splines::SmoothSpline>() // yaw
             ),
             std::make_shared<bitbots_splines::PoseHandle>( // Left Feet
-                std::make_shared<bitbots_splines::SmoothSpline>(), // x
-                std::make_shared<bitbots_splines::SmoothSpline>(), // y
-                std::make_shared<bitbots_splines::SmoothSpline>(), // z
-                std::make_shared<bitbots_splines::SmoothSpline>(), // roll
-                std::make_shared<bitbots_splines::SmoothSpline>(), // pitch
-                std::make_shared<bitbots_splines::SmoothSpline>()  // yaw
+                std::make_shared<bitbots_splines::SmoothSpline>() // x
+               ,std::make_shared<bitbots_splines::SmoothSpline>() // y
+               ,std::make_shared<bitbots_splines::SmoothSpline>() // z
+               ,std::make_shared<bitbots_splines::SmoothSpline>() // roll
+               ,std::make_shared<bitbots_splines::SmoothSpline>() // pitch
+               ,std::make_shared<bitbots_splines::SmoothSpline>() // yaw
             ),
             std::make_shared<bitbots_splines::PoseHandle>( // Right Feet
-                std::make_shared<bitbots_splines::SmoothSpline>(), // x
-                std::make_shared<bitbots_splines::SmoothSpline>(), // y
-                std::make_shared<bitbots_splines::SmoothSpline>(), // z
-                std::make_shared<bitbots_splines::SmoothSpline>(), // roll
-                std::make_shared<bitbots_splines::SmoothSpline>(), // pitch
-                std::make_shared<bitbots_splines::SmoothSpline>()  // yaw
+                std::make_shared<bitbots_splines::SmoothSpline>() // x
+               ,std::make_shared<bitbots_splines::SmoothSpline>() // y
+               ,std::make_shared<bitbots_splines::SmoothSpline>() // z
+               ,std::make_shared<bitbots_splines::SmoothSpline>() // roll
+               ,std::make_shared<bitbots_splines::SmoothSpline>() // pitch
+               ,std::make_shared<bitbots_splines::SmoothSpline>() // yaw
             )
 		){
 	}

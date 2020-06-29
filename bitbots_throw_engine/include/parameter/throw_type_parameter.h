@@ -33,31 +33,31 @@ namespace bitbots_throw{
 		// The share of the movement cycle dedicated to motion after throwing the ball
 		double throw_conclusion_duration_share_;
 		// The Angle at which the ball shall thrown
-		double throw_anlge_;
+		double throw_angle_;
 
 
 		//////		Constructor
-		ThrowType(ThrowTypeId id,
-				bool active,
-				int throw_priority_level,
-				double min_throw_distance,
-				double max_throw_distance,
-				double pick_up_duration_share,
-				double throw_preparation_duration_share,
-				double throw_duration_share,
-				double throw_conclusion_duration_share,
-				double throw_anlge)
-				:
-				id_{id},
-				active_{active},
-				throw_priority_level_{throw_priority_level},
-				min_throw_distance_{min_throw_distance},
-				max_throw_distance_{max_throw_distance},
-				pick_up_duration_share_{pick_up_duration_share},
-				throw_preparation_duration_share_{throw_preparation_duration_share},
-				throw_duration_share_{throw_duration_share},
-				throw_conclusion_duration_share_{throw_conclusion_duration_share},
-				throw_anlge_{throw_anlge}{
+		ThrowType(ThrowTypeId id
+		         ,bool active
+		         ,int throw_priority_level
+		         ,double min_throw_distance
+		         ,double max_throw_distance
+		         ,double pick_up_duration_share
+		         ,double throw_preparation_duration_share
+				 ,double throw_duration_share
+				 ,double throw_conclusion_duration_share
+				 ,double throw_angle
+				 )
+				 : id_{id}
+				 , active_{active}
+                 , throw_priority_level_{throw_priority_level}
+                 , min_throw_distance_{min_throw_distance}
+                 , max_throw_distance_{max_throw_distance}
+                 , pick_up_duration_share_{pick_up_duration_share}
+                 , throw_preparation_duration_share_{throw_preparation_duration_share}
+                 , throw_duration_share_{throw_duration_share}
+                 , throw_conclusion_duration_share_{throw_conclusion_duration_share}
+                 , throw_angle_{throw_angle}{
 		}
 	};
 

@@ -29,7 +29,8 @@ namespace bitbots_throw{
         int getPercentDone() const override;
         void setGoals(const ThrowRequest & request) override;
 
-        std::shared_ptr<ThrowParameter> create_throw_parameter(const ThrowTypeId throw_type_id, const ThrowRequest & request);
+        std::shared_ptr<ThrowParameter> create_throw_parameter(const ThrowTypeId throw_type_id
+                                                              ,const ThrowRequest & request);
 
         double time_{};
         double throw_duration_{};

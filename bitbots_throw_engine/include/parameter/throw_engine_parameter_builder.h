@@ -8,7 +8,7 @@
 namespace bitbots_throw{
     class ThrowEngineParameterBuilder{
     public:
-        static  std::shared_ptr<ThrowEngineParameter> build_from_dynamic_reconf(bitbots_throw::throw_engine_paramsConfig& config, uint32_t level)    {
+        static std::shared_ptr<ThrowEngineParameter> build_from_dynamic_reconf(bitbots_throw::throw_engine_paramsConfig& config, uint32_t level){
             auto sp_parameter = build_default();
 
             sp_parameter->frequency_ = config.frequency;
@@ -27,9 +27,21 @@ namespace bitbots_throw{
             return sp_parameter;
         };
 
-        static  std::shared_ptr<ThrowEngineParameter> build_default()    {
+        static  std::shared_ptr<ThrowEngineParameter> build_default(){
             // TODO: enter better default values
-            return std::make_shared<ThrowEngineParameter>(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+            return std::make_shared<ThrowEngineParameter>(0.0
+                                                         ,0.0
+                                                         ,0.0
+                                                         ,0.0
+                                                         ,0.0
+                                                         ,0.0
+                                                         ,0.0
+                                                         ,0.0
+                                                         ,0.0
+                                                         ,0.0
+                                                         ,0.0
+                                                         ,0.0
+                                                         ,0.0);
         };
 
     protected:

@@ -7,7 +7,9 @@
 namespace bitbots_throw{
   class ThrowIK : public bitbots_splines::AbstractIK{
   public:
-    ThrowIK(std::string joint_group_name, std::vector<std::string> joint_names, std::vector<double> initial_joint_position);
+    ThrowIK(std::string joint_group_name
+           ,std::vector<std::string> joint_names
+           ,std::vector<double> initial_joint_position);
     ~ThrowIK();
 
     bitbots_splines::JointGoals calculate(std::unique_ptr<bio_ik::BioIKKinematicsQueryOptions> ik_goals) override;

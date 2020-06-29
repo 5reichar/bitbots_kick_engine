@@ -1,15 +1,18 @@
 #include "utility/throw_ik.h"
 
 namespace bitbots_throw{
-  ThrowIK::ThrowIK(std::string joint_group_name, std::vector<std::string> joint_names, std::vector<double> initial_joint_position){
+  ThrowIK::ThrowIK(std::string joint_group_name
+                  ,std::vector<std::string> joint_names
+                  ,std::vector<double> initial_joint_position){
     bio_ik_timeout_ = 0.01;
     joint_group_name_ = joint_group_name;
     joint_names_ = joint_names;
     initial_joint_position_ = initial_joint_position;
+    joints_group_ = nullptr;
   }
 
   ThrowIK::~ThrowIK(){
-    if (joints_group_) delete joints_group_;
+    delete joints_group_;
   }
 
   void ThrowIK::init(moveit::core::RobotModelPtr kinematic_model){
@@ -20,12 +23,12 @@ namespace bitbots_throw{
   }
 
   bitbots_splines::JointGoals ThrowIK::calculate(const std::unique_ptr<bio_ik::BioIKKinematicsQueryOptions> ik_goals){
-    if (!goal_state_->setFromIK(joints_group_,
-                                EigenSTL::vector_Isometry3d(),
-                                std::vector<std::string>(),
-                                bio_ik_timeout_,
-                                moveit::core::GroupStateValidityCallbackFn(),
-                                *ik_goals)){
+    if (!goal_state_->setFromIK(joints_group_
+                               ,EigenSTL::vector_Isometry3d()
+                               ,std::vector<std::string>()
+                               ,bio_ik_timeout_
+                               ,moveit::core::GroupStateValidityCallbackFn()
+                               ,*ik_goals)){
       throw std::runtime_error("ThrowIK::calculate: Calculation failed");
     }
 
@@ -44,7 +47,12 @@ namespace bitbots_throw{
   void ThrowIK::reset(){
     // we have to set some good initial position in the goal state, since we are using a gradient
     // based method. Otherwise, the first step will be not correct
-    std::vector<std::string> names_vec = {"LElbow", "LShoulderPitch", "LShoulderRoll", "RElbow", "RShoulderPitch", "RShoulderRoll"};
+    std::vector<std::string> names_vec = {"LElbow"
+                                         ,"LShoulderPitch"
+                                         ,"LShoulderRoll"
+                                         ,"RElbow"
+                                         ,"RShoulderPitch"
+                                         ,"RShoulderRoll"};
     std::vector<double> pos_vec = {0.7, -1.0, -0.4, -0.7, 1.0, 0.4};
     for (int i = 0; i < joint_names_.size(); i++){
       // besides its name, this method only changes a single joint position...

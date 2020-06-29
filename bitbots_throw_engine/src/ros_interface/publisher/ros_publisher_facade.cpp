@@ -1,12 +1,18 @@
 #include "ros_interface/publisher/ros_publisher_facade.h"
 
 namespace bitbots_throw{
-	RosPublisherFacade::RosPublisherFacade(ros::NodeHandle & ros_node_handle, std::shared_ptr<ThrowNodeParameter> parameter, RosPublisherTopics topics)
+	RosPublisherFacade::RosPublisherFacade(ros::NodeHandle & ros_node_handle
+	                                      ,std::shared_ptr<ThrowNodeParameter> parameter
+	                                      ,RosPublisherTopics topics)
 		: sp_node_parameter_(parameter)
-		, sp_controller_command_publisher_(new ControllerCommandPublisher(ros_node_handle, topics.str_controller_command_topic_))
+		, sp_controller_command_publisher_(new ControllerCommandPublisher(ros_node_handle
+		                                                                    ,topics.str_controller_command_topic_))
 		, sp_odometry_publisher_(new OdometryPublisher(ros_node_handle, topics.str_odometry_topic_))
 		, sp_support_publisher_(new SupportPublisher(ros_node_handle, topics.str_support_topic_))
-		, sp_debug_publisher_(new DebugPublisher(ros_node_handle, topics.str_debug_topic_, topics.str_engine_debug_topic_, topics.str_debug_marker_topic_)){
+		, sp_debug_publisher_(new DebugPublisher(ros_node_handle
+		                                           ,topics.str_debug_topic_
+		                                           ,topics.str_engine_debug_topic_
+		                                           ,topics.str_debug_marker_topic_)){
 	}
 
 	void RosPublisherFacade::prepare_publisher_for_throw(){

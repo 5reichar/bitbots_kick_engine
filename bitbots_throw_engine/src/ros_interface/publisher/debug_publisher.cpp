@@ -4,7 +4,11 @@
 #include <bitbots_throw/throw_engine_debug.h>
 
 namespace bitbots_throw{
-    DebugPublisher::DebugPublisher(ros::NodeHandle & ros_node_handle, std::string topic, std::string topic_engine, std::string topic_marker){
+    DebugPublisher::DebugPublisher(ros::NodeHandle & ros_node_handle
+                                  ,std::string topic
+                                  ,std::string topic_engine
+                                  ,std::string topic_marker){
+        marker_id_ = 0;
         ros_publisher_debug_ = ros_node_handle.advertise<bitbots_throw::throw_debug>(topic, 1);
         ros_publisher_debug_engine_ = ros_node_handle.advertise<bitbots_throw::throw_engine_debug>(topic_engine, 1);
         ros_publisher_debug_marker_ = ros_node_handle.advertise<visualization_msgs::Marker>(topic_marker, 1);
@@ -38,14 +42,38 @@ namespace bitbots_throw{
         tf2::toMsg(response.support_foot_to_right_hand_, msg.right_hand_goal);
         tf2::toMsg(response.support_foot_to_trunk_, msg.trunk_goal);
 
-        publish_arrow_marker("throw_engine_left_hand_goal", "base_link", msg.left_hand_goal, 0, 1, 0, 1);
-        publish_arrow_marker("throw_engine_right_hand_goal", "base_link", msg.right_hand_goal, 1, 0, 0, 1);
-        publish_arrow_marker("throw_engine_trunk_goal", "base_link", msg.trunk_goal, 0, 0, 1, 1);
+        publish_arrow_marker("throw_engine_left_hand_goal"
+                            ,"base_link"
+                            ,msg.left_hand_goal
+                            ,0
+                            ,1
+                            ,0
+                            ,1);
+        publish_arrow_marker("throw_engine_right_hand_goal"
+                            ,"base_link"
+                            ,msg.right_hand_goal
+                            ,1
+                            ,0
+                            ,0
+                            ,1);
+        publish_arrow_marker("throw_engine_trunk_goal"
+                            ,"base_link"
+                            ,msg.trunk_goal
+                            ,0
+                            ,0
+                            ,1
+                            ,1);
 
         ros_publisher_debug_.publish(msg);
     }
 
-    void DebugPublisher::publish_arrow_marker(std::string name_space, std::string frame, geometry_msgs::Pose pose, float r, float g, float b, float a){
+    void DebugPublisher::publish_arrow_marker(std::string name_space
+                                             ,std::string frame
+                                             ,geometry_msgs::Pose pose
+                                             ,float r
+                                             ,float g
+                                             ,float b
+                                             ,float a){
         visualization_msgs::Marker marker_msg;
         marker_msg.header.stamp = ros::Time::now();
         marker_msg.header.frame_id = frame;

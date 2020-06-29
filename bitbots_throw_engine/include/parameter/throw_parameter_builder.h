@@ -12,9 +12,9 @@
 namespace bitbots_throw{
     class ThrowParameterBuilder{
     public:
-        static std::shared_ptr<ThrowParameter> build_from_dynamic_reconf(std::shared_ptr<ThrowEngineParameter> & engine_parameter,
-                                                                        std::shared_ptr<ThrowType> & throw_type,
-                                                                        ThrowRequest request){
+        static std::shared_ptr<ThrowParameter> build_from_dynamic_reconf(std::shared_ptr<ThrowEngineParameter> & engine_parameter
+                                                                        ,std::shared_ptr<ThrowType> & throw_type
+                                                                        ,ThrowRequest request){
             auto sp_parameter = build_default();
             auto throw_orientation_angle = calculate_angle(request.goal_position_);
 
@@ -60,7 +60,7 @@ namespace bitbots_throw{
             sp_parameter->throw_zenith_left_arm_.z_ = throw_zenith_height;
             sp_parameter->throw_zenith_right_arm_.z_ = throw_zenith_height;
 
-            auto throw_angle = throw_type->throw_anlge_ == 0 ? engine_parameter->throw_angle_ : throw_type->throw_anlge_;
+            auto throw_angle = throw_type->throw_angle_ == 0 ? engine_parameter->throw_angle_ : throw_type->throw_angle_;
             auto throw_release_position_x = calculate_opposite(throw_orientation_angle, engine_parameter->arm_length_ + engine_parameter->ball_radius_);
             auto throw_release_position_y = calculate_adjacent(throw_orientation_angle, engine_parameter->arm_length_ + engine_parameter->ball_radius_);
             auto throw_release_position_z = throw_zenith_height - ((std::cos(throw_angle) / std::sin(throw_angle)) * calculate_distace(Struct3d(throw_release_position_x, throw_release_position_y, 0.0)));
@@ -92,31 +92,32 @@ namespace bitbots_throw{
 
         static std::shared_ptr<ThrowParameter> build_default(){
             // TODO: enter better default values
-            return std::make_shared<ThrowParameter>(Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0},  //start_left_hand
-                                                    Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0},  //start_right_hand
-                                                    Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0},  //start_left_feet
-                                                    Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0},  //start_right_feet
-                                                    Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0},  //pick_up_left_hand
-                                                    Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0},  //pick_up_right_hand
-                                                    Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0},  //pick_up_trunk
-                                                    Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0},  //throw_start_left_hand
-                                                    Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0},  //throw_start_right_hand
-                                                    Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0},  //throw_start_trunk
-                                                    Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0},  //throw_zenith_left_hand
-                                                    Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0},  //throw_zenith_right_hand
-                                                    Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0},  //throw_release_left_hand
-                                                    Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0},  //throw_release_right_hand
-                                                    Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0},  //throw_release_trunk
-                                                    Struct3d{0.0, 0.0, 0.0},  //throw_velocity
-                                                    0.0,  //movement_cycle_frequency
-                                                    0.25,  //pick_up_duration_share
-                                                    0.25,  //throw_preparation_duration_share
-                                                    0.25,  //throw_duration_share
-                                                    0.25);  //throw_conclusion_duration_share
+            return std::make_shared<ThrowParameter>(Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0}  //start_left_hand
+                                                   ,Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0}  //start_right_hand
+                                                   ,Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0}  //start_left_feet
+                                                   ,Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0}  //start_right_feet
+                                                   ,Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0}  //pick_up_left_hand
+                                                   ,Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0}  //pick_up_right_hand
+                                                   ,Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0}  //pick_up_trunk
+                                                   ,Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0}  //throw_start_left_hand
+                                                   ,Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0}  //throw_start_right_hand
+                                                   ,Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0}  //throw_start_trunk
+                                                   ,Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0}  //throw_zenith_left_hand
+                                                   ,Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0}  //throw_zenith_right_hand
+                                                   ,Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0}  //throw_release_left_hand
+                                                   ,Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0}  //throw_release_right_hand
+                                                   ,Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0}  //throw_release_trunk
+                                                   ,Struct3d{0.0, 0.0, 0.0}  //throw_velocity
+                                                   ,0.0  //movement_cycle_frequency
+                                                   ,0.25  //pick_up_duration_share
+                                                   ,0.25  //throw_preparation_duration_share
+                                                   ,0.25  //throw_duration_share
+                                                   ,0.25);  //throw_conclusion_duration_share
         };
 
     protected:
-        static double calculate_velocity(double const & height, std::shared_ptr<ThrowEngineParameter> & engine_parameter, Struct3d throw_goal_position){
+        static double calculate_velocity(double const & height, std::shared_ptr<ThrowEngineParameter> & engine_parameter
+                                        ,Struct3d throw_goal_position){
             auto time = height / engine_parameter->gravity_;
             return calculate_distace(throw_goal_position) / time;
         }
@@ -140,7 +141,8 @@ namespace bitbots_throw{
             return std::cos(fit_angle_for_trigonometric_function(angle)) * hypotenuse;
         }
 
-        static void check_duration_share(std::shared_ptr<ThrowParameter> & sp_parameter, std::shared_ptr<ThrowEngineParameter> & engine_parameter){
+        static void check_duration_share(std::shared_ptr<ThrowParameter> & sp_parameter
+                                        ,std::shared_ptr<ThrowEngineParameter> & engine_parameter){
             double total_share_div = sp_parameter->pick_up_duration_share_
                                      + sp_parameter->throw_preparation_duration_share_
                                      + sp_parameter->throw_duration_share_

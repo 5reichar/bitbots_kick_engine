@@ -8,11 +8,11 @@
 namespace bitbots_throw{
 	class ThrowCurve{
 	public:
-		ThrowCurve(std::shared_ptr<bitbots_splines::PoseHandle> left_hand,
-				std::shared_ptr<bitbots_splines::PoseHandle> right_hand,
-                std::shared_ptr<bitbots_splines::PoseHandle> trunk,
-                std::shared_ptr<bitbots_splines::PoseHandle> left_feet,
-                std::shared_ptr<bitbots_splines::PoseHandle> right_feet);
+		ThrowCurve(std::shared_ptr<bitbots_splines::PoseHandle> left_hand
+		          ,std::shared_ptr<bitbots_splines::PoseHandle> right_hand
+				  ,std::shared_ptr<bitbots_splines::PoseHandle> trunk
+                  ,std::shared_ptr<bitbots_splines::PoseHandle> left_feet
+                  ,std::shared_ptr<bitbots_splines::PoseHandle> right_feet);
 
 		/**
 		 * Calculates the trajectory for the throw movement.
@@ -31,11 +31,15 @@ namespace bitbots_throw{
 		virtual bool check_requirements(std::shared_ptr<ThrowParameter> & throw_parameter);
 
 		virtual void calculate_pick_up_ball_movement(double & time, std::shared_ptr<ThrowParameter> & throw_parameter);
-        virtual void calculate_throw_preparation_movement(double & time, std::shared_ptr<ThrowParameter> & throw_parameter);
+        virtual void calculate_throw_preparation_movement(double & time
+                                                         ,std::shared_ptr<ThrowParameter> & throw_parameter);
         virtual void calculate_throw_movement(double & time, std::shared_ptr<ThrowParameter> & throw_parameter);
-		virtual void calculate_throw_conclusion_movement(double & time, std::shared_ptr<ThrowParameter> & throw_parameter);
+		virtual void calculate_throw_conclusion_movement(double & time
+		                                                ,std::shared_ptr<ThrowParameter> & throw_parameter);
 
-        virtual void add_points(std::shared_ptr<bitbots_splines::PoseHandle> & pose, double const & time, Struct3dRPY const & values);
+        virtual void add_points(std::shared_ptr<bitbots_splines::PoseHandle> & pose
+                               ,double const & time
+                               ,Struct3dRPY const & values);
 
 		std::shared_ptr<bitbots_splines::PoseHandle> sp_pose_left_hand_;
 		std::shared_ptr<bitbots_splines::PoseHandle> sp_pose_right_hand_;
