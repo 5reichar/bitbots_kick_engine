@@ -35,8 +35,7 @@ namespace bitbots_throw{
 	}
 
 	int ThrowEngine::getPercentDone() const{
-	    int percentage = throw_duration_ == 0.0 ? 0 : round(100 * (time_ / throw_duration_));
-	    return percentage;
+	    return 0.0 == throw_duration_ ? 0 : (int) std::round(100.0 * (time_ / throw_duration_));
 	}
 
 	void ThrowEngine::set_goals(const ThrowRequest & request){
