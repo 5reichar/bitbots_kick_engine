@@ -61,11 +61,10 @@ namespace bitbots_throw{
             sp_parameter->throw_zenith_right_arm_.z_ = throw_zenith_height;
 
             auto throw_angle = throw_type->throw_angle_ == 0 ? engine_parameter->throw_angle_ : throw_type->throw_angle_;
-            sp_parameter->throw_velocity_ = calculate_velocity(throw_release_position_z
-                                                              ,(0.0 == throw_type->throw_strength_ ? engine_parameter->throw_strength_ : throw_type->throw_strength_) * engine_parameter->max_throw_velocity_
+            sp_parameter->throw_velocity_ = calculate_velocity((0.0 == throw_type->throw_strength_ ? engine_parameter->throw_strength_ : throw_type->throw_strength_) * engine_parameter->max_throw_velocity_
                                                               ,throw_angle
                                                               ,request.goal_position_
-                                                              ,engine_parameter->gravity_);
+                                                              ,engine_parameter);
 
             auto throw_release_position_x = calculate_opposite(throw_orientation_angle, engine_parameter->arm_length_ + engine_parameter->ball_radius_);
             auto throw_release_position_y = calculate_adjacent(throw_orientation_angle, engine_parameter->arm_length_ + engine_parameter->ball_radius_);
@@ -117,26 +116,72 @@ namespace bitbots_throw{
         };
 
     protected:
-        static Struct3d calculate_velocity(double const & height
-                                          ,double velocity
-                                          ,double & angle
-                                          ,Struct3d const & goal_position
+        static Struct3d calculate_velocity(double const & velocity
+                                          ,double & throw_angle
+                                          ,Struct3d & goal_position
                                           ,std::shared_ptr<ThrowEngineParameter> const & engine_parameter){
-            auto goal_distance = calculate_distace(goal_position);
-            double time = 0.0;
+            double goal_offset;
+            double augmented_velocity;
+            double const goal_distance = calculate_distace(goal_position);
+            bool upper_alert = false;
+            bool lower_alert = false;
 
-            while(velocity != engine_parameter->max_throw_velocity_)
-            {
-                time = calculate_throw_time(height, velocity, angle, engine_parameter->gravity_);
+            while(-30.0 <= throw_angle && 75 >= throw_angle){
+                augmented_velocity = velocity;
+                goal_offset = fit_throw_velocity(augmented_velocity, throw_angle, goal_distance, engine_parameter);
 
-                if(0.5 < std::abs(velocity * std::cos(angle) * time)){
+                // TODO: Rework parameter
+                if(0.5 > goal_offset && !lower_alert){
+                    throw_angle += 0.5;
+                    upper_alert = true;
+                }
+                else if(0.0 < goal_offset && !upper_alert){
+                    throw_angle -= 0.5;
+                    lower_alert = true;
+                }
+                else{
                     break;
                 }
-
-                velocity += 0.5;
             }
-            
-            return calculate_distace(throw_goal_position) / time;
+
+            // TODO: check if needed to be reworked
+            Struct3d return_velocity{};
+            return_velocity.x_ = augmented_velocity * std::cos(throw_angle) * std::sin(calculate_angle(goal_position));
+            return_velocity.y_ = augmented_velocity * std::cos(throw_angle) * std::cos(calculate_angle(goal_position));
+            return_velocity.z_ = augmented_velocity * std::sin(throw_angle);
+
+            return return_velocity;
+        }
+
+        // TODO: Methode describtion
+        static double fit_throw_velocity(double & velocity
+                                        ,double const & throw_angle
+                                        ,double const & goal_distance
+                                        ,std::shared_ptr<ThrowEngineParameter> const & engine_parameter){
+            double time = 0.0;
+            double goal_offset;
+            bool upper_alert = false;
+            bool lower_alert = false;
+
+            while(engine_parameter->max_throw_velocity_ > velocity && 0.0 < velocity){
+                time = calculate_throw_time(engine_parameter->robot_height_, velocity, throw_angle, engine_parameter->gravity_);
+                goal_offset = goal_distance - std::abs(velocity * std::cos(throw_angle) * time);
+
+                // TODO: Rework parameter
+                if(0.5 > goal_offset && !lower_alert){
+                    velocity += 0.5;
+                    upper_alert = true;
+                }
+                else if(0.0 < goal_offset && !upper_alert){
+                    velocity -= 0.5;
+                    lower_alert = true;
+                }
+                else{
+                    break;
+                }
+            }
+
+            return goal_offset;
         }
 
         static double calculate_throw_time(double const & height
