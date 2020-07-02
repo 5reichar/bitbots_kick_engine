@@ -24,7 +24,7 @@ namespace bitbots_throw{
                                                                          ,config.beziercurve_throw_preparation_duration_share
                                                                          ,config.beziercurve_throw_duration_share
                                                                          ,config.beziercurve_throw_conclusion_duration_share
-                                                                         ,config.beziercurve_throw_throw_strength
+                                                                         ,config.beziercurve_throw_strength
                                                                          ,config.beziercurve_throw_angle);
 
             current_id = (ThrowTypeId)config.linear_spline_throw_enum;
@@ -37,7 +37,7 @@ namespace bitbots_throw{
                                                                          ,config.linear_spline_throw_preparation_duration_share
                                                                          ,config.linear_spline_throw_duration_share
                                                                          ,config.linear_spline_throw_conclusion_duration_share
-                                                                         ,config.linear_spline_throw_throw_strength
+                                                                         ,config.linear_spline_throw_strength
                                                                          ,config.linear_spline_throw_angle);
 
             current_id = (ThrowTypeId)config.cubic_spline_throw_enum;
@@ -50,7 +50,7 @@ namespace bitbots_throw{
                                                                          ,config.cubic_spline_throw_preparation_duration_share
                                                                          ,config.cubic_spline_throw_duration_share
                                                                          ,config.cubic_spline_throw_conclusion_duration_share
-                                                                         ,config.cubic_spline_throw_throw_strength
+                                                                         ,config.cubic_spline_throw_strength
                                                                          ,config.cubic_spline_throw_angle);
                                             
             current_id = (ThrowTypeId)config.smooth_spline_throw_enum;                                         
@@ -63,7 +63,7 @@ namespace bitbots_throw{
                                                                          ,config.smooth_spline_throw_preparation_duration_share
                                                                          ,config.smooth_spline_throw_duration_share
                                                                          ,config.smooth_spline_throw_conclusion_duration_share
-                                                                         ,config.smooth_spline_throw_throw_strength
+                                                                         ,config.smooth_spline_throw_strength
                                                                          ,config.smooth_spline_throw_angle);
 
             return sp_parameter;
