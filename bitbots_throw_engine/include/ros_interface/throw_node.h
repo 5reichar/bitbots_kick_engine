@@ -8,6 +8,7 @@
 
 #include <dynamic_reconfigure/server.h>
 #include <bitbots_throw/throw_action.h>
+#include <tf2_ros/transform_listener.h>
 #include <bitbots_throw/throw_paramsConfig.h>
 #include <bitbots_throw/throw_engine_paramsConfig.h>
 #include "ros_interface/publisher/ros_publisher_facade.h"
@@ -33,7 +34,8 @@ namespace bitbots_throw{
         void throw_engine_params_config_callback(bitbots_throw::throw_engine_paramsConfig & config , uint32_t level);
 
         // Helper methods
-        static ThrowRequest create_throw_request(bitbots_throw::throw_action action);
+        ThrowRequest create_throw_request(bitbots_throw::throw_action action);
+        std::pair<geometry_msgs::Pose, geometry_msgs::Pose> get_foot_poses();
 
         // member variables
         ThrowIK * arms_ik_;
@@ -45,6 +47,8 @@ namespace bitbots_throw{
 
         ros::NodeHandle ros_node_handle_;
         ros::Subscriber ros_subscriber_throw_;
+        tf2_ros::Buffer tf2_ros_buffer_;
+        tf2_ros::TransformListener tf2_ros_trnasform_listener_;
         dynamic_reconfigure::Server<bitbots_throw::throw_paramsConfig> dynamic_reconfigure_server_throw_params_;
         dynamic_reconfigure::Server<bitbots_throw::throw_engine_paramsConfig> dynamic_reconfigure_server_engine_params_;
     };

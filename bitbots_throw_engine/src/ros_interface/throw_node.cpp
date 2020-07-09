@@ -14,7 +14,8 @@
 namespace bitbots_throw{
 	ThrowNode::ThrowNode()
 			:dynamic_reconfigure_server_engine_params_(ros::NodeHandle("/throw_engine_parameter"))
-			,dynamic_reconfigure_server_throw_params_(ros::NodeHandle("/throw_parameter")){
+			,dynamic_reconfigure_server_throw_params_(ros::NodeHandle("/throw_parameter"))
+			,tf2_ros_trnasform_listener_(tf2_ros_buffer_){
 		set_default_parameter();
 		load_parameter();
         init_ros_subscriptions();
@@ -140,10 +141,50 @@ namespace bitbots_throw{
 
 	ThrowRequest ThrowNode::create_throw_request(const bitbots_throw::throw_action action){
 		ThrowRequest request{};
+
 		request.ball_position_ = {action.ball_position.x, action.ball_position.y, action.ball_position.z };
 		request.goal_position_ = {action.throw_target.x, action.throw_target.y, action.throw_target.z };
+
+		// get current position of feet
+		auto foot_poses = get_foot_poses();
+		request.right_feet_position_ = {foot_poses.first.position.x
+		                               ,foot_poses.first.position.y
+		                               ,foot_poses.first.position.z};
+
+        request.left_feet_position_ = {foot_poses.second.position.x
+                                      ,foot_poses.second.position.y
+                                      ,foot_poses.second.position.z};
+
 		return request;
 	}
+
+    std::pair<geometry_msgs::Pose, geometry_msgs::Pose> ThrowNode::get_foot_poses(){
+        ros::Time time = ros::Time::now();
+
+        /* Construct zero-positions for both feet in their respective local frames */
+        geometry_msgs::PoseStamped right_foot_origin, left_foot_origin;
+        right_foot_origin.header.frame_id = "r_sole";
+        right_foot_origin.pose.orientation.w = 1;
+        right_foot_origin.header.stamp = time;
+
+        left_foot_origin.header.frame_id = "l_sole";
+        left_foot_origin.pose.orientation.w = 1;
+        left_foot_origin.header.stamp = time;
+
+        /* Transform both feet poses into the other foot's frame */
+        geometry_msgs::PoseStamped right_foot_transformed, left_foot_transformed;
+        tf2_ros_buffer_.transform(right_foot_origin
+                                 ,right_foot_transformed
+                                 ,"l_sole"
+                                 ,ros::Duration(0.2));
+
+        tf2_ros_buffer_.transform(left_foot_origin
+                                 ,left_foot_transformed
+                                 ,"r_sole"
+                                 ,ros::Duration(0.2));
+
+        return std::pair(right_foot_transformed.pose, left_foot_transformed.pose);
+    }
 } //bitbots_throw
 
 int main(int argc, char **argv){
