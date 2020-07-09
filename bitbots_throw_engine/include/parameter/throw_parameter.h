@@ -2,7 +2,6 @@
 #define BITBOTS_THROW_THROW_PARAMETER_H
 
 #include "parameter/struct3d.h"
-#include "../../../../../../Documents/git/bitbots_kick_engine/bitbots_throw_engine/include/parameter/struct3d.h"
 
 namespace bitbots_throw{
 	struct ThrowParameter{
