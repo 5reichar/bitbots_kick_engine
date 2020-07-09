@@ -18,42 +18,27 @@ namespace bitbots_throw{
             auto sp_parameter = build_default();
             auto throw_orientation_angle = calculate_angle(request.goal_position_);
 
-            sp_parameter->start_left_arm_.x_ = request.left_hand_position_.x_;
-            sp_parameter->start_left_arm_.y_ = request.left_hand_position_.y_;
-            sp_parameter->start_left_arm_.z_ = request.left_hand_position_.z_;
+            sp_parameter->start_left_arm_ = request.left_hand_position_;
+            sp_parameter->start_right_arm_ = request.right_hand_position_;
+            sp_parameter->start_left_feet_ = request.left_feet_position_;
+            sp_parameter->start_right_feet_ = request.right_feet_position_;
 
-            sp_parameter->start_right_arm_.x_ = request.right_hand_position_.x_;
-            sp_parameter->start_right_arm_.y_ = request.right_hand_position_.y_;
-            sp_parameter->start_right_arm_.z_ = request.right_hand_position_.z_;
-
-            sp_parameter->start_left_feet_.x_ = request.left_feet_position_.x_;
-            sp_parameter->start_left_feet_.y_ = request.left_feet_position_.y_;
-            sp_parameter->start_left_feet_.z_ = request.left_feet_position_.z_;
-
-            sp_parameter->start_right_feet_.x_ = request.right_feet_position_.x_;
-            sp_parameter->start_right_feet_.y_ = request.right_feet_position_.y_;
-            sp_parameter->start_right_feet_.z_ = request.right_feet_position_.z_;
-
-            sp_parameter->pick_up_left_arm_.x_ = request.ball_position_.x_ - engine_parameter->ball_radius_;
-            sp_parameter->pick_up_left_arm_.y_ = request.ball_position_.y_;
-            sp_parameter->pick_up_left_arm_.z_ = request.ball_position_.z_;
-
-            sp_parameter->pick_up_right_arm_.x_ = request.ball_position_.x_ + engine_parameter->ball_radius_;
-            sp_parameter->pick_up_right_arm_.y_ = request.ball_position_.y_;
-            sp_parameter->pick_up_right_arm_.z_ = request.ball_position_.z_;
-
+            sp_parameter->pick_up_left_arm_ = Struct3d{request.ball_position_.x_ - engine_parameter->ball_radius_
+                                                      ,request.ball_position_.y_
+                                                      ,request.ball_position_.z_};
+            sp_parameter->pick_up_right_arm_ = Struct3d{request.ball_position_.x_ + engine_parameter->ball_radius_
+                                                       ,request.ball_position_.y_
+                                                       ,request.ball_position_.z_};
             sp_parameter->pick_up_trunk_.yaw_ = calculate_angle(request.ball_position_);
 
             auto throw_start_position_x = - 1.0 * calculate_opposite(throw_orientation_angle, engine_parameter->head_collision_security_radius_ + engine_parameter->ball_radius_);
             auto throw_start_position_y = - 1.0 * calculate_adjacent(throw_orientation_angle, engine_parameter->head_collision_security_radius_ + engine_parameter->ball_radius_);
-            sp_parameter->throw_start_left_arm_.x_ = throw_start_position_x;
-            sp_parameter->throw_start_left_arm_.y_ = throw_start_position_y;
-            sp_parameter->throw_start_left_arm_.z_ = engine_parameter->robot_height_;
-
-            sp_parameter->throw_start_right_arm_.x_ = throw_start_position_x;
-            sp_parameter->throw_start_right_arm_.y_ = throw_start_position_y;
-            sp_parameter->throw_start_right_arm_.z_ = engine_parameter->robot_height_;
-
+            sp_parameter->throw_start_left_arm_ = Struct3d{throw_start_position_x
+                                                          ,throw_start_position_y
+                                                          ,engine_parameter->robot_height_};
+            sp_parameter->throw_start_right_arm_ = Struct3d{throw_start_position_x
+                                                           ,throw_start_position_y
+                                                           ,engine_parameter->robot_height_};
             sp_parameter->throw_start_trunk_.yaw_ = throw_orientation_angle;
 
             auto throw_zenith_height = engine_parameter->robot_height_ + engine_parameter->head_collision_security_radius_;
@@ -70,15 +55,14 @@ namespace bitbots_throw{
             auto throw_release_position_y = calculate_adjacent(throw_orientation_angle, engine_parameter->arm_length_ + engine_parameter->ball_radius_);
             auto throw_release_position_z = throw_zenith_height - ((std::cos(throw_angle) / std::sin(throw_angle)) * calculate_distace(Struct3d(throw_release_position_x, throw_release_position_y, 0.0)));
 
-            sp_parameter->throw_release_left_arm_.x_ = throw_release_position_x;
-            sp_parameter->throw_release_left_arm_.y_ = throw_release_position_y;
-            sp_parameter->throw_release_left_arm_.z_ = throw_release_position_z;
-
-            sp_parameter->throw_release_right_arm_.x_ = throw_release_position_x;
-            sp_parameter->throw_release_right_arm_.y_ = throw_release_position_y;
-            sp_parameter->throw_release_right_arm_.z_ = throw_release_position_z;
-
+            sp_parameter->throw_release_left_arm_ = Struct3d{throw_release_position_x
+                                                            ,throw_release_position_y
+                                                            ,throw_release_position_z};
+            sp_parameter->throw_release_right_arm_ = Struct3d{throw_release_position_x
+                                                             ,throw_release_position_y
+                                                             ,throw_release_position_z};
             sp_parameter->throw_release_trunk_.yaw_ = throw_orientation_angle;
+
             sp_parameter->movement_cycle_frequency_ = engine_parameter->frequency_;
 
             sp_parameter->pick_up_duration_share_ = throw_type->pick_up_duration_share_ == 0 ? engine_parameter->pick_up_duration_share_ : throw_type->pick_up_duration_share_;
