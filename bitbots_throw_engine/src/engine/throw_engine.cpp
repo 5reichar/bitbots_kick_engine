@@ -4,6 +4,7 @@
 
 #include <utility>
 #include "parameter/throw_parameter_builder.h"
+#include "parameter/throw_type_parameter_builder.h"
 
 namespace bitbots_throw{
 	ThrowEngine::ThrowEngine()
@@ -64,8 +65,46 @@ namespace bitbots_throw{
 
 	std::shared_ptr<ThrowParameter> ThrowEngine::create_throw_parameter(const ThrowTypeId throw_type_id
 	                                                                   ,const ThrowRequest & request){
-		return ThrowParameterBuilder::build_from_dynamic_reconf(sp_engine_parameter_
-		                                                       ,sp_throw_types_->map_throw_types_[throw_type_id]
+	    std::shared_ptr<ThrowType> type = ThrowTypeParameterBuilder::build_empty_throw_type();
+		if (sp_throw_types_->map_throw_types_.cend() == sp_throw_types_->map_throw_types_.find(throw_type_id)){
+            type->id_ = throw_type_id;
+            type->throw_angle_ = sp_engine_parameter_->throw_angle_;
+            type->throw_strength_ = sp_engine_parameter_->throw_strength_;
+            type->pick_up_duration_share_ = sp_engine_parameter_->pick_up_duration_share_;
+            type->throw_preparation_duration_share_ = sp_engine_parameter_->throw_preparation_duration_share_;
+            type->throw_duration_share_ = sp_engine_parameter_->throw_duration_share_;
+            type->throw_conclusion_duration_share_ = sp_engine_parameter_->throw_conclusion_duration_share_;
+		}
+		else{
+            type = sp_throw_types_->map_throw_types_[throw_type_id];
+
+            if(type->throw_angle_ == 0){
+                type->throw_angle_ = sp_engine_parameter_->throw_angle_;
+            };
+
+            if(type->throw_strength_ == 0){
+                type->throw_strength_ = sp_engine_parameter_->throw_strength_;
+            };
+
+            if(type->pick_up_duration_share_ == 0){
+                type->pick_up_duration_share_ = sp_engine_parameter_->pick_up_duration_share_;
+            };
+
+            if(type->throw_preparation_duration_share_ == 0){
+                type->throw_preparation_duration_share_ = sp_engine_parameter_->throw_preparation_duration_share_;
+            };
+
+            if(type->throw_duration_share_ == 0){
+                type->throw_duration_share_ = sp_engine_parameter_->throw_duration_share_;
+            };
+
+            if(type->throw_conclusion_duration_share_ == 0){
+                type->throw_conclusion_duration_share_ = sp_engine_parameter_->throw_conclusion_duration_share_;
+            };
+		}
+
+	    return ThrowParameterBuilder::build_from_dynamic_reconf(sp_engine_parameter_
+		                                                       ,type
 		                                                       ,request);
 	}
 }

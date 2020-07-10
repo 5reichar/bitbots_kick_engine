@@ -45,15 +45,14 @@ namespace bitbots_throw{
             sp_parameter->throw_zenith_left_arm_.z_ = throw_zenith_height;
             sp_parameter->throw_zenith_right_arm_.z_ = throw_zenith_height;
 
-            auto throw_angle = throw_type->throw_angle_ == 0 ? engine_parameter->throw_angle_ : throw_type->throw_angle_;
-            sp_parameter->throw_velocity_ = calculate_velocity((0.0 == throw_type->throw_strength_ ? engine_parameter->throw_strength_ : throw_type->throw_strength_) * engine_parameter->max_throw_velocity_
-                                                              ,throw_angle
+            sp_parameter->throw_velocity_ = calculate_velocity(throw_type->throw_strength_ * engine_parameter->max_throw_velocity_
+                                                              ,throw_type->throw_angle_
                                                               ,request.goal_position_
                                                               ,engine_parameter);
 
             auto throw_release_position_x = calculate_opposite(throw_orientation_angle, engine_parameter->arm_length_ + engine_parameter->ball_radius_);
             auto throw_release_position_y = calculate_adjacent(throw_orientation_angle, engine_parameter->arm_length_ + engine_parameter->ball_radius_);
-            auto throw_release_position_z = throw_zenith_height - ((std::cos(throw_angle) / std::sin(throw_angle)) * calculate_distace(Struct3d(throw_release_position_x, throw_release_position_y, 0.0)));
+            auto throw_release_position_z = throw_zenith_height - ((std::cos(throw_type->throw_angle_) / std::sin(throw_type->throw_angle_)) * calculate_distace(Struct3d(throw_release_position_x, throw_release_position_y, 0.0)));
 
             sp_parameter->throw_release_left_arm_ = Struct3d{throw_release_position_x
                                                             ,throw_release_position_y
@@ -65,10 +64,10 @@ namespace bitbots_throw{
 
             sp_parameter->movement_cycle_frequency_ = engine_parameter->frequency_;
 
-            sp_parameter->pick_up_duration_share_ = throw_type->pick_up_duration_share_ == 0 ? engine_parameter->pick_up_duration_share_ : throw_type->pick_up_duration_share_;
-            sp_parameter->throw_preparation_duration_share_ = throw_type->throw_preparation_duration_share_ == 0 ? engine_parameter->throw_preparation_duration_share_ : throw_type->throw_preparation_duration_share_;
-            sp_parameter->throw_duration_share_ = throw_type->throw_duration_share_ == 0 ? engine_parameter->throw_duration_share_ : throw_type->throw_duration_share_;
-            sp_parameter->throw_conclusion_duration_share_ = throw_type->throw_conclusion_duration_share_ == 0 ? engine_parameter->throw_conclusion_duration_share_ : throw_type->throw_conclusion_duration_share_;
+            sp_parameter->pick_up_duration_share_ = throw_type->pick_up_duration_share_;
+            sp_parameter->throw_preparation_duration_share_ = throw_type->throw_preparation_duration_share_;
+            sp_parameter->throw_duration_share_ = throw_type->throw_duration_share_;
+            sp_parameter->throw_conclusion_duration_share_ = throw_type->throw_conclusion_duration_share_;
             check_duration_share(sp_parameter, engine_parameter);
 
             return sp_parameter;

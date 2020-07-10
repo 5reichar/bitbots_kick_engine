@@ -145,7 +145,7 @@ namespace bitbots_throw{
 		request.ball_position_ = {action.ball_position.x, action.ball_position.y, action.ball_position.z };
 		request.goal_position_ = {action.throw_target.x, action.throw_target.y, action.throw_target.z };
 
-		// get current position of feet
+		/*/ get current position of feet
 		auto foot_poses = get_foot_poses();
 		request.right_feet_position_ = {foot_poses.first.position.x
 		                               ,foot_poses.first.position.y
@@ -154,6 +154,7 @@ namespace bitbots_throw{
         request.left_feet_position_ = {foot_poses.second.position.x
                                       ,foot_poses.second.position.y
                                       ,foot_poses.second.position.z};
+        */
 
 		return request;
 	}

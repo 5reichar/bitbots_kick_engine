@@ -73,6 +73,20 @@ namespace bitbots_throw{
             return std::make_shared<ThrowTypeParameter>(ThrowTypeId::smooth_spline);
         };
 
+        static std::shared_ptr<ThrowType> build_empty_throw_type(){
+            return std::make_shared<ThrowType>(ThrowTypeId::testing
+                    ,true
+                    ,0
+                    ,0.0
+                    ,0.0
+                    ,0.25
+                    ,0.25
+                    ,0.25
+                    ,0.25
+                    ,0.0
+                    ,0.0);
+        };
+
     protected:
         static std::shared_ptr<ThrowType> build_throw_type(ThrowTypeId id
                                                           ,bool active

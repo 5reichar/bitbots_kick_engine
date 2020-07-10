@@ -9,7 +9,8 @@ namespace bitbots_throw{
 		beziercurve = 1,
 		linear_spline,
 		cubic_spline,
-		smooth_spline
+		smooth_spline,
+		testing
 	};
 
 	struct ThrowType{

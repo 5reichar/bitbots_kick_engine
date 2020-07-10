@@ -4,7 +4,9 @@
 #include "throws/throw_curves/linear_spline_throw.h"
 #include "throws/throw_curves/cubic_spline_throw.h"
 #include "throws/throw_curves/smooth_spline_throw.h"
+#include "throws/throw_curves/testing_throw.h"
 #include "utility/throw_utilities.h"
+#include "ros_interface/publisher/system_publisher.h"
 
 namespace bitbots_throw{
 	std::shared_ptr<ThrowCurve> ThrowFactory::create_throw(ThrowTypeId throw_type_id){
@@ -13,18 +15,26 @@ namespace bitbots_throw{
 		switch (throw_type_id){
 		case ThrowTypeId::beziercurve:
 			sp_return.reset(new BeziercurveThrow());
+			SystemPublisher::publish_info("BeziercurveThrow Selected");
 			break;
 		case ThrowTypeId::linear_spline:
 			sp_return.reset(new LinearSplineThrow());
+            SystemPublisher::publish_info("LinearSplineThrow Selected");
 			break;
 		case ThrowTypeId::cubic_spline:
 			sp_return.reset(new CubicSplineThrow());
+            SystemPublisher::publish_info("CubicSplineThrow Selected");
 			break;
 		case ThrowTypeId::smooth_spline:
-		default:
-			sp_return.reset(new SmoothSplineThrow());
-			break;
-		}
+            sp_return.reset(new SmoothSplineThrow());
+            SystemPublisher::publish_info("SmoothSplineThrow Selected");
+            break;
+        case ThrowTypeId::testing:
+        default:
+            sp_return.reset(new TestingThrow());
+            SystemPublisher::publish_info("Testing Selected");
+            break;
+        }
 
 		return sp_return;
 	}
