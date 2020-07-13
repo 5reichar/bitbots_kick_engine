@@ -145,16 +145,22 @@ namespace bitbots_throw{
 		request.ball_position_ = {action.ball_position.x, action.ball_position.y, action.ball_position.z };
 		request.goal_position_ = {action.throw_target.x, action.throw_target.y, action.throw_target.z };
 
-		/*/ get current position of feet
-		auto foot_poses = get_foot_poses();
-		request.right_feet_position_ = {foot_poses.first.position.x
-		                               ,foot_poses.first.position.y
-		                               ,foot_poses.first.position.z};
+        // get current position of feet
+        std::pair<geometry_msgs::Pose, geometry_msgs::Pose> foot_poses;
+        try{
+            foot_poses = get_foot_poses();
 
-        request.left_feet_position_ = {foot_poses.second.position.x
-                                      ,foot_poses.second.position.y
-                                      ,foot_poses.second.position.z};
-        */
+            request.right_feet_position_ = {foot_poses.first.position.x
+                                           ,foot_poses.first.position.y
+                                           ,foot_poses.first.position.z};
+
+            request.left_feet_position_ = {foot_poses.second.position.x
+                                          ,foot_poses.second.position.y
+                                          ,foot_poses.second.position.z};
+        }
+        catch(tf2::TransformException &e){
+            SystemPublisher::publish_error(e.what());
+        }
 
 		return request;
 	}
@@ -175,14 +181,14 @@ namespace bitbots_throw{
         /* Transform both feet poses into the other foot's frame */
         geometry_msgs::PoseStamped right_foot_transformed, left_foot_transformed;
         tf2_ros_buffer_.transform(right_foot_origin
-                                 ,right_foot_transformed
-                                 ,"l_sole"
-                                 ,ros::Duration(0.2));
+                ,right_foot_transformed
+                ,"l_sole"
+                ,ros::Duration(0.2));
 
         tf2_ros_buffer_.transform(left_foot_origin
-                                 ,left_foot_transformed
-                                 ,"r_sole"
-                                 ,ros::Duration(0.2));
+                ,left_foot_transformed
+                ,"r_sole"
+                ,ros::Duration(0.2));
 
         return std::pair(right_foot_transformed.pose, left_foot_transformed.pose);
     }
