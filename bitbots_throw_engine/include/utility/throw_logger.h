@@ -25,7 +25,7 @@ namespace bitbots_throw{
 
         void publish_to_ros(){
             for(auto const & it : logging_){
-                SystemPublisher::publish_info(it.first + value_delimeter_ + it.second.str(), additional_publish_info_);
+                SystemPublisher::publish_info(it.first + it.second.str(), additional_publish_info_);
             }
         };
 
