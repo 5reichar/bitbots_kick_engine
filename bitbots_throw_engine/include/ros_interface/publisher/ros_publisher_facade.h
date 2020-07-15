@@ -16,18 +16,17 @@ namespace bitbots_throw{
             std::string str_support_topic_;
             std::string str_odometry_topic_;
             std::string str_debug_topic_;
-            std::string str_engine_debug_topic_;
             std::string str_debug_marker_topic_;
         };
 
         RosPublisherFacade(ros::NodeHandle & ros_node_handle
                           ,std::shared_ptr<ThrowNodeParameter> parameter
-                          ,RosPublisherTopics topics);
+                          ,RosPublisherTopics const & topics);
         void prepare_publisher_for_throw();
 
         void publish_throw(bitbots_splines::JointGoals & joint_goals);
         void publish_odometry();
-        void publish_debug(ThrowResponse response, bitbots_splines::JointGoals joint_goals);
+        void publish_debug(ThrowResponse const & response);
 
     private:
         std::shared_ptr<DebugPublisher> sp_debug_publisher_;

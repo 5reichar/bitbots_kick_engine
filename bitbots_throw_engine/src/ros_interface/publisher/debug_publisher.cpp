@@ -5,32 +5,14 @@
 
 namespace bitbots_throw{
     DebugPublisher::DebugPublisher(ros::NodeHandle & ros_node_handle
-                                  ,std::string topic
-                                  ,std::string topic_engine
-                                  ,std::string topic_marker){
+                                  ,std::string const & topic
+                                  ,std::string const & topic_marker){
         marker_id_ = 0;
         ros_publisher_debug_ = ros_node_handle.advertise<bitbots_throw::throw_debug>(topic, 1);
-        ros_publisher_debug_engine_ = ros_node_handle.advertise<bitbots_throw::throw_engine_debug>(topic_engine, 1);
         ros_publisher_debug_marker_ = ros_node_handle.advertise<visualization_msgs::Marker>(topic_marker, 1);
     }
 
-    void DebugPublisher::publish_engine_debug(ThrowResponse response){
-        //only do something if someone is listing
-        if (ros_publisher_debug_engine_.getNumSubscribers() == 0 && ros_publisher_debug_marker_.getNumSubscribers() == 0){
-            return;
-        }
-
-        bitbots_throw::throw_engine_debug msg;
-        msg.header.stamp = ros::Time::now();
-
-        // times
-        msg.phase_time = response.phase_;
-        msg.traj_time = response.traj_time_;
-
-        ros_publisher_debug_engine_.publish(msg);
-    }
-
-    void DebugPublisher::publish_ik_debug(ThrowResponse response, bitbots_splines::JointGoals joint_goals){
+    void DebugPublisher::publish_ik_debug(ThrowResponse const & response){
         //only do something if someone is listing
         if (ros_publisher_debug_.getNumSubscribers() == 0 && ros_publisher_debug_marker_.getNumSubscribers() == 0){
             return;
@@ -41,39 +23,55 @@ namespace bitbots_throw{
         tf2::toMsg(response.support_foot_to_left_hand_, msg.left_hand_goal);
         tf2::toMsg(response.support_foot_to_right_hand_, msg.right_hand_goal);
         tf2::toMsg(response.support_foot_to_trunk_, msg.trunk_goal);
+        tf2::toMsg(response.support_foot_to_left_foot_, msg.left_foot_goal);
+        tf2::toMsg(response.support_foot_to_right_foot_, msg.right_foot_goal);
 
         publish_arrow_marker("throw_engine_left_hand_goal"
                             ,"base_link"
                             ,msg.left_hand_goal
-                            ,0
-                            ,1
+                            ,255
+                            ,127
                             ,0
                             ,1);
         publish_arrow_marker("throw_engine_right_hand_goal"
                             ,"base_link"
                             ,msg.right_hand_goal
-                            ,1
-                            ,0
+                            ,255
+                            ,127
                             ,0
                             ,1);
         publish_arrow_marker("throw_engine_trunk_goal"
                             ,"base_link"
                             ,msg.trunk_goal
+                            ,255
                             ,0
                             ,0
-                            ,1
+                            ,1);
+        publish_arrow_marker("throw_engine_left_foot_goal"
+                            ,"base_link"
+                            ,msg.left_foot_goal
+                            ,255
+                            ,127
+                            ,0
+                            ,1);
+        publish_arrow_marker("throw_engine_right_foot_goal"
+                            ,"base_link"
+                            ,msg.right_foot_goal
+                            ,255
+                            ,127
+                            ,0
                             ,1);
 
         ros_publisher_debug_.publish(msg);
     }
 
-    void DebugPublisher::publish_arrow_marker(std::string name_space
-                                             ,std::string frame
-                                             ,geometry_msgs::Pose pose
-                                             ,float r
-                                             ,float g
-                                             ,float b
-                                             ,float a){
+    void DebugPublisher::publish_arrow_marker(std::string const & name_space
+                                             ,std::string const & frame
+                                             ,geometry_msgs::Pose const & pose
+                                             ,float const & r
+                                             ,float const & g
+                                             ,float const & b
+                                             ,float const & a){
         visualization_msgs::Marker marker_msg;
         marker_msg.header.stamp = ros::Time::now();
         marker_msg.header.frame_id = frame;
@@ -100,15 +98,5 @@ namespace bitbots_throw{
         marker_id_++;
 
         ros_publisher_debug_marker_.publish(marker_msg);
-    }
-
-    void DebugPublisher::publish_throw_markers(ThrowResponse response){
-        //publish markers
-        visualization_msgs::Marker marker_msg;
-        marker_msg.header.stamp = ros::Time::now();
-
-        ros_publisher_debug_marker_.publish(marker_msg);
-
-        marker_id_++;
     }
 } //bitbots_throw

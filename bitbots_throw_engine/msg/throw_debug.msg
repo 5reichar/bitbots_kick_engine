@@ -9,3 +9,5 @@ std_msgs/Header header
 geometry_msgs/Pose left_hand_goal
 geometry_msgs/Pose right_hand_goal
 geometry_msgs/Pose trunk_goal
+geometry_msgs/Pose left_foot_goal
+geometry_msgs/Pose right_foot_goal

@@ -33,7 +33,6 @@ namespace bitbots_throw{
 		publisher_topics_.str_controller_command_topic_ = "/DynamixelController/command";
 		publisher_topics_.str_odometry_topic_ = "/throw_odometry";
 		publisher_topics_.str_debug_topic_ = "/throw_debug";
-		publisher_topics_.str_engine_debug_topic_ = "/throw_engine_debug";
 		publisher_topics_.str_debug_marker_topic_ = "/throw_debug_marker";
 		publisher_topics_.str_support_topic_ = "/throw_support_foot_state";
 
@@ -119,7 +118,7 @@ namespace bitbots_throw{
 			
 			publisher_facade.publish_throw(joint_goals);
 			publisher_facade.publish_odometry();
-			publisher_facade.publish_debug(response, joint_goals);
+			publisher_facade.publish_debug(response);
 
 			ros::spinOnce();
 			loopRate.sleep();

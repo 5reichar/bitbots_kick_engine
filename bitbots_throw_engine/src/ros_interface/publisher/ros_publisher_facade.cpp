@@ -3,7 +3,7 @@
 namespace bitbots_throw{
 	RosPublisherFacade::RosPublisherFacade(ros::NodeHandle & ros_node_handle
 	                                      ,std::shared_ptr<ThrowNodeParameter> parameter
-	                                      ,RosPublisherTopics topics)
+	                                      ,RosPublisherTopics const &topics)
 		: sp_node_parameter_(parameter)
 		, sp_controller_command_publisher_(new ControllerCommandPublisher(ros_node_handle
 		                                                                    ,topics.str_controller_command_topic_))
@@ -11,7 +11,6 @@ namespace bitbots_throw{
 		, sp_support_publisher_(new SupportPublisher(ros_node_handle, topics.str_support_topic_))
 		, sp_debug_publisher_(new DebugPublisher(ros_node_handle
 		                                           ,topics.str_debug_topic_
-		                                           ,topics.str_engine_debug_topic_
 		                                           ,topics.str_debug_marker_topic_)){
 	}
 
@@ -30,12 +29,9 @@ namespace bitbots_throw{
 		sp_odometry_publisher_->publish(sp_node_parameter_->odom_publish_factor_);
 	}
 
-	void RosPublisherFacade::publish_debug(ThrowResponse response, bitbots_splines::JointGoals joint_goals){
-		sp_debug_publisher_->publish_engine_debug(response);
-
+	void RosPublisherFacade::publish_debug(ThrowResponse const & response){
 		if(sp_node_parameter_->debug_active_){
-			sp_debug_publisher_->publish_ik_debug(response, joint_goals);
-			sp_debug_publisher_->publish_throw_markers(response);
+			sp_debug_publisher_->publish_ik_debug(response);
 		}
 	}
 } //bitbots_throw
