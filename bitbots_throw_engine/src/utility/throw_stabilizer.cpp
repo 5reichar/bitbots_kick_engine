@@ -22,28 +22,21 @@ namespace bitbots_throw{
 
     // left hand goal
     auto * left_hand_goal = create_pose_goal(response.support_foot_to_left_hand_
-                                            ,"base_link"
+                                            ,"l_wrist"
                                             ,"l_sole"
                                             ,1); //TODO: rework maybe
     ik_options->goals.emplace_back(left_hand_goal);
 
     // right hand goal
     auto * right_hand_goal = create_pose_goal(response.support_foot_to_right_hand_
-                                             ,"base_link"
-                                             ,"r_sole"
+                                             ,"r_wrist"
+                                             ,"l_sole"
                                              ,1); //TODO: rework maybe
     ik_options->goals.emplace_back(right_hand_goal);
 
-    // left feet goal
-    auto * left_feet_goal = create_pose_goal(response.support_foot_to_left_foot_
-                                            ,"base_link"
-                                            ,"r_sole"
-                                            ,1); //TODO: rework maybe
-    ik_options->goals.emplace_back(left_feet_goal);
-
     // right hand goal
     auto * right_feet_goal = create_pose_goal(response.support_foot_to_right_foot_
-                                             ,"base_link"
+                                             ,"r_sole"
                                              ,"l_sole"
                                              ,1); //TODO: rework maybe
     ik_options->goals.emplace_back(right_feet_goal);
