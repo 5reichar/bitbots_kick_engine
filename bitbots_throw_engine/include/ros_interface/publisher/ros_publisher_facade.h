@@ -7,6 +7,7 @@
 #include "ros_interface/publisher/odometry_publisher.h"
 #include "ros_interface/publisher/support_publisher.h"
 #include "parameter/throw_node_parameter.h"
+#include "engine/throw_engine.h"
 
 namespace bitbots_throw{
     class RosPublisherFacade{
@@ -26,7 +27,8 @@ namespace bitbots_throw{
 
         void publish_throw(bitbots_splines::JointGoals & joint_goals);
         void publish_odometry();
-        void publish_debug(ThrowResponse const & response);
+        void publish_engine_debug(ThrowEngine const * engine) const;
+        void publish_debug(ThrowResponse const & response, int8_t const & percentage_done);
 
     private:
         std::shared_ptr<DebugPublisher> sp_debug_publisher_;

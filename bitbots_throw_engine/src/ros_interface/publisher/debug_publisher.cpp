@@ -1,7 +1,7 @@
 #include "ros_interface/publisher/debug_publisher.h"
 #include <visualization_msgs/Marker.h>
 #include <bitbots_throw/throw_debug.h>
-#include <bitbots_throw/throw_engine_debug.h>
+#include <iostream>
 
 namespace bitbots_throw{
     DebugPublisher::DebugPublisher(ros::NodeHandle & ros_node_handle
@@ -12,7 +12,13 @@ namespace bitbots_throw{
         ros_publisher_debug_marker_ = ros_node_handle.advertise<visualization_msgs::Marker>(topic_marker, 1);
     }
 
-    void DebugPublisher::publish_ik_debug(ThrowResponse const & response){
+    void DebugPublisher::print_throw_points(std::string point_data){
+        std::ofstream out("output.txt", std::ofstream::out);
+        out << point_data;
+        out.close();
+    }
+
+    void DebugPublisher::publish_ik_debug(ThrowResponse const & response, int8_t const & percentage_done){
         //only do something if someone is listing
         if (ros_publisher_debug_.getNumSubscribers() == 0 && ros_publisher_debug_marker_.getNumSubscribers() == 0){
             return;
@@ -20,6 +26,7 @@ namespace bitbots_throw{
 
         bitbots_throw::throw_debug msg;
 
+        msg.percentage_done = percentage_done;
         tf2::toMsg(response.support_foot_to_left_hand_, msg.left_hand_goal);
         tf2::toMsg(response.support_foot_to_right_hand_, msg.right_hand_goal);
         tf2::toMsg(response.support_foot_to_trunk_, msg.trunk_goal);

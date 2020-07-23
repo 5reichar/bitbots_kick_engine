@@ -29,9 +29,15 @@ namespace bitbots_throw{
 		sp_odometry_publisher_->publish(sp_node_parameter_->odom_publish_factor_);
 	}
 
-	void RosPublisherFacade::publish_debug(ThrowResponse const & response){
+    void RosPublisherFacade::publish_engine_debug(ThrowEngine const * engine) const{
+	    if(sp_node_parameter_->debug_active_){
+	        sp_debug_publisher_->print_throw_points(engine->get_throw_points_as_string());
+	    }
+	}
+
+	void RosPublisherFacade::publish_debug(ThrowResponse const & response, int8_t const & percentage_done){
 		if(sp_node_parameter_->debug_active_){
-			sp_debug_publisher_->publish_ik_debug(response);
+			sp_debug_publisher_->publish_ik_debug(response, percentage_done);
 		}
 	}
 } //bitbots_throw

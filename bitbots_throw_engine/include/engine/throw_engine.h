@@ -24,6 +24,7 @@ namespace bitbots_throw{
         void set_goals(const ThrowRequest & request);
         void set_throw_types(std::shared_ptr<ThrowTypeParameter> types);
         void set_engine_parameter(std::shared_ptr<ThrowEngineParameter> parameter);
+        std::string get_throw_points_as_string() const;
 
     private:
         int getPercentDone() const override;

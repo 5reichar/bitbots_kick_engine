@@ -107,4 +107,20 @@ namespace bitbots_throw{
 		                                                       ,type
 		                                                       ,request);
 	}
+    std::string ThrowEngine::get_throw_points_as_string() const{
+        std::stringstream points_string;
+
+        points_string << "==== Trunk ====" << std::endl;
+        points_string << sp_current_throw_->get_pose_trunk()->get_debug_string() << std::endl;
+        points_string << "==== Left Hand ====" << std::endl;
+        points_string << sp_current_throw_->get_pose_left_hand()->get_debug_string() << std::endl;
+        points_string << "==== Right Hand ====" << std::endl;
+        points_string << sp_current_throw_->get_pose_right_hand()->get_debug_string() << std::endl;
+        points_string << "==== Left Foot ====" << std::endl;
+        points_string << sp_current_throw_->get_pose_left_feet()->get_debug_string() << std::endl;
+        points_string << "==== Right Foot ====" << std::endl;
+        points_string << sp_current_throw_->get_pose_right_feet()->get_debug_string() << std::endl;
+
+	    return points_string.str();
+    }
 }

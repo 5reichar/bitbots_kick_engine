@@ -94,8 +94,10 @@ namespace bitbots_throw{
 		publisher_facade.prepare_publisher_for_throw();
 		auto throw_request = create_throw_request(action);
 		throw_engine_.set_goals(throw_request);
+        publisher_facade.publish_engine_debug(&throw_engine_);
 
-		while (ros::ok() && throw_engine_.get_percent_done() < 100){
+        int8_t percentage_done = throw_engine_.get_percent_done();
+		while (ros::ok() && percentage_done < 100){
 			auto response = throw_engine_.update(1/sp_node_parameter_->engine_frequency_);
 			auto ik_goals = stabilizer.stabilize(response);
 			bitbots_splines::JointGoals joint_goals;
@@ -118,10 +120,11 @@ namespace bitbots_throw{
 			
 			publisher_facade.publish_throw(joint_goals);
 			publisher_facade.publish_odometry();
-			publisher_facade.publish_debug(response);
+			publisher_facade.publish_debug(response, percentage_done);
 
 			ros::spinOnce();
 			loopRate.sleep();
+            percentage_done = throw_engine_.get_percent_done();
 		}
 	}
 
