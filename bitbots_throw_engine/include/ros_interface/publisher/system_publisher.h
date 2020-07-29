@@ -2,6 +2,7 @@
 #define BITBOTS_THROW_SYSTEM_PUBLISHER_H
 
 #include <string>
+#include <fstream>
 #include <ros/console.h>
 
 namespace bitbots_throw{
@@ -29,6 +30,12 @@ namespace bitbots_throw{
 
         static void publish_runtime_error(const std::runtime_error& error, std::string object_info = ""){
             ROS_ERROR_STREAM(create_string_for_ros(get_package_id(), object_info, error.what()));
+        };
+
+        void print_to_file(const std::string & message, const std::string & filename){
+            std::ofstream out(filename, std::ofstream::out);
+            out << message;
+            out.close();
         };
 
     private:

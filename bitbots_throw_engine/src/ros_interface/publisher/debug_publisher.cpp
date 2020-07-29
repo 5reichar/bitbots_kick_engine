@@ -1,7 +1,7 @@
 #include "ros_interface/publisher/debug_publisher.h"
 #include <visualization_msgs/Marker.h>
 #include <bitbots_throw/throw_debug.h>
-#include <iostream>
+#include "ros_interface/publisher/system_publisher.h"
 
 namespace bitbots_throw{
     DebugPublisher::DebugPublisher(ros::NodeHandle & ros_node_handle
@@ -13,9 +13,8 @@ namespace bitbots_throw{
     }
 
     void DebugPublisher::print_throw_points(std::string point_data){
-        std::ofstream out("output.txt", std::ofstream::out);
-        out << point_data;
-        out.close();
+        SystemPublisher publisher;
+        publisher.print_to_file(point_data, "output.txt");
     }
 
     void DebugPublisher::publish_ik_debug(ThrowResponse const & response, int8_t const & percentage_done){
