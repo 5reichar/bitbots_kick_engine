@@ -57,6 +57,7 @@ public:
      * @return
      */
     std::string get_debug_string();
+    std::string get_debug_csv();
 
 protected:
     virtual void add_point_call_back();

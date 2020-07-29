@@ -27,6 +27,7 @@ public:
     tf2::Quaternion get_orientation(double time);
 
     std::string get_debug_string();
+    std::string get_debug_csv();
 
     std::shared_ptr<Curve> roll();
     std::shared_ptr<Curve> pitch();

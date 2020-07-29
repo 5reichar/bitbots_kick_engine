@@ -1,5 +1,6 @@
 #include "handle/pose_handle.h"
 #include "tf2_geometry_msgs/tf2_geometry_msgs.h"
+#include <sstream>
 
 namespace bitbots_splines {
 
@@ -80,6 +81,17 @@ std::string PoseHandle::get_debug_string() {
   output += "pitch:\n" + pitch_->get_debug_string() + "\n";
   output += "yaw:\n" + yaw_->get_debug_string() + "\n";
   return output;
+}
+
+std::string PoseHandle::get_debug_csv() {
+  std::stringstream output;
+  output << "x" << std::endl << x_->get_debug_string() << std::endl;
+  output << "y" << std::endl << y_->get_debug_string() << std::endl;
+  output << "z" << std::endl << z_->get_debug_string() << std::endl;
+  output << "roll" << std::endl << roll_->get_debug_string() << std::endl;
+  output << "pitch" << std::endl << pitch_->get_debug_string() << std::endl;
+  output << "yaw" << std::endl << yaw_->get_debug_string() << std::endl;
+  return output.str();
 }
 
 }

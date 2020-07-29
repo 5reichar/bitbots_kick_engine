@@ -5,6 +5,7 @@ https://github.com/Rhoban/model/
 */
 #include "spline/curve.h"
 #include <string>
+#include <sstream>
 
 namespace bitbots_splines
 {
@@ -43,6 +44,39 @@ std::string Curve::get_debug_string()
     i++;
   }
   return output;
+}
+
+std::string Curve::get_debug_csv()
+{
+  std::stringstream output;
+  std::stringstream time;
+  std::stringstream position;
+  std::stringstream velocity;
+  std::stringstream acceleration;
+
+  int i = 0;
+  output << "Point";
+  time << "Time";
+  position << "Position";
+  velocity << "Velocity";
+  acceleration << "Acceleration";
+
+  for (auto &p : points_)
+  {
+    output << ", " << i ;
+    time << ", " << p.time_;
+    position << ", " << p.position_;
+    velocity << ", " << p.velocity_;
+    acceleration << ", " << p.acceleration_;
+    i++;
+  }
+
+  output << std::endl << time.str();
+  output << std::endl << position.str();
+  output << std::endl << velocity.str();
+  output << std::endl << acceleration.str();
+
+  return output.str();
 }
 
 void Curve::add_point_call_back()
