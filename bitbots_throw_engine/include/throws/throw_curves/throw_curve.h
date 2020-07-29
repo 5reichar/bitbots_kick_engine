@@ -3,6 +3,7 @@
 
 #include <memory>
 #include "parameter/throw_parameter.h"
+#include "tf2/LinearMath/Transform.h"
 #include "../../bitbots_splines_extension/include/handle/pose_handle.h"
 
 namespace bitbots_throw{
@@ -21,25 +22,27 @@ namespace bitbots_throw{
 		 * @return duration of the movement. Returns 0.0 if the check for the parameter fails.
 		 */
 		double calculate_trajectories(std::shared_ptr<ThrowParameter> & throw_parameter);
-		[[nodiscard]] std::shared_ptr<bitbots_splines::PoseHandle> get_pose_left_hand() const;
-		[[nodiscard]] std::shared_ptr<bitbots_splines::PoseHandle> get_pose_right_hand() const;
-        [[nodiscard]] std::shared_ptr<bitbots_splines::PoseHandle> get_pose_trunk() const;
-        [[nodiscard]] std::shared_ptr<bitbots_splines::PoseHandle> get_pose_left_feet() const;
-        [[nodiscard]] std::shared_ptr<bitbots_splines::PoseHandle> get_pose_right_feet() const;
+		virtual tf2::Transform get_left_hand_transform(double const & time) const;
+		virtual tf2::Transform get_right_hand_transform(double const & time) const;
+        virtual tf2::Transform get_trunk_transform(double const & time) const;
+        virtual tf2::Transform get_left_feet_transform(double const & time) const;
+        virtual tf2::Transform get_right_feet_transform(double const & time) const;
+
+        virtual std::string get_debug_string() const;
 
 	protected:
 		virtual bool check_requirements(std::shared_ptr<ThrowParameter> & throw_parameter);
 
-		virtual void calculate_pick_up_ball_movement(double & time, std::shared_ptr<ThrowParameter> & throw_parameter);
-        virtual void calculate_throw_preparation_movement(double & time
-                                                         ,std::shared_ptr<ThrowParameter> & throw_parameter);
-        virtual void calculate_throw_movement(double & time, std::shared_ptr<ThrowParameter> & throw_parameter);
-		virtual void calculate_throw_conclusion_movement(double & time
-		                                                ,std::shared_ptr<ThrowParameter> & throw_parameter);
+		virtual void calculate_pick_up_ball_movement(std::shared_ptr<ThrowParameter> & throw_parameter);
+        virtual void calculate_throw_preparation_movement(std::shared_ptr<ThrowParameter> & throw_parameter);
+        virtual void calculate_throw_movement(std::shared_ptr<ThrowParameter> & throw_parameter);
+		virtual void calculate_throw_conclusion_movement(std::shared_ptr<ThrowParameter> & throw_parameter);
 
         virtual void add_points(std::shared_ptr<bitbots_splines::PoseHandle> & pose
                                ,double const & time
                                ,Struct3dRPY const & values);
+
+        double trajectory_time_;
 
 		std::shared_ptr<bitbots_splines::PoseHandle> sp_pose_left_hand_;
 		std::shared_ptr<bitbots_splines::PoseHandle> sp_pose_right_hand_;

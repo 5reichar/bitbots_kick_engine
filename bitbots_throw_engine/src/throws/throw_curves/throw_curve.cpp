@@ -14,72 +14,86 @@ namespace bitbots_throw{
     }
 
     double ThrowCurve::calculate_trajectories(std::shared_ptr<ThrowParameter> & throw_parameter){
-
-        double movement_time = 0.0;
+        trajectory_time_ = 0.0;
 
         //checks
         if(check_requirements(throw_parameter)){
-            calculate_pick_up_ball_movement(movement_time, throw_parameter);
-            calculate_throw_preparation_movement(movement_time, throw_parameter);
-            calculate_throw_movement(movement_time, throw_parameter);
-            calculate_throw_conclusion_movement(movement_time, throw_parameter);
+            calculate_pick_up_ball_movement(throw_parameter);
+            calculate_throw_preparation_movement(throw_parameter);
+            calculate_throw_movement(throw_parameter);
+            calculate_throw_conclusion_movement(throw_parameter);
         }
         //TODO: implement ROS Error
 
-        return movement_time;
+        return trajectory_time_;
     }
 
     bool ThrowCurve::check_requirements(std::shared_ptr<ThrowParameter> & throw_parameter){
         return true;
     }
 
-    std::shared_ptr<bitbots_splines::PoseHandle> ThrowCurve::get_pose_left_hand() const{
-        return sp_pose_left_hand_;
+    tf2::Transform ThrowCurve::get_left_hand_transform(double const & time) const{
+        return sp_pose_left_hand_->get_tf_transform(time);
     }
 
-    std::shared_ptr<bitbots_splines::PoseHandle> ThrowCurve::get_pose_right_hand() const{
-        return sp_pose_right_hand_;
+    tf2::Transform ThrowCurve::get_right_hand_transform(double const & time) const{
+        return sp_pose_right_hand_->get_tf_transform(time);
     }
 
-    std::shared_ptr<bitbots_splines::PoseHandle> ThrowCurve::get_pose_trunk() const{
-        return sp_pose_trunk_;
+    tf2::Transform ThrowCurve::get_trunk_transform(double const & time) const{
+        return sp_pose_trunk_->get_tf_transform(time);
     }
 
-    std::shared_ptr<bitbots_splines::PoseHandle> ThrowCurve::get_pose_left_feet() const{
-        return sp_pose_left_feet_;
+    tf2::Transform ThrowCurve::get_left_feet_transform(double const & time) const{
+        return sp_pose_left_feet_->get_tf_transform(time);
     }
 
-    std::shared_ptr<bitbots_splines::PoseHandle> ThrowCurve::get_pose_right_feet() const{
-        return sp_pose_right_feet_;
+    tf2::Transform ThrowCurve::get_right_feet_transform(double const & time) const{
+        return sp_pose_right_feet_->get_tf_transform(time);
     }
 
-    void ThrowCurve::calculate_pick_up_ball_movement(double & time, std::shared_ptr<ThrowParameter> & throw_parameter){
+    std::string ThrowCurve::get_debug_string() const{
+        std::stringstream points_string;
+
+        points_string << "==== Trunk ====" << std::endl;
+        points_string << sp_pose_trunk_->get_debug_string() << std::endl;
+        points_string << "==== Left Hand ====" << std::endl;
+        points_string << sp_pose_left_hand_->get_debug_string() << std::endl;
+        points_string << "==== Right Hand ====" << std::endl;
+        points_string << sp_pose_right_hand_->get_debug_string() << std::endl;
+        points_string << "==== Left Foot ====" << std::endl;
+        points_string << sp_pose_left_feet_->get_debug_string() << std::endl;
+        points_string << "==== Right Foot ====" << std::endl;
+        points_string << sp_pose_right_feet_->get_debug_string() << std::endl;
+
+        return points_string.str();
+    }
+
+    void ThrowCurve::calculate_pick_up_ball_movement(std::shared_ptr<ThrowParameter> & throw_parameter){
         /////  Preparation
         //Set up the trajectories for the half cycle (single step)
-        double start_time = time;
-        double pick_up_ball_time =
-                time + 1 / (throw_parameter->pick_up_duration_share_ * throw_parameter->movement_cycle_frequency_);
+        double pick_up_ball_time = trajectory_time_ + 1 / (throw_parameter->pick_up_duration_share_ * throw_parameter->movement_cycle_frequency_);
 
         ////  Movement
-        add_points(sp_pose_left_hand_, start_time, throw_parameter->start_left_arm_);
+        add_points(sp_pose_left_hand_, trajectory_time_, throw_parameter->start_left_arm_);
         add_points(sp_pose_left_hand_, pick_up_ball_time, throw_parameter->pick_up_left_arm_);
-        add_points(sp_pose_right_hand_, start_time, throw_parameter->start_right_arm_);
+        add_points(sp_pose_right_hand_, trajectory_time_, throw_parameter->start_right_arm_);
         add_points(sp_pose_right_hand_, pick_up_ball_time, throw_parameter->pick_up_right_arm_);
-        add_points(sp_pose_trunk_, start_time, Struct3dRPY(0.0, 0.0, 0.0, 0.0, 0.0, 0.0));
+        add_points(sp_pose_trunk_, trajectory_time_, Struct3dRPY(0.0, 0.0, 0.0, 0.0, 0.0, 0.0));
         add_points(sp_pose_trunk_, pick_up_ball_time, throw_parameter->pick_up_trunk_);
-        add_points(sp_pose_left_feet_, start_time, throw_parameter->start_left_feet_);
+        add_points(sp_pose_left_feet_, trajectory_time_, throw_parameter->start_left_feet_);
         add_points(sp_pose_left_feet_, pick_up_ball_time, Struct3dRPY(0.0, 0.0, 0.0, 0.0, 0.0, 0.0));
-        add_points(sp_pose_right_feet_, start_time, throw_parameter->start_right_feet_);
+        add_points(sp_pose_right_feet_, trajectory_time_, throw_parameter->start_right_feet_);
         add_points(sp_pose_right_feet_, pick_up_ball_time, Struct3dRPY(0.0, 0.0, 0.0, 0.0, 0.0, 0.0));
         /////  Clean Up
-        time = pick_up_ball_time;
+        trajectory_time_ = pick_up_ball_time;
     }
 
     void
-    ThrowCurve::calculate_throw_preparation_movement(double & time, std::shared_ptr<ThrowParameter> & throw_parameter){
+    ThrowCurve::calculate_throw_preparation_movement(std::shared_ptr<ThrowParameter> & throw_parameter){
         /////  Preparation
         //Set up the trajectories for the half cycle (single step)
-        double begin_throw_time = time + 1 / (throw_parameter->throw_preparation_duration_share_ *
+        double begin_throw_time = trajectory_time_ + 1 / (throw_parameter->throw_preparation_duration_share_ *
                                               throw_parameter->movement_cycle_frequency_);
 
         ////  Movement
@@ -90,14 +104,13 @@ namespace bitbots_throw{
         add_points(sp_pose_right_feet_, begin_throw_time, throw_parameter->start_right_feet_);
 
         /////  Clean Up
-        time = begin_throw_time;
+        trajectory_time_ = begin_throw_time;
     }
 
-    void ThrowCurve::calculate_throw_movement(double & time, std::shared_ptr<ThrowParameter> & throw_parameter){
+    void ThrowCurve::calculate_throw_movement(std::shared_ptr<ThrowParameter> & throw_parameter){
         /////  Preparation
         //Set up the trajectories for the half cycle (single step)
-        double zenith_throw_time =
-                time + 1 / (2 * throw_parameter->throw_duration_share_ * throw_parameter->movement_cycle_frequency_);
+        double zenith_throw_time = trajectory_time_ + 1 / (2 * throw_parameter->throw_duration_share_ * throw_parameter->movement_cycle_frequency_);
         double release_throw_time = zenith_throw_time + 1 / (2 * throw_parameter->throw_duration_share_ *
                                                              throw_parameter->movement_cycle_frequency_);
 
@@ -109,15 +122,15 @@ namespace bitbots_throw{
         add_points(sp_pose_trunk_, release_throw_time, throw_parameter->throw_release_trunk_);
 
         /////  Clean Up
-        time = release_throw_time;
+        trajectory_time_ = release_throw_time;
     }
 
     void
-    ThrowCurve::calculate_throw_conclusion_movement(double & time, std::shared_ptr<ThrowParameter> & throw_parameter){
+    ThrowCurve::calculate_throw_conclusion_movement(std::shared_ptr<ThrowParameter> & throw_parameter){
         /////  Preparation
         //Set up the trajectories for the half cycle (single step)
-        double finish_time = time + 1 / (throw_parameter->throw_conclusion_duration_share_ *
-                                         throw_parameter->movement_cycle_frequency_);
+        double finish_time = trajectory_time_ + 1 / (throw_parameter->throw_conclusion_duration_share_ *
+                                                     throw_parameter->movement_cycle_frequency_);
 
         ////  Movement
         add_points(sp_pose_left_hand_, finish_time, throw_parameter->start_left_arm_);
@@ -125,7 +138,7 @@ namespace bitbots_throw{
         add_points(sp_pose_trunk_, finish_time, Struct3dRPY(0.0, 0.0, 0.0, 0.0, 0.0, 0.0));
 
         /////  Clean Up
-        time = finish_time;
+        trajectory_time_ = finish_time;
     }
 
     void ThrowCurve::add_points(std::shared_ptr<bitbots_splines::PoseHandle> & pose, double const & time,

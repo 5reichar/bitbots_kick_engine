@@ -16,11 +16,11 @@ namespace bitbots_throw{
 	ThrowResponse ThrowEngine::update(double dt){
 		ThrowResponse response;
 
-		response.support_foot_to_trunk_ = sp_current_throw_->get_pose_trunk()->get_tf_transform(time_);
-		response.support_foot_to_left_hand_ = sp_current_throw_->get_pose_left_hand()->get_tf_transform(time_);
-		response.support_foot_to_right_hand_ = sp_current_throw_->get_pose_right_hand()->get_tf_transform(time_);
-		response.support_foot_to_left_foot_ = sp_current_throw_->get_pose_left_feet()->get_tf_transform(time_);
-		response.support_foot_to_right_foot_ = sp_current_throw_->get_pose_right_feet()->get_tf_transform(time_);
+		response.support_foot_to_trunk_ = sp_current_throw_->get_trunk_transform(time_);
+		response.support_foot_to_left_hand_ = sp_current_throw_->get_left_hand_transform(time_);
+		response.support_foot_to_right_hand_ = sp_current_throw_->get_right_hand_transform(time_);
+		response.support_foot_to_left_foot_ = sp_current_throw_->get_left_feet_transform(time_);
+		response.support_foot_to_right_foot_ = sp_current_throw_->get_right_feet_transform(time_);
 
 		time_ += dt;
 		return response;
@@ -108,19 +108,6 @@ namespace bitbots_throw{
 		                                                       ,request);
 	}
     std::string ThrowEngine::get_throw_points_as_string() const{
-        std::stringstream points_string;
-
-        points_string << "==== Trunk ====" << std::endl;
-        points_string << sp_current_throw_->get_pose_trunk()->get_debug_string() << std::endl;
-        points_string << "==== Left Hand ====" << std::endl;
-        points_string << sp_current_throw_->get_pose_left_hand()->get_debug_string() << std::endl;
-        points_string << "==== Right Hand ====" << std::endl;
-        points_string << sp_current_throw_->get_pose_right_hand()->get_debug_string() << std::endl;
-        points_string << "==== Left Foot ====" << std::endl;
-        points_string << sp_current_throw_->get_pose_left_feet()->get_debug_string() << std::endl;
-        points_string << "==== Right Foot ====" << std::endl;
-        points_string << sp_current_throw_->get_pose_right_feet()->get_debug_string() << std::endl;
-
-	    return points_string.str();
+        return sp_current_throw_->get_debug_string();
     }
 }
