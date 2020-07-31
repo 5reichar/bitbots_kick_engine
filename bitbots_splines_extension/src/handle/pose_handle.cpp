@@ -85,12 +85,12 @@ std::string PoseHandle::get_debug_string() {
 
 std::string PoseHandle::get_debug_csv() {
   std::stringstream output;
-  output << "x" << std::endl << x_->get_debug_string() << std::endl;
-  output << "y" << std::endl << y_->get_debug_string() << std::endl;
-  output << "z" << std::endl << z_->get_debug_string() << std::endl;
-  output << "roll" << std::endl << roll_->get_debug_string() << std::endl;
-  output << "pitch" << std::endl << pitch_->get_debug_string() << std::endl;
-  output << "yaw" << std::endl << yaw_->get_debug_string() << std::endl;
+  output << "x" << std::endl << x_->get_debug_csv() << std::endl;
+  output << "y" << std::endl << y_->get_debug_csv() << std::endl;
+  output << "z" << std::endl << z_->get_debug_csv() << std::endl;
+  output << "roll" << std::endl << roll_->get_debug_csv() << std::endl;
+  output << "pitch" << std::endl << pitch_->get_debug_csv() << std::endl;
+  output << "yaw" << std::endl << yaw_->get_debug_csv() << std::endl;
   return output.str();
 }
 
