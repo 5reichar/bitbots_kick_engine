@@ -35,12 +35,11 @@ namespace bitbots_throw{
 
         // Helper methods
         ThrowRequest create_throw_request(bitbots_throw::throw_action action);
-        std::vector<geometry_msgs::Pose> get_poses();
         geometry_msgs::Pose get_pose(std::string const & frame_id
-                                    ,double const & orientation
-                                    ,ros::Time const & time
-                                    ,std::string const & target_frame
-                                    ,ros::Duration const & timeout);
+                                    ,double const & orientation = 1
+                                    ,ros::Time const & time = ros::Time::now()
+                                    ,std::string const & target_frame = "torso"
+                                    ,ros::Duration const & timeout = ros::Duration(0.2));
 
         // member variables
         ThrowIK * arms_ik_;

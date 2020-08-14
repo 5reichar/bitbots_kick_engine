@@ -148,27 +148,30 @@ namespace bitbots_throw{
 		request.goal_position_ = {action.throw_target.x, action.throw_target.y, action.throw_target.z };
 
         // get current position of feet
-        std::vector<geometry_msgs::Pose> poses;
         try{
-            poses = get_poses();
-
-            auto position = poses.at(0).position;
+            auto position = get_pose("r_sole").position;
             request.right_feet_position_ = {position.x, position.y, position.z};
 
-            position = poses.at(1).position;
+            position = get_pose("l_sole").position;
             request.left_feet_position_ = {position.x, position.y, position.z};
 
-            position = poses.at(2).position;
+            position = get_pose("r_wrist").position;
             request.right_hand_position_ = {position.x, position.y, position.z};
 
-            position = poses.at(3).position;
+            position = get_pose("l_wrist").position;
             request.left_hand_position_ = {position.x, position.y, position.z};
 
-            position = poses.at(4).position;
+            position = get_pose("head").position;
             request.head_position_ = {position.x, position.y, position.z};
         }
         catch(tf2::TransformException &e){
-            SystemPublisher::publish_error(e.what());
+            SystemPublisher::publish_error(e.what(), "ThrowNode : create_throw_request()");
+
+            request.right_feet_position_ = {0.0, 0.4, -2.0};
+            request.left_feet_position_ = {0.0, -0.4, -2.0};
+            request.right_hand_position_ = {0.0, 0.5, -1.2};
+            request.left_hand_position_ = {0.0, -0.5, -1.2};
+            request.head_position_ = {0.0, 0.0, 0.7};
         }
 
 		return request;
@@ -191,23 +194,6 @@ namespace bitbots_throw{
 
         return transformed.pose;
 	}
-
-    std::vector<geometry_msgs::Pose> ThrowNode::get_poses(){
-        std::vector<geometry_msgs::Pose> poses;
-        ros::Time time = ros::Time::now();
-        std::vector<std::string> frames;
-        frames.push_back("r_sole");
-        frames.push_back("l_sole");
-        frames.push_back("r_wrist");
-        frames.push_back("l_wrist");
-        frames.push_back("head");
-
-        for(auto const & it : frames){
-            poses.push_back(get_pose(it, 1, time, "torso", ros::Duration(0.2)));
-        }
-
-        return poses;
-    }
 } //bitbots_throw
 
 int main(int argc, char **argv){
