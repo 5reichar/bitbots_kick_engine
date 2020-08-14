@@ -13,12 +13,12 @@ throw_ball  = throw_action()
 throw_ball.ball_position = Vector3()
 throw_ball.ball_position.x = 0.3
 throw_ball.ball_position.y = 0.0
-throw_ball.ball_position.z = 0.0
+throw_ball.ball_position.z = -1.5
 
 throw_ball.throw_target = Vector3()
 throw_ball.throw_target.x = 2.0
 throw_ball.throw_target.y = 2.0
-throw_ball.throw_target.z = 0.0
+throw_ball.throw_target.z = -1.5
 
 throw_publisher.publish(throw_ball)
 rospy.sleep(3)
