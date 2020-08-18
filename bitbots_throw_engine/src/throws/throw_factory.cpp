@@ -9,8 +9,29 @@
 #include "ros_interface/publisher/system_publisher.h"
 
 namespace bitbots_throw{
+    ThrowTypeId ThrowFactory::get_throw_type(Struct3d const & throw_goal){
+        ThrowTypeId throw_type_id = ThrowTypeId::none;
+        auto throw_distance = calculate_distace(throw_goal);
+
+        for (auto & map_throw_type : sp_throw_type_parameter_->map_throw_types_){
+            auto throw_type = map_throw_type.second;
+            if (throw_type->active_ &&
+                throw_type->min_throw_distance_ < throw_distance &&
+                throw_type->max_throw_distance_ > throw_distance){
+                throw_type_id = map_throw_type.first;
+                break;
+            }
+        }
+
+        return throw_type_id;
+    }
+
 	std::shared_ptr<ThrowCurve> ThrowFactory::create_throw(ThrowTypeId throw_type_id){
 		std::shared_ptr<ThrowCurve> sp_return;
+
+        if(ThrowTypeId::none == throw_type_id){
+            throw_type_id = sp_throw_type_parameter_->default_throw_id_;
+        }
 
 		switch (throw_type_id){
 		case ThrowTypeId::beziercurve:
@@ -39,21 +60,8 @@ namespace bitbots_throw{
 		return sp_return;
 	}
 
-	ThrowTypeId ThrowFactory::get_throw_type(std::shared_ptr<ThrowTypeParameter> throw_type_parameter
-	                                        ,Struct3d const & throw_goal){
-		ThrowTypeId throw_type_id = throw_type_parameter->default_throw_id_;
-		auto throw_distance = calculate_distace(throw_goal);
+    void ThrowFactory::set_throw_type_parameter(std::shared_ptr<ThrowTypeParameter> & throw_type_parameter){
+        sp_throw_type_parameter_ = throw_type_parameter;
+    }
 
-		for (auto & map_throw_type : throw_type_parameter->map_throw_types_){
-			auto throw_type = map_throw_type.second;
-			if (throw_type->active_ &&
-				throw_type->min_throw_distance_ < throw_distance &&
-				throw_type->max_throw_distance_ > throw_distance){
-				throw_type_id = map_throw_type.first;
-				break;
-			}
-		}
-
-		return throw_type_id;
-	}
 } //bitbots_throw

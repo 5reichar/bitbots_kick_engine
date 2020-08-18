@@ -14,57 +14,61 @@ namespace bitbots_throw{
             auto current_id = (ThrowTypeId)config.default_throw_enum;
             sp_parameter->default_throw_id_ = current_id;
 
-            current_id = (ThrowTypeId)config.beziercurve_throw_enum;
+            current_id = (ThrowTypeId)config.throw_1_throw_enum;
             sp_parameter->map_throw_types_[current_id] = build_throw_type(current_id
-                                                                         ,config.beziercurve_throw_active
-                                                                         ,config.beziercurve_throw_priority_level
-                                                                         ,config.beziercurve_throw_min_distance
-                                                                         ,config.beziercurve_throw_max_distance
-                                                                         ,config.beziercurve_pick_up_duration_share
-                                                                         ,config.beziercurve_throw_preparation_duration_share
-                                                                         ,config.beziercurve_throw_duration_share
-                                                                         ,config.beziercurve_throw_conclusion_duration_share
-                                                                         ,config.beziercurve_throw_strength
-                                                                         ,config.beziercurve_throw_angle);
+                                                                         ,config.throw_1_throw_active
+                                                                         ,config.throw_1_throw_priority_level
+                                                                         ,config.throw_1_throw_strength
+                                                                         ,config.throw_1_throw_angle
+                                                                         ,config.throw_1_throw_min_distance
+                                                                         ,config.throw_1_throw_max_distance
+                                                                         ,config.throw_1_movement_duration
+                                                                         ,config.throw_1_movement_share_pick_up
+                                                                         ,config.throw_1_movement_share_preparation
+                                                                         ,config.throw_1_movement_share_throw
+                                                                         ,config.throw_1_movement_share_conclusion);
 
-            current_id = (ThrowTypeId)config.linear_spline_throw_enum;
+            current_id = (ThrowTypeId)config.throw_2_throw_enum;
             sp_parameter->map_throw_types_[current_id] = build_throw_type(current_id
-                                                                         ,config.linear_spline_throw_active
-                                                                         ,config.linear_spline_throw_priority_level
-                                                                         ,config.linear_spline_throw_min_distance
-                                                                         ,config.linear_spline_throw_max_distance
-                                                                         ,config.linear_spline_pick_up_duration_share
-                                                                         ,config.linear_spline_throw_preparation_duration_share
-                                                                         ,config.linear_spline_throw_duration_share
-                                                                         ,config.linear_spline_throw_conclusion_duration_share
-                                                                         ,config.linear_spline_throw_strength
-                                                                         ,config.linear_spline_throw_angle);
+                                                                        ,config.throw_2_throw_active
+                                                                        ,config.throw_2_throw_priority_level
+                                                                        ,config.throw_2_throw_strength
+                                                                        ,config.throw_2_throw_angle
+                                                                        ,config.throw_2_throw_min_distance
+                                                                        ,config.throw_2_throw_max_distance
+                                                                        ,config.throw_2_movement_duration
+                                                                        ,config.throw_2_movement_share_pick_up
+                                                                        ,config.throw_2_movement_share_preparation
+                                                                        ,config.throw_2_movement_share_throw
+                                                                        ,config.throw_2_movement_share_conclusion);
 
-            current_id = (ThrowTypeId)config.cubic_spline_throw_enum;
+            current_id = (ThrowTypeId)config.throw_3_throw_enum;
             sp_parameter->map_throw_types_[current_id] = build_throw_type(current_id
-                                                                         ,config.cubic_spline_throw_active
-                                                                         ,config.cubic_spline_throw_priority_level
-                                                                         ,config.cubic_spline_throw_min_distance
-                                                                         ,config.cubic_spline_throw_max_distance
-                                                                         ,config.cubic_spline_pick_up_duration_share
-                                                                         ,config.cubic_spline_throw_preparation_duration_share
-                                                                         ,config.cubic_spline_throw_duration_share
-                                                                         ,config.cubic_spline_throw_conclusion_duration_share
-                                                                         ,config.cubic_spline_throw_strength
-                                                                         ,config.cubic_spline_throw_angle);
-                                            
-            current_id = (ThrowTypeId)config.smooth_spline_throw_enum;                                         
+                                                                        ,config.throw_3_throw_active
+                                                                        ,config.throw_3_throw_priority_level
+                                                                        ,config.throw_3_throw_strength
+                                                                        ,config.throw_3_throw_angle
+                                                                        ,config.throw_3_throw_min_distance
+                                                                        ,config.throw_3_throw_max_distance
+                                                                        ,config.throw_3_movement_duration
+                                                                        ,config.throw_3_movement_share_pick_up
+                                                                        ,config.throw_3_movement_share_preparation
+                                                                        ,config.throw_3_movement_share_throw
+                                                                        ,config.throw_3_movement_share_conclusion);
+
+            current_id = (ThrowTypeId)config.throw_4_throw_enum;
             sp_parameter->map_throw_types_[current_id] = build_throw_type(current_id
-                                                                         ,config.smooth_spline_throw_active
-                                                                         ,config.smooth_spline_throw_priority_level
-                                                                         ,config.smooth_spline_throw_min_distance
-                                                                         ,config.smooth_spline_throw_max_distance
-                                                                         ,config.smooth_spline_pick_up_duration_share
-                                                                         ,config.smooth_spline_throw_preparation_duration_share
-                                                                         ,config.smooth_spline_throw_duration_share
-                                                                         ,config.smooth_spline_throw_conclusion_duration_share
-                                                                         ,config.smooth_spline_throw_strength
-                                                                         ,config.smooth_spline_throw_angle);
+                                                                        ,config.throw_4_throw_active
+                                                                        ,config.throw_4_throw_priority_level
+                                                                        ,config.throw_4_throw_strength
+                                                                        ,config.throw_4_throw_angle
+                                                                        ,config.throw_4_throw_min_distance
+                                                                        ,config.throw_4_throw_max_distance
+                                                                        ,config.throw_4_movement_duration
+                                                                        ,config.throw_4_movement_share_pick_up
+                                                                        ,config.throw_4_movement_share_preparation
+                                                                        ,config.throw_4_movement_share_throw
+                                                                        ,config.throw_4_movement_share_conclusion);
 
             return sp_parameter;
         };
@@ -79,12 +83,13 @@ namespace bitbots_throw{
                     ,0
                     ,0.0
                     ,0.0
-                    ,0.25
-                    ,0.25
-                    ,0.25
-                    ,0.25
                     ,0.0
-                    ,0.0);
+                    ,0.0
+                    ,0.0
+                    ,0.25
+                    ,0.25
+                    ,0.25
+                    ,0.25);
         };
 
     protected:
@@ -93,23 +98,25 @@ namespace bitbots_throw{
                                                           ,int priority_level
                                                           ,double min_throw_distance
                                                           ,double max_throw_distance
-                                                          ,double pick_up_duration_share
-                                                          ,double throw_preparation_duration_share
-                                                          ,double throw_duration_share
-                                                          ,double throw_conclusion_duration_share
                                                           ,double throw_strength
-                                                          ,double throw_angle){
+                                                          ,double throw_angle
+                                                          ,double movement_duration
+                                                          ,double movement_share_pick_up
+                                                          ,double movement_share_preparation
+                                                          ,double movement_share_throw
+                                                          ,double movement_share_conclusion){
             return std::make_shared<ThrowType>(id
                                               ,active
                                               ,priority_level
                                               ,min_throw_distance
                                               ,max_throw_distance
-                                              ,pick_up_duration_share
-                                              ,throw_preparation_duration_share
-                                              ,throw_duration_share
-                                              ,throw_conclusion_duration_share
                                               ,throw_strength
-                                              ,throw_angle);
+                                              ,throw_angle
+                                              ,movement_duration
+                                              ,movement_share_pick_up
+                                              ,movement_share_preparation
+                                              ,movement_share_throw
+                                              ,movement_share_conclusion);
         };
     };
 } //bitbots_throw

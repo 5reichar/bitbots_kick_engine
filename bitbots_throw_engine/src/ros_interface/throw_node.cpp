@@ -97,8 +97,9 @@ namespace bitbots_throw{
         publisher_facade.publish_engine_debug(&throw_engine_);
 
         int8_t percentage_done = throw_engine_.get_percent_done();
+        auto engine_update_dt = 1/sp_node_parameter_->engine_frequency_;
 		while (ros::ok() && percentage_done < 100){
-			auto response = throw_engine_.update(1/sp_node_parameter_->engine_frequency_);
+			auto response = throw_engine_.update(engine_update_dt);
 			auto ik_goals = stabilizer.stabilize(response);
 			bitbots_splines::JointGoals joint_goals;
 
@@ -138,7 +139,8 @@ namespace bitbots_throw{
 	}
 
 	void ThrowNode::throw_params_config_callback(bitbots_throw::throw_paramsConfig & config , uint32_t level){
-		throw_engine_.set_throw_types(ThrowTypeParameterBuilder::build_from_dynamic_reconf(config, level));
+	    auto type_parameter = ThrowTypeParameterBuilder::build_from_dynamic_reconf(config, level);
+		throw_engine_.set_throw_types(type_parameter);
 	}
 
 	ThrowRequest ThrowNode::create_throw_request(const bitbots_throw::throw_action action){

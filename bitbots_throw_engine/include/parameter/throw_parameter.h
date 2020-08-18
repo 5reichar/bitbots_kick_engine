@@ -62,16 +62,16 @@ namespace bitbots_throw{
 
 		//////		Timing parameter
 		// Full movement cycle frequency
-		// (in Hz, > 0)
-		double movement_cycle_frequency_;
+		// (in s, > 0)
+		double movement_duration_;
 		// The share of the movement cycle dedicated to picking up the ball
-		double pick_up_duration_share_;
+		double movement_share_pick_up_;
 		// The share of the movement cycle dedicated to prepare the throwing the ball
-		double throw_preparation_duration_share_;
+		double movement_share_preparation_;
 		// The share of the movement cycle dedicated to throwing the ball
-		double throw_duration_share_;
+		double movement_share_throw_;
 		// The share of the movement cycle dedicated to motion after throwing the ball
-		double throw_conclusion_duration_share_;
+		double movement_share_conclusion_;
 
 
 		//////		Constructor
@@ -91,11 +91,11 @@ namespace bitbots_throw{
                       ,Struct3dRPY throw_release_right_hand
                       ,Struct3dRPY throw_release_trunk
                       ,Struct3d throw_velocity
-                      ,double movement_cycle_frequency
-                      ,double pick_up_duration_share
-                      ,double throw_preparation_duration_share
-                      ,double throw_duration_share
-                      ,double throw_conclusion_duration_share
+                      ,double movement_duration
+                      ,double movement_share_pick_up
+                      ,double movement_share_preparation
+                      ,double movement_share_throw
+                      ,double movement_share_conclusion
                       )
                       :start_left_arm_{start_left_hand}
                       ,start_right_arm_{start_right_hand}
@@ -113,11 +113,11 @@ namespace bitbots_throw{
                       ,throw_release_right_arm_{throw_release_right_hand}
                       ,throw_release_trunk_{throw_release_trunk}
                       ,throw_velocity_{throw_velocity}
-                      ,movement_cycle_frequency_{movement_cycle_frequency}
-                      ,pick_up_duration_share_{pick_up_duration_share}
-                      ,throw_preparation_duration_share_{throw_preparation_duration_share}
-                      ,throw_duration_share_{throw_duration_share}
-                      ,throw_conclusion_duration_share_{throw_conclusion_duration_share}{
+                      ,movement_duration_{movement_duration}
+                      ,movement_share_pick_up_{movement_share_pick_up}
+                      ,movement_share_preparation_{movement_share_preparation}
+                      ,movement_share_throw_{movement_share_throw}
+                      ,movement_share_conclusion_{movement_share_conclusion}{
 		};
 	};
 } //bitbots_throw

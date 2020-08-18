@@ -47,16 +47,16 @@ namespace bitbots_throw{
 	}
 
 	void ThrowEngine::setGoals(const ThrowRequest & request){
-		auto throw_type_id = sp_throw_factory_->get_throw_type(sp_throw_types_
-		                                                      ,request.goal_position_);
+		auto throw_type_id = sp_throw_factory_->get_throw_type(request.goal_position_);
 		sp_current_throw_ = sp_throw_factory_->create_throw(throw_type_id);
 		auto throw_parameter = create_throw_parameter(throw_type_id, request);
 		throw_duration_ = sp_current_throw_->calculate_trajectories(throw_parameter);
 	}
 
 
-	void ThrowEngine::set_throw_types(std::shared_ptr<ThrowTypeParameter> types){
-		sp_throw_types_ = std::move(types);
+	void ThrowEngine::set_throw_types(std::shared_ptr<ThrowTypeParameter> & types){
+	    sp_throw_types_ = types;
+	    sp_throw_factory_->set_throw_type_parameter(types);
 	}
 
 	void ThrowEngine::set_engine_parameter(std::shared_ptr<ThrowEngineParameter> parameter){
@@ -65,41 +65,39 @@ namespace bitbots_throw{
 
 	std::shared_ptr<ThrowParameter> ThrowEngine::create_throw_parameter(const ThrowTypeId throw_type_id
 	                                                                   ,const ThrowRequest & request){
-	    std::shared_ptr<ThrowType> type = ThrowTypeParameterBuilder::build_empty_throw_type();
+	    std::shared_ptr<ThrowType> type;
+
 		if (sp_throw_types_->map_throw_types_.cend() == sp_throw_types_->map_throw_types_.find(throw_type_id)){
-            type->id_ = throw_type_id;
-            type->throw_angle_ = sp_engine_parameter_->throw_angle_;
-            type->throw_strength_ = sp_engine_parameter_->throw_strength_;
-            type->pick_up_duration_share_ = sp_engine_parameter_->pick_up_duration_share_;
-            type->throw_preparation_duration_share_ = sp_engine_parameter_->throw_preparation_duration_share_;
-            type->throw_duration_share_ = sp_engine_parameter_->throw_duration_share_;
-            type->throw_conclusion_duration_share_ = sp_engine_parameter_->throw_conclusion_duration_share_;
-		}
-		else{
+            type = sp_engine_parameter_->default_throw_;
+		}else{
             type = sp_throw_types_->map_throw_types_[throw_type_id];
 
             if(type->throw_angle_ == 0){
-                type->throw_angle_ = sp_engine_parameter_->throw_angle_;
+                type->throw_angle_ = sp_engine_parameter_->default_throw_->throw_angle_;
             };
 
             if(type->throw_strength_ == 0){
-                type->throw_strength_ = sp_engine_parameter_->throw_strength_;
+                type->throw_strength_ = sp_engine_parameter_->default_throw_->throw_strength_;
             };
 
-            if(type->pick_up_duration_share_ == 0){
-                type->pick_up_duration_share_ = sp_engine_parameter_->pick_up_duration_share_;
+            if(type->movement_duration_ == 0){
+                type->movement_duration_ = sp_engine_parameter_->default_throw_->movement_duration_;
             };
 
-            if(type->throw_preparation_duration_share_ == 0){
-                type->throw_preparation_duration_share_ = sp_engine_parameter_->throw_preparation_duration_share_;
+            if(type->movement_share_pick_up_ == 0){
+                type->movement_share_pick_up_ = sp_engine_parameter_->default_throw_->movement_share_pick_up_;
             };
 
-            if(type->throw_duration_share_ == 0){
-                type->throw_duration_share_ = sp_engine_parameter_->throw_duration_share_;
+            if(type->movement_share_preparation_ == 0){
+                type->movement_share_preparation_ = sp_engine_parameter_->default_throw_->movement_share_preparation_;
             };
 
-            if(type->throw_conclusion_duration_share_ == 0){
-                type->throw_conclusion_duration_share_ = sp_engine_parameter_->throw_conclusion_duration_share_;
+            if(type->movement_share_throw_ == 0){
+                type->movement_share_throw_ = sp_engine_parameter_->default_throw_->movement_share_throw_;
+            };
+
+            if(type->movement_share_conclusion_ == 0){
+                type->movement_share_conclusion_ = sp_engine_parameter_->default_throw_->movement_share_conclusion_;
             };
 		}
 
@@ -107,6 +105,7 @@ namespace bitbots_throw{
 		                                                       ,type
 		                                                       ,request);
 	}
+
     std::string ThrowEngine::get_throw_points_as_string() const{
         return sp_current_throw_->get_debug_string();
     }
