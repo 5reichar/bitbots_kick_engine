@@ -9,7 +9,8 @@
 namespace bitbots_throw{
 	ThrowEngine::ThrowEngine()
 					:sp_engine_parameter_(nullptr)
-					,sp_throw_types_(nullptr){
+					,sp_throw_types_(nullptr)
+					,sp_throw_factory_(new ThrowFactory()){
 		reset();
 	}
 
