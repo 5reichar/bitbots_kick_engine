@@ -36,10 +36,16 @@ namespace bitbots_throw{
             sp_parameter->pick_up_right_arm_.y_ += engine_parameter->ball_radius_;
             sp_parameter->pick_up_trunk_.yaw_ = calculate_angle(request.ball_position_);
 
+            sp_parameter->throw_start_left_arm_.x_ = -0.5 * engine_parameter->arm_length_;
+            sp_parameter->throw_start_left_arm_.y_ = sp_parameter->pick_up_left_arm_.y_;
+            sp_parameter->throw_start_left_arm_.z_ = (engine_parameter->robot_height_ - engine_parameter->head_height_) /2;
+
+            sp_parameter->throw_start_right_arm_ = sp_parameter->throw_start_left_arm_;
+            sp_parameter->throw_start_right_arm_.y_ = sp_parameter->pick_up_right_arm_.y_;
+
+            sp_parameter->throw_start_trunk_.yaw_ = throw_orientation_angle;
+
             auto throw_zenith_height = engine_parameter->robot_height_ / 2 - engine_parameter->head_height_ + engine_parameter->arm_length_;
-            sp_parameter->throw_start_left_arm_.z_ = throw_zenith_height; // TODO:Rework
-            sp_parameter->throw_start_right_arm_.z_ = throw_zenith_height; // TODO:Rework
-            sp_parameter->throw_start_trunk_.yaw_ = throw_orientation_angle; // TODO:Rework
             sp_parameter->throw_zenith_left_arm_.z_ = throw_zenith_height;
             sp_parameter->throw_zenith_right_arm_.z_ = throw_zenith_height;
 

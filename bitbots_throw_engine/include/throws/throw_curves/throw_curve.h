@@ -29,6 +29,7 @@ namespace bitbots_throw{
         virtual tf2::Transform get_right_feet_transform(double const & time) const;
 
         virtual std::string get_debug_string() const;
+        std::vector<double> get_movement_stage() const;
 
 	protected:
 		virtual bool check_requirements(std::shared_ptr<ThrowParameter> & throw_parameter);
@@ -43,6 +44,7 @@ namespace bitbots_throw{
                                ,Struct3dRPY const & values);
 
         double trajectory_time_;
+        std::vector<double> movement_stage_;
 
 		std::shared_ptr<bitbots_splines::PoseHandle> sp_pose_left_hand_;
 		std::shared_ptr<bitbots_splines::PoseHandle> sp_pose_right_hand_;
