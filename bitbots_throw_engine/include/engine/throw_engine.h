@@ -20,10 +20,12 @@ namespace bitbots_throw{
          * @return percentage of the throw movement completed, thru the update methode.
          */
         int get_percent_done() const;
+        int8_t get_movement_stage() const;
 
         void set_goals(const ThrowRequest & request);
         void set_throw_types(std::shared_ptr<ThrowTypeParameter> & types);
         void set_engine_parameter(std::shared_ptr<ThrowEngineParameter> parameter);
+
         std::string get_throw_points_as_string() const;
 
     private:
@@ -35,6 +37,7 @@ namespace bitbots_throw{
 
         double time_{};
         double throw_duration_{};
+        std::vector<double> movement_stages_;
 
         std::shared_ptr<ThrowCurve> sp_current_throw_;
         std::shared_ptr<ThrowFactory> sp_throw_factory_;

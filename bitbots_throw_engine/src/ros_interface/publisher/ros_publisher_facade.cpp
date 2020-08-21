@@ -35,9 +35,9 @@ namespace bitbots_throw{
 	    }
 	}
 
-	void RosPublisherFacade::publish_debug(ThrowResponse const & response, int8_t const & percentage_done){
+	void RosPublisherFacade::publish_debug(ThrowResponse const & response, int8_t const & percentage_done, int8_t const & movement_stage){
 		if(sp_node_parameter_->debug_active_){
-			sp_debug_publisher_->publish_ik_debug(response, percentage_done);
+			sp_debug_publisher_->publish_ik_debug(response, percentage_done, movement_stage);
 		}
 	}
 } //bitbots_throw

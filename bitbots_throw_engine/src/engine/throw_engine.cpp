@@ -52,6 +52,7 @@ namespace bitbots_throw{
 		sp_current_throw_ = sp_throw_factory_->create_throw(throw_type_id);
 		auto throw_parameter = create_throw_parameter(throw_type_id, request);
 		throw_duration_ = sp_current_throw_->calculate_trajectories(throw_parameter);
+		movement_stages_ = sp_current_throw_->get_movement_stage();
 	}
 
 
@@ -109,5 +110,15 @@ namespace bitbots_throw{
 
     std::string ThrowEngine::get_throw_points_as_string() const{
         return sp_current_throw_->get_debug_string();
+    }
+
+    int8_t ThrowEngine::get_movement_stage() const{
+	    int8_t stage = 0;
+
+	    while(movement_stages_.size() > stage && time_ >= movement_stages_.at(stage)){
+	        ++stage;
+	    }
+
+        return stage;
     }
 }

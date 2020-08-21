@@ -17,7 +17,7 @@ namespace bitbots_throw{
         publisher.print_to_file(point_data, "output.txt");
     }
 
-    void DebugPublisher::publish_ik_debug(ThrowResponse const & response, int8_t const & percentage_done){
+    void DebugPublisher::publish_ik_debug(ThrowResponse const & response, int8_t const & percentage_done, int8_t const & movement_stage){
         //only do something if someone is listing
         if (ros_publisher_debug_.getNumSubscribers() == 0 && ros_publisher_debug_marker_.getNumSubscribers() == 0){
             return;
@@ -26,6 +26,7 @@ namespace bitbots_throw{
         bitbots_throw::throw_debug msg;
 
         msg.percentage_done = percentage_done;
+        msg.movement_stage = movement_stage;
         tf2::toMsg(response.support_foot_to_left_hand_, msg.left_hand_goal);
         tf2::toMsg(response.support_foot_to_right_hand_, msg.right_hand_goal);
         tf2::toMsg(response.support_foot_to_trunk_, msg.trunk_goal);

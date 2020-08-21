@@ -97,6 +97,7 @@ namespace bitbots_throw{
         publisher_facade.publish_engine_debug(&throw_engine_);
 
         int8_t percentage_done = throw_engine_.get_percent_done();
+        int8_t movement_stage = throw_engine_.get_movement_stage();
         auto engine_update_dt = 1/sp_node_parameter_->engine_frequency_;
 		while (ros::ok() && percentage_done < 100){
 			auto response = throw_engine_.update(engine_update_dt);
@@ -121,11 +122,12 @@ namespace bitbots_throw{
 			
 			publisher_facade.publish_throw(joint_goals);
 			publisher_facade.publish_odometry();
-			publisher_facade.publish_debug(response, percentage_done);
+			publisher_facade.publish_debug(response, percentage_done, movement_stage);
 
 			ros::spinOnce();
 			loopRate.sleep();
             percentage_done = throw_engine_.get_percent_done();
+            movement_stage = throw_engine_.get_movement_stage();
 		}
 	}
 
