@@ -79,10 +79,6 @@ namespace bitbots_throw{
         return joint_name;
     };
 
-    static double calculate_distace(Struct3d point){
-        return sqrt(pow(point.x_, 2) + pow(point.y_, 2));
-    }
-
     static std::string generate_points_csv(bitbots_splines::Curve * curve){
         std::stringstream output, position;
 

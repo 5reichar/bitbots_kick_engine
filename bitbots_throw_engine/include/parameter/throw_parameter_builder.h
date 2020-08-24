@@ -3,6 +3,7 @@
 
 #include <math.h>
 #include <memory>
+#include "utility/throw_math.h"
 #include "utility/throw_utilities.h"
 #include "parameter/throw_parameter.h"
 #include "parameter/throw_type_parameter.h"
@@ -92,15 +93,23 @@ namespace bitbots_throw{
                                                      ,double const & arm_length
                                                      ,double const & throw_orientation_angle
                                                      ,double const & throw_zenith){
+            ThrowMath throw_math;
             Struct3d throw_release_point;
             // From Isosceles triangle with the two angles with the same size are given as 90 - throw_angle
-            auto hypotenuse = std::sqrt(2 * std::pow(arm_length, 2) * (1 - std::cos(2 * throw_release_angle)));
-            auto opposite = std::sin(throw_release_angle) * hypotenuse;
-            auto adjacent = std::cos(throw_release_angle) * hypotenuse;
+            auto hypotenuse = std::sqrt(2 * std::pow(arm_length, 2) * (1 - throw_math.cos_deg(2 * throw_release_angle)));
+            auto opposite = throw_math.sin_deg(throw_release_angle) * hypotenuse;
+            auto adjacent = throw_math.cos_deg(throw_release_angle) * hypotenuse;
 
-            throw_release_point.x_ = std::cos(throw_orientation_angle) * adjacent;
-            throw_release_point.y_ = std::sin(throw_orientation_angle) * adjacent;
+            throw_release_point.x_ = throw_math.cos_deg(throw_orientation_angle) * adjacent;
+            throw_release_point.y_ = throw_math.sin_deg(throw_orientation_angle) * adjacent;
             throw_release_point.z_ = throw_zenith - opposite;
+
+            // Debug Stuff
+            std::stringstream stream;
+            stream << "ThrowAngle: " << throw_release_angle << "; ArmLength: " << arm_length << "; ThrowZenith: " << throw_zenith;
+            stream << "; Hypot: " << hypotenuse << "; oppos: " << opposite << "; adj: " << adjacent;
+            stream << "; Point.z_: " << throw_release_point.z_ << "; sin(tra): " << throw_math.sin_deg(throw_release_angle);
+            SystemPublisher::publish_info(stream.str(), "Utility::calculate_throw_release_point");
 
             return throw_release_point;
         };
@@ -108,9 +117,11 @@ namespace bitbots_throw{
         static Struct3d calculate_velocity(Struct3d & goal_position
                                           ,std::shared_ptr<ThrowParameter> const & throw_parameter
                                           ,std::shared_ptr<ThrowEngineParameter> const & engine_parameter){
+            ThrowMath throw_math;
+
             double fly_time = std::sqrt((throw_parameter->throw_release_right_arm_.z_ + engine_parameter->robot_height_/2) / engine_parameter->gravity_);
             double max_torque = engine_parameter->arm_max_stall_torque_ * engine_parameter->arm_stall_torque_usage_;
-            double throw_release_velocity = calculate_distace(goal_position) / fly_time;
+            double throw_release_velocity = throw_math.calculate_distance(goal_position) / fly_time;
             double needed_torque = (throw_release_velocity * engine_parameter->ball_weight_ * engine_parameter->arm_length_) / (throw_parameter->movement_duration_ * throw_parameter->movement_share_throw_);
 
             if(max_torque < (needed_torque/2)){
@@ -119,8 +130,8 @@ namespace bitbots_throw{
 
             // TODO: check if needed to be reworked
             Struct3d return_velocity{};
-            return_velocity.x_ = throw_release_velocity * std::cos(calculate_angle(goal_position));
-            return_velocity.y_ = throw_release_velocity * std::sin(calculate_angle(goal_position));
+            return_velocity.x_ = throw_release_velocity * throw_math.cos_deg(calculate_angle(goal_position));
+            return_velocity.y_ = throw_release_velocity * throw_math.sin_deg(calculate_angle(goal_position));
 
             return return_velocity;
         }

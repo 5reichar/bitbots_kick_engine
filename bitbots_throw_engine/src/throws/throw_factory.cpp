@@ -5,13 +5,14 @@
 #include "throws/throw_curves/cubic_spline_throw.h"
 #include "throws/throw_curves/smooth_spline_throw.h"
 #include "throws/throw_curves/testing_throw.h"
-#include "utility/throw_utilities.h"
+#include "utility/throw_math.h"
 #include "ros_interface/publisher/system_publisher.h"
 
 namespace bitbots_throw{
     ThrowTypeId ThrowFactory::get_throw_type(Struct3d const & throw_goal){
+        ThrowMath throw_math;
         ThrowTypeId throw_type_id = ThrowTypeId::none;
-        auto throw_distance = calculate_distace(throw_goal);
+        auto throw_distance = throw_math.calculate_distance(throw_goal);
 
         for (auto & map_throw_type : sp_throw_type_parameter_->map_throw_types_){
             auto throw_type = map_throw_type.second;
