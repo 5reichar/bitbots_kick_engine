@@ -22,9 +22,6 @@ namespace bitbots_throw{
         std::string test_pose_handle_adding_points(bitbots_splines::PoseHandle handle);
         std::string test_pose_handle_with_function(std::shared_ptr<bitbots_splines::PoseHandle> handle);
 
-        std::string generate_points_csv(bitbots_splines::Curve * curve);
-        std::string generate_points_csv(bitbots_splines::PositionHandle handle);
-
     private:
         int max_prepare_rounds_;
     };

@@ -9,6 +9,7 @@
 #include "../../bitbots_splines_extension/include/spline/beziercurve.h"
 #include "ros_interface/publisher/system_publisher.h"
 #include <sstream>
+#include "utility/throw_utilities.h"
 
 namespace bitbots_throw{
     TestingThrow::TestingThrow()
@@ -208,7 +209,7 @@ namespace bitbots_throw{
         handle.z()->add_point(2.0, 1.0);
 
         log << handle.get_debug_csv() << std::endl;
-        log << generate_points_csv(handle) << std::endl;
+        log << generate_points_csv(handle, 2.1) << std::endl;
         return log.str();
     }
 
@@ -225,40 +226,7 @@ namespace bitbots_throw{
         add_points(handle, 2.0, Struct3dRPY(3.0, -3.0, 1.0, 0.0, 0.0, 0.0));
 
         log << handle->get_debug_csv() << std::endl;
-        log << generate_points_csv(*handle) << std::endl;
+        log << generate_points_csv(*handle, 2.1) << std::endl;
         return log.str();
-    }
-
-    std::string TestingThrow::generate_points_csv(bitbots_splines::Curve * curve){
-        std::stringstream output, position;
-
-        output << "time";
-        position << "position";
-        for(double time = 0.0; time < 2.1; time += 0.1){
-            output << ", " << time;
-            position << ", " << curve->position(time);
-        }
-        output << std::endl << position.str() << std::endl;
-
-        return output.str();
-    }
-
-    std::string TestingThrow::generate_points_csv(bitbots_splines::PositionHandle handle){
-        std::stringstream output, x, y, z;
-
-        output << "time";
-        x << "x-position";
-        y << "y-position";
-        z << "z-position";
-        for(double time = 0.0; time < 2.1; time += 0.1){
-            output << ", " << time;
-            auto position = handle.get_position(time);
-            x << ", " << position.x();
-            y << ", " << position.y();
-            z << ", " << position.z();
-        }
-        output << std::endl << x.str() << std::endl << y.str() << std::endl << z.str() << std::endl;
-
-        return output.str();
     }
 }

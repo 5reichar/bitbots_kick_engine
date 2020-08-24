@@ -14,7 +14,7 @@ namespace bitbots_throw{
 
     void DebugPublisher::print_throw_points(std::string point_data){
         SystemPublisher publisher;
-        publisher.print_to_file(point_data, "output.txt");
+        publisher.print_to_file(point_data, "output.csv");
     }
 
     void DebugPublisher::publish_ik_debug(ThrowResponse const & response, int8_t const & percentage_done, int8_t const & movement_stage){

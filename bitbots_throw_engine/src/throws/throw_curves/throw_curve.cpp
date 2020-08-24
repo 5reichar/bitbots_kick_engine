@@ -1,4 +1,5 @@
 #include "throws/throw_curves/throw_curve.h"
+#include "utility/throw_utilities.h"
 
 namespace bitbots_throw{
     ThrowCurve::ThrowCurve(std::shared_ptr<bitbots_splines::PoseHandle> left_hand
@@ -55,16 +56,33 @@ namespace bitbots_throw{
     std::string ThrowCurve::get_debug_string() const{
         std::stringstream points_string;
 
-        points_string << "==== Trunk ====" << std::endl;
-        points_string << sp_pose_trunk_->get_debug_string() << std::endl;
-        points_string << "==== Left Hand ====" << std::endl;
-        points_string << sp_pose_left_hand_->get_debug_string() << std::endl;
-        points_string << "==== Right Hand ====" << std::endl;
-        points_string << sp_pose_right_hand_->get_debug_string() << std::endl;
-        points_string << "==== Left Foot ====" << std::endl;
-        points_string << sp_pose_left_feet_->get_debug_string() << std::endl;
-        points_string << "==== Right Foot ====" << std::endl;
-        points_string << sp_pose_right_feet_->get_debug_string() << std::endl;
+        points_string << "----- Trunk -----, , Added Points" << std::endl;
+        points_string << sp_pose_trunk_->get_debug_csv() << std::endl;
+        points_string << "----- Trunk -----, , Calculated Points" << std::endl;
+        points_string << generate_points_csv(*sp_pose_trunk_, trajectory_time_) << std::endl;
+
+        points_string << "----- Left Hand -----, , Added Points" << std::endl;
+        points_string << sp_pose_left_hand_->get_debug_csv() << std::endl;
+        points_string << "----- Left Hand -----, , Calculated Points" << std::endl;
+        points_string << generate_points_csv(*sp_pose_left_hand_, trajectory_time_) << std::endl;
+
+
+        points_string << "----- Right Hand -----, , Added Points" << std::endl;
+        points_string << sp_pose_right_hand_->get_debug_csv() << std::endl;
+        points_string << "----- Right Hand -----, , Calculated Points" << std::endl;
+        points_string << generate_points_csv(*sp_pose_right_hand_, trajectory_time_) << std::endl;
+
+
+        points_string << "----- Left Foot -----, , Added Points" << std::endl;
+        points_string << sp_pose_left_feet_->get_debug_csv() << std::endl;
+        points_string << "----- Left Foot -----, , Calculated Points" << std::endl;
+        points_string << generate_points_csv(*sp_pose_left_feet_, trajectory_time_) << std::endl;
+
+
+        points_string << "----- Right Foot -----, , Added Points" << std::endl;
+        points_string << sp_pose_right_feet_->get_debug_csv() << std::endl;
+        points_string << "----- Right Foot -----, , Calculated Points" << std::endl;
+        points_string << generate_points_csv(*sp_pose_right_feet_, trajectory_time_) << std::endl;
 
         return points_string.str();
     }
