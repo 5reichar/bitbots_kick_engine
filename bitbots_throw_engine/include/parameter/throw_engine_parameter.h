@@ -11,10 +11,12 @@ namespace bitbots_throw{
 
         // value used as gravity for calculations
         double gravity_;
-        // The height of the robot
-        double robot_height_;
         // The height of the robots head, measure from the shoulders
         double head_height_;
+        // The height of the robots trunk
+        double trunk_height_;
+        // The lenght of the legs of the robot
+        double leg_length_;
         // The length of the arms of the robot
         double arm_length_;
         // The maximal stall torque the robot arm motor has (in Nm, >= 0)
@@ -31,8 +33,9 @@ namespace bitbots_throw{
 
 		//////		Constructor
 		ThrowEngineParameter(double gravity
-                            ,double robot_height
                             ,double head_height
+                            ,double trunk_height
+                            ,double leg_length
                             ,double arm_length
                             ,double arm_max_stall_torque
                             ,double arm_stall_torque_usage
@@ -41,8 +44,9 @@ namespace bitbots_throw{
                             ,std::shared_ptr<ThrowType> default_throw
 							)
 							:gravity_(gravity)
-							,robot_height_(robot_height)
-							,head_height_(head_height)
+                            ,head_height_(head_height)
+                            ,trunk_height_(trunk_height)
+                            ,leg_length_(leg_length)
 							,arm_length_(arm_length)
 							,arm_max_stall_torque_(arm_max_stall_torque)
 							,arm_stall_torque_usage_(arm_stall_torque_usage)

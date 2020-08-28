@@ -27,7 +27,7 @@ namespace bitbots_throw{
 
         void publish_throw(bitbots_splines::JointGoals & joint_goals);
         void publish_odometry();
-        void publish_engine_debug(ThrowEngine const * engine) const;
+        void publish_engine_debug(ThrowEngine const * engine, ThrowRequest const & request) const;
         void publish_debug(ThrowResponse const & response, int8_t const & percentage_done, int8_t const & movement_stage);
 
     private:

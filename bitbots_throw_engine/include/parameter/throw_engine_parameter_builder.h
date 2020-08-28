@@ -13,8 +13,9 @@ namespace bitbots_throw{
             auto sp_parameter = build_default();
 
             sp_parameter->gravity_ = config.gravity;
-            sp_parameter->robot_height_ = config.robot_height;
             sp_parameter->head_height_ = config.head_height;
+            sp_parameter->trunk_height_ = config.trunk_height;
+            sp_parameter->leg_length_ = config.leg_length;
             sp_parameter->arm_length_ = config.arm_length;
             sp_parameter->arm_max_stall_torque_ = config.arm_max_stall_torque;
             sp_parameter->arm_stall_torque_usage_ = config.arm_stall_torque_usage;
@@ -36,6 +37,7 @@ namespace bitbots_throw{
         static  std::shared_ptr<ThrowEngineParameter> build_default(){
             // TODO: enter better default values
             return std::make_shared<ThrowEngineParameter>(0.0
+                                                         ,0.0
                                                          ,0.0
                                                          ,0.0
                                                          ,0.0

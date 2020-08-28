@@ -8,19 +8,19 @@
 
 #include "ros_interface/publisher/system_publisher.h"
 
-#include "parameter/throw_engine_parameter_builder.h"
 #include "parameter/throw_type_parameter_builder.h"
 
 namespace bitbots_throw{
 	ThrowNode::ThrowNode()
 			:dynamic_reconfigure_server_engine_params_(ros::NodeHandle("/throw_engine_parameter"))
 			,dynamic_reconfigure_server_throw_params_(ros::NodeHandle("/throw_parameter"))
-			,tf2_ros_trnasform_listener_(tf2_ros_buffer_){
+			,tf2_ros_transform_listener_(tf2_ros_buffer_){
 		set_default_parameter();
 		load_parameter();
         init_ros_subscriptions();
 		init_dynamic_reconfiguration();
 		init_ik();
+		SystemPublisher::publish_info("vDo16:20", "ThrowNode");
 	}
 
 	ThrowNode::~ThrowNode(){
@@ -94,7 +94,7 @@ namespace bitbots_throw{
 		publisher_facade.prepare_publisher_for_throw();
 		auto throw_request = create_throw_request(action);
 		throw_engine_.set_goals(throw_request);
-        publisher_facade.publish_engine_debug(&throw_engine_);
+        publisher_facade.publish_engine_debug(&throw_engine_, throw_request);
 
         int8_t percentage_done = throw_engine_.get_percent_done();
         int8_t movement_stage = throw_engine_.get_movement_stage();
@@ -136,8 +136,8 @@ namespace bitbots_throw{
 
         arms_ik_->set_bio_ik_timeout(sp_node_parameter_->bio_ik_time_);
         legs_ik_->set_bio_ik_timeout(sp_node_parameter_->bio_ik_time_);
-		auto t = ThrowEngineParameterBuilder::build_from_dynamic_reconf(config, level);
-		throw_engine_.set_engine_parameter(t);
+		sp_engine_parameter_ = ThrowEngineParameterBuilder::build_from_dynamic_reconf(config, level);
+		throw_engine_.set_engine_parameter(sp_engine_parameter_);
 	}
 
 	void ThrowNode::throw_params_config_callback(bitbots_throw::throw_paramsConfig & config , uint32_t level){
@@ -169,13 +169,15 @@ namespace bitbots_throw{
             request.head_position_ = {position.x, position.y, position.z};
         }
         catch(tf2::TransformException &e){
-            SystemPublisher::publish_error(e.what(), "ThrowNode : create_throw_request()");
+            SystemPublisher::publish_error(e.what(), "ThrowNode::create_throw_request()");
 
-            request.right_feet_position_ = {0.0, 0.4, -2.0};
-            request.left_feet_position_ = {0.0, -0.4, -2.0};
-            request.right_hand_position_ = {0.0, 0.5, -1.2};
-            request.left_hand_position_ = {0.0, -0.5, -1.2};
-            request.head_position_ = {0.0, 0.0, 0.7};
+            request.head_position_ = {0.0, 0.0, sp_engine_parameter_->trunk_height_ + sp_engine_parameter_->head_height_/2};
+            auto hand_height = (sp_engine_parameter_->trunk_height_ - sp_engine_parameter_->leg_length_);
+            request.left_hand_position_ = {0.0, -0.15, hand_height};
+            request.right_hand_position_ = {0.0, 0.15, hand_height};
+            auto feet_height = -1 * sp_engine_parameter_->leg_length_;
+            request.left_feet_position_ = {0.0, -0.1, feet_height};
+            request.right_feet_position_ = {0.0, 0.1, feet_height};
         }
 
 		return request;

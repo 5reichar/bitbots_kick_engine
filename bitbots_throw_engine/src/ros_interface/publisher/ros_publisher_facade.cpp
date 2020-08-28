@@ -29,11 +29,25 @@ namespace bitbots_throw{
 		sp_odometry_publisher_->publish(sp_node_parameter_->odom_publish_factor_);
 	}
 
-    void RosPublisherFacade::publish_engine_debug(ThrowEngine const * engine) const{
+    void RosPublisherFacade::publish_engine_debug(ThrowEngine const * engine, ThrowRequest const & request) const{
 	    if(sp_node_parameter_->debug_active_){
-	        sp_debug_publisher_->print_throw_points(engine->get_throw_points_as_string());
+	        std::stringstream stream;
+
+            stream << "Throw Request,Ball,,,,Goal,,,,Head,,,,Left Hand,,,,Right Hand,,,,Left Foot,,,,Right Foot,," << std::endl;
+            stream << "Position,x,y,z,,x,y,z,,x,y,z,,x,y,z,,x,y,z,,x,y,z,,x,y,z" << std::endl;
+            stream << "values,";
+            stream << request.ball_position_.x_ << "," << request.ball_position_.y_ << "," << request.ball_position_.z_ << ",,";
+            stream << request.goal_position_.x_ << "," << request.goal_position_.y_ << "," << request.goal_position_.z_ << ",,";
+            stream << request.head_position_.x_ << "," << request.head_position_.y_ << "," << request.head_position_.z_ << ",,";
+            stream << request.left_hand_position_.x_ << "," << request.left_hand_position_.y_ << "," << request.left_hand_position_.z_ << ",,";
+            stream << request.right_hand_position_.x_ << "," << request.right_hand_position_.y_ << "," << request.right_hand_position_.z_ << ",,";
+            stream << request.left_feet_position_.x_ << "," << request.left_feet_position_.y_ << "," << request.left_feet_position_.z_ << ",,";
+            stream << request.right_feet_position_.x_ << "," << request.right_feet_position_.y_ << "," << request.right_feet_position_.z_ << std::endl;
+	        stream << engine->get_throw_points_as_string();
+
+	        sp_debug_publisher_->print_throw_points(stream.str());
 	    }
-	}
+    }
 
 	void RosPublisherFacade::publish_debug(ThrowResponse const & response, int8_t const & percentage_done, int8_t const & movement_stage){
 		if(sp_node_parameter_->debug_active_){

@@ -5,6 +5,7 @@
 #include "utility/throw_ik.h"
 #include "engine/throw_engine.h"
 #include "parameter/throw_node_parameter_builder.h"
+#include "parameter/throw_engine_parameter_builder.h"
 
 #include <dynamic_reconfigure/server.h>
 #include <bitbots_throw/throw_action.h>
@@ -47,12 +48,13 @@ namespace bitbots_throw{
 
         ThrowEngine throw_engine_;
         std::shared_ptr<ThrowNodeParameter> sp_node_parameter_;
+        std::shared_ptr<ThrowEngineParameter> sp_engine_parameter_;
         RosPublisherFacade::RosPublisherTopics publisher_topics_;
 
         ros::NodeHandle ros_node_handle_;
         ros::Subscriber ros_subscriber_throw_;
         tf2_ros::Buffer tf2_ros_buffer_;
-        tf2_ros::TransformListener tf2_ros_trnasform_listener_;
+        tf2_ros::TransformListener tf2_ros_transform_listener_;
         dynamic_reconfigure::Server<bitbots_throw::throw_paramsConfig> dynamic_reconfigure_server_throw_params_;
         dynamic_reconfigure::Server<bitbots_throw::throw_engine_paramsConfig> dynamic_reconfigure_server_engine_params_;
     };

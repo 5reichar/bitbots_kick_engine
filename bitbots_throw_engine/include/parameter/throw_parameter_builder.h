@@ -32,23 +32,25 @@ namespace bitbots_throw{
             sp_parameter->start_right_feet_ = request.right_feet_position_;
 
             sp_parameter->pick_up_left_arm_ = request.ball_position_;
-            sp_parameter->pick_up_left_arm_.y_ -= engine_parameter->ball_radius_;
+            sp_parameter->pick_up_left_arm_.y_ += engine_parameter->ball_radius_;
             sp_parameter->pick_up_right_arm_ = request.ball_position_;
-            sp_parameter->pick_up_right_arm_.y_ += engine_parameter->ball_radius_;
+            sp_parameter->pick_up_right_arm_.y_ -= engine_parameter->ball_radius_;
             sp_parameter->pick_up_trunk_.yaw_ = calculate_angle(request.ball_position_);
 
             sp_parameter->throw_start_left_arm_.x_ = -0.5 * engine_parameter->arm_length_;
             sp_parameter->throw_start_left_arm_.y_ = sp_parameter->pick_up_left_arm_.y_;
-            sp_parameter->throw_start_left_arm_.z_ = (engine_parameter->robot_height_ - engine_parameter->head_height_) /2;
+            sp_parameter->throw_start_left_arm_.z_ = engine_parameter->trunk_height_ + engine_parameter->head_height_/2;
 
             sp_parameter->throw_start_right_arm_ = sp_parameter->throw_start_left_arm_;
             sp_parameter->throw_start_right_arm_.y_ = sp_parameter->pick_up_right_arm_.y_;
 
             sp_parameter->throw_start_trunk_.yaw_ = throw_orientation_angle;
 
-            auto throw_zenith_height = engine_parameter->robot_height_ / 2 - engine_parameter->head_height_ + engine_parameter->arm_length_;
+            auto throw_zenith_height = engine_parameter->trunk_height_ + engine_parameter->arm_length_;
             sp_parameter->throw_zenith_left_arm_.z_ = throw_zenith_height;
+            sp_parameter->throw_zenith_left_arm_.y_ = sp_parameter->pick_up_left_arm_.y_;
             sp_parameter->throw_zenith_right_arm_.z_ = throw_zenith_height;
+            sp_parameter->throw_zenith_right_arm_.y_ = sp_parameter->pick_up_right_arm_.y_;
 
             auto throw_release_position = calculate_throw_release_point(throw_type->throw_angle_
                                                                        ,engine_parameter->arm_length_
@@ -56,6 +58,7 @@ namespace bitbots_throw{
                                                                        ,throw_zenith_height);
             sp_parameter->throw_release_left_arm_ = throw_release_position;
             sp_parameter->throw_release_right_arm_ = throw_release_position;
+            sp_parameter->throw_release_right_arm_.y_ = -1 * throw_release_position.y_;
             sp_parameter->throw_release_trunk_.yaw_ = throw_orientation_angle;
 
             sp_parameter->throw_velocity_ = calculate_velocity(request.goal_position_, sp_parameter, engine_parameter);
@@ -119,7 +122,7 @@ namespace bitbots_throw{
                                           ,std::shared_ptr<ThrowEngineParameter> const & engine_parameter){
             ThrowMath throw_math;
 
-            double fly_time = std::sqrt((throw_parameter->throw_release_right_arm_.z_ + engine_parameter->robot_height_/2) / engine_parameter->gravity_);
+            double fly_time = std::sqrt((throw_parameter->throw_release_right_arm_.z_ + engine_parameter->trunk_height_/2) / engine_parameter->gravity_);
             double max_torque = engine_parameter->arm_max_stall_torque_ * engine_parameter->arm_stall_torque_usage_;
             double throw_release_velocity = throw_math.calculate_distance(goal_position) / fly_time;
             double needed_torque = (throw_release_velocity * engine_parameter->ball_weight_ * engine_parameter->arm_length_) / (throw_parameter->movement_duration_ * throw_parameter->movement_share_throw_);
