@@ -47,13 +47,6 @@ namespace bitbots_throw{
   void ThrowIK::reset(){
     // we have to set some good initial position in the goal state, since we are using a gradient
     // based method. Otherwise, the first step will be not correct
-    std::vector<std::string> names_vec = {"LElbow"
-                                         ,"LShoulderPitch"
-                                         ,"LShoulderRoll"
-                                         ,"RElbow"
-                                         ,"RShoulderPitch"
-                                         ,"RShoulderRoll"};
-    std::vector<double> pos_vec = {0.7, -1.0, -0.4, -0.7, 1.0, 0.4};
     for (int i = 0; i < joint_names_.size(); i++){
       // besides its name, this method only changes a single joint position...
       goal_state_->setJointPositions(joint_names_[i], &initial_joint_position_[i]);
