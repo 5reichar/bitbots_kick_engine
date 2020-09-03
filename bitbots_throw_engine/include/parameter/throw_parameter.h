@@ -14,6 +14,8 @@ namespace bitbots_throw{
         Struct3dRPY start_left_feet_;
         // current position of the right hand
         Struct3dRPY start_right_feet_;
+        // current position of the trunk
+        Struct3dRPY start_trunk_;
 
 
         //////		Parameter for the pick up movement
@@ -79,6 +81,7 @@ namespace bitbots_throw{
 		              ,Struct3dRPY start_right_hand
                       ,Struct3dRPY start_left_feet
                       ,Struct3dRPY start_right_feet
+                      ,Struct3dRPY start_trunk
                       ,Struct3dRPY pick_up_left_hand
                       ,Struct3dRPY pick_up_right_hand
                       ,Struct3dRPY pick_up_trunk
@@ -101,6 +104,7 @@ namespace bitbots_throw{
                       ,start_right_arm_{start_right_hand}
                       ,start_left_feet_(start_left_feet)
                       ,start_right_feet_(start_right_feet)
+                      ,start_trunk_(start_trunk)
                       ,pick_up_left_arm_{pick_up_left_hand}
                       ,pick_up_right_arm_{pick_up_right_hand}
                       ,pick_up_trunk_{pick_up_trunk}

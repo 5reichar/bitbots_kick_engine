@@ -30,6 +30,7 @@ namespace bitbots_throw{
             sp_parameter->start_right_arm_ = request.right_hand_position_;
             sp_parameter->start_left_feet_ = request.left_feet_position_;
             sp_parameter->start_right_feet_ = request.right_feet_position_;
+            sp_parameter->start_trunk_ = request.trunk_position_;
 
             sp_parameter->pick_up_left_arm_ = request.ball_position_;
             sp_parameter->pick_up_left_arm_.y_ += engine_parameter->ball_radius_;
@@ -39,14 +40,14 @@ namespace bitbots_throw{
 
             sp_parameter->throw_start_left_arm_.x_ = -0.5 * engine_parameter->arm_length_;
             sp_parameter->throw_start_left_arm_.y_ = sp_parameter->pick_up_left_arm_.y_;
-            sp_parameter->throw_start_left_arm_.z_ = engine_parameter->trunk_height_ + engine_parameter->head_height_/2;
+            sp_parameter->throw_start_left_arm_.z_ = request.head_position_.z_;
 
             sp_parameter->throw_start_right_arm_ = sp_parameter->throw_start_left_arm_;
             sp_parameter->throw_start_right_arm_.y_ = sp_parameter->pick_up_right_arm_.y_;
 
             sp_parameter->throw_start_trunk_.yaw_ = throw_orientation_angle;
 
-            auto throw_zenith_height = engine_parameter->trunk_height_ + engine_parameter->arm_length_;
+            auto throw_zenith_height = request.head_position_.z_ + engine_parameter->arm_length_;
             sp_parameter->throw_zenith_left_arm_.z_ = throw_zenith_height;
             sp_parameter->throw_zenith_left_arm_.y_ = sp_parameter->pick_up_left_arm_.y_;
             sp_parameter->throw_zenith_right_arm_.z_ = throw_zenith_height;
@@ -72,6 +73,7 @@ namespace bitbots_throw{
                                                    ,Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0}  //start_right_hand
                                                    ,Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0}  //start_left_feet
                                                    ,Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0}  //start_right_feet
+                                                   ,Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0}  //start_trunk
                                                    ,Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0}  //pick_up_left_hand
                                                    ,Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0}  //pick_up_right_hand
                                                    ,Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0}  //pick_up_trunk
@@ -106,13 +108,6 @@ namespace bitbots_throw{
             throw_release_point.x_ = throw_math.cos_deg(throw_orientation_angle) * adjacent;
             throw_release_point.y_ = throw_math.sin_deg(throw_orientation_angle) * adjacent;
             throw_release_point.z_ = throw_zenith - opposite;
-
-            // Debug Stuff
-            std::stringstream stream;
-            stream << "ThrowAngle: " << throw_release_angle << "; ArmLength: " << arm_length << "; ThrowZenith: " << throw_zenith;
-            stream << "; Hypot: " << hypotenuse << "; oppos: " << opposite << "; adj: " << adjacent;
-            stream << "; Point.z_: " << throw_release_point.z_ << "; sin(tra): " << throw_math.sin_deg(throw_release_angle);
-            SystemPublisher::publish_info(stream.str(), "Utility::calculate_throw_release_point");
 
             return throw_release_point;
         };

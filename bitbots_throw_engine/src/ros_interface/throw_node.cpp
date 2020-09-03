@@ -16,7 +16,7 @@ namespace bitbots_throw{
         init_ros_subscriptions();
 		init_dynamic_reconfiguration();
 		init_ik();
-		SystemPublisher::publish_info("vDi14:00", "ThrowNode");
+		SystemPublisher::publish_info("vDo-12:45", "ThrowNode");
 	}
 
 	ThrowNode::~ThrowNode(){
@@ -175,11 +175,15 @@ namespace bitbots_throw{
 
             position = get_pose("head").position;
             request.head_position_ = {position.x, position.y, position.z};
+
+            position = get_pose("base_link").position;
+            request.trunk_position_ = {position.x, position.y, position.z};
         }
         catch(tf2::TransformException &e){
             SystemPublisher::publish_error(e.what(), "ThrowNode::create_throw_request()");
 
             request.head_position_ = {0.0, 0.0, sp_engine_parameter_->trunk_height_ + sp_engine_parameter_->head_height_/2};
+            request.trunk_position_ = {0.0, 0.0, 0.0};
             auto hand_height = (sp_engine_parameter_->trunk_height_ - sp_engine_parameter_->leg_length_);
             request.left_hand_position_ = {0.0, -0.15, hand_height};
             request.right_hand_position_ = {0.0, 0.15, hand_height};

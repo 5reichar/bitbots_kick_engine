@@ -114,19 +114,19 @@ namespace bitbots_throw{
         add_points(sp_pose_right_hand_, squat_time, throw_parameter->start_right_arm_);
         add_points(sp_pose_right_hand_, pick_up_ball_time, throw_parameter->pick_up_right_arm_);
 
-        add_points(sp_pose_trunk_, trajectory_time_, Struct3dRPY(0.0, 0.0, 0.0, 0.0, 0.0, 0.0));
-        add_points(sp_pose_trunk_, squat_time, Struct3dRPY(0.0, 0.0, 0.0, 0.0, 0.0, 0.0));
+        add_points(sp_pose_trunk_, trajectory_time_, throw_parameter->start_trunk_);
+        add_points(sp_pose_trunk_, squat_time, throw_parameter->start_trunk_);
         add_points(sp_pose_trunk_, pick_up_ball_time, throw_parameter->pick_up_trunk_);
 
         add_points(sp_pose_left_feet_, trajectory_time_, throw_parameter->start_left_feet_);
         auto point = throw_parameter->start_left_feet_;
-        point.z_ = 0.0;
+        point.z_ = throw_parameter->pick_up_trunk_.z_;
         add_points(sp_pose_left_feet_, squat_time, point);
         add_points(sp_pose_left_feet_, pick_up_ball_time, point);
 
         add_points(sp_pose_right_feet_, trajectory_time_, throw_parameter->start_right_feet_);
         point = throw_parameter->start_right_feet_;
-        point.z_ = 0.0;
+        point.z_ = throw_parameter->pick_up_trunk_.z_;
         add_points(sp_pose_right_feet_, squat_time, point);
         add_points(sp_pose_right_feet_, pick_up_ball_time, point);
         /////  Clean Up
@@ -194,7 +194,7 @@ namespace bitbots_throw{
         ////  Movement
         add_points(sp_pose_left_hand_, finish_time, throw_parameter->start_left_arm_);
         add_points(sp_pose_right_hand_, finish_time, throw_parameter->start_right_arm_);
-        add_points(sp_pose_trunk_, finish_time, Struct3dRPY(0.0, 0.0, 0.0, 0.0, 0.0, 0.0));
+        add_points(sp_pose_trunk_, finish_time, throw_parameter->start_trunk_);
 
         /////  Clean Up
         trajectory_time_ = finish_time;
