@@ -3,6 +3,7 @@
 
 #include <memory>
 #include "parameter/throw_parameter.h"
+#include "ros_interface/throw_visualizer.h"
 #include "tf2/LinearMath/Transform.h"
 #include "../../bitbots_splines_extension/include/handle/pose_handle.h"
 
@@ -30,6 +31,8 @@ namespace bitbots_throw{
 
         virtual std::string get_debug_string() const;
         std::vector<double> get_movement_stage() const;
+
+        void visualize_curves(std::shared_ptr<ThrowVisualizer> & sp_visualizer);
 
 	protected:
 		virtual bool check_requirements(std::shared_ptr<ThrowParameter> & throw_parameter);

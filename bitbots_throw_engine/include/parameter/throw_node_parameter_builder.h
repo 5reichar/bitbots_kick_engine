@@ -15,13 +15,14 @@ namespace bitbots_throw{
             sp_parameter->engine_frequency_ = config.engine_frequency;
             sp_parameter->odom_publish_factor_ = config.odom_pub_factor;
             sp_parameter->bio_ik_time_ = config.bio_ik_time;
+            sp_parameter->visualization_smoothness_ = config.visualization_smoothness;
 
             return sp_parameter;
         };
 
         static std::shared_ptr<ThrowNodeParameter> build_default(){
             // TODO: enter better default values
-            return std::make_shared<ThrowNodeParameter>(false, 0.0, 0, 0.0, false);
+            return std::make_shared<ThrowNodeParameter>(false, 0.0, 0, 0.0, 0.0, false);
         };
 
     protected:

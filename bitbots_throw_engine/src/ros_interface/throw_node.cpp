@@ -1,13 +1,9 @@
 #include "ros_interface/throw_node.h"
-
 #include <moveit/kinematics_base/kinematics_base.h>
 #include <moveit/robot_model_loader/robot_model_loader.h>
-
 #include "utility/throw_utilities.h"
 #include "utility/throw_stabilizer.h"
-
 #include "ros_interface/publisher/system_publisher.h"
-
 #include "parameter/throw_type_parameter_builder.h"
 
 namespace bitbots_throw{
@@ -20,7 +16,7 @@ namespace bitbots_throw{
         init_ros_subscriptions();
 		init_dynamic_reconfiguration();
 		init_ik();
-		SystemPublisher::publish_info("vDo16:20", "ThrowNode");
+		SystemPublisher::publish_info("vDi14:00", "ThrowNode");
 	}
 
 	ThrowNode::~ThrowNode(){
@@ -30,11 +26,23 @@ namespace bitbots_throw{
 
 	void ThrowNode::set_default_parameter(){
 		sp_node_parameter_ = ThrowNodeParameterBuilder::build_default();
-		publisher_topics_.str_controller_command_topic_ = "/DynamixelController/command";
-		publisher_topics_.str_odometry_topic_ = "/throw_odometry";
-		publisher_topics_.str_debug_topic_ = "/throw_debug";
-		publisher_topics_.str_debug_marker_topic_ = "/throw_debug_marker";
-		publisher_topics_.str_support_topic_ = "/throw_support_foot_state";
+
+        RosPublisherFacade::RosPublisherTopics publisher_topics;
+        publisher_topics.str_controller_command_topic_ = "/DynamixelController/command";
+        publisher_topics.str_odometry_topic_ = "/throw_odometry";
+        publisher_topics.str_debug_topic_ = "/throw_debug";
+        publisher_topics.str_debug_marker_topic_ = "/throw_debug_marker";
+        publisher_topics.str_support_topic_ = "/throw_support_foot_state";
+        publisher_topics.str_debug_visualization_base_topic_ = "/throw_debug";
+
+        ThrowVisualizer::ThrowVisualizerParams parameter;
+        parameter.smoothness_ = sp_node_parameter_->visualization_smoothness_;
+        parameter.left_hand_frame = "l_wrist";
+        parameter.right_hand_frame = "r_wrist";
+        parameter.left_foot_frame = "l_sole";
+        parameter.right_foot_frame = "r_sole";
+
+        sp_publisher_facade_.reset(new RosPublisherFacade(ros_node_handle_, sp_node_parameter_, publisher_topics, parameter));
 
         arms_ik_ = new ThrowIK("Arms"
                               ,{"LElbow", "LShoulderPitch", "LShoulderRoll", "RElbow", "RShoulderPitch", "RShoulderRoll"}
@@ -89,12 +97,11 @@ namespace bitbots_throw{
 		ThrowStabilizer stabilizer;
 		throw_engine_.reset();
 		ros::Rate loopRate(sp_node_parameter_->engine_frequency_);
-		RosPublisherFacade publisher_facade(ros_node_handle_, sp_node_parameter_, publisher_topics_);
 
-		publisher_facade.prepare_publisher_for_throw();
+        sp_publisher_facade_->prepare_publisher_for_throw();
 		auto throw_request = create_throw_request(action);
 		throw_engine_.set_goals(throw_request);
-        publisher_facade.publish_engine_debug(&throw_engine_, throw_request);
+        sp_publisher_facade_->publish_engine_debug(&throw_engine_, throw_request);
 
         int8_t percentage_done = throw_engine_.get_percent_done();
         int8_t movement_stage = throw_engine_.get_movement_stage();
@@ -120,9 +127,9 @@ namespace bitbots_throw{
 				joint_goals = bitbots_splines::JointGoals();
 			}
 			
-			publisher_facade.publish_throw(joint_goals);
-			publisher_facade.publish_odometry();
-			publisher_facade.publish_debug(response, percentage_done, movement_stage);
+			sp_publisher_facade_->publish_throw(joint_goals);
+			sp_publisher_facade_->publish_odometry();
+			sp_publisher_facade_->publish_debug(response, percentage_done, movement_stage);
 
 			ros::spinOnce();
 			loopRate.sleep();
@@ -133,11 +140,12 @@ namespace bitbots_throw{
 
 	void ThrowNode::throw_engine_params_config_callback(bitbots_throw::throw_engine_paramsConfig & config , uint32_t level){
 		sp_node_parameter_ = ThrowNodeParameterBuilder::build_from_dynamic_reconf(config, level);
-
+        sp_publisher_facade_->update_node_parameter(sp_node_parameter_);
         arms_ik_->set_bio_ik_timeout(sp_node_parameter_->bio_ik_time_);
         legs_ik_->set_bio_ik_timeout(sp_node_parameter_->bio_ik_time_);
-		sp_engine_parameter_ = ThrowEngineParameterBuilder::build_from_dynamic_reconf(config, level);
-		throw_engine_.set_engine_parameter(sp_engine_parameter_);
+
+        sp_engine_parameter_ = ThrowEngineParameterBuilder::build_from_dynamic_reconf(config, level);
+        throw_engine_.set_engine_parameter(sp_engine_parameter_);
 	}
 
 	void ThrowNode::throw_params_config_callback(bitbots_throw::throw_paramsConfig & config , uint32_t level){

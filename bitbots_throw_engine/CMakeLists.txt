@@ -58,6 +58,7 @@ set(
   SOURCES
   src/engine/throw_engine.cpp
   src/ros_interface/throw_node.cpp
+  src/ros_interface/throw_visualizer.cpp
   src/ros_interface/publisher/ros_publisher_facade.cpp
   src/ros_interface/publisher/controler_command_publisher.cpp
   src/ros_interface/publisher/odometry_publisher.cpp

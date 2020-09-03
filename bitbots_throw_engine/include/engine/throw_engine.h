@@ -16,6 +16,8 @@ namespace bitbots_throw{
         ThrowResponse update(double dt) override;
         void reset() override;
 
+        void visualize_curves(std::shared_ptr<ThrowVisualizer> & sp_visualizer);
+
         /**
          * @return percentage of the throw movement completed, thru the update methode.
          */
@@ -24,7 +26,7 @@ namespace bitbots_throw{
 
         void set_goals(const ThrowRequest & request);
         void set_throw_types(std::shared_ptr<ThrowTypeParameter> & types);
-        void set_engine_parameter(std::shared_ptr<ThrowEngineParameter> parameter);
+        void set_engine_parameter(std::shared_ptr<ThrowEngineParameter> & parameter);
 
         std::string get_throw_points_as_string() const;
 

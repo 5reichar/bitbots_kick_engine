@@ -3,8 +3,10 @@
 namespace bitbots_throw{
 	RosPublisherFacade::RosPublisherFacade(ros::NodeHandle & ros_node_handle
 	                                      ,std::shared_ptr<ThrowNodeParameter> parameter
-	                                      ,RosPublisherTopics const &topics)
+	                                      ,RosPublisherTopics const &topics
+	                                      ,ThrowVisualizer::ThrowVisualizerParams const & visualization_parameter)
 		: sp_node_parameter_(parameter)
+		, sp_visualizer_(new ThrowVisualizer(topics.str_debug_visualization_base_topic_, visualization_parameter))
 		, sp_controller_command_publisher_(new ControllerCommandPublisher(ros_node_handle
 		                                                                    ,topics.str_controller_command_topic_))
 		, sp_odometry_publisher_(new OdometryPublisher(ros_node_handle, topics.str_odometry_topic_))
@@ -18,6 +20,11 @@ namespace bitbots_throw{
 		sp_odometry_publisher_->reset_counter();
 	}
 
+    void RosPublisherFacade::update_node_parameter(std::shared_ptr<ThrowNodeParameter> & parameter){
+        sp_node_parameter_ = parameter;
+        sp_visualizer_->update_smoothness(parameter->visualization_smoothness_);
+    }
+
 	void RosPublisherFacade::publish_throw(bitbots_splines::JointGoals & joint_goals){
 		auto time = ros::Time::now();
 
@@ -29,7 +36,7 @@ namespace bitbots_throw{
 		sp_odometry_publisher_->publish(sp_node_parameter_->odom_publish_factor_);
 	}
 
-    void RosPublisherFacade::publish_engine_debug(ThrowEngine const * engine, ThrowRequest const & request) const{
+    void RosPublisherFacade::publish_engine_debug(ThrowEngine * engine, ThrowRequest const & request){
 	    if(sp_node_parameter_->debug_active_){
 	        std::stringstream stream;
 
@@ -46,6 +53,8 @@ namespace bitbots_throw{
 	        stream << engine->get_throw_points_as_string();
 
 	        sp_debug_publisher_->print_throw_points(stream.str());
+
+	        engine->visualize_curves(sp_visualizer_);
 	    }
     }
 

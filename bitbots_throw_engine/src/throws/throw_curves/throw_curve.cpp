@@ -91,6 +91,13 @@ namespace bitbots_throw{
         return movement_stage_;
     }
 
+    void ThrowCurve::visualize_curves(std::shared_ptr<ThrowVisualizer> & sp_visualizer){
+        sp_visualizer->display_left_hand(sp_pose_left_hand_);
+        sp_visualizer->display_right_hand(sp_pose_right_hand_);
+        sp_visualizer->display_left_foot(sp_pose_left_feet_);
+        sp_visualizer->display_right_foot(sp_pose_right_feet_);
+    }
+
     void ThrowCurve::calculate_pick_up_ball_movement(std::shared_ptr<ThrowParameter> & throw_parameter){
         /////  Preparation
         //Set up the trajectories for the half cycle (single step)

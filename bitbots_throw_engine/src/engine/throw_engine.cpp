@@ -42,6 +42,10 @@ namespace bitbots_throw{
 	    return 0.0 == throw_duration_ ? 0 : (int) std::round(100.0 * (time_ / throw_duration_));
 	}
 
+    void ThrowEngine::visualize_curves(std::shared_ptr<ThrowVisualizer> & sp_visualizer){
+        sp_current_throw_->visualize_curves(sp_visualizer);
+    }
+
 	void ThrowEngine::set_goals(const ThrowRequest & request){
 		// Wrapper to keep style consistence
 		setGoals(request);
@@ -61,8 +65,8 @@ namespace bitbots_throw{
 	    sp_throw_factory_->set_throw_type_parameter(types);
 	}
 
-	void ThrowEngine::set_engine_parameter(std::shared_ptr<ThrowEngineParameter> parameter){
-		sp_engine_parameter_ = std::move(parameter);
+	void ThrowEngine::set_engine_parameter(std::shared_ptr<ThrowEngineParameter> & parameter){
+		sp_engine_parameter_ = parameter;
 	}
 
 	std::shared_ptr<ThrowParameter> ThrowEngine::create_throw_parameter(const ThrowTypeId throw_type_id

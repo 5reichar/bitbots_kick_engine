@@ -48,8 +48,8 @@ namespace bitbots_throw{
 
         ThrowEngine throw_engine_;
         std::shared_ptr<ThrowNodeParameter> sp_node_parameter_;
+        std::shared_ptr<RosPublisherFacade> sp_publisher_facade_;
         std::shared_ptr<ThrowEngineParameter> sp_engine_parameter_;
-        RosPublisherFacade::RosPublisherTopics publisher_topics_;
 
         ros::NodeHandle ros_node_handle_;
         ros::Subscriber ros_subscriber_throw_;
