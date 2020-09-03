@@ -3,7 +3,7 @@
 
 #include <tf2/LinearMath/Vector3.h>
 #include <visualization_msgs/Marker.h>
-#include "pose_handle.h"
+#include "handle/pose_handle.h"
 
 namespace bitbots_splines {
 
@@ -63,9 +63,9 @@ class AbstractVisualizer {
 
     for (double i = first_time; i <= last_time; i += (last_time - first_time) / smoothness) {
       geometry_msgs::Point point;
-      point.x = pose.x()->pos(i);
-      point.y = pose.y()->pos(i);
-      point.z = pose.z()->pos(i);
+      point.x = pose.x()->position(i);
+      point.y = pose.y()->position(i);
+      point.z = pose.z()->position(i);
 
       marker.points.push_back(point);
     }

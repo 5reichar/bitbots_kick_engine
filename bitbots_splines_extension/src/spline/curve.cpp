@@ -6,6 +6,7 @@ https://github.com/Rhoban/model/
 #include "spline/curve.h"
 #include <string>
 #include <sstream>
+#include <algorithm>
 
 namespace bitbots_splines
 {
@@ -77,6 +78,36 @@ std::string Curve::get_debug_csv()
   output << std::endl << acceleration.str();
 
   return output.str();
+}
+
+double Curve::min() const
+{
+  double return_value = 9999;
+
+  for (auto & p : points_)
+  {
+    if (p.time_ < return_value)
+    {
+      return_value = p.time_;
+    }
+  }
+
+  return return_value;
+}
+
+double Curve::max() const
+{
+  double return_value = 0;
+
+  for (auto & p : points_)
+  {
+    if (p.time_ > return_value)
+    {
+      return_value = p.time_;
+    }
+  }
+  
+  return return_value;
 }
 
 void Curve::add_point_call_back()

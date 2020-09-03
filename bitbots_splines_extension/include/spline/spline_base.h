@@ -57,8 +57,8 @@ public:
          * Return minimum and maximum abscisse
          * value for which spline is defined
          */
-     double min() const;
-     double max() const;
+     double min() const override;
+     double max() const override;
 
      virtual void compute_splines() = 0;
 

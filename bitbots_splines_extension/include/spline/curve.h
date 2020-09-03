@@ -59,6 +59,13 @@ public:
     std::string get_debug_string();
     std::string get_debug_csv();
 
+
+     /**
+     * Return minimum and maximum time of all points of the curve
+     */
+    virtual double min() const;
+    virtual double max() const;
+
 protected:
     virtual void add_point_call_back();
 
