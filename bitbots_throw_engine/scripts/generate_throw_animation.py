@@ -17,7 +17,7 @@ throw_ball.ball_position.z = -0.4
 
 throw_ball.throw_target = Vector3()
 throw_ball.throw_target.x = 2.0
-throw_ball.throw_target.y = 2.0
+throw_ball.throw_target.y = 0.0
 throw_ball.throw_target.z = -0.4
 
 throw_publisher.publish(throw_ball)
