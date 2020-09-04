@@ -19,6 +19,7 @@ namespace bitbots_throw{
             auto sp_parameter = build_default();
             auto throw_orientation_angle = calculate_angle(request.goal_position_);
 
+            //////////          Movement shares & duration          //////////
             sp_parameter->movement_duration_ = throw_type->movement_duration_;
             sp_parameter->movement_share_pick_up_ = throw_type->movement_share_pick_up_;
             sp_parameter->movement_share_preparation_ = throw_type->movement_share_preparation_;
@@ -26,18 +27,23 @@ namespace bitbots_throw{
             sp_parameter->movement_share_conclusion_ = throw_type->movement_share_conclusion_;
             check_duration_share(sp_parameter, engine_parameter);
 
+            //////////          Starting Movement Positions          //////////
             sp_parameter->start_left_arm_ = request.left_hand_position_;
             sp_parameter->start_right_arm_ = request.right_hand_position_;
             sp_parameter->start_left_feet_ = request.left_feet_position_;
             sp_parameter->start_right_feet_ = request.right_feet_position_;
             sp_parameter->start_trunk_ = request.trunk_position_;
 
+            //////////          Picking up the ball Positions          //////////
             sp_parameter->pick_up_left_arm_ = request.ball_position_;
             sp_parameter->pick_up_left_arm_.y_ += engine_parameter->ball_radius_;
+            sp_parameter->pick_up_left_arm_.z_ -= request.left_feet_position_.z_;
             sp_parameter->pick_up_right_arm_ = request.ball_position_;
             sp_parameter->pick_up_right_arm_.y_ -= engine_parameter->ball_radius_;
+            sp_parameter->pick_up_right_arm_.z_ -= request.right_feet_position_.z_;
             sp_parameter->pick_up_trunk_.yaw_ = calculate_angle(request.ball_position_);
 
+            //////////          Starting/Preparing Throw Positions          //////////
             sp_parameter->throw_start_left_arm_.x_ = -0.5 * engine_parameter->arm_length_;
             sp_parameter->throw_start_left_arm_.y_ = sp_parameter->pick_up_left_arm_.y_;
             sp_parameter->throw_start_left_arm_.z_ = request.head_position_.z_;
@@ -53,13 +59,15 @@ namespace bitbots_throw{
             sp_parameter->throw_zenith_right_arm_.z_ = throw_zenith_height;
             sp_parameter->throw_zenith_right_arm_.y_ = sp_parameter->pick_up_right_arm_.y_;
 
+            //////////          Finishing Throw Position Positions          //////////
             auto throw_release_position = calculate_throw_release_point(throw_type->throw_angle_
                                                                        ,engine_parameter->arm_length_
                                                                        ,throw_orientation_angle
                                                                        ,throw_zenith_height);
             sp_parameter->throw_release_left_arm_ = throw_release_position;
+            sp_parameter->throw_release_left_arm_.y_ += engine_parameter->ball_radius_;
             sp_parameter->throw_release_right_arm_ = throw_release_position;
-            sp_parameter->throw_release_right_arm_.y_ = -1 * throw_release_position.y_;
+            sp_parameter->throw_release_right_arm_.y_ -= engine_parameter->ball_radius_;
             sp_parameter->throw_release_trunk_.yaw_ = throw_orientation_angle;
 
             sp_parameter->throw_velocity_ = calculate_velocity(request.goal_position_, sp_parameter, engine_parameter);
