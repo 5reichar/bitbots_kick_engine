@@ -16,7 +16,7 @@ namespace bitbots_throw{
         init_ros_subscriptions();
 		init_dynamic_reconfiguration();
 		init_ik();
-		SystemPublisher::publish_info("vDo-12:45", "ThrowNode");
+		SystemPublisher::publish_info("vFr-13:54", "ThrowNode");
 	}
 
 	ThrowNode::~ThrowNode(){
@@ -37,20 +37,20 @@ namespace bitbots_throw{
 
         ThrowVisualizer::ThrowVisualizerParams parameter;
         parameter.smoothness_ = sp_node_parameter_->visualization_smoothness_;
-        parameter.left_hand_frame = "l_wrist";
-        parameter.right_hand_frame = "r_wrist";
-        parameter.left_foot_frame = "l_sole";
-        parameter.right_foot_frame = "r_sole";
+        parameter.left_hand_frame = "base_link";
+        parameter.right_hand_frame = "base_link";
+        parameter.left_foot_frame = "base_link";
+        parameter.right_foot_frame = "base_link";
 
         sp_publisher_facade_.reset(new RosPublisherFacade(ros_node_handle_, sp_node_parameter_, publisher_topics, parameter));
 
         arms_ik_ = new ThrowIK("Arms"
                               ,{"LElbow", "LShoulderPitch", "LShoulderRoll", "RElbow", "RShoulderPitch", "RShoulderRoll"}
-                              ,{0.7, -1.0, -0.4, -0.7, 1.0, 0.4});
+                              ,{0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
 
         legs_ik_ = new ThrowIK("Legs"
                               ,{"LHipPitch", "LKnee", "LAnklePitch", "RHipPitch", "RKnee", "RAnklePitch"}
-                              ,{0.7, -1.0, -0.4, -0.7, 1.0, 0.4});
+                              ,{0.7, 1.0, -0.4, -0.7, -1.0, 0.4});
 	}
 
 	void ThrowNode::load_parameter(){
@@ -182,9 +182,10 @@ namespace bitbots_throw{
         catch(tf2::TransformException &e){
             SystemPublisher::publish_error(e.what(), "ThrowNode::create_throw_request()");
 
-            request.head_position_ = {0.0, 0.0, sp_engine_parameter_->trunk_height_ + sp_engine_parameter_->head_height_/2};
+            auto hand_height = sp_engine_parameter_->trunk_height_;
+            request.head_position_ = {0.0, 0.0, hand_height};
             request.trunk_position_ = {0.0, 0.0, 0.0};
-            auto hand_height = (sp_engine_parameter_->trunk_height_ - sp_engine_parameter_->leg_length_);
+            hand_height -= sp_engine_parameter_->arm_length_;
             request.left_hand_position_ = {0.0, -0.15, hand_height};
             request.right_hand_position_ = {0.0, 0.15, hand_height};
             auto feet_height = -1 * sp_engine_parameter_->leg_length_;
