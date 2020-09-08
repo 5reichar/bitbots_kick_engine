@@ -3,6 +3,7 @@
 
 #include "ros/ros.h"
 #include "utility/throw_ik.h"
+#include "utility/throw_stabilizer.h"
 #include "engine/throw_engine.h"
 #include "parameter/throw_node_parameter_builder.h"
 #include "parameter/throw_engine_parameter_builder.h"
@@ -19,7 +20,6 @@ namespace bitbots_throw{
     {
     public:
         ThrowNode();
-        ~ThrowNode();
 
     private:
         // Initialization methods
@@ -36,6 +36,8 @@ namespace bitbots_throw{
 
         // Helper methods
         ThrowRequest create_throw_request(bitbots_throw::throw_action action);
+        bitbots_splines::JointGoals calculate_joint_goals(ThrowResponse const & response);
+        void calculate_goal(std::shared_ptr<ThrowIK> & ik, bitbots_splines::JointGoals & joint_goals, std::vector<ThrowStabilizerData> & data);
         geometry_msgs::Pose get_pose(std::string const & frame_id
                                     ,double const & orientation = 1
                                     ,ros::Time const & time = ros::Time::now()
@@ -43,8 +45,10 @@ namespace bitbots_throw{
                                     ,ros::Duration const & timeout = ros::Duration(0.2));
 
         // member variables
-        ThrowIK * arms_ik_;
-        ThrowIK * legs_ik_;
+        std::shared_ptr<ThrowIK> sp_ik_left_arm_;
+        std::shared_ptr<ThrowIK> sp_ik_right_arm_;
+        std::shared_ptr<ThrowIK> sp_ik_left_foot_;
+        std::shared_ptr<ThrowIK> sp_ik_right_foot_;
 
         ThrowEngine throw_engine_;
         std::shared_ptr<ThrowNodeParameter> sp_node_parameter_;

@@ -7,17 +7,17 @@
 #include "bitbots_splines/reference_goals.h"
 
 namespace bitbots_throw{
-  class ThrowStabilizer : public bitbots_splines::AbstractStabilizer<ThrowResponse>{
-  public:
-    ThrowStabilizer();
-    void reset() override;
-    std::unique_ptr<bio_ik::BioIKKinematicsQueryOptions> stabilize(const ThrowResponse & response) override;
+  struct ThrowStabilizerData{
+      tf2::Transform transform_to_support_;
+      std::string link_name_;
+      std::string reference_link_name_;
+      double weight_;
+  };
 
-  private:
-      ReferencePoseGoal * create_pose_goal(tf2::Transform const & support_foot_to
-                                          ,std::string const & link_name
-                                          ,std::string const & reference_link_name
-                                          ,double const & weight);
+  class ThrowStabilizer : public bitbots_splines::AbstractStabilizer<std::vector<ThrowStabilizerData>>{
+  public:
+    void reset() override;
+    std::unique_ptr<bio_ik::BioIKKinematicsQueryOptions> stabilize(const std::vector<ThrowStabilizerData> & data) override;
   };
 } //bitbots_throw
 #endif //BITBOTS_THROW_THROW_STABILIZER_H

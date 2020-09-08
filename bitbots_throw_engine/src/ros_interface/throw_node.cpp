@@ -16,12 +16,7 @@ namespace bitbots_throw{
         init_ros_subscriptions();
 		init_dynamic_reconfiguration();
 		init_ik();
-		SystemPublisher::publish_info("vFr-13:54", "ThrowNode");
-	}
-
-	ThrowNode::~ThrowNode(){
-	    delete arms_ik_;
-	    delete legs_ik_;
+		SystemPublisher::publish_info("vDi-15:50", "ThrowNode");
 	}
 
 	void ThrowNode::set_default_parameter(){
@@ -43,14 +38,10 @@ namespace bitbots_throw{
         parameter.right_foot_frame = "base_link";
 
         sp_publisher_facade_.reset(new RosPublisherFacade(ros_node_handle_, sp_node_parameter_, publisher_topics, parameter));
-
-        arms_ik_ = new ThrowIK("Arms"
-                              ,{"LElbow", "LShoulderPitch", "LShoulderRoll", "RElbow", "RShoulderPitch", "RShoulderRoll"}
-                              ,{0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
-
-        legs_ik_ = new ThrowIK("Legs"
-                              ,{"LHipPitch", "LKnee", "LAnklePitch", "RHipPitch", "RKnee", "RAnklePitch"}
-                              ,{0.7, 1.0, -0.4, -0.7, -1.0, 0.4});
+        sp_ik_left_arm_.reset(new ThrowIK("LeftArm", {"LElbow", "LShoulderPitch", "LShoulderRoll"}, {0.0, 0.0, 0.0}));
+        sp_ik_right_arm_.reset(new ThrowIK("RightArm", {"RElbow", "RShoulderPitch", "RShoulderRoll"}, {0.0, 0.0, 0.0}));
+        sp_ik_left_foot_.reset(new ThrowIK("LeftLeg", {"LHipPitch", "LKnee", "LAnklePitch"}, {0.7, 1.0, -0.4}));
+        sp_ik_right_foot_.reset(new ThrowIK("RightLeg", {"RHipPitch", "RKnee", "RAnklePitch"}, {-0.7, -1.0, 0.4}));
 	}
 
 	void ThrowNode::load_parameter(){
@@ -89,12 +80,13 @@ namespace bitbots_throw{
 			exit(1);
 		}
 
-		arms_ik_->init(kinematic_model);
-		legs_ik_->init(kinematic_model);
+        sp_ik_left_arm_->init(kinematic_model);
+        sp_ik_right_arm_->init(kinematic_model);
+        sp_ik_left_foot_->init(kinematic_model);
+        sp_ik_right_foot_->init(kinematic_model);
 	}
 
 	void ThrowNode::throw_callback(const bitbots_throw::throw_action action){
-		ThrowStabilizer stabilizer;
 		throw_engine_.reset();
 		ros::Rate loopRate(sp_node_parameter_->engine_frequency_);
 
@@ -108,17 +100,10 @@ namespace bitbots_throw{
         auto engine_update_dt = 1/sp_node_parameter_->engine_frequency_;
 		while (ros::ok() && percentage_done < 100){
 			auto response = throw_engine_.update(engine_update_dt);
-			auto ik_goals = stabilizer.stabilize(response);
 			bitbots_splines::JointGoals joint_goals;
 
 			try{
-				auto calc_goals = arms_ik_->calculate(std::move(ik_goals));
-                joint_goals.first.insert(joint_goals.first.end(), calc_goals.first.begin(), calc_goals.first.end());
-                joint_goals.second.insert(joint_goals.second.end(), calc_goals.second.begin(), calc_goals.second.end());
-
-                calc_goals = legs_ik_->calculate(std::move(ik_goals));
-                joint_goals.first.insert(joint_goals.first.end(), calc_goals.first.begin(), calc_goals.first.end());
-                joint_goals.second.insert(joint_goals.second.end(), calc_goals.second.begin(), calc_goals.second.end());
+				joint_goals = calculate_joint_goals(response);
 			}
 			catch(const std::runtime_error& e){
 				SystemPublisher::publish_runtime_error(e);
@@ -141,8 +126,10 @@ namespace bitbots_throw{
 	void ThrowNode::throw_engine_params_config_callback(bitbots_throw::throw_engine_paramsConfig & config , uint32_t level){
 		sp_node_parameter_ = ThrowNodeParameterBuilder::build_from_dynamic_reconf(config, level);
         sp_publisher_facade_->update_node_parameter(sp_node_parameter_);
-        arms_ik_->set_bio_ik_timeout(sp_node_parameter_->bio_ik_time_);
-        legs_ik_->set_bio_ik_timeout(sp_node_parameter_->bio_ik_time_);
+        sp_ik_left_arm_->set_bio_ik_timeout(sp_node_parameter_->bio_ik_time_);
+        sp_ik_right_arm_->set_bio_ik_timeout(sp_node_parameter_->bio_ik_time_);
+        sp_ik_left_foot_->set_bio_ik_timeout(sp_node_parameter_->bio_ik_time_);
+        sp_ik_right_foot_->set_bio_ik_timeout(sp_node_parameter_->bio_ik_time_);
 
         sp_engine_parameter_ = ThrowEngineParameterBuilder::build_from_dynamic_reconf(config, level);
         throw_engine_.set_engine_parameter(sp_engine_parameter_);
@@ -195,6 +182,32 @@ namespace bitbots_throw{
 
 		return request;
 	}
+
+    bitbots_splines::JointGoals ThrowNode::calculate_joint_goals(ThrowResponse const & response){
+        bitbots_splines::JointGoals joint_goals;
+
+        std::vector<ThrowStabilizerData> data = {{response.support_foot_to_left_hand_, "l_wrist", "l_sole", 1}};
+        calculate_goal(sp_ik_left_arm_, joint_goals, data);
+
+        data = {{response.support_foot_to_right_hand_, "r_wrist", "l_sole", 1}};
+        calculate_goal(sp_ik_right_arm_, joint_goals, data);
+
+        data = {{response.support_foot_to_left_foot_, "l_sole", "l_sole", 1}};
+        calculate_goal(sp_ik_left_foot_, joint_goals, data);
+
+        data = {{response.support_foot_to_right_foot_, "r_sole", "l_sole", 1}};
+        calculate_goal(sp_ik_right_foot_, joint_goals, data);
+
+        return joint_goals;
+    }
+
+    void ThrowNode::calculate_goal(std::shared_ptr <ThrowIK> & ik, bitbots_splines::JointGoals & joint_goals, std::vector <ThrowStabilizerData> & data){
+        ThrowStabilizer stabilizer;
+        auto ik_goals = stabilizer.stabilize(data);
+        auto calc_goals = ik->calculate(std::move(ik_goals));
+        joint_goals.first.insert(joint_goals.first.end(), calc_goals.first.begin(), calc_goals.first.end());
+        joint_goals.second.insert(joint_goals.second.end(), calc_goals.second.begin(), calc_goals.second.end());
+    }
 
     geometry_msgs::Pose ThrowNode::get_pose(std::string const & frame_id
                                            ,double const & orientation
