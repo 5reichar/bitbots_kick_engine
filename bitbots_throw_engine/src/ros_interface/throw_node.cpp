@@ -16,7 +16,7 @@ namespace bitbots_throw{
         init_ros_subscriptions();
 		init_dynamic_reconfiguration();
 		init_ik();
-		SystemPublisher::publish_info("vDi-15:50", "ThrowNode");
+		SystemPublisher::publish_info("v0.20200910-3", "ThrowNode");
 	}
 
 	void ThrowNode::set_default_parameter(){
@@ -176,8 +176,8 @@ namespace bitbots_throw{
             request.left_hand_position_ = {0.0, -0.15, hand_height};
             request.right_hand_position_ = {0.0, 0.15, hand_height};
             auto feet_height = -1 * sp_engine_parameter_->leg_length_;
-            request.left_feet_position_ = {0.0, -0.1, feet_height};
-            request.right_feet_position_ = {0.0, 0.1, feet_height};
+            request.left_feet_position_ = {0.0, 0.5, feet_height};
+            request.right_feet_position_ = {0.0, -0.5, feet_height};
         }
 
 		return request;
@@ -192,7 +192,7 @@ namespace bitbots_throw{
         data = {{response.support_foot_to_right_hand_, "r_wrist", "l_sole", 1}};
         calculate_goal(sp_ik_right_arm_, joint_goals, data);
 
-        data = {{response.support_foot_to_left_foot_, "l_sole", "l_sole", 1}};
+        data = {{response.support_foot_to_left_foot_, "l_sole", "r_sole", 1}};
         calculate_goal(sp_ik_left_foot_, joint_goals, data);
 
         data = {{response.support_foot_to_right_foot_, "r_sole", "l_sole", 1}};
