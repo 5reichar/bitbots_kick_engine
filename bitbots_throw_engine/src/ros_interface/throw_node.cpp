@@ -16,7 +16,7 @@ namespace bitbots_throw{
         init_ros_subscriptions();
 		init_dynamic_reconfiguration();
 		init_ik();
-		SystemPublisher::publish_info("v0.20200910-3", "ThrowNode");
+		SystemPublisher::publish_info("v0.20200910-5", "ThrowNode");
 	}
 
 	void ThrowNode::set_default_parameter(){
@@ -93,13 +93,15 @@ namespace bitbots_throw{
         sp_publisher_facade_->prepare_publisher_for_throw();
 		auto throw_request = create_throw_request(action);
 		throw_engine_.set_goals(throw_request);
-        sp_publisher_facade_->publish_engine_debug(&throw_engine_, throw_request);
+		sp_publisher_facade_->visualize_engine(&throw_engine_);
 
         int8_t percentage_done = throw_engine_.get_percent_done();
         int8_t movement_stage = throw_engine_.get_movement_stage();
         auto engine_update_dt = 1/sp_node_parameter_->engine_frequency_;
+        std::vector<ThrowResponse> vec_responses;
 		while (ros::ok() && percentage_done < 100){
 			auto response = throw_engine_.update(engine_update_dt);
+			vec_responses.emplace_back(response);
 			bitbots_splines::JointGoals joint_goals;
 
 			try{
@@ -121,6 +123,7 @@ namespace bitbots_throw{
             percentage_done = throw_engine_.get_percent_done();
             movement_stage = throw_engine_.get_movement_stage();
 		}
+        sp_publisher_facade_->publish_engine_debug(&throw_engine_, throw_request, vec_responses);
 	}
 
 	void ThrowNode::throw_engine_params_config_callback(bitbots_throw::throw_engine_paramsConfig & config , uint32_t level){

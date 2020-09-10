@@ -31,10 +31,13 @@ namespace bitbots_throw{
 
         void publish_throw(bitbots_splines::JointGoals & joint_goals);
         void publish_odometry();
-        void publish_engine_debug(ThrowEngine * engine, ThrowRequest const & request);
+        void publish_engine_debug(ThrowEngine * engine, ThrowRequest const & request, std::vector<ThrowResponse> & responses);
         void publish_debug(ThrowResponse const & response, int8_t const & percentage_done, int8_t const & movement_stage);
+        void visualize_engine(ThrowEngine * engine);
 
     private:
+        std::string build_data_from_transform(tf2::Transform & transform);
+
         std::shared_ptr<DebugPublisher> sp_debug_publisher_;
         std::shared_ptr<SupportPublisher> sp_support_publisher_;
         std::shared_ptr<OdometryPublisher> sp_odometry_publisher_;

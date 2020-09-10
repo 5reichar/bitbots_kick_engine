@@ -36,8 +36,9 @@ namespace bitbots_throw{
 		sp_odometry_publisher_->publish(sp_node_parameter_->odom_publish_factor_);
 	}
 
-    void RosPublisherFacade::publish_engine_debug(ThrowEngine * engine, ThrowRequest const & request){
+    void RosPublisherFacade::publish_engine_debug(ThrowEngine * engine, ThrowRequest const & request, std::vector<ThrowResponse> & responses){
 	    if(sp_node_parameter_->debug_active_){
+	        SystemPublisher::publish_info("Printing Engine data", "RosPublisherFacade");
 	        std::stringstream stream;
 
             stream << "Throw Request,Ball,,,,Goal,,,,Head,,,,Left Hand,,,,Right Hand,,,,Left Foot,,,,Right Foot,," << std::endl;
@@ -52,10 +53,46 @@ namespace bitbots_throw{
             stream << request.right_feet_position_.x_ << "," << request.right_feet_position_.y_ << "," << request.right_feet_position_.z_ << std::endl;
 	        stream << engine->get_throw_points_as_string();
 
-	        sp_debug_publisher_->print_throw_points(stream.str());
+            double counter = 0.0;
+            std::stringstream stream_legend;
+            std::stringstream stream_left_hand;
+            std::stringstream stream_right_hand;
+            std::stringstream stream_left_foot;
+            std::stringstream stream_right_foot;
+	        for(auto & it : responses){
+	            stream_legend << "time:," << counter << ",x,y,z,roll,pitch,yaw,,";
+                stream_left_hand << "Left Hand," << build_data_from_transform(it.support_foot_to_left_hand_);
+                stream_right_hand << "Right Hand," << build_data_from_transform(it.support_foot_to_right_hand_);
+                stream_left_foot << "Left Foot," << build_data_from_transform(it.support_foot_to_left_foot_);
+                stream_right_foot << "Right Foot," << build_data_from_transform(it.support_foot_to_right_foot_);
+                counter += 1/sp_node_parameter_->engine_frequency_;
+	        }
 
-	        engine->visualize_curves(sp_visualizer_);
+            stream << stream_legend.str() << std::endl;
+            stream << stream_left_hand.str() << std::endl;
+            stream << stream_right_hand.str() << std::endl;
+            stream << stream_left_foot.str() << std::endl;
+            stream << stream_right_foot.str() << std::endl;
+
+	        sp_debug_publisher_->print_throw_points(stream.str());
 	    }
+    }
+
+    std::string RosPublisherFacade::build_data_from_transform(tf2::Transform & transform){
+        std::stringstream stream;
+
+        stream << "," << transform.getOrigin().x();
+        stream << "," << transform.getOrigin().y();
+        stream << "," << transform.getOrigin().z();
+        stream << "," << transform.getRotation().x();
+        stream << "," << transform.getRotation().y();
+        stream << "," << transform.getRotation().z() << ",,";
+
+        return stream.str();
+    }
+
+    void RosPublisherFacade::visualize_engine(ThrowEngine * engine){
+        engine->visualize_curves(sp_visualizer_);
     }
 
 	void RosPublisherFacade::publish_debug(ThrowResponse const & response, int8_t const & percentage_done, int8_t const & movement_stage){
