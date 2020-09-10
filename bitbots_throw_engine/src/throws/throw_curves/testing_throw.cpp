@@ -15,12 +15,12 @@ namespace bitbots_throw{
     TestingThrow::TestingThrow()
             :ThrowCurve(
             std::make_shared<bitbots_splines::PoseHandle>( // Left Hand
-                    std::make_shared<bitbots_splines::LinearSpline>() // x
-                    ,std::make_shared<bitbots_splines::LinearSpline>() // y
-                    ,std::make_shared<bitbots_splines::LinearSpline>() // z
-                    ,std::make_shared<bitbots_splines::LinearSpline>() // roll
-                    ,std::make_shared<bitbots_splines::LinearSpline>() // pitch
-                    ,std::make_shared<bitbots_splines::LinearSpline>() // yaw
+                    std::make_shared<bitbots_splines::CubicSpline>() // x
+                    ,std::make_shared<bitbots_splines::CubicSpline>() // y
+                    ,std::make_shared<bitbots_splines::CubicSpline>() // z
+                    ,std::make_shared<bitbots_splines::CubicSpline>() // roll
+                    ,std::make_shared<bitbots_splines::CubicSpline>() // pitch
+                    ,std::make_shared<bitbots_splines::CubicSpline>() // yaw
             ),
             std::make_shared<bitbots_splines::PoseHandle>( // Right Hand
                     std::make_shared<bitbots_splines::CubicSpline>() // x
@@ -39,20 +39,20 @@ namespace bitbots_throw{
                     ,std::make_shared<bitbots_splines::LinearSpline>() // yaw
             ),
             std::make_shared<bitbots_splines::PoseHandle>( // Left Feet
-                    std::make_shared<bitbots_splines::Beziercurve>() // x
-                    ,std::make_shared<bitbots_splines::Beziercurve>() // y
-                    ,std::make_shared<bitbots_splines::Beziercurve>() // z
-                    ,std::make_shared<bitbots_splines::Beziercurve>() // roll
-                    ,std::make_shared<bitbots_splines::Beziercurve>() // pitch
-                    ,std::make_shared<bitbots_splines::Beziercurve>() // yaw
+                    std::make_shared<bitbots_splines::CubicSpline>() // x
+                    ,std::make_shared<bitbots_splines::CubicSpline>() // y
+                    ,std::make_shared<bitbots_splines::CubicSpline>() // z
+                    ,std::make_shared<bitbots_splines::CubicSpline>() // roll
+                    ,std::make_shared<bitbots_splines::CubicSpline>() // pitch
+                    ,std::make_shared<bitbots_splines::CubicSpline>() // yaw
             ),
             std::make_shared<bitbots_splines::PoseHandle>( // Right Feet
-                    std::make_shared<bitbots_splines::Beziercurve>() // x
-                    ,std::make_shared<bitbots_splines::Beziercurve>() // y
-                    ,std::make_shared<bitbots_splines::Beziercurve>() // z
-                    ,std::make_shared<bitbots_splines::Beziercurve>() // roll
-                    ,std::make_shared<bitbots_splines::Beziercurve>() // pitch
-                    ,std::make_shared<bitbots_splines::Beziercurve>() // yaw
+                    std::make_shared<bitbots_splines::CubicSpline>() // x
+                    ,std::make_shared<bitbots_splines::CubicSpline>() // y
+                    ,std::make_shared<bitbots_splines::CubicSpline>() // z
+                    ,std::make_shared<bitbots_splines::CubicSpline>() // roll
+                    ,std::make_shared<bitbots_splines::CubicSpline>() // pitch
+                    ,std::make_shared<bitbots_splines::CubicSpline>() // yaw
             )){
         max_prepare_rounds_ = 20;
     }
@@ -69,10 +69,85 @@ namespace bitbots_throw{
     }
 
     void TestingThrow::calculate_throw_preparation_movement(std::shared_ptr<ThrowParameter> & throw_parameter){
-        SystemPublisher::publish_info("Start Testing Movement", "TestingThrow");
+        SystemPublisher::publish_info("Start Testing Movement III", "TestingThrow");
         add_points(sp_pose_right_hand_, trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        add_points(sp_pose_left_hand_, trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        add_points(sp_pose_right_feet_, trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        add_points(sp_pose_left_feet_, trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        trajectory_time_ += 0.6;
+
+        add_points(sp_pose_right_hand_, trajectory_time_, {3.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        add_points(sp_pose_left_hand_, trajectory_time_, {3.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        add_points(sp_pose_right_feet_, trajectory_time_, {3.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        add_points(sp_pose_left_feet_, trajectory_time_, {3.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        trajectory_time_ += 0.6;
+
+        add_points(sp_pose_right_hand_, trajectory_time_, {-3.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        add_points(sp_pose_left_hand_, trajectory_time_, {-3.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        add_points(sp_pose_right_feet_, trajectory_time_, {-3.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        add_points(sp_pose_left_feet_, trajectory_time_, {-3.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        trajectory_time_ += 0.6;
+
+        add_points(sp_pose_right_hand_, trajectory_time_, {0.0, 3.0, 0.0, 0.0, 0.0, 0.0});
+        add_points(sp_pose_left_hand_, trajectory_time_, {0.0, 3.0, 0.0, 0.0, 0.0, 0.0});
+        add_points(sp_pose_right_feet_, trajectory_time_, {0.0, 3.0, 0.0, 0.0, 0.0, 0.0});
+        add_points(sp_pose_left_feet_, trajectory_time_, {0.0, 3.0, 0.0, 0.0, 0.0, 0.0});
+        trajectory_time_ += 0.6;
+
+        add_points(sp_pose_right_hand_, trajectory_time_, {0.0, -3.0, 0.0, 0.0, 0.0, 0.0});
+        add_points(sp_pose_left_hand_, trajectory_time_, {0.0, -3.0, 0.0, 0.0, 0.0, 0.0});
+        add_points(sp_pose_right_feet_, trajectory_time_, {0.0, -3.0, 0.0, 0.0, 0.0, 0.0});
+        add_points(sp_pose_left_feet_, trajectory_time_, {0.0, -3.0, 0.0, 0.0, 0.0, 0.0});
+        trajectory_time_ += 0.6;
+
+        add_points(sp_pose_right_hand_, trajectory_time_, {0.0, 0.0, 3.0, 0.0, 0.0, 0.0});
         add_points(sp_pose_left_hand_, trajectory_time_, {0.0, 0.0, 3.0, 0.0, 0.0, 0.0});
         add_points(sp_pose_right_feet_, trajectory_time_, {0.0, 0.0, 3.0, 0.0, 0.0, 0.0});
+        add_points(sp_pose_left_feet_, trajectory_time_, {0.0, 0.0, 3.0, 0.0, 0.0, 0.0});
+        trajectory_time_ += 0.6;
+
+        add_points(sp_pose_right_hand_, trajectory_time_, {0.0, 0.0, -3.0, 0.0, 0.0, 0.0});
+        add_points(sp_pose_left_hand_, trajectory_time_, {0.0, 0.0, -3.0, 0.0, 0.0, 0.0});
+        add_points(sp_pose_right_feet_, trajectory_time_, {0.0, 0.0, -3.0, 0.0, 0.0, 0.0});
+        add_points(sp_pose_left_feet_, trajectory_time_, {0.0, 0.0, -3.0, 0.0, 0.0, 0.0});
+        trajectory_time_ += 0.6;
+
+        add_points(sp_pose_right_hand_, trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        add_points(sp_pose_left_hand_, trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        add_points(sp_pose_right_feet_, trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        add_points(sp_pose_left_feet_, trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        trajectory_time_ += 0.6;
+
+        SystemPublisher::publish_info("Finished Testing Movement III", "TestingThrow");
+    }
+
+    void TestingThrow::calculate_throw_movement(std::shared_ptr<ThrowParameter> & throw_parameter){
+        SystemPublisher::publish_info("Start Testing Movement II", "TestingThrow");
+        add_points(sp_pose_right_hand_, trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        add_points(sp_pose_left_hand_, trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        add_points(sp_pose_right_feet_, trajectory_time_, {0.0, 0.0, -3.0, 0.0, 0.0, 0.0});
+        add_points(sp_pose_left_feet_, trajectory_time_, {0.0, 0.0, -3.0, 0.0, 0.0, 0.0});
+        add_points(sp_pose_trunk_, trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        trajectory_time_ += 0.6;
+
+        add_points(sp_pose_right_feet_, trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        add_points(sp_pose_left_feet_, trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        trajectory_time_ += 0.6;
+
+        add_points(sp_pose_right_hand_, trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        add_points(sp_pose_left_hand_, trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        add_points(sp_pose_right_feet_, trajectory_time_, {0.0, 0.0, -3.0, 0.0, 0.0, 0.0});
+        add_points(sp_pose_left_feet_, trajectory_time_, {0.0, 0.0, -3.0, 0.0, 0.0, 0.0});
+        add_points(sp_pose_trunk_, trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        trajectory_time_ += 0.3;
+        SystemPublisher::publish_info("Finished Testing Movement II", "TestingThrow");
+    }
+
+    void TestingThrow::calculate_throw_conclusion_movement(std::shared_ptr<ThrowParameter> & throw_parameter){
+        SystemPublisher::publish_info("Start Testing Movement I", "TestingThrow");
+        add_points(sp_pose_right_hand_, trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        add_points(sp_pose_left_hand_, trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        add_points(sp_pose_right_feet_, trajectory_time_, {0.0, 0.0, -3.0, 0.0, 0.0, 0.0});
         add_points(sp_pose_left_feet_, trajectory_time_, {0.0, 0.0, -3.0, 0.0, 0.0, 0.0});
         add_points(sp_pose_trunk_, trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
         trajectory_time_ += 0.3;
@@ -98,17 +173,12 @@ namespace bitbots_throw{
         trajectory_time_ += 0.3;
 
         add_points(sp_pose_right_hand_, trajectory_time_, {0.0, 0.0, -3.0, 0.0, 0.0, 0.0});
-        add_points(sp_pose_left_hand_, trajectory_time_, {0.0, 0.0, 3.0, 0.0, 0.0, 0.0});
-        add_points(sp_pose_right_feet_, trajectory_time_, {0.0, 0.0, 3.0, 0.0, 0.0, 0.0});
+        add_points(sp_pose_left_hand_, trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        add_points(sp_pose_right_feet_, trajectory_time_, {0.0, 0.0, -3.0, 0.0, 0.0, 0.0});
         add_points(sp_pose_left_feet_, trajectory_time_, {0.0, 0.0, -3.0, 0.0, 0.0, 0.0});
         add_points(sp_pose_trunk_, trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
-        SystemPublisher::publish_info("Finished Testing Movement", "TestingThrow");
-    }
-
-    void TestingThrow::calculate_throw_movement(std::shared_ptr<ThrowParameter> & throw_parameter){
-    }
-
-    void TestingThrow::calculate_throw_conclusion_movement(std::shared_ptr<ThrowParameter> & throw_parameter){
+        trajectory_time_ += 0.3;
+        SystemPublisher::publish_info("Finished Testing Movement I", "TestingThrow");
     }
 
     template<typename curve_type>
