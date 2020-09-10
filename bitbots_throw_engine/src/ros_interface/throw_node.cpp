@@ -16,7 +16,7 @@ namespace bitbots_throw{
         init_ros_subscriptions();
 		init_dynamic_reconfiguration();
 		init_ik();
-		SystemPublisher::publish_info("v0.20200910-5", "ThrowNode");
+		SystemPublisher::publish_info("v0.20200910-7", "ThrowNode");
 	}
 
 	void ThrowNode::set_default_parameter(){
@@ -195,10 +195,10 @@ namespace bitbots_throw{
         data = {{response.support_foot_to_right_hand_, "r_wrist", "l_sole", 1}};
         calculate_goal(sp_ik_right_arm_, joint_goals, data);
 
-        data = {{response.support_foot_to_left_foot_, "l_sole", "r_sole", 1}};
+        data = {{response.support_foot_to_left_foot_, "l_sole", "base_link", 1}};
         calculate_goal(sp_ik_left_foot_, joint_goals, data);
 
-        data = {{response.support_foot_to_right_foot_, "r_sole", "l_sole", 1}};
+        data = {{response.support_foot_to_right_foot_, "r_sole", "base_link", 1}};
         calculate_goal(sp_ik_right_foot_, joint_goals, data);
 
         return joint_goals;
