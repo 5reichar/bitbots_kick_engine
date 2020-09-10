@@ -60,6 +60,7 @@ namespace bitbots_throw{
 
 
 		//////		Additional parameter
+		double squat_safety_distance_;
 
 
 		//////		Timing parameter
@@ -94,6 +95,7 @@ namespace bitbots_throw{
                       ,Struct3dRPY throw_release_right_hand
                       ,Struct3dRPY throw_release_trunk
                       ,Struct3d throw_velocity
+                      ,double squat_safety_distance
                       ,double movement_duration
                       ,double movement_share_pick_up
                       ,double movement_share_preparation
@@ -117,6 +119,7 @@ namespace bitbots_throw{
                       ,throw_release_right_arm_{throw_release_right_hand}
                       ,throw_release_trunk_{throw_release_trunk}
                       ,throw_velocity_{throw_velocity}
+                      ,squat_safety_distance_{squat_safety_distance}
                       ,movement_duration_{movement_duration}
                       ,movement_share_pick_up_{movement_share_pick_up}
                       ,movement_share_preparation_{movement_share_preparation}

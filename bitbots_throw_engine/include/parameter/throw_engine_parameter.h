@@ -27,6 +27,8 @@ namespace bitbots_throw{
         double ball_radius_;
         // the weight of the ball
         double ball_weight_;
+        // the safety distance between the botton of the trunk and the feet of the robot
+        double squat_safety_distance_;
 
         // The Values for the default throw
         std::shared_ptr<ThrowType> default_throw_;
@@ -41,6 +43,7 @@ namespace bitbots_throw{
                             ,double arm_stall_torque_usage
                             ,double ball_radius
                             ,double ball_weight
+                            ,double squat_safety_distance
                             ,std::shared_ptr<ThrowType> default_throw
 							)
 							:gravity_(gravity)
@@ -52,6 +55,7 @@ namespace bitbots_throw{
 							,arm_stall_torque_usage_(arm_stall_torque_usage)
 							,ball_radius_(ball_radius)
 							,ball_weight_(ball_weight)
+							,squat_safety_distance_(squat_safety_distance)
                             ,default_throw_(std::move(default_throw)){
 		}
 	};

@@ -27,6 +27,8 @@ namespace bitbots_throw{
             sp_parameter->movement_share_conclusion_ = throw_type->movement_share_conclusion_;
             check_duration_share(sp_parameter, engine_parameter);
 
+            sp_parameter->squat_safety_distance_ = engine_parameter->squat_safety_distance_;
+
             //////////          Starting Movement Positions          //////////
             sp_parameter->start_left_arm_ = request.left_hand_position_;
             sp_parameter->start_right_arm_ = request.right_hand_position_;
@@ -94,6 +96,7 @@ namespace bitbots_throw{
                                                    ,Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0}  //throw_release_right_hand
                                                    ,Struct3dRPY{0.0, 0.0, 0.0, 0.0, 0.0, 0.0}  //throw_release_trunk
                                                    ,Struct3d{0.0, 0.0, 0.0}  //throw_velocity
+                                                   ,0.1 //squat_safety_distance
                                                    ,0.0  //movement_cycle_frequency
                                                    ,0.25  //pick_up_duration_share
                                                    ,0.25  //throw_preparation_duration_share

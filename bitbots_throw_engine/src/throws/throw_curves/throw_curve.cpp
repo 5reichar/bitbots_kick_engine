@@ -120,13 +120,13 @@ namespace bitbots_throw{
 
         add_points(sp_pose_left_feet_, trajectory_time_, throw_parameter->start_left_feet_);
         auto point = throw_parameter->start_left_feet_;
-        point.z_ = throw_parameter->pick_up_trunk_.z_;
+        point.z_ = throw_parameter->pick_up_trunk_.z_ - throw_parameter->squat_safety_distance_;
         add_points(sp_pose_left_feet_, squat_time, point);
         add_points(sp_pose_left_feet_, pick_up_ball_time, point);
 
         add_points(sp_pose_right_feet_, trajectory_time_, throw_parameter->start_right_feet_);
         point = throw_parameter->start_right_feet_;
-        point.z_ = throw_parameter->pick_up_trunk_.z_;
+        point.z_ = throw_parameter->pick_up_trunk_.z_ - throw_parameter->squat_safety_distance_;
         add_points(sp_pose_right_feet_, squat_time, point);
         add_points(sp_pose_right_feet_, pick_up_ball_time, point);
         /////  Clean Up

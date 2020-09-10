@@ -21,6 +21,7 @@ namespace bitbots_throw{
             sp_parameter->arm_stall_torque_usage_ = config.arm_stall_torque_usage;
             sp_parameter->ball_radius_ = config.ball_radius;
             sp_parameter->ball_weight_ = config.ball_weight;
+            sp_parameter->squat_safety_distance_ = config.squat_safety_distance;
 
             sp_parameter->default_throw_->active_ = true;
             sp_parameter->default_throw_->throw_strength_ = config.throw_strength;
@@ -37,6 +38,7 @@ namespace bitbots_throw{
         static  std::shared_ptr<ThrowEngineParameter> build_default(){
             // TODO: enter better default values
             return std::make_shared<ThrowEngineParameter>(0.0
+                                                         ,0.0
                                                          ,0.0
                                                          ,0.0
                                                          ,0.0
