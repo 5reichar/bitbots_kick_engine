@@ -7,7 +7,6 @@
 #include "throws/throw_factory.h"
 #include "parameter/throw_type_parameter.h"
 #include "parameter/throw_engine_parameter.h"
-#include "parameter/throw_parameter_builder.h"
 
 namespace bitbots_throw{
     class ThrowEngine : public bitbots_splines::AbstractEngine<ThrowRequest, ThrowResponse>{
@@ -34,8 +33,7 @@ namespace bitbots_throw{
         int getPercentDone() const override;
         void setGoals(const ThrowRequest & request) override;
 
-        std::shared_ptr<ThrowParameter> create_throw_parameter(const ThrowTypeId throw_type_id
-                                                              ,const ThrowRequest & request);
+        void create_throw_parameter(const ThrowTypeId throw_type_id, const ThrowRequest & request);
 
         double time_{};
         double throw_duration_{};

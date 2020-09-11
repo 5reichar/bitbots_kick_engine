@@ -12,9 +12,10 @@ namespace bitbots_throw{
 	public:
 		ThrowCurve(std::shared_ptr<bitbots_splines::PoseHandle> left_hand
 		          ,std::shared_ptr<bitbots_splines::PoseHandle> right_hand
-				  ,std::shared_ptr<bitbots_splines::PoseHandle> trunk
                   ,std::shared_ptr<bitbots_splines::PoseHandle> left_feet
                   ,std::shared_ptr<bitbots_splines::PoseHandle> right_feet);
+
+		virtual void init(std::shared_ptr<ThrowService> service);
 
 		/**
 		 * Calculates the trajectory for the throw movement.
@@ -22,10 +23,9 @@ namespace bitbots_throw{
 		 * @param throw_parameter Container with all values need for the calculate.
 		 * @return duration of the movement. Returns 0.0 if the check for the parameter fails.
 		 */
-		double calculate_trajectories(std::shared_ptr<ThrowParameter> & throw_parameter);
+		double calculate_trajectories();
 		virtual tf2::Transform get_left_hand_transform(double const & time) const;
 		virtual tf2::Transform get_right_hand_transform(double const & time) const;
-        virtual tf2::Transform get_trunk_transform(double const & time) const;
         virtual tf2::Transform get_left_feet_transform(double const & time) const;
         virtual tf2::Transform get_right_feet_transform(double const & time) const;
 
@@ -35,12 +35,10 @@ namespace bitbots_throw{
         void visualize_curves(std::shared_ptr<ThrowVisualizer> & sp_visualizer);
 
 	protected:
-		virtual bool check_requirements(std::shared_ptr<ThrowParameter> & throw_parameter);
-
-		virtual void calculate_pick_up_ball_movement(std::shared_ptr<ThrowParameter> & throw_parameter);
-        virtual void calculate_throw_preparation_movement(std::shared_ptr<ThrowParameter> & throw_parameter);
-        virtual void calculate_throw_movement(std::shared_ptr<ThrowParameter> & throw_parameter);
-		virtual void calculate_throw_conclusion_movement(std::shared_ptr<ThrowParameter> & throw_parameter);
+		virtual void calculate_pick_up_ball_movement();
+        virtual void calculate_throw_preparation_movement();
+        virtual void calculate_throw_movement();
+		virtual void calculate_throw_conclusion_movement();
 
         virtual void add_points(std::shared_ptr<bitbots_splines::PoseHandle> & pose
                                ,double const & time
@@ -51,11 +49,10 @@ namespace bitbots_throw{
 
 		std::shared_ptr<bitbots_splines::PoseHandle> sp_pose_left_hand_;
 		std::shared_ptr<bitbots_splines::PoseHandle> sp_pose_right_hand_;
-        std::shared_ptr<bitbots_splines::PoseHandle> sp_pose_trunk_;
         std::shared_ptr<bitbots_splines::PoseHandle> sp_pose_left_feet_;
         std::shared_ptr<bitbots_splines::PoseHandle> sp_pose_right_feet_;
 
-        std::shared_ptr<ThrowService> sp_service;
+        std::shared_ptr<ThrowService> sp_service_;
 	};
 } //bitbots_throw
 #endif //BITBOTS_THROW_THROW_CURVE_H

@@ -25,8 +25,8 @@ namespace bitbots_throw{
                 : Struct3d(x, y, z), roll_{roll}, pitch_{pitch}, yaw_{yaw}{
         }
 
-        Struct3dRPY(Struct3d position, double roll, double pitch, double yaw)
-                : Struct3d(position), roll_{roll}, pitch_{pitch}, yaw_{yaw}{
+        Struct3dRPY(Struct3d position)
+                : Struct3d(position), roll_{0.0}, pitch_{0.0}, yaw_{0.0}{
         }
 
         Struct3dRPY() = default;

@@ -9,10 +9,10 @@ namespace bitbots_throw{
         TestingThrow();
 
     protected:
-        void calculate_pick_up_ball_movement(std::shared_ptr<ThrowParameter> & throw_parameter) override;
-        void calculate_throw_preparation_movement(std::shared_ptr<ThrowParameter> & throw_parameter) override;
-        void calculate_throw_movement(std::shared_ptr<ThrowParameter> & throw_parameter) override ;
-        void calculate_throw_conclusion_movement(std::shared_ptr<ThrowParameter> & throw_parameter) override;
+        void calculate_pick_up_ball_movement() override;
+        void calculate_throw_preparation_movement() override;
+        void calculate_throw_movement() override ;
+        void calculate_throw_conclusion_movement() override;
 
         template<typename curve_type> void test_curve_type(std::string const & type_name);
 

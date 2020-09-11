@@ -1,4 +1,5 @@
 #include "ros_interface/publisher/ros_publisher_facade.h"
+#include "ros_interface/publisher/system_publisher.h"
 
 namespace bitbots_throw{
 	RosPublisherFacade::RosPublisherFacade(ros::NodeHandle & ros_node_handle
