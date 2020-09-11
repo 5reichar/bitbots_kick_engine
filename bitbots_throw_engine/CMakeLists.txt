@@ -72,7 +72,9 @@ set(
   src/throws/throw_curves/smooth_spline_throw.cpp
   src/throws/throw_curves/testing_throw.cpp
   src/utility/throw_ik.cpp
-  src/utility/throw_stabilizer.cpp)
+  src/utility/throw_stabilizer.cpp
+  src/throws/throw_curves/throw_service.cpp
+)
 
 add_executable(ThrowNode ${SOURCES})
 

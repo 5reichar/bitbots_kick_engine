@@ -106,29 +106,22 @@ namespace bitbots_throw{
         double pick_up_ball_time = trajectory_time_ + movement_time;
 
         ////  Movement
-        add_points(sp_pose_left_hand_, trajectory_time_, throw_parameter->start_left_arm_);
-        add_points(sp_pose_left_hand_, squat_time, throw_parameter->start_left_arm_);
-        add_points(sp_pose_left_hand_, pick_up_ball_time, throw_parameter->pick_up_left_arm_);
+        add_points(sp_pose_left_hand_, trajectory_time_, sp_service->get_left_arm_start());
+        add_points(sp_pose_left_hand_, squat_time, sp_service->get_left_arm_start());
+        add_points(sp_pose_left_hand_, pick_up_ball_time, sp_service->get_left_arm_pick_up());
 
-        add_points(sp_pose_right_hand_, trajectory_time_, throw_parameter->start_right_arm_);
-        add_points(sp_pose_right_hand_, squat_time, throw_parameter->start_right_arm_);
-        add_points(sp_pose_right_hand_, pick_up_ball_time, throw_parameter->pick_up_right_arm_);
+        add_points(sp_pose_right_hand_, trajectory_time_, sp_service->get_right_arm_start());
+        add_points(sp_pose_right_hand_, squat_time, sp_service->get_right_arm_start());
+        add_points(sp_pose_right_hand_, pick_up_ball_time, sp_service->get_right_arm_pick_up());
 
-        add_points(sp_pose_trunk_, trajectory_time_, throw_parameter->start_trunk_);
-        add_points(sp_pose_trunk_, squat_time, throw_parameter->start_trunk_);
-        add_points(sp_pose_trunk_, pick_up_ball_time, throw_parameter->pick_up_trunk_);
+        add_points(sp_pose_left_feet_, trajectory_time_, sp_service->get_left_foot_start());
+        add_points(sp_pose_left_feet_, squat_time, sp_service->get_left_foot_squat());
+        add_points(sp_pose_left_feet_, pick_up_ball_time, sp_service->get_left_foot_squat());
 
-        add_points(sp_pose_left_feet_, trajectory_time_, throw_parameter->start_left_feet_);
-        auto point = throw_parameter->start_left_feet_;
-        point.z_ = throw_parameter->pick_up_trunk_.z_ - throw_parameter->squat_safety_distance_;
-        add_points(sp_pose_left_feet_, squat_time, point);
-        add_points(sp_pose_left_feet_, pick_up_ball_time, point);
-
-        add_points(sp_pose_right_feet_, trajectory_time_, throw_parameter->start_right_feet_);
-        point = throw_parameter->start_right_feet_;
-        point.z_ = throw_parameter->pick_up_trunk_.z_ - throw_parameter->squat_safety_distance_;
-        add_points(sp_pose_right_feet_, squat_time, point);
-        add_points(sp_pose_right_feet_, pick_up_ball_time, point);
+        add_points(sp_pose_right_feet_, trajectory_time_, sp_service->get_right_foot_start());
+        add_points(sp_pose_right_feet_, squat_time, sp_service->get_right_foot_squat());
+        add_points(sp_pose_right_feet_, pick_up_ball_time, sp_service->get_right_foot_squat());
+        
         /////  Clean Up
         trajectory_time_ = pick_up_ball_time;
         movement_stage_.push_back(trajectory_time_);
@@ -144,21 +137,16 @@ namespace bitbots_throw{
         double begin_throw_time = trajectory_time_ + movement_time;
 
         ////  Movement
-        auto point = throw_parameter->pick_up_left_arm_;
-        point.z_ = throw_parameter->throw_start_left_arm_.z_;
-        add_points(sp_pose_left_hand_, move_ball_at_head_height, point);
-        add_points(sp_pose_left_hand_, move_ball_over_the_height, throw_parameter->throw_zenith_left_arm_);
-        add_points(sp_pose_left_hand_, begin_throw_time, throw_parameter->throw_start_left_arm_);
+        add_points(sp_pose_left_hand_, move_ball_at_head_height, sp_service->get_left_arm_ball_at_head_height());
+        add_points(sp_pose_left_hand_, move_ball_over_the_height, sp_service->get_left_arm_throw_zenith());
+        add_points(sp_pose_left_hand_, begin_throw_time, sp_service->get_left_arm_throw_start());
 
-        point = throw_parameter->pick_up_right_arm_;
-        point.z_ = throw_parameter->throw_start_right_arm_.z_;
-        add_points(sp_pose_right_hand_, move_ball_at_head_height, point);
-        add_points(sp_pose_right_hand_, move_ball_over_the_height, throw_parameter->throw_zenith_right_arm_);
-        add_points(sp_pose_right_hand_, begin_throw_time, throw_parameter->throw_start_right_arm_);
+        add_points(sp_pose_right_hand_, move_ball_at_head_height, sp_service->get_right_arm_ball_at_head_height());
+        add_points(sp_pose_right_hand_, move_ball_over_the_height, sp_service->get_right_arm_throw_zenith());
+        add_points(sp_pose_right_hand_, begin_throw_time, sp_service->get_right_arm_throw_start());
 
-        add_points(sp_pose_trunk_, begin_throw_time, throw_parameter->throw_start_trunk_);
-        add_points(sp_pose_left_feet_, begin_throw_time, throw_parameter->start_left_feet_);
-        add_points(sp_pose_right_feet_, begin_throw_time, throw_parameter->start_right_feet_);
+        add_points(sp_pose_left_feet_, begin_throw_time, sp_service->get_left_foot_start());
+        add_points(sp_pose_right_feet_, begin_throw_time, sp_service->get_right_foot_start());
 
         /////  Clean Up
         trajectory_time_ = begin_throw_time;
@@ -173,11 +161,10 @@ namespace bitbots_throw{
         double release_throw_time = trajectory_time_ + movement_time;
 
         ////  Movement
-        add_points(sp_pose_left_hand_, zenith_throw_time, throw_parameter->throw_zenith_left_arm_);
-        add_points(sp_pose_left_hand_, release_throw_time, throw_parameter->throw_release_left_arm_);
-        add_points(sp_pose_right_hand_, zenith_throw_time, throw_parameter->throw_zenith_right_arm_);
-        add_points(sp_pose_right_hand_, release_throw_time, throw_parameter->throw_release_right_arm_);
-        add_points(sp_pose_trunk_, release_throw_time, throw_parameter->throw_release_trunk_);
+        add_points(sp_pose_left_hand_, zenith_throw_time, sp_service->get_left_arm_throw_zenith());
+        add_points(sp_pose_left_hand_, release_throw_time, sp_service->get_left_arm_throw_release());
+        add_points(sp_pose_right_hand_, zenith_throw_time, sp_service->get_right_arm_throw_zenith());
+        add_points(sp_pose_right_hand_, release_throw_time, sp_service->get_right_arm_throw_release());
 
         /////  Clean Up
         trajectory_time_ = release_throw_time;
@@ -192,8 +179,8 @@ namespace bitbots_throw{
         double finish_time = trajectory_time_ + movement_time;
 
         ////  Movement
-        add_points(sp_pose_left_hand_, finish_time, throw_parameter->start_left_arm_);
-        add_points(sp_pose_right_hand_, finish_time, throw_parameter->start_right_arm_);
+        add_points(sp_pose_left_hand_, finish_time, sp_service->get_left_arm_start());
+        add_points(sp_pose_right_hand_, finish_time, sp_service->get_right_arm_start());
         add_points(sp_pose_trunk_, finish_time, throw_parameter->start_trunk_);
 
         /////  Clean Up

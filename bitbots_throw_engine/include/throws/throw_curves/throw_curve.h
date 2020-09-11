@@ -2,10 +2,10 @@
 #define BITBOTS_THROW_THROW_CURVE_H
 
 #include <memory>
-#include "parameter/throw_parameter.h"
 #include "ros_interface/throw_visualizer.h"
 #include "tf2/LinearMath/Transform.h"
 #include "../../bitbots_splines_extension/include/handle/pose_handle.h"
+#include "throw_service.h"
 
 namespace bitbots_throw{
 	class ThrowCurve{
@@ -54,6 +54,8 @@ namespace bitbots_throw{
         std::shared_ptr<bitbots_splines::PoseHandle> sp_pose_trunk_;
         std::shared_ptr<bitbots_splines::PoseHandle> sp_pose_left_feet_;
         std::shared_ptr<bitbots_splines::PoseHandle> sp_pose_right_feet_;
+
+        std::shared_ptr<ThrowService> sp_service;
 	};
 } //bitbots_throw
 #endif //BITBOTS_THROW_THROW_CURVE_H
