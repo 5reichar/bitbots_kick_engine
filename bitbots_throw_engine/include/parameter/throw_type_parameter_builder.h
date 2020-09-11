@@ -70,6 +70,19 @@ namespace bitbots_throw{
                                                                         ,config.throw_4_movement_share_throw
                                                                         ,config.throw_4_movement_share_conclusion);
 
+            sp_parameter->map_throw_types_[ThrowTypeId::none] = build_throw_type((ThrowTypeId)config.default_throw_enum
+                                                                          ,true
+                                                                          ,0
+                                                                          ,config.throw_strength
+                                                                          ,config.throw_angle
+                                                                          ,0.0
+                                                                          ,0.0
+                                                                          ,config.movement_duration
+                                                                          ,config.movement_share_pick_up
+                                                                          ,config.movement_share_preparation
+                                                                          ,config.movement_share_throw
+                                                                          ,config.movement_share_conclusion);
+
             return sp_parameter;
         };
 

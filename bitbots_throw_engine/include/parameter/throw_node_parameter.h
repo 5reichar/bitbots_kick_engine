@@ -1,6 +1,8 @@
 #ifndef BITBOTS_THROW_THROW_NODE_PARAMETER_H
 #define BITBOTS_THROW_THROW_NODE_PARAMETER_H
 
+#include <bitbots_throw/throw_engine_paramsConfig.h>
+
 namespace bitbots_throw{
     struct ThrowNodeParameter{
         bool debug_active_;
@@ -16,19 +18,12 @@ namespace bitbots_throw{
         bool simulation_active_;
 
         //////		Constructor
-        ThrowNodeParameter(bool debug_active
-                          ,double engine_frequency
-                          ,int odom_publish_factor
-                          ,double bio_ik_time
-                          ,double visualization_smoothness
-                          ,bool simulation_active
-                          )
-                          :debug_active_{debug_active}
-                          ,engine_frequency_{engine_frequency}
-                          ,odom_publish_factor_{odom_publish_factor}
-                          ,bio_ik_time_{bio_ik_time}
-                          ,visualization_smoothness_{visualization_smoothness}
-                          ,simulation_active_{simulation_active}{
+        ThrowNodeParameter(bitbots_throw::throw_engine_paramsConfig& config, uint32_t level){
+            debug_active_ = config.debug_active;
+            engine_frequency_ = config.engine_frequency;
+            odom_publish_factor_ = config.odom_pub_factor;
+            bio_ik_time_ = config.bio_ik_time;
+            visualization_smoothness_ = config.visualization_smoothness;
         }
     };
 } //bitbots_throw

@@ -11,17 +11,15 @@ namespace bitbots_throw{
 			:dynamic_reconfigure_server_engine_params_(ros::NodeHandle("/throw_engine_parameter"))
 			,dynamic_reconfigure_server_throw_params_(ros::NodeHandle("/throw_parameter"))
 			,tf2_ros_transform_listener_(tf2_ros_buffer_){
-		set_default_parameter();
-		load_parameter();
+        init_dynamic_reconfiguration();
+        set_default_parameter();
+        load_parameter();
         init_ros_subscriptions();
-		init_dynamic_reconfiguration();
 		init_ik();
 		SystemPublisher::publish_info("v0.20200910-7", "ThrowNode");
 	}
 
 	void ThrowNode::set_default_parameter(){
-		sp_node_parameter_ = ThrowNodeParameterBuilder::build_default();
-
         RosPublisherFacade::RosPublisherTopics publisher_topics;
         publisher_topics.str_controller_command_topic_ = "/DynamixelController/command";
         publisher_topics.str_odometry_topic_ = "/throw_odometry";
@@ -127,14 +125,14 @@ namespace bitbots_throw{
 	}
 
 	void ThrowNode::throw_engine_params_config_callback(bitbots_throw::throw_engine_paramsConfig & config , uint32_t level){
-		sp_node_parameter_ = ThrowNodeParameterBuilder::build_from_dynamic_reconf(config, level);
+		sp_node_parameter_.reset(new ThrowNodeParameter(config, level));
         sp_publisher_facade_->update_node_parameter(sp_node_parameter_);
         sp_ik_left_arm_->set_bio_ik_timeout(sp_node_parameter_->bio_ik_time_);
         sp_ik_right_arm_->set_bio_ik_timeout(sp_node_parameter_->bio_ik_time_);
         sp_ik_left_foot_->set_bio_ik_timeout(sp_node_parameter_->bio_ik_time_);
         sp_ik_right_foot_->set_bio_ik_timeout(sp_node_parameter_->bio_ik_time_);
 
-        sp_engine_parameter_ = ThrowEngineParameterBuilder::build_from_dynamic_reconf(config, level);
+        sp_engine_parameter_.reset(new ThrowEngineParameter(config, level));
         throw_engine_.set_engine_parameter(sp_engine_parameter_);
 	}
 

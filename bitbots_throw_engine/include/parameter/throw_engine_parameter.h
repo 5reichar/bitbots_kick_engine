@@ -1,10 +1,7 @@
 #ifndef BITBOTS_THROW_THROW_ENGINE_PARAMETER_H
 #define BITBOTS_THROW_THROW_ENGINE_PARAMETER_H
 
-#include <utility>
-
-#include "parameter/struct3d.h"
-#include "parameter/throw_type_parameter.h"
+#include <bitbots_throw/throw_engine_paramsConfig.h>
 
 namespace bitbots_throw{
 	struct ThrowEngineParameter{
@@ -30,33 +27,18 @@ namespace bitbots_throw{
         // the safety distance between the botton of the trunk and the feet of the robot
         double squat_safety_distance_;
 
-        // The Values for the default throw
-        std::shared_ptr<ThrowType> default_throw_;
-
 		//////		Constructor
-		ThrowEngineParameter(double gravity
-                            ,double head_height
-                            ,double trunk_height
-                            ,double leg_length
-                            ,double arm_length
-                            ,double arm_max_stall_torque
-                            ,double arm_stall_torque_usage
-                            ,double ball_radius
-                            ,double ball_weight
-                            ,double squat_safety_distance
-                            ,std::shared_ptr<ThrowType> default_throw
-							)
-							:gravity_(gravity)
-                            ,head_height_(head_height)
-                            ,trunk_height_(trunk_height)
-                            ,leg_length_(leg_length)
-							,arm_length_(arm_length)
-							,arm_max_stall_torque_(arm_max_stall_torque)
-							,arm_stall_torque_usage_(arm_stall_torque_usage)
-							,ball_radius_(ball_radius)
-							,ball_weight_(ball_weight)
-							,squat_safety_distance_(squat_safety_distance)
-                            ,default_throw_(std::move(default_throw)){
+		ThrowEngineParameter(bitbots_throw::throw_engine_paramsConfig& config, uint32_t level){
+            gravity_ = config.gravity;
+            head_height_ = config.head_height;
+            trunk_height_ = config.trunk_height;
+            leg_length_ = config.leg_length;
+            arm_length_ = config.arm_length;
+            arm_max_stall_torque_ = config.arm_max_stall_torque;
+            arm_stall_torque_usage_ = config.arm_stall_torque_usage;
+            ball_radius_ = config.ball_radius;
+            ball_weight_ = config.ball_weight;
+            squat_safety_distance_ = config.squat_safety_distance;
 		}
 	};
 } //bitbots_throw

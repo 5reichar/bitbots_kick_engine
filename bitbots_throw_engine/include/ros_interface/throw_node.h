@@ -5,14 +5,13 @@
 #include "utility/throw_ik.h"
 #include "utility/throw_stabilizer.h"
 #include "engine/throw_engine.h"
-#include "parameter/throw_node_parameter_builder.h"
-#include "parameter/throw_engine_parameter_builder.h"
+#include "parameter/throw_node_parameter.h"
+#include "parameter/throw_engine_parameter.h"
 
 #include <dynamic_reconfigure/server.h>
 #include <bitbots_throw/throw_action.h>
 #include <tf2_ros/transform_listener.h>
 #include <bitbots_throw/throw_paramsConfig.h>
-#include <bitbots_throw/throw_engine_paramsConfig.h>
 #include "ros_interface/publisher/ros_publisher_facade.h"
 
 namespace bitbots_throw{

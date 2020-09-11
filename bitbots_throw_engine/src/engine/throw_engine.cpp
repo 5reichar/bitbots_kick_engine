@@ -74,36 +74,36 @@ namespace bitbots_throw{
 	    std::shared_ptr<ThrowType> type;
 
 		if (sp_throw_types_->map_throw_types_.cend() == sp_throw_types_->map_throw_types_.find(throw_type_id)){
-            type = sp_engine_parameter_->default_throw_;
+            type = sp_throw_types_->map_throw_types_[ThrowTypeId::none];
 		}else{
             type = sp_throw_types_->map_throw_types_[throw_type_id];
 
             if(type->throw_angle_ == 0){
-                type->throw_angle_ = sp_engine_parameter_->default_throw_->throw_angle_;
+                type->throw_angle_ = sp_throw_types_->map_throw_types_[ThrowTypeId::none]->throw_angle_;
             };
 
             if(type->throw_strength_ == 0){
-                type->throw_strength_ = sp_engine_parameter_->default_throw_->throw_strength_;
+                type->throw_strength_ = sp_throw_types_->map_throw_types_[ThrowTypeId::none]->throw_strength_;
             };
 
             if(type->movement_duration_ == 0){
-                type->movement_duration_ = sp_engine_parameter_->default_throw_->movement_duration_;
+                type->movement_duration_ = sp_throw_types_->map_throw_types_[ThrowTypeId::none]->movement_duration_;
             };
 
             if(type->movement_share_pick_up_ == 0){
-                type->movement_share_pick_up_ = sp_engine_parameter_->default_throw_->movement_share_pick_up_;
+                type->movement_share_pick_up_ = sp_throw_types_->map_throw_types_[ThrowTypeId::none]->movement_share_pick_up_;
             };
 
             if(type->movement_share_preparation_ == 0){
-                type->movement_share_preparation_ = sp_engine_parameter_->default_throw_->movement_share_preparation_;
+                type->movement_share_preparation_ = sp_throw_types_->map_throw_types_[ThrowTypeId::none]->movement_share_preparation_;
             };
 
             if(type->movement_share_throw_ == 0){
-                type->movement_share_throw_ = sp_engine_parameter_->default_throw_->movement_share_throw_;
+                type->movement_share_throw_ = sp_throw_types_->map_throw_types_[ThrowTypeId::none]->movement_share_throw_;
             };
 
             if(type->movement_share_conclusion_ == 0){
-                type->movement_share_conclusion_ = sp_engine_parameter_->default_throw_->movement_share_conclusion_;
+                type->movement_share_conclusion_ = sp_throw_types_->map_throw_types_[ThrowTypeId::none]->movement_share_conclusion_;
             };
 		}
 
