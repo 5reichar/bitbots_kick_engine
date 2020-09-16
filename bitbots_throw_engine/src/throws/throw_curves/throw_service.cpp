@@ -21,6 +21,7 @@ namespace bitbots_throw{
         Struct3dRPY throw_zenith_left_arm_;
         throw_zenith_left_arm_.z_ = request_.head_position_.z_ + engine_parameter_.arm_length_;
         throw_zenith_left_arm_.y_ = get_left_arm_pick_up().y_;
+        throw_zenith_left_arm_.x_ = 0.0;
         return throw_zenith_left_arm_;
     }
     Struct3dRPY ThrowService::get_left_arm_throw_start(){
@@ -56,6 +57,7 @@ namespace bitbots_throw{
         Struct3dRPY throw_zenith_right_arm_;
         throw_zenith_right_arm_.z_ = request_.head_position_.z_ + engine_parameter_.arm_length_;
         throw_zenith_right_arm_.y_ = get_right_arm_pick_up().y_;
+        throw_zenith_right_arm_.x_ = 0.0;
         return throw_zenith_right_arm_;
     }
     Struct3dRPY ThrowService::get_right_arm_throw_start(){

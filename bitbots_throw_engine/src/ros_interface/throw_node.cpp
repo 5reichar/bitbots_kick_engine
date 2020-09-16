@@ -15,7 +15,7 @@ namespace bitbots_throw{
         load_parameter();
         init_ros_subscriptions();
 		init_ik();
-		SystemPublisher::publish_info("v0.20200910-7", "ThrowNode");
+		SystemPublisher::publish_info("v0.20200916-2", "ThrowNode");
 	}
 
 	void ThrowNode::set_default_parameter(){

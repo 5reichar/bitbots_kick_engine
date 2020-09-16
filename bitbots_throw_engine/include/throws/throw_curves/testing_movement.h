@@ -1,12 +1,12 @@
-#ifndef BITBOTS_THROW_TESTING_THROW_H
-#define BITBOTS_THROW_TESTING_THROW_H
+#ifndef BITBOTS_THROW_TESTING_MOVEMENT_H
+#define BITBOTS_THROW_TESTING_MOVEMENT_H
 
-#include "throw_curve.h"
+#include "throw_movement.h"
 
 namespace bitbots_throw{
-    class TestingThrow : public ThrowCurve{
+    class TestingMovement : public ThrowMovement{
     public:
-        TestingThrow();
+        TestingMovement(std::shared_ptr<ThrowMaterial> material);
 
     protected:
         void calculate_pick_up_ball_movement() override;
@@ -28,4 +28,4 @@ namespace bitbots_throw{
 
 }
 
-#endif //BITBOTS_THROW_TESTING_THROW_H
+#endif //BITBOTS_THROW_TESTING_MOVEMENT_H

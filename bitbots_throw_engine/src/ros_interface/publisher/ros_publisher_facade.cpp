@@ -55,25 +55,22 @@ namespace bitbots_throw{
 	        stream << engine->get_throw_points_as_string();
 
             double counter = 0.0;
-            std::stringstream stream_legend;
-            std::stringstream stream_left_hand;
-            std::stringstream stream_right_hand;
-            std::stringstream stream_left_foot;
-            std::stringstream stream_right_foot;
-	        for(auto & it : responses){
-	            stream_legend << "time:," << counter << ",x,y,z,roll,pitch,yaw,,";
-                stream_left_hand << "Left Hand," << build_data_from_transform(it.support_foot_to_left_hand_);
-                stream_right_hand << "Right Hand," << build_data_from_transform(it.support_foot_to_right_hand_);
-                stream_left_foot << "Left Foot," << build_data_from_transform(it.support_foot_to_left_foot_);
-                stream_right_foot << "Right Foot," << build_data_from_transform(it.support_foot_to_right_foot_);
+            stream << "Time,";
+            stream << "LH,x,y,z,roll,pitch,yaw,";
+            stream << "RH,x,y,z,roll,pitch,yaw,";
+            stream << "LF,x,y,z,roll,pitch,yaw,";
+            stream << "RF,x,y,z,roll,pitch,yaw" << std::endl;
+
+            for(auto & it : responses){
+                stream << counter << ",";
+                stream << build_data_from_transform(it.support_foot_to_left_hand_);
+                stream << build_data_from_transform(it.support_foot_to_right_hand_);
+                stream << build_data_from_transform(it.support_foot_to_left_foot_);
+                stream << build_data_from_transform(it.support_foot_to_right_foot_);
+                stream << std::endl;
+
                 counter += 1/sp_node_parameter_->engine_frequency_;
 	        }
-
-            stream << stream_legend.str() << std::endl;
-            stream << stream_left_hand.str() << std::endl;
-            stream << stream_right_hand.str() << std::endl;
-            stream << stream_left_foot.str() << std::endl;
-            stream << stream_right_foot.str() << std::endl;
 
 	        sp_debug_publisher_->print_throw_points(stream.str());
 	    }
@@ -87,7 +84,7 @@ namespace bitbots_throw{
         stream << "," << transform.getOrigin().z();
         stream << "," << transform.getRotation().x();
         stream << "," << transform.getRotation().y();
-        stream << "," << transform.getRotation().z() << ",,";
+        stream << "," << transform.getRotation().z() << ",";
 
         return stream.str();
     }

@@ -65,15 +65,12 @@ set(
   src/ros_interface/publisher/support_publisher.cpp
   src/ros_interface/publisher/debug_publisher.cpp
   src/throws/throw_factory.cpp
-  src/throws/throw_curves/throw_curve.cpp
-  src/throws/throw_curves/beziercurve_throw.cpp
-  src/throws/throw_curves/linear_spline_throw.cpp
-  src/throws/throw_curves/cubic_spline_throw.cpp
-  src/throws/throw_curves/smooth_spline_throw.cpp
-  src/throws/throw_curves/testing_throw.cpp
+  src/throws/throw_curves/throw_movement.cpp
+  src/throws/throw_curves/testing_movement.cpp
   src/utility/throw_ik.cpp
   src/utility/throw_stabilizer.cpp
   src/throws/throw_curves/throw_service.cpp
+  src/throws/throw_curves/throw_material.cpp
 )
 
 add_executable(ThrowNode ${SOURCES})

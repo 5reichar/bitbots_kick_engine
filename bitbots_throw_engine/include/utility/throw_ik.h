@@ -1,7 +1,7 @@
 #ifndef BITBOTS_THROW_THROW_IK_H
 #define BITBOTS_THROW_THROW_IK_H
 
-#include "throws/throw_curves/throw_curve.h"
+#include "throws/throw_curves/throw_movement.h"
 #include "bitbots_splines/abstract_ik.h"
 
 namespace bitbots_throw{

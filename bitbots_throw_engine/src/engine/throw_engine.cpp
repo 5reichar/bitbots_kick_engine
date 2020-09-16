@@ -18,8 +18,8 @@ namespace bitbots_throw{
 
 		response.support_foot_to_left_hand_ = sp_current_throw_->get_left_hand_transform(time_);
 		response.support_foot_to_right_hand_ = sp_current_throw_->get_right_hand_transform(time_);
-		response.support_foot_to_left_foot_ = sp_current_throw_->get_left_feet_transform(time_);
-		response.support_foot_to_right_foot_ = sp_current_throw_->get_right_feet_transform(time_);
+		response.support_foot_to_left_foot_ = sp_current_throw_->get_left_foot_transform(time_);
+		response.support_foot_to_right_foot_ = sp_current_throw_->get_right_foot_transform(time_);
 
 		time_ += dt;
 		return response;
@@ -27,7 +27,6 @@ namespace bitbots_throw{
 
 	void ThrowEngine::reset(){
 		time_ = 0.0;
-		throw_duration_ = 0.0;
 		sp_current_throw_ = nullptr;
 	}
 
@@ -37,7 +36,8 @@ namespace bitbots_throw{
 	}
 
 	int ThrowEngine::getPercentDone() const{
-	    return 0.0 == throw_duration_ ? 0 : (int) std::round(100.0 * (time_ / throw_duration_));
+	    auto duration = sp_current_throw_->get_duration();
+	    return 0.0 == duration ? 100 : (int) std::round(100.0 * (time_ / duration));
 	}
 
     void ThrowEngine::visualize_curves(std::shared_ptr<ThrowVisualizer> & sp_visualizer){
@@ -51,9 +51,11 @@ namespace bitbots_throw{
 
 	void ThrowEngine::setGoals(const ThrowRequest & request){
 		auto throw_type_id = sp_throw_factory_->get_throw_type(request.goal_position_);
-		sp_current_throw_ = sp_throw_factory_->create_throw(throw_type_id);
+		auto current_movement = sp_throw_factory_->create_movement(throw_type_id);
 		create_throw_parameter(throw_type_id, request);
-		throw_duration_ = sp_current_throw_->calculate_trajectories();
+		current_movement->init(sp_service_);
+		current_movement->calculate_trajectories();
+		sp_current_throw_ = current_movement->get_material();
 		movement_stages_ = sp_current_throw_->get_movement_stage();
 	}
 
@@ -104,8 +106,7 @@ namespace bitbots_throw{
             };
 		}
 
-        std::shared_ptr<ThrowService> service(new ThrowService(request, *type, *sp_engine_parameter_));
-		sp_current_throw_->init(service);
+        sp_service_ = std::make_shared<ThrowService>(request, *type, *sp_engine_parameter_);
 	}
 
     std::string ThrowEngine::get_throw_points_as_string() const{

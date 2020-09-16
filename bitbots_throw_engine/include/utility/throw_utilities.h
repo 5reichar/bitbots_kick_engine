@@ -80,6 +80,15 @@ namespace bitbots_throw{
         return joint_name;
     };
 
+    static void add_point(std::shared_ptr<bitbots_splines::PoseHandle> & pose, double const & time, Struct3dRPY const & values){
+        pose->x()->add_point(time, values.x_);
+        pose->y()->add_point(time, values.y_);
+        pose->z()->add_point(time, values.z_);
+        pose->roll()->add_point(time, values.roll_);
+        pose->pitch()->add_point(time, values.pitch_);
+        pose->yaw()->add_point(time, values.yaw_);
+    };
+
     static std::string generate_points_csv(bitbots_splines::Curve * curve){
         std::stringstream output, position;
 
