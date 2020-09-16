@@ -12,7 +12,6 @@ namespace bitbots_throw{
 			,dynamic_reconfigure_server_throw_params_(ros::NodeHandle("/throw_parameter"))
 			,tf2_ros_transform_listener_(tf2_ros_buffer_){
         init_dynamic_reconfiguration();
-        set_default_parameter();
         load_parameter();
         init_ros_subscriptions();
 		init_ik();
@@ -126,6 +125,11 @@ namespace bitbots_throw{
 
 	void ThrowNode::throw_engine_params_config_callback(bitbots_throw::throw_engine_paramsConfig & config , uint32_t level){
 		sp_node_parameter_.reset(new ThrowNodeParameter(config, level));
+
+		if(!sp_publisher_facade_ || !sp_ik_right_foot_ || !sp_ik_left_foot_ || !sp_ik_right_arm_ || !sp_ik_left_arm_){
+		    set_default_parameter();
+		}
+
         sp_publisher_facade_->update_node_parameter(sp_node_parameter_);
         sp_ik_left_arm_->set_bio_ik_timeout(sp_node_parameter_->bio_ik_time_);
         sp_ik_right_arm_->set_bio_ik_timeout(sp_node_parameter_->bio_ik_time_);
