@@ -8,21 +8,6 @@
 #include "../../bitbots_splines_extension/include/handle/pose_handle.h"
 
 namespace bitbots_throw{
-    enum class CurvePurpose{
-        trunk,
-        left_foot,
-        right_foot,
-        left_hand,
-        right_hand,
-        arms,
-        left_elbow,
-        left_shoulder_pitch,
-        left_shoulder_roll,
-        right_elbow,
-        right_shoulder_pitch,
-        right_shoulder_roll
-    };
-
     struct ThrowRequest{
         Struct3d ball_position_;
         Struct3d goal_position_;
@@ -39,52 +24,15 @@ namespace bitbots_throw{
         tf2::Transform support_foot_to_right_hand_;
         tf2::Transform support_foot_to_left_foot_;
         tf2::Transform support_foot_to_right_foot_;
-
-        // additional information for visualization
-        double phase_;
-        double traj_time_;
     };
 
-    static std::string get_joint_name(CurvePurpose joint){
-        std::string joint_name;
-
-        switch(joint){
-            case CurvePurpose::arms:
-                joint_name = "Arms";
-                break;
-            case CurvePurpose::left_elbow:
-                joint_name = "LElbow";
-                break;
-            case CurvePurpose::left_shoulder_pitch:
-                joint_name = "LShoulderPitch";
-                break;
-            case CurvePurpose::left_shoulder_roll:
-                joint_name = "LShoulderRoll";
-                break;
-            case CurvePurpose::right_elbow:
-                joint_name = "RElbow";
-                break;
-            case CurvePurpose::right_shoulder_pitch:
-                joint_name = "RShoulderPitch";
-                break;
-            case CurvePurpose::right_shoulder_roll:
-                joint_name = "RShoulderRoll";
-                break;
-            default:
-                joint_name = "";
-                break;
-        }
-
-        return joint_name;
-    };
-
-    static void add_point(std::shared_ptr<bitbots_splines::PoseHandle> & pose, double const & time, Struct3dRPY const & values){
-        pose->x()->add_point(time, values.x_);
-        pose->y()->add_point(time, values.y_);
-        pose->z()->add_point(time, values.z_);
-        pose->roll()->add_point(time, values.roll_);
-        pose->pitch()->add_point(time, values.pitch_);
-        pose->yaw()->add_point(time, values.yaw_);
+    static void add_point(std::shared_ptr<bitbots_splines::PoseHandle> & pose, double const & time, Struct3dRPY const & position, Struct3dRPY const & velocity, Struct3dRPY const & acceleration){
+        pose->x()->add_point(time, position.x_, velocity.x_, acceleration.x_);
+        pose->y()->add_point(time, position.y_, velocity.y_, acceleration.y_);
+        pose->z()->add_point(time, position.z_, velocity.z_, acceleration.z_);
+        pose->roll()->add_point(time, position.roll_, velocity.roll_, acceleration.roll_);
+        pose->pitch()->add_point(time, position.pitch_, velocity.pitch_, acceleration.pitch_);
+        pose->yaw()->add_point(time, position.yaw_, velocity.yaw_, acceleration.yaw_);
     };
 
     static std::string generate_points_csv(bitbots_splines::Curve * curve){

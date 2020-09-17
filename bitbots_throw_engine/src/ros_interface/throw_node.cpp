@@ -15,7 +15,7 @@ namespace bitbots_throw{
         load_parameter();
         init_ros_subscriptions();
 		init_ik();
-		SystemPublisher::publish_info("v0.20200916-2", "ThrowNode");
+		SystemPublisher::publish_info("v0.20200917-2", "ThrowNode");
 	}
 
 	void ThrowNode::set_default_parameter(){
@@ -187,10 +187,10 @@ namespace bitbots_throw{
     bitbots_splines::JointGoals ThrowNode::calculate_joint_goals(ThrowResponse const & response){
         bitbots_splines::JointGoals joint_goals;
 
-        std::vector<ThrowStabilizerData> data = {{response.support_foot_to_left_hand_, "l_wrist", "l_sole", 1}};
+        std::vector<ThrowStabilizerData> data = {{response.support_foot_to_left_hand_, "l_wrist", "base_link", 1}};
         calculate_goal(sp_ik_left_arm_, joint_goals, data);
 
-        data = {{response.support_foot_to_right_hand_, "r_wrist", "l_sole", 1}};
+        data = {{response.support_foot_to_right_hand_, "r_wrist", "base_link", 1}};
         calculate_goal(sp_ik_right_arm_, joint_goals, data);
 
         data = {{response.support_foot_to_left_foot_, "l_sole", "base_link", 1}};

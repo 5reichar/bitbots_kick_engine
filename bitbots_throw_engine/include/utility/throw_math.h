@@ -18,7 +18,6 @@ namespace bitbots_throw{
             return std::cos(angle*pi_/180);
         }
 
-
         static double calculate_angle(Struct3d & point){
             return atan((point.y_ / point.x_));
         }

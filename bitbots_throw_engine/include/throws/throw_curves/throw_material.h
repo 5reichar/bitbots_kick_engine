@@ -14,10 +14,10 @@ namespace bitbots_throw{
             ,std::shared_ptr<bitbots_splines::PoseHandle> left_foot
             ,std::shared_ptr<bitbots_splines::PoseHandle> right_foot);
 
-        void add_point_to_left_hand(double const & time, Struct3dRPY const & values);
-        void add_point_to_right_hand(double const & time, Struct3dRPY const & values);
-        void add_point_to_left_foot(double const & time, Struct3dRPY const & values);
-        void add_point_to_right_foot(double const & time, Struct3dRPY const & values);
+        void add_point_to_left_hand(double const & time, Struct3dRPY const & values, Struct3dRPY const & velocity = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, Struct3dRPY const & acceleration = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        void add_point_to_right_hand(double const & time, Struct3dRPY const & values, Struct3dRPY const & velocity = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, Struct3dRPY const & acceleration = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        void add_point_to_left_foot(double const & time, Struct3dRPY const & values, Struct3dRPY const & velocity = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, Struct3dRPY const & acceleration = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        void add_point_to_right_foot(double const & time, Struct3dRPY const & values, Struct3dRPY const & velocity = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, Struct3dRPY const & acceleration = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
 
         void add_movement_stage(double & time_stage_start);
 
@@ -33,7 +33,7 @@ namespace bitbots_throw{
         void visualize_curves(std::shared_ptr<ThrowVisualizer> & sp_visualizer);
 
     private:
-        void add_point_to_pose(std::shared_ptr<bitbots_splines::PoseHandle> & pose, double const & time, Struct3dRPY const & values);
+        void add_point_to_pose(std::shared_ptr<bitbots_splines::PoseHandle> & pose, double const & time, Struct3dRPY const & values, Struct3dRPY const & velocity, Struct3dRPY const & acceleration);
 
         double duration_;
         std::vector<double> movement_stage_;

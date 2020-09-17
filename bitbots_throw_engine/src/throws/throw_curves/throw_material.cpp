@@ -13,20 +13,20 @@ namespace bitbots_throw{
         duration_ = 0.0;
     }
 
-    void ThrowMaterial::add_point_to_left_hand(const double & time, const Struct3dRPY & values){
-        add_point_to_pose(sp_pose_left_hand_, time, values);
+    void ThrowMaterial::add_point_to_left_hand(const double & time, const Struct3dRPY & values, Struct3dRPY const & velocity, Struct3dRPY const & acceleration){
+        add_point_to_pose(sp_pose_left_hand_, time, values, velocity, acceleration);
     }
 
-    void ThrowMaterial::add_point_to_right_hand(const double & time, const Struct3dRPY & values){
-        add_point_to_pose(sp_pose_right_hand_, time, values);
+    void ThrowMaterial::add_point_to_right_hand(const double & time, const Struct3dRPY & values, Struct3dRPY const & velocity, Struct3dRPY const & acceleration){
+        add_point_to_pose(sp_pose_right_hand_, time, values, velocity, acceleration);
     }
 
-    void ThrowMaterial::add_point_to_left_foot(const double & time, const Struct3dRPY & values){
-        add_point_to_pose(sp_pose_left_foot_, time, values);
+    void ThrowMaterial::add_point_to_left_foot(const double & time, const Struct3dRPY & values, Struct3dRPY const & velocity, Struct3dRPY const & acceleration){
+        add_point_to_pose(sp_pose_left_foot_, time, values, velocity, acceleration);
     }
 
-    void ThrowMaterial::add_point_to_right_foot(const double & time, const Struct3dRPY & values){
-        add_point_to_pose(sp_pose_right_foot_, time, values);
+    void ThrowMaterial::add_point_to_right_foot(const double & time, const Struct3dRPY & values, Struct3dRPY const & velocity, Struct3dRPY const & acceleration){
+        add_point_to_pose(sp_pose_right_foot_, time, values, velocity, acceleration);
     }
 
     void ThrowMaterial::add_movement_stage(double & time_stage_start){
@@ -93,8 +93,8 @@ namespace bitbots_throw{
         sp_visualizer->display_right_foot(sp_pose_right_foot_);
     }
 
-    void ThrowMaterial::add_point_to_pose(std::shared_ptr<bitbots_splines::PoseHandle> & pose, double const & time, Struct3dRPY const & values){
-        add_point(pose, time, values);
+    void ThrowMaterial::add_point_to_pose(std::shared_ptr<bitbots_splines::PoseHandle> & pose, double const & time, Struct3dRPY const & values, Struct3dRPY const & velocity, Struct3dRPY const & acceleration){
+        add_point(pose, time, values, velocity, acceleration);
         if (duration_ < time){
             duration_ = time;
         }

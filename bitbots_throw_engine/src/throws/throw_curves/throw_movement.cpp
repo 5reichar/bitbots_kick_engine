@@ -32,26 +32,42 @@ namespace bitbots_throw{
         /////  Preparation
         //Set up the trajectories for the half cycle (single step)
         auto movement_time = sp_service_->get_movement_time_pick_up_ball();
+        double orientation_time = trajectory_time_ + (movement_time / 2);
         double squat_time = trajectory_time_ + (movement_time / 2);
+        double reach_time = trajectory_time_ + (movement_time / 2);
         double pick_up_ball_time = trajectory_time_ + movement_time;
 
         ////  Movement
+        ////==== Start position
         sp_material_->add_point_to_left_hand(trajectory_time_, sp_service_->get_left_arm_start());
-        sp_material_->add_point_to_left_hand(squat_time, sp_service_->get_left_arm_start());
-        sp_material_->add_point_to_left_hand(pick_up_ball_time, sp_service_->get_left_arm_pick_up());
-
         sp_material_->add_point_to_right_hand(trajectory_time_, sp_service_->get_right_arm_start());
-        sp_material_->add_point_to_right_hand(squat_time, sp_service_->get_right_arm_start());
-        sp_material_->add_point_to_right_hand(pick_up_ball_time, sp_service_->get_right_arm_pick_up());
-
         sp_material_->add_point_to_left_foot(trajectory_time_, sp_service_->get_left_foot_start());
-        sp_material_->add_point_to_left_foot(squat_time, sp_service_->get_left_foot_squat());
-        sp_material_->add_point_to_left_foot(pick_up_ball_time, sp_service_->get_left_foot_squat());
-
         sp_material_->add_point_to_right_foot(trajectory_time_, sp_service_->get_right_foot_start());
+
+        ////==== Orient to ball
+        sp_material_->add_point_to_left_hand(orientation_time, sp_service_->get_left_arm_start());
+        sp_material_->add_point_to_right_hand(orientation_time, sp_service_->get_right_arm_start());
+        sp_material_->add_point_to_left_foot(orientation_time, sp_service_->get_left_foot_orientation_to_ball());
+        sp_material_->add_point_to_right_foot(orientation_time, sp_service_->get_right_foot_orientation_to_ball());
+
+        ////==== Squat
+        sp_material_->add_point_to_left_hand(squat_time, sp_service_->get_left_arm_start());
+        sp_material_->add_point_to_right_hand(squat_time, sp_service_->get_right_arm_start());
+        sp_material_->add_point_to_left_foot(squat_time, sp_service_->get_left_foot_squat());
         sp_material_->add_point_to_right_foot(squat_time, sp_service_->get_right_foot_squat());
+
+        ////==== Reach to ball
+        sp_material_->add_point_to_left_hand(reach_time, sp_service_->get_left_arm_reach_to_ball());
+        sp_material_->add_point_to_right_hand(reach_time, sp_service_->get_right_arm_reach_to_ball());
+        sp_material_->add_point_to_left_foot(reach_time, sp_service_->get_left_foot_squat());
+        sp_material_->add_point_to_right_foot(reach_time, sp_service_->get_right_foot_squat());
+
+        ////==== Pick ball
+        sp_material_->add_point_to_left_hand(pick_up_ball_time, sp_service_->get_left_arm_pick_up());
+        sp_material_->add_point_to_right_hand(pick_up_ball_time, sp_service_->get_right_arm_pick_up());
+        sp_material_->add_point_to_left_foot(pick_up_ball_time, sp_service_->get_left_foot_squat());
         sp_material_->add_point_to_right_foot(pick_up_ball_time, sp_service_->get_right_foot_squat());
-        
+
         /////  Clean Up
         trajectory_time_ = pick_up_ball_time;
         sp_material_->add_movement_stage(trajectory_time_);
@@ -61,21 +77,26 @@ namespace bitbots_throw{
         /////  Preparation
         //Set up the trajectories for the half cycle (single step)
         auto movement_time = sp_service_->get_movement_time_throw_preparation();
-        auto move_ball_at_head_height = trajectory_time_ + (movement_time / 3);
-        auto move_ball_over_the_height = trajectory_time_ + (2 * movement_time / 3);
+        auto move_ball_up = trajectory_time_ + (movement_time / 3);
+        auto move_ball_over_the_head = trajectory_time_ + (2 * movement_time / 3);
         double begin_throw_time = trajectory_time_ + movement_time;
 
         ////  Movement
-        sp_material_->add_point_to_left_hand(move_ball_at_head_height, sp_service_->get_left_arm_ball_at_head_height());
-        sp_material_->add_point_to_left_hand(move_ball_over_the_height, sp_service_->get_left_arm_throw_zenith());
+        ////==== Move ball up
+        sp_material_->add_point_to_left_hand(move_ball_up, sp_service_->get_left_arm_ball_at_head_height());
+        sp_material_->add_point_to_right_hand(move_ball_up, sp_service_->get_right_arm_ball_at_head_height());
+        sp_material_->add_point_to_left_foot(move_ball_up, sp_service_->get_left_foot_start());
+        sp_material_->add_point_to_right_foot(move_ball_up, sp_service_->get_right_foot_start());
+
+        ////==== Move ball over the head
+        sp_material_->add_point_to_left_hand(move_ball_over_the_head, sp_service_->get_left_arm_throw_zenith());
+        sp_material_->add_point_to_right_hand(move_ball_over_the_head, sp_service_->get_right_arm_throw_zenith());
+        sp_material_->add_point_to_left_foot(move_ball_over_the_head, sp_service_->get_left_foot_orientation_to_goal());
+        sp_material_->add_point_to_right_foot(move_ball_over_the_head, sp_service_->get_right_foot_orientation_to_goal());
+
+        ////==== Begin throw position
         sp_material_->add_point_to_left_hand(begin_throw_time, sp_service_->get_left_arm_throw_start());
-
-        sp_material_->add_point_to_right_hand(move_ball_at_head_height, sp_service_->get_right_arm_ball_at_head_height());
-        sp_material_->add_point_to_right_hand(move_ball_over_the_height, sp_service_->get_right_arm_throw_zenith());
         sp_material_->add_point_to_right_hand(begin_throw_time, sp_service_->get_right_arm_throw_start());
-
-        sp_material_->add_point_to_left_foot(begin_throw_time, sp_service_->get_left_foot_start());
-        sp_material_->add_point_to_right_foot(begin_throw_time, sp_service_->get_right_foot_start());
 
         /////  Clean Up
         trajectory_time_ = begin_throw_time;
@@ -90,10 +111,14 @@ namespace bitbots_throw{
         double release_throw_time = trajectory_time_ + movement_time;
 
         ////  Movement
+        ////==== Return to ball to over head position
         sp_material_->add_point_to_left_hand(zenith_throw_time, sp_service_->get_left_arm_throw_zenith());
-        sp_material_->add_point_to_left_hand(release_throw_time, sp_service_->get_left_arm_throw_release());
         sp_material_->add_point_to_right_hand(zenith_throw_time, sp_service_->get_right_arm_throw_zenith());
-        sp_material_->add_point_to_right_hand(release_throw_time, sp_service_->get_right_arm_throw_release());
+
+        ////==== Release ball
+        //Struct3dRPY velocity = sp_service_->get_throw_velocity();
+        sp_material_->add_point_to_left_hand(release_throw_time, sp_service_->get_left_arm_throw_release());//, velocity);
+        sp_material_->add_point_to_right_hand(release_throw_time, sp_service_->get_right_arm_throw_release());//, velocity);
 
         /////  Clean Up
         trajectory_time_ = release_throw_time;

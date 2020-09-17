@@ -281,15 +281,16 @@ namespace bitbots_throw{
 
     std::string TestingMovement::test_pose_handle_with_function(std::shared_ptr<bitbots_splines::PoseHandle> handle){
         std::stringstream log;
+        Struct3dRPY zeros(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
         log << "x-points, -3.0, -1.0, 0.0, 1.0, 3.0, (ascending)" << std::endl;
         log << "y-points, -3.0, 0.0, 3.0, 0.0, -3.0, (cycle)" << std::endl;
         log << "z-points, -3.0, -5.0, 0.0, 2.0, 1.0, (divers)" << std::endl;
 
-        add_point(handle, 0.0, Struct3dRPY(-3.0, -3.0, -3.0, 0.0, 0.0, 0.0));
-        add_point(handle, 0.5, Struct3dRPY(-1.0, 0.0, -5.0, 0.0, 0.0, 0.0));
-        add_point(handle, 1.0, Struct3dRPY(0.0, 3.0, 0.0, 0.0, 0.0, 0.0));
-        add_point(handle, 1.5, Struct3dRPY(1.0, 0.0, 2.0, 0.0, 0.0, 0.0));
-        add_point(handle, 2.0, Struct3dRPY(3.0, -3.0, 1.0, 0.0, 0.0, 0.0));
+        add_point(handle, 0.0, Struct3dRPY(-3.0, -3.0, -3.0, 0.0, 0.0, 0.0), zeros, zeros);
+        add_point(handle, 0.5, Struct3dRPY(-1.0, 0.0, -5.0, 0.0, 0.0, 0.0), zeros, zeros);
+        add_point(handle, 1.0, Struct3dRPY(0.0, 3.0, 0.0, 0.0, 0.0, 0.0), zeros, zeros);
+        add_point(handle, 1.5, Struct3dRPY(1.0, 0.0, 2.0, 0.0, 0.0, 0.0), zeros, zeros);
+        add_point(handle, 2.0, Struct3dRPY(3.0, -3.0, 1.0, 0.0, 0.0, 0.0), zeros, zeros);
 
         log << handle->get_debug_csv() << std::endl;
         log << generate_points_csv(*handle, 2.1) << std::endl;

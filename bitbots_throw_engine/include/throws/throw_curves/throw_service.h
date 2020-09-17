@@ -11,29 +11,37 @@ namespace bitbots_throw{
         ThrowService(ThrowRequest request, ThrowType throw_type, ThrowEngineParameter engine_parameter);
 
         virtual Struct3dRPY get_left_arm_start();
+        virtual Struct3dRPY get_left_arm_reach_to_ball();
         virtual Struct3dRPY get_left_arm_pick_up();
+        virtual Struct3dRPY get_left_arm_ball_at_head_height();
         virtual Struct3dRPY get_left_arm_throw_zenith();
         virtual Struct3dRPY get_left_arm_throw_start();
-        virtual Struct3dRPY get_left_arm_ball_at_head_height();
         virtual Struct3dRPY get_left_arm_throw_release();
 
         virtual Struct3dRPY get_right_arm_start();
         virtual Struct3dRPY get_right_arm_pick_up();
+        virtual Struct3dRPY get_right_arm_reach_to_ball();
+        virtual Struct3dRPY get_right_arm_ball_at_head_height();
         virtual Struct3dRPY get_right_arm_throw_zenith();
         virtual Struct3dRPY get_right_arm_throw_start();
-        virtual Struct3dRPY get_right_arm_ball_at_head_height();
         virtual Struct3dRPY get_right_arm_throw_release();
 
         virtual Struct3dRPY get_left_foot_start();
+        virtual Struct3dRPY get_left_foot_orientation_to_ball();
         virtual Struct3dRPY get_left_foot_squat();
+        virtual Struct3dRPY get_left_foot_orientation_to_goal();
 
         virtual Struct3dRPY get_right_foot_start();
+        virtual Struct3dRPY get_right_foot_orientation_to_ball();
         virtual Struct3dRPY get_right_foot_squat();
+        virtual Struct3dRPY get_right_foot_orientation_to_goal();
 
         virtual double get_movement_time_pick_up_ball();
         virtual double get_movement_time_throw_preparation();
         virtual double get_movement_time_throw();
         virtual double get_movement_time_throw_conclusion();
+
+        virtual Struct3dRPY get_throw_velocity();
 
     private:
         ThrowRequest request_;
