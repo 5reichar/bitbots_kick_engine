@@ -167,16 +167,12 @@ namespace bitbots_throw{
 
             position = get_pose("head").position;
             request.head_position_ = {position.x, position.y, position.z};
-
-            position = get_pose("base_link").position;
-            request.trunk_position_ = {position.x, position.y, position.z};
         }
         catch(tf2::TransformException &e){
             SystemPublisher::publish_error(e.what(), "ThrowNode::create_throw_request()");
 
             auto hand_height = sp_engine_parameter_->trunk_height_;
             request.head_position_ = {0.0, 0.0, hand_height};
-            request.trunk_position_ = {0.0, 0.0, 0.0};
             hand_height -= sp_engine_parameter_->arm_length_;
             request.left_hand_position_ = {0.0, -0.15, hand_height};
             request.right_hand_position_ = {0.0, 0.15, hand_height};

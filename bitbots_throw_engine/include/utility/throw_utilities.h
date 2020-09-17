@@ -28,7 +28,6 @@ namespace bitbots_throw{
         Struct3d goal_position_;
 
         Struct3d head_position_;
-        Struct3d trunk_position_;
         Struct3d left_hand_position_;
         Struct3d right_hand_position_;
         Struct3d left_feet_position_;
@@ -38,7 +37,6 @@ namespace bitbots_throw{
     struct ThrowResponse{
         tf2::Transform support_foot_to_left_hand_;
         tf2::Transform support_foot_to_right_hand_;
-        tf2::Transform support_foot_to_trunk_;
         tf2::Transform support_foot_to_left_foot_;
         tf2::Transform support_foot_to_right_foot_;
 

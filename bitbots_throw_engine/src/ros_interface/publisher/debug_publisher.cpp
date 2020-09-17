@@ -29,7 +29,6 @@ namespace bitbots_throw{
         msg.movement_stage = movement_stage;
         tf2::toMsg(response.support_foot_to_left_hand_, msg.left_hand_goal);
         tf2::toMsg(response.support_foot_to_right_hand_, msg.right_hand_goal);
-        tf2::toMsg(response.support_foot_to_trunk_, msg.trunk_goal);
         tf2::toMsg(response.support_foot_to_left_foot_, msg.left_foot_goal);
         tf2::toMsg(response.support_foot_to_right_foot_, msg.right_foot_goal);
 
@@ -45,13 +44,6 @@ namespace bitbots_throw{
                             ,msg.right_hand_goal
                             ,255
                             ,127
-                            ,0
-                            ,1);
-        publish_arrow_marker("throw_engine_trunk_goal"
-                            ,"base_link"
-                            ,msg.trunk_goal
-                            ,255
-                            ,0
                             ,0
                             ,1);
         publish_arrow_marker("throw_engine_left_foot_goal"
