@@ -11,7 +11,7 @@ namespace bitbots_throw{
         ThrowTypeId get_throw_type(Struct3d const & throw_goal);
         void set_throw_type_parameter(std::shared_ptr<ThrowTypeParameter> & throw_type_parameter);
 
-        std::shared_ptr<ThrowMovement> create_movement(ThrowTypeId throw_type_id);
+        std::shared_ptr<ThrowMovement> select_movement(ThrowTypeId throw_type_id);
 
 	private:
         template<class c> std::shared_ptr<ThrowMaterial> create_curve();

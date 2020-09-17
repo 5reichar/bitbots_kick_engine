@@ -31,7 +31,7 @@ namespace bitbots_throw{
         sp_throw_type_parameter_ = throw_type_parameter;
     }
 
-	std::shared_ptr<ThrowMovement> ThrowFactory::create_movement(ThrowTypeId throw_type_id){
+	std::shared_ptr<ThrowMovement> ThrowFactory::select_movement(ThrowTypeId throw_type_id){
 		std::shared_ptr<ThrowMovement> sp_return;
 
         if(ThrowTypeId::none == throw_type_id){

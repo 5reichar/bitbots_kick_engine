@@ -9,10 +9,11 @@ namespace bitbots_throw{
         TestingMovement(std::shared_ptr<ThrowMaterial> material);
 
     protected:
-        void calculate_pick_up_ball_movement() override;
-        void calculate_throw_preparation_movement() override;
-        void calculate_throw_movement() override ;
-        void calculate_throw_conclusion_movement() override;
+        double init_material() override;
+        void test_curves();
+        void move_arms_and_feet();
+        void squat() ;
+        void rotate_right_hand();
 
         template<typename curve_type> void test_curve_type(std::string const & type_name);
 

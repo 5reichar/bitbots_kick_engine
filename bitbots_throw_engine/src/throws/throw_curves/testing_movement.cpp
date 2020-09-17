@@ -12,7 +12,18 @@ namespace bitbots_throw{
         max_prepare_rounds_ = 20;
     }
 
-    void TestingMovement::calculate_pick_up_ball_movement(){
+    double TestingMovement::init_material(){
+        trajectory_time_ = 0.0;
+
+        test_curves();
+        move_arms_and_feet();
+        squat();
+        rotate_right_hand();
+
+        return trajectory_time_;
+    }
+
+    void TestingMovement::test_curves(){
         test_curve_type<bitbots_splines::Beziercurve>("Beziercurve");
         test_curve_type<bitbots_splines::LinearSpline>("LinearSpline");
         test_curve_type<bitbots_splines::CubicSpline>("CubicSpline");
@@ -23,7 +34,7 @@ namespace bitbots_throw{
         SystemPublisher::publish_info("Finished Testing", "TestingMovement");
     }
 
-    void TestingMovement::calculate_throw_preparation_movement(){
+    void TestingMovement::move_arms_and_feet(){
         SystemPublisher::publish_info("Start Testing Movement III", "TestingMovement");
         sp_material_->add_point_to_right_hand(trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
         sp_material_->add_point_to_left_hand(trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
@@ -76,7 +87,7 @@ namespace bitbots_throw{
         SystemPublisher::publish_info("Finished Testing Movement III", "TestingMovement");
     }
 
-    void TestingMovement::calculate_throw_movement(){
+    void TestingMovement::squat(){
         SystemPublisher::publish_info("Start Testing Movement II", "TestingMovement");
         sp_material_->add_point_to_right_hand(trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
         sp_material_->add_point_to_left_hand(trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
@@ -96,7 +107,7 @@ namespace bitbots_throw{
         SystemPublisher::publish_info("Finished Testing Movement II", "TestingMovement");
     }
 
-    void TestingMovement::calculate_throw_conclusion_movement(){
+    void TestingMovement::rotate_right_hand(){
         SystemPublisher::publish_info("Start Testing Movement I", "TestingMovement");
         sp_material_->add_point_to_right_hand(trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
         sp_material_->add_point_to_left_hand(trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});

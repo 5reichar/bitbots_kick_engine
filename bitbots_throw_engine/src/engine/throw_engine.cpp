@@ -51,14 +51,10 @@ namespace bitbots_throw{
 
 	void ThrowEngine::setGoals(const ThrowRequest & request){
 		auto throw_type_id = sp_throw_factory_->get_throw_type(request.goal_position_);
-		auto current_movement = sp_throw_factory_->create_movement(throw_type_id);
-		create_throw_parameter(throw_type_id, request);
-		current_movement->init(sp_service_);
-		current_movement->calculate_trajectories();
-		sp_current_throw_ = current_movement->get_material();
-		movement_stages_ = sp_current_throw_->get_movement_stage();
+		auto current_movement = sp_throw_factory_->select_movement(throw_type_id);
+		current_movement->init(create_service(throw_type_id, request));
+		sp_current_throw_ = current_movement->create_material();
 	}
-
 
 	void ThrowEngine::set_throw_types(std::shared_ptr<ThrowTypeParameter> & types){
 	    sp_throw_types_ = types;
@@ -69,7 +65,7 @@ namespace bitbots_throw{
 		sp_engine_parameter_ = parameter;
 	}
 
-	void ThrowEngine::create_throw_parameter(const ThrowTypeId throw_type_id, const ThrowRequest & request){
+    std::shared_ptr<ThrowService> ThrowEngine::create_service(const ThrowTypeId throw_type_id, const ThrowRequest & request){
 	    std::shared_ptr<ThrowType> type;
 
 		if (sp_throw_types_->map_throw_types_.cend() == sp_throw_types_->map_throw_types_.find(throw_type_id)){
@@ -106,7 +102,7 @@ namespace bitbots_throw{
             };
 		}
 
-        sp_service_ = std::make_shared<ThrowService>(request, *type, *sp_engine_parameter_);
+        return std::make_shared<ThrowService>(request, *type, *sp_engine_parameter_);
 	}
 
     std::string ThrowEngine::get_throw_points_as_string() const{
@@ -115,8 +111,9 @@ namespace bitbots_throw{
 
     int8_t ThrowEngine::get_movement_stage() const{
 	    int8_t stage = 0;
+	    auto v_stages = sp_current_throw_->get_movement_stage();
 
-	    while(movement_stages_.size() > stage && time_ >= movement_stages_.at(stage)){
+	    while(v_stages.size() > stage && time_ >= v_stages.at(stage)){
 	        ++stage;
 	    }
 
