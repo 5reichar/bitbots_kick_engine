@@ -12,22 +12,23 @@ namespace bitbots_throw{
         sp_service_ = std::move(service);
     }
 
-    std::shared_ptr<ThrowMaterial> ThrowMovement::get_material() const{
+    std::shared_ptr<ThrowMaterial> ThrowMovement::create_material(){
+        init_material();
         return sp_material_;
     }
 
-    double ThrowMovement::calculate_trajectories(){
+    double ThrowMovement::init_material(){
         trajectory_time_ = 0.0;
 
-        calculate_pick_up_ball_movement();
-        calculate_throw_preparation_movement();
-        calculate_throw_movement();
-        calculate_throw_conclusion_movement();
+        add_pick_up_ball_movement();
+        add_throw_preparation_movement();
+        add_throw_movement();
+        add_throw_conclusion_movement();
 
         return trajectory_time_;
     }
 
-    void ThrowMovement::calculate_pick_up_ball_movement(){
+    void ThrowMovement::add_pick_up_ball_movement(){
         /////  Preparation
         //Set up the trajectories for the half cycle (single step)
         auto movement_time = sp_service_->get_movement_time_pick_up_ball();
@@ -56,7 +57,7 @@ namespace bitbots_throw{
         sp_material_->add_movement_stage(trajectory_time_);
     }
 
-    void ThrowMovement::calculate_throw_preparation_movement(){
+    void ThrowMovement::add_throw_preparation_movement(){
         /////  Preparation
         //Set up the trajectories for the half cycle (single step)
         auto movement_time = sp_service_->get_movement_time_throw_preparation();
@@ -81,7 +82,7 @@ namespace bitbots_throw{
         sp_material_->add_movement_stage(trajectory_time_);
     }
 
-    void ThrowMovement::calculate_throw_movement(){
+    void ThrowMovement::add_throw_movement(){
         /////  Preparation
         //Set up the trajectories for the half cycle (single step)
         auto movement_time = sp_service_->get_movement_time_throw();
@@ -99,7 +100,7 @@ namespace bitbots_throw{
         sp_material_->add_movement_stage(trajectory_time_);
     }
 
-    void ThrowMovement::calculate_throw_conclusion_movement(){
+    void ThrowMovement::add_throw_conclusion_movement(){
         /////  Preparation
         //Set up the trajectories for the half cycle (single step)
         auto movement_time = sp_service_->get_movement_time_throw_conclusion();
