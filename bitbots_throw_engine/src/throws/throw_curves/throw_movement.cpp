@@ -32,9 +32,9 @@ namespace bitbots_throw{
         /////  Preparation
         //Set up the trajectories for the half cycle (single step)
         auto movement_time = sp_service_->get_movement_time_pick_up_ball();
-        double orientation_time = trajectory_time_ + (movement_time / 2);
+        double orientation_time = trajectory_time_ + (movement_time / 4);
         double squat_time = trajectory_time_ + (movement_time / 2);
-        double reach_time = trajectory_time_ + (movement_time / 2);
+        double reach_time = trajectory_time_ + 3 * (movement_time / 4);
         double pick_up_ball_time = trajectory_time_ + movement_time;
 
         ////  Movement
