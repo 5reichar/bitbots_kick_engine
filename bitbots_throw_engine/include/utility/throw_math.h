@@ -39,7 +39,7 @@ namespace bitbots_throw{
             return throw_release_point;
         };
 
-        static std::pair<double, double> calculate_foot_movement_for_rotate_robot(Struct3d rotation_goal, double foot_distance){
+        static std::pair<double, double> calculate_foot_movement_for_rotate_robot(Struct3d const & rotation_goal, double const & foot_distance){
             //TODO: testing
             std::pair<double, double> return_value = {0.0, 0.0};
 
@@ -52,6 +52,20 @@ namespace bitbots_throw{
             return_value.second = 2 * foot_distance * (1 - temp_1) * temp_1;
 
             return return_value;
+        }
+
+        static void calculate_positions_after_coordinate_rotation(double const & rotation_angle, double & x, double & y, bool const & rotate_left){
+            ThrowMath math;
+            double old_x = x;
+            double old_y = y;
+
+            if(rotate_left){
+                x = old_x * math.cos_deg(rotation_angle) + old_y * math.sin_deg(rotation_angle);
+                y = -1 * old_x * math.sin_deg(rotation_angle) + old_y * math.cos_deg(rotation_angle);
+            }else{
+                x = old_x * math.cos_deg(rotation_angle) - old_y * math.sin_deg(rotation_angle);
+                y = old_x * math.sin_deg(rotation_angle) + old_y * math.cos_deg(rotation_angle);
+            }
         }
 
     private:

@@ -114,9 +114,11 @@ namespace bitbots_throw{
             if(request_.ball_position_.y_ > 0){
                 point.x_ -= diffs.first;
                 point.y_ -= diffs.second;
+                ThrowMath::calculate_positions_after_coordinate_rotation(point.pitch_, request_.goal_position_.x_, request_.goal_position_.y_, true);
             }else{
                 point.x_ += diffs.first;
                 point.y_ += diffs.second;
+                ThrowMath::calculate_positions_after_coordinate_rotation(point.pitch_, request_.goal_position_.x_, request_.goal_position_.y_, false);
             }
         }
         return point;
