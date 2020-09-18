@@ -109,7 +109,15 @@ namespace bitbots_throw{
         Struct3dRPY point = request_.left_feet_position_;
         if(request_.ball_position_.y_ != 0){
             point.pitch_ = ThrowMath::calculate_angle(request_.ball_position_);
-            //TODO: add position for x and y to change rotateion
+            //TODO: testing
+            auto diffs = ThrowMath::calculate_foot_movement_for_rotate_robot(request_.ball_position_, point.y_);
+            if(request_.ball_position_.y_ > 0){
+                point.x_ -= diffs.first;
+                point.y_ -= diffs.second;
+            }else{
+                point.x_ += diffs.first;
+                point.y_ += diffs.second;
+            }
         }
         return point;
     }
@@ -122,7 +130,15 @@ namespace bitbots_throw{
         Struct3dRPY point = request_.left_feet_position_;
         if(request_.goal_position_.y_ != 0){
             point.pitch_ = ThrowMath::calculate_angle(request_.goal_position_);
-            //TODO: add position for x and y to change rotateion
+            //TODO: testing
+            auto diffs = ThrowMath::calculate_foot_movement_for_rotate_robot(request_.goal_position_, point.y_);
+            if(request_.ball_position_.y_ > 0){
+                point.x_ -= diffs.first;
+                point.y_ -= diffs.second;
+            }else{
+                point.x_ += diffs.first;
+                point.y_ += diffs.second;
+            }
         }
         return point;
     }
@@ -133,7 +149,15 @@ namespace bitbots_throw{
         Struct3dRPY point = request_.right_feet_position_;
         if(request_.ball_position_.y_ != 0){
             point.pitch_ = ThrowMath::calculate_angle(request_.ball_position_);
-            //TODO: add position for x and y to change rotateion
+            //TODO: testing
+            auto diffs = ThrowMath::calculate_foot_movement_for_rotate_robot(request_.ball_position_, point.y_);
+            if(request_.ball_position_.y_ > 0){
+                point.x_ += diffs.first;
+                point.y_ += diffs.second;
+            }else{
+                point.x_ -= diffs.first;
+                point.y_ -= diffs.second;
+            }
         }
         return point;
     }
@@ -146,7 +170,15 @@ namespace bitbots_throw{
         Struct3dRPY point = request_.right_feet_position_;
         if(request_.goal_position_.y_ != 0){
             point.pitch_ = ThrowMath::calculate_angle(request_.goal_position_);
-            //TODO: add position for x and y to change rotateion
+            //TODO: testing
+            auto diffs = ThrowMath::calculate_foot_movement_for_rotate_robot(request_.goal_position_, point.y_);
+            if(request_.ball_position_.y_ > 0){
+                point.x_ += diffs.first;
+                point.y_ += diffs.second;
+            }else{
+                point.x_ -= diffs.first;
+                point.y_ -= diffs.second;
+            }
         }
         return point;
     }
