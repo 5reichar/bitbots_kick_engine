@@ -45,8 +45,19 @@ namespace bitbots_throw{
         double green_;
         double blue_;
 
-        color(double red, double green, double blue)
+        Color(double red, double green, double blue)
                 :red_(red), green_(green), blue_(blue){
+        }
+
+        Color operator+(Color c){
+            return {red_ + c.red_, green_ + c.green_, blue_ + c.blue_};
+        }
+
+        Color & operator+=(Color c){
+            red_ += c.red_;
+            green_ += c.green_;
+            blue_ += c.blue_;
+            return *this;
         }
     };
 } //bitbots_throw
