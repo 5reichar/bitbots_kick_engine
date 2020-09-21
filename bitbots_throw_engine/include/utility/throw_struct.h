@@ -49,14 +49,47 @@ namespace bitbots_throw{
                 :red_(red), green_(green), blue_(blue){
         }
 
-        Color operator+(Color c){
+        Color operator+(const Color & c) const{
             return {red_ + c.red_, green_ + c.green_, blue_ + c.blue_};
         }
 
-        Color & operator+=(Color c){
+        Color & operator+=(const Color & c){
             red_ += c.red_;
             green_ += c.green_;
             blue_ += c.blue_;
+            return *this;
+        }
+
+        Color operator-(const Color & c) const{
+            return {red_ - c.red_, green_ - c.green_, blue_ - c.blue_};
+        }
+
+        Color & operator-=(const Color & c){
+            red_ -= c.red_;
+            green_ -= c.green_;
+            blue_ -= c.blue_;
+            return *this;
+        }
+
+        Color operator*(const double & d) const{
+            return {red_ * d, green_ * d, blue_ * d};
+        }
+
+        Color & operator*=(const double & d){
+            red_ *= d;
+            green_ *= d;
+            blue_ *= d;
+            return *this;
+        }
+
+        Color operator/(const double & d) const{
+            return {red_ / d, green_ / d, blue_ / d};
+        }
+
+        Color & operator/=(const double & d){
+            red_ /= d;
+            green_ /= d;
+            blue_ /= d;
             return *this;
         }
     };
