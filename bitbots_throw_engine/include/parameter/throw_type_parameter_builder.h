@@ -2,14 +2,17 @@
 #define BITBOTS_THROW_THROW_TYPE_PARAMETER_BUILDER_H
 
 #include <memory>
+#include "utility/throw_math.h"
 #include "parameter/throw_type_parameter.h"
+#include "parameter/throw_engine_parameter.h"
 #include <bitbots_throw/throw_paramsConfig.h>
 
 namespace bitbots_throw{
     class ThrowTypeParameterBuilder{
     public:
         static std::shared_ptr<ThrowTypeParameter> build_from_dynamic_reconf(bitbots_throw::throw_paramsConfig& config
-                                                                            ,uint32_t level){
+                                                                            ,uint32_t level
+                                                                            ,std::shared_ptr<ThrowEngineParameter> params){
             auto sp_parameter = build_default();
             auto current_id = (ThrowTypeId)config.default_throw_enum;
             sp_parameter->default_throw_id_ = current_id;
@@ -19,7 +22,7 @@ namespace bitbots_throw{
                                                                          ,config.throw_1_throw_active
                                                                          ,config.throw_1_throw_priority_level
                                                                          ,config.throw_1_throw_strength
-                                                                         ,config.throw_1_throw_angle
+                                                                         ,ThrowMath::degree_to_radian(config.throw_1_throw_angle, params->pi_)
                                                                          ,config.throw_1_throw_min_distance
                                                                          ,config.throw_1_throw_max_distance
                                                                          ,config.throw_1_movement_duration
@@ -33,7 +36,7 @@ namespace bitbots_throw{
                                                                         ,config.throw_2_throw_active
                                                                         ,config.throw_2_throw_priority_level
                                                                         ,config.throw_2_throw_strength
-                                                                        ,config.throw_2_throw_angle
+                                                                        ,ThrowMath::degree_to_radian(config.throw_2_throw_angle, params->pi_)
                                                                         ,config.throw_2_throw_min_distance
                                                                         ,config.throw_2_throw_max_distance
                                                                         ,config.throw_2_movement_duration
@@ -47,7 +50,7 @@ namespace bitbots_throw{
                                                                         ,config.throw_3_throw_active
                                                                         ,config.throw_3_throw_priority_level
                                                                         ,config.throw_3_throw_strength
-                                                                        ,config.throw_3_throw_angle
+                                                                        ,ThrowMath::degree_to_radian(config.throw_3_throw_angle, params->pi_)
                                                                         ,config.throw_3_throw_min_distance
                                                                         ,config.throw_3_throw_max_distance
                                                                         ,config.throw_3_movement_duration
@@ -61,7 +64,7 @@ namespace bitbots_throw{
                                                                         ,config.throw_4_throw_active
                                                                         ,config.throw_4_throw_priority_level
                                                                         ,config.throw_4_throw_strength
-                                                                        ,config.throw_4_throw_angle
+                                                                        ,ThrowMath::degree_to_radian(config.throw_4_throw_angle, params->pi_)
                                                                         ,config.throw_4_throw_min_distance
                                                                         ,config.throw_4_throw_max_distance
                                                                         ,config.throw_4_movement_duration
@@ -74,7 +77,7 @@ namespace bitbots_throw{
                                                                           ,true
                                                                           ,0
                                                                           ,config.throw_strength
-                                                                          ,config.throw_angle
+                                                                          ,ThrowMath::degree_to_radian(config.throw_angle, params->pi_)
                                                                           ,0.0
                                                                           ,0.0
                                                                           ,config.movement_duration

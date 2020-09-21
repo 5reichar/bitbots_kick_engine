@@ -8,6 +8,8 @@ namespace bitbots_throw{
 
         // value used as gravity for calculations
         double gravity_;
+        // value used as pie for calculations
+        double pi_;
         // The height of the robots head, measure from the shoulders
         double head_height_;
         // The height of the robots trunk
@@ -30,6 +32,7 @@ namespace bitbots_throw{
 		//////		Constructor
 		ThrowEngineParameter(bitbots_throw::throw_engine_paramsConfig& config, uint32_t level){
             gravity_ = config.gravity;
+            pi_ = config.pi;
             head_height_ = config.head_height;
             trunk_height_ = config.trunk_height;
             leg_length_ = config.leg_length;

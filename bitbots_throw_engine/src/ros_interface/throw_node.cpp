@@ -141,7 +141,7 @@ namespace bitbots_throw{
 	}
 
 	void ThrowNode::throw_params_config_callback(bitbots_throw::throw_paramsConfig & config , uint32_t level){
-	    auto type_parameter = ThrowTypeParameterBuilder::build_from_dynamic_reconf(config, level);
+	    auto type_parameter = ThrowTypeParameterBuilder::build_from_dynamic_reconf(config, level, sp_engine_parameter_);
 		throw_engine_.set_throw_types(type_parameter);
 	}
 
