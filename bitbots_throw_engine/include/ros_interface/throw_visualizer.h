@@ -3,7 +3,7 @@
 
 #include <../../bitbots_splines_extension/include/abstract/abstract_visualizer.h>
 #include "../../bitbots_splines_extension/include/handle/pose_handle.h"
-#include "parameter/struct3d.h"
+#include "utility/throw_struct.h"
 #include <ros/ros.h>
 
 namespace bitbots_throw{

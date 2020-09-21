@@ -2,7 +2,7 @@
 #define BITBOTS_THROW_THROW_UTILITIES_H
 
 #include <string>
-#include "parameter/struct3d.h"
+#include "throw_struct.h"
 #include "tf2/LinearMath/Transform.h"
 #include "../../bitbots_splines_extension/include/spline/curve.h"
 #include "../../bitbots_splines_extension/include/handle/pose_handle.h"

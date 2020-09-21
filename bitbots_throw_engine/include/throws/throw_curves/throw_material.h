@@ -1,7 +1,7 @@
 #ifndef BITBOTS_THROW_THROW_MATERIAL_H
 #define BITBOTS_THROW_THROW_MATERIAL_H
 
-#include "parameter/struct3d.h"
+#include "utility/throw_struct.h"
 #include "tf2/LinearMath/Transform.h"
 #include "ros_interface/throw_visualizer.h"
 #include "../../bitbots_splines_extension/include/handle/pose_handle.h"

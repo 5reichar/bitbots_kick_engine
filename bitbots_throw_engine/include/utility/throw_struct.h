@@ -1,5 +1,5 @@
-#ifndef  BITBOTS_THROW_STRUCT3D_H
-#define  BITBOTS_THROW_STRUCT3D_H
+#ifndef  BITBOTS_THROW_THROW_STRUCT_H
+#define  BITBOTS_THROW_THROW_STRUCT_H
 
 namespace bitbots_throw{
     struct Struct3d{
@@ -40,4 +40,4 @@ namespace bitbots_throw{
         }
     };
 } //bitbots_throw
-#endif //BITBOTS_THROW_STRUCT3D_H
+#endif //BITBOTS_THROW_THROW_STRUCT_H
