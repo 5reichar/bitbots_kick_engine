@@ -39,5 +39,15 @@ namespace bitbots_throw{
             return position;
         }
     };
+
+    struct Color{
+        double red_;
+        double green_;
+        double blue_;
+
+        color(double red, double green, double blue)
+                :red_(red), green_(green), blue_(blue){
+        }
+    };
 } //bitbots_throw
 #endif //BITBOTS_THROW_THROW_STRUCT_H

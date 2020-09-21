@@ -1,4 +1,5 @@
 #include "ros_interface/throw_visualizer.h"
+#include "utility/throw_struct.h"
 
 bitbots_throw::ThrowVisualizer::ThrowVisualizer(const std::string & base_topic, ThrowVisualizerParams const & params){
     parameter_ = params;
@@ -13,32 +14,30 @@ void bitbots_throw::ThrowVisualizer::update_smoothness(const double & smoothness
 }
 
 void bitbots_throw::ThrowVisualizer::display_left_hand(std::shared_ptr<bitbots_splines::PoseHandle> & pose){
-    display_pose(pose, parameter_.left_hand_frame, ros_publisher_left_hand_, 1, 1, 0);
+    display_pose(pose, parameter_.left_hand_frame, ros_publisher_left_hand_, {1, 1, 0});
 }
 
 void bitbots_throw::ThrowVisualizer::display_right_hand(std::shared_ptr<bitbots_splines::PoseHandle> & pose){
-    display_pose(pose, parameter_.right_hand_frame, ros_publisher_right_hand_, 1, 0, 1);
+    display_pose(pose, parameter_.right_hand_frame, ros_publisher_right_hand_, {1, 0, 1});
 }
 
 void bitbots_throw::ThrowVisualizer::display_left_foot(std::shared_ptr<bitbots_splines::PoseHandle> & pose){
-    display_pose(pose, parameter_.left_foot_frame, ros_publisher_left_foot_, 0, 1, 0);
+    display_pose(pose, parameter_.left_foot_frame, ros_publisher_left_foot_, {0, 1, 0});
 }
 
 void bitbots_throw::ThrowVisualizer::display_right_foot(std::shared_ptr<bitbots_splines::PoseHandle> & pose){
-    display_pose(pose, parameter_.right_foot_frame, ros_publisher_right_foot_, 0, 0, 1);
+    display_pose(pose, parameter_.right_foot_frame, ros_publisher_right_foot_, {0, 0, 1});
 }
 
 void bitbots_throw::ThrowVisualizer::display_pose(std::shared_ptr<bitbots_splines::PoseHandle> & pose
                                                   , const std::string & frame
                                                   , ros::Publisher const & publisher
-                                                  , const double & color_r
-                                                  , const double & color_g
-                                                  , const double & color_b){
+                                                  , const Color & color){
     auto path = getPath(*pose, frame, parameter_.smoothness_);
 
-    path.color.r = color_r;
-    path.color.g = color_g;
-    path.color.b = color_b;
+    path.color.r = color.red_;
+    path.color.g = color.green_;
+    path.color.b = color.blue_;
     path.ns = "throw_debug";
 
     publisher.publish(path);

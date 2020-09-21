@@ -28,7 +28,7 @@ namespace bitbots_throw{
 
     private:
         void display_pose(std::shared_ptr<bitbots_splines::PoseHandle> & pose, std::string const & frame, ros::Publisher const & publisher
-                          , double const & color_r, double const & color_g, double const & color_b);
+                          , const Color & color);
 
         ThrowVisualizerParams parameter_;
         ros::NodeHandle ros_node_handle_;
