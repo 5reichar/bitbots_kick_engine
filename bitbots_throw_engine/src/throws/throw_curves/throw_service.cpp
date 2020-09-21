@@ -16,6 +16,9 @@ namespace bitbots_throw{
         point.x_ = request_.ball_position_.x_;
         point.y_ = request_.left_hand_position_.y_;
         point.z_ = request_.left_feet_position_.z_ + engine_parameter_.ball_radius_;
+        point.roll_ = 0.0;
+        point.pitch_ = 1.75 * engine_parameter_.pi_;
+        point.yaw_ = 0.0;
         return point;
     }
     Struct3dRPY ThrowService::get_left_arm_pick_up(){
@@ -23,20 +26,9 @@ namespace bitbots_throw{
         point.x_ = request_.ball_position_.x_;
         point.y_ = engine_parameter_.ball_radius_;
         point.z_ = request_.left_feet_position_.z_ + engine_parameter_.ball_radius_;
-        return point;
-    }
-    Struct3dRPY ThrowService::get_left_arm_throw_zenith(){
-        Struct3dRPY point;
-        point.x_ = 0.0;
-        point.y_ = engine_parameter_.ball_radius_;
-        point.z_ = request_.head_position_.z_ + engine_parameter_.arm_length_;
-        return point;
-    }
-    Struct3dRPY ThrowService::get_left_arm_throw_start(){
-        Struct3dRPY point;
-        point.x_ = -0.5 * engine_parameter_.arm_length_;
-        point.y_ = engine_parameter_.ball_radius_;
-        point.z_ = request_.head_position_.z_;
+        point.roll_ = 0.0;
+        point.pitch_ = 1.75 * engine_parameter_.pi_;
+        point.yaw_ = 0.0;
         return point;
     }
     Struct3dRPY ThrowService::get_left_arm_ball_at_head_height(){
@@ -44,11 +36,33 @@ namespace bitbots_throw{
         point.x_ = request_.ball_position_.x_;
         point.y_ = engine_parameter_.ball_radius_;
         point.z_ = request_.head_position_.z_ + engine_parameter_.arm_length_;
+        point.roll_ = 0.0;
+        point.pitch_ = engine_parameter_.pi_ / 2;
+        point.yaw_ = 0.0;
+        return point;
+    }
+    Struct3dRPY ThrowService::get_left_arm_throw_zenith(){
+        Struct3dRPY point;
+        point.x_ = 0.0;
+        point.y_ = engine_parameter_.ball_radius_;
+        point.z_ = request_.head_position_.z_ + engine_parameter_.arm_length_;
+        point.roll_ = 0.0;
+        point.pitch_ = engine_parameter_.pi_ / 2;
+        point.yaw_ = 0.0;
+        return point;
+    }
+    Struct3dRPY ThrowService::get_left_arm_throw_start(){
+        Struct3dRPY point;
+        point.x_ = -0.5 * engine_parameter_.arm_length_;
+        point.y_ = engine_parameter_.ball_radius_;
+        point.z_ = request_.head_position_.z_;
+        point.roll_ = 0.0;
+        point.pitch_ = engine_parameter_.pi_;
+        point.yaw_ = 0.0;
         return point;
     }
     Struct3dRPY ThrowService::get_left_arm_throw_release(){
-        ThrowMath math;
-        auto point = math.calculate_throw_release_point(throw_type_.throw_angle_
+        Struct3dRPY point = ThrowMath::calculate_throw_release_point(throw_type_.throw_angle_
                                                         ,engine_parameter_.arm_length_
                                                         ,0.0
                                                         ,request_.head_position_.z_ + engine_parameter_.arm_length_);
@@ -63,6 +77,9 @@ namespace bitbots_throw{
         point.x_ = request_.ball_position_.x_;
         point.y_ = request_.right_hand_position_.y_;
         point.z_ = request_.right_feet_position_.z_ + engine_parameter_.ball_radius_;
+        point.roll_ = 0.0;
+        point.pitch_ = 1.75 * engine_parameter_.pi_;
+        point.yaw_ = 0.0;
         return point;
     }
     Struct3dRPY ThrowService::get_right_arm_pick_up(){
@@ -70,20 +87,9 @@ namespace bitbots_throw{
         point.x_ = request_.ball_position_.x_;
         point.y_ = -1 * engine_parameter_.ball_radius_;
         point.z_ = request_.right_feet_position_.z_ + engine_parameter_.ball_radius_;
-        return point;
-    }
-    Struct3dRPY ThrowService::get_right_arm_throw_zenith(){
-        Struct3dRPY point;
-        point.x_ = 0.0;
-        point.y_ = -1 * engine_parameter_.ball_radius_;
-        point.z_ = request_.head_position_.z_ + engine_parameter_.arm_length_;
-        return point;
-    }
-    Struct3dRPY ThrowService::get_right_arm_throw_start(){
-        Struct3dRPY point;
-        point.x_ = -0.5 * engine_parameter_.arm_length_;
-        point.y_ = -1 * engine_parameter_.ball_radius_;
-        point.z_ = request_.head_position_.z_;
+        point.roll_ = 0.0;
+        point.pitch_ = 1.75 * engine_parameter_.pi_;
+        point.yaw_ = 0.0;
         return point;
     }
     Struct3dRPY ThrowService::get_right_arm_ball_at_head_height(){
@@ -91,15 +97,40 @@ namespace bitbots_throw{
         point.x_ = request_.ball_position_.x_;
         point.y_ = -1 * engine_parameter_.ball_radius_;
         point.z_ = request_.head_position_.z_ + engine_parameter_.arm_length_;
+        point.roll_ = 0.0;
+        point.pitch_ = engine_parameter_.pi_ / 2;
+        point.yaw_ = 0.0;
+        return point;
+    }
+    Struct3dRPY ThrowService::get_right_arm_throw_zenith(){
+        Struct3dRPY point;
+        point.x_ = 0.0;
+        point.y_ = -1 * engine_parameter_.ball_radius_;
+        point.z_ = request_.head_position_.z_ + engine_parameter_.arm_length_;
+        point.roll_ = 0.0;
+        point.pitch_ = engine_parameter_.pi_ / 2;
+        point.yaw_ = 0.0;
+        return point;
+    }
+    Struct3dRPY ThrowService::get_right_arm_throw_start(){
+        Struct3dRPY point;
+        point.x_ = -0.5 * engine_parameter_.arm_length_;
+        point.y_ = -1 * engine_parameter_.ball_radius_;
+        point.z_ = request_.head_position_.z_;
+        point.roll_ = 0.0;
+        point.pitch_ = engine_parameter_.pi_;
+        point.yaw_ = 0.0;
         return point;
     }
     Struct3dRPY ThrowService::get_right_arm_throw_release(){
-        ThrowMath math;
-        auto point = math.calculate_throw_release_point(throw_type_.throw_angle_
+        Struct3dRPY point = ThrowMath::calculate_throw_release_point(throw_type_.throw_angle_
                                                         ,engine_parameter_.arm_length_
                                                         ,0.0
                                                         ,request_.head_position_.z_ + engine_parameter_.arm_length_);
         point.y_ -= engine_parameter_.ball_radius_;
+        point.roll_ = 0.0;
+        point.pitch_ = 0.0;
+        point.yaw_ = 0.0;
         return point;
     }
     Struct3dRPY ThrowService::get_left_foot_start(){
@@ -124,7 +155,7 @@ namespace bitbots_throw{
         return point;
     }
     Struct3dRPY ThrowService::get_left_foot_squat(){
-        auto point = request_.left_feet_position_;
+        Struct3dRPY point = request_.left_feet_position_;
         point.z_ = -1 * engine_parameter_.squat_safety_distance_;
         return point;
     }
@@ -164,7 +195,7 @@ namespace bitbots_throw{
         return point;
     }
     Struct3dRPY ThrowService::get_right_foot_squat(){
-        auto point = request_.right_feet_position_;
+        Struct3dRPY point = request_.right_feet_position_;
         point.z_ = -1 * engine_parameter_.squat_safety_distance_;
         return point;
     }
