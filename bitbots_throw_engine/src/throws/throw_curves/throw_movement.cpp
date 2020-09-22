@@ -112,8 +112,8 @@ namespace bitbots_throw{
 
         ////  Movement
         ////==== Return to ball to over head position
-        sp_material_->add_point_to_left_hand(zenith_throw_time, sp_service_->get_left_arm_throw_zenith());
-        sp_material_->add_point_to_right_hand(zenith_throw_time, sp_service_->get_right_arm_throw_zenith());
+        sp_material_->add_point_to_left_hand(zenith_throw_time, sp_service_->get_left_arm_throw_zenith_return());
+        sp_material_->add_point_to_right_hand(zenith_throw_time, sp_service_->get_right_arm_throw_zenith_return());
 
         ////==== Release ball
         //Struct3dRPY velocity = sp_service_->get_throw_velocity();

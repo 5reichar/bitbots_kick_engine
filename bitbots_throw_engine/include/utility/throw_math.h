@@ -21,7 +21,8 @@ namespace bitbots_throw{
         static Struct3dRPY calculate_throw_release_point(double const & throw_release_angle
                                                         ,double const & arm_length
                                                         ,double const & throw_orientation_angle
-                                                        ,double const & throw_zenith){
+                                                        ,double const & throw_zenith
+                                                        , double const pi){
             Struct3dRPY throw_release_point;
             // From Isosceles triangle with the two angles with the same size are given as 90 - throw_angle
             auto hypotenuse = std::sqrt(2 * std::pow(arm_length, 2) * (1 - std::cos(2 * throw_release_angle)));
@@ -33,9 +34,9 @@ namespace bitbots_throw{
             throw_release_point.z_ = throw_zenith - opposite;
             throw_release_point.roll_ = 0.0;
             // 90 - (180 - 2 * throw_release_angle)
-            auto hand_angle = -90 + 2 * throw_release_angle;
+            auto hand_angle = -1*pi/2 + 2 * throw_release_angle;
             if (hand_angle < 0){
-                hand_angle += 360;
+                hand_angle += 2*pi;
             }
             throw_release_point.pitch_ = hand_angle;
             throw_release_point.yaw_ = 0.0;
