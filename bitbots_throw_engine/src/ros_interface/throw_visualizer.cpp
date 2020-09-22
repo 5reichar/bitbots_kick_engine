@@ -85,7 +85,7 @@ namespace bitbots_throw{
                                        , const std::string & frame
                                        , ros::Publisher const & publisher
                                        , const Color & color){
-        auto path = getPath(*pose, frame, sp_node_parameter->visualization_smoothness_);
+        auto path = get_path(*pose, frame, sp_node_parameter->visualization_smoothness_);
 
         path.color.r = color.red_;
         path.color.g = color.green_;
@@ -99,36 +99,96 @@ namespace bitbots_throw{
                                                  , const std::string & frame, const ros::Publisher & publisher
                                                  , const Color & color_1, const Color & color_2
                                                  , const bool & use_gradient){
-        uint32_t index = 0;
-        Color color_helper = {use_gradient ? color_1.red_ : 1.0, color_1.green_, color_1.blue_};
-        Color color_step = color_2 - color_1;
-        color_step /= sp_node_parameter->visualization_smoothness_;
-        double pose_min = pose->x()->min();
-        double pose_max = pose->x()->max();
-        double time_step = (pose_max - pose_min) / sp_node_parameter->visualization_smoothness_;
+        std::vector<double> times;
 
-        for(auto i = pose_min; i <= pose_max; i += time_step){
-            auto arrow = get_arrow(pose->get_geometry_msg_pose(i), frame);
+        if(sp_node_parameter->visualization_smoothness_ > 1.0){
+            double minimum = pose->x()->min();
+            double maximum = pose->x()->max();
+            double time_step = (maximum - minimum) / sp_node_parameter->visualization_smoothness_;
+
+            for(auto i = minimum; i <= maximum; i += time_step){
+                times.emplace_back(i);
+            }
+        }else{
+            for(auto & point : pose->x()->points()){
+                times.emplace_back(point.time_);
+            }
+        }
+
+        display_pose_as_arrows(pose, frame, publisher, times, color_1, color_2, use_gradient);
+    }
+
+    void ThrowVisualizer::display_pose_as_arrows(std::shared_ptr<bitbots_splines::PoseHandle> & pose
+                                                 , std::string const & frame
+                                                 , ros::Publisher const & publisher
+                                                 , const std::vector<double> & pose_times
+                                                 , const Color & color_1
+                                                 , const Color & color_2
+                                                 , const bool & use_gradient){
+        uint32_t index = 0;
+        Color color_helper = color_1;
+        Color color_step = use_gradient ? (color_2 - color_1) / pose_times.size() : Color(1.0, 0.0, 0.0);
+
+        for(auto t : pose_times){
+            auto arrow = get_arrow(pose->get_geometry_msg_pose(t), frame);
             arrow.ns = "throw_debug";
             arrow.id = index;
             ++index;
 
-            if(use_gradient){
-                arrow.color.r = color_helper.red_;
-                arrow.color.g = color_helper.green_;
-                arrow.color.b = color_helper.blue_;
+            arrow.color.r = color_helper.red_;
+            arrow.color.g = color_helper.green_;
+            arrow.color.b = color_helper.blue_;
 
+            if(use_gradient){
                 color_helper += color_step;
             }else{
-                arrow.color.r = color_helper.red_ == 1.0 ? color_1.red_ : color_2.red_;
-                arrow.color.g = color_helper.red_ == 1.0 ? color_1.green_ : color_2.green_;
-                arrow.color.b = color_helper.red_ == 1.0 ? color_1.blue_ : color_2.blue_;
-
-                color_helper.red_ *= -1;
+                color_helper = color_step.red_ == 1.0 ? color_1 : color_2;
+                color_step.red_ *= -1;
             }
 
             publisher.publish(arrow);
         }
+    }
+
+    visualization_msgs::Marker ThrowVisualizer::get_path(bitbots_splines::PoseHandle &pose
+                                                         , const std::string &frame
+                                                         , const double smoothness){
+        visualization_msgs::Marker marker;
+        marker.action = visualization_msgs::Marker::ADD;
+        marker.type = visualization_msgs::Marker::LINE_STRIP;
+        marker.lifetime = ros::Duration(1000);
+        marker.frame_locked = false;
+        marker.header.frame_id = frame;
+        marker.header.stamp = ros::Time::now();
+        marker.pose.orientation.w = 1;
+        marker.scale.x = 0.01;
+        marker.color.a = 1;
+
+        // Take length of spline, assuming values at the beginning and end are set for x
+        double first_time = pose.x()->min();
+        double last_time = pose.x()->max();
+
+        if(smoothness > 1){
+            for(double i = first_time; i <= last_time; i += (last_time - first_time) / smoothness) {
+                geometry_msgs::Point point;
+                point.x = pose.x()->position(i);
+                point.y = pose.y()->position(i);
+                point.z = pose.z()->position(i);
+
+                marker.points.push_back(point);
+            }
+        }else{
+            for(int i = 0; i < pose.x()->points().size(); ++i){
+                geometry_msgs::Point point;
+                point.x = pose.x()->points().at(i).position_;
+                point.y = pose.y()->points().at(i).position_;
+                point.z = pose.z()->points().at(i).position_;
+
+                marker.points.push_back(point);
+            }
+        }
+
+        return marker;
     }
 
     visualization_msgs::Marker ThrowVisualizer::get_arrow(const geometry_msgs::Pose & pose, const std::string & frame){

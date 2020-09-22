@@ -40,8 +40,11 @@ namespace bitbots_throw{
 
         void display_pose_as_arrows(std::shared_ptr<bitbots_splines::PoseHandle> & pose, std::string const & frame, ros::Publisher const & publisher
                                     , const Color & color_1, const Color & color_2, const bool & use_gradient);
+        void display_pose_as_arrows(std::shared_ptr<bitbots_splines::PoseHandle> & pose, std::string const & frame, ros::Publisher const & publisher
+                                    , const std::vector<double> & pose_times, const Color & color_1, const Color & color_2, const bool & use_gradient);
 
         visualization_msgs::Marker get_arrow(const geometry_msgs::Pose &pose, const std::string &frame);
+        visualization_msgs::Marker get_path(bitbots_splines::PoseHandle & pose, const std::string & frame, const double smoothness);
 
         ThrowVisualizerParams parameter_;
         std::shared_ptr<ThrowNodeParameter> sp_node_parameter;
