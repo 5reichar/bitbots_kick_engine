@@ -12,11 +12,11 @@ namespace bitbots_throw{
         Struct3d ball_position_;
         Struct3d goal_position_;
 
-        Struct3d head_position_;
-        Struct3d left_hand_position_;
-        Struct3d right_hand_position_;
-        Struct3d left_feet_position_;
-        Struct3d right_feet_position_;
+        Struct3dRPY head_position_;
+        Struct3dRPY left_hand_position_;
+        Struct3dRPY right_hand_position_;
+        Struct3dRPY left_feet_position_;
+        Struct3dRPY right_feet_position_;
     };
 
     struct ThrowResponse{

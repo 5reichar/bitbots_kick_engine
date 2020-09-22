@@ -160,32 +160,32 @@ namespace bitbots_throw{
 
         // get current position of feet
         try{
-            auto position = get_pose("r_sole").position;
-            request.right_feet_position_ = {position.x, position.y, position.z};
+            auto pose = get_pose("r_sole");
+            request.right_feet_position_ = {pose.position.x, pose.position.y, pose.position.z, pose.orientation.x, pose.orientation.y, pose.orientation.z};
 
-            position = get_pose("l_sole").position;
-            request.left_feet_position_ = {position.x, position.y, position.z};
+            pose = get_pose("l_sole").position;
+            request.left_feet_position_ = {pose.position.x, pose.position.y, pose.position.z, pose.orientation.x, pose.orientation.y, pose.orientation.z};
 
-            position = get_pose("r_wrist").position;
-            request.right_hand_position_ = {position.x, position.y, position.z};
+            pose = get_pose("r_wrist").position;
+            request.right_hand_position_ = {pose.position.x, pose.position.y, pose.position.z, pose.orientation.x, pose.orientation.y, pose.orientation.z};
 
-            position = get_pose("l_wrist").position;
-            request.left_hand_position_ = {position.x, position.y, position.z};
+            pose = get_pose("l_wrist").position;
+            request.left_hand_position_ = {pose.position.x, pose.position.y, pose.position.z, pose.orientation.x, pose.orientation.y, pose.orientation.z};
 
-            position = get_pose("head").position;
-            request.head_position_ = {position.x, position.y, position.z};
+            pose = get_pose("head").position;
+            request.head_position_ = {pose.position.x, pose.position.y, pose.position.z, pose.orientation.x, pose.orientation.y, pose.orientation.z};
         }
         catch(tf2::TransformException &e){
             SystemPublisher::publish_error(e.what(), "ThrowNode::create_throw_request()");
 
             auto hand_height = sp_engine_parameter_->trunk_height_;
-            request.head_position_ = {0.0, 0.0, hand_height};
+            request.head_position_ = {0.0, 0.0, hand_height, 0.0, 0.0, 0.0};
             hand_height -= sp_engine_parameter_->arm_length_;
-            request.left_hand_position_ = {0.0, -0.15, hand_height};
-            request.right_hand_position_ = {0.0, 0.15, hand_height};
+            request.left_hand_position_ = {0.0, -0.15, hand_height, 0.0, 0.0, 0.0};
+            request.right_hand_position_ = {0.0, 0.15, hand_height, 0.0, 0.0, 0.0};
             auto feet_height = -1 * sp_engine_parameter_->leg_length_;
-            request.left_feet_position_ = {0.0, 0.5, feet_height};
-            request.right_feet_position_ = {0.0, -0.5, feet_height};
+            request.left_feet_position_ = {0.0, 0.5, feet_height, 0.0, 0.0, 0.0};
+            request.right_feet_position_ = {0.0, -0.5, feet_height, 0.0, 0.0, 0.0};
         }
 
 		return request;
