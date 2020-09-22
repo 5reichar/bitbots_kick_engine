@@ -28,11 +28,18 @@ namespace bitbots_throw{
         publisher_topics.str_debug_visualization_base_topic_ = "/throw_debug";
 
         ThrowVisualizer::ThrowVisualizerParams parameter;
-        parameter.smoothness_ = sp_node_parameter_->visualization_smoothness_;
-        parameter.left_hand_frame = "base_link";
-        parameter.right_hand_frame = "base_link";
-        parameter.left_foot_frame = "base_link";
-        parameter.right_foot_frame = "base_link";
+        parameter.left_hand_frame_ = "base_link";
+        parameter.right_hand_frame_ = "base_link";
+        parameter.left_foot_frame_ = "base_link";
+        parameter.right_foot_frame_ = "base_link";
+        parameter.left_hand_topic_suffix_ = "_left_hand_marker";
+        parameter.right_hand_topic_suffix_ = "_right_hand_marker";
+        parameter.left_foot_topic_suffix_ = "_left_foot_marker";
+        parameter.right_foot_topic_suffix_ = "_right_foot_marker";
+        parameter.left_hand_arrow_topic_suffix_ = "_left_hand_arrow_marker";
+        parameter.right_hand_arrow_topic_suffix_ = "_right_hand_arrow_marker";
+        parameter.left_foot_arrow_topic_suffix_ = "_left_foot_arrow_marker";
+        parameter.right_foot_arrow_topic_suffix_ = "_right_foot_arrow_marker";
 
         sp_publisher_facade_.reset(new RosPublisherFacade(ros_node_handle_, sp_node_parameter_, publisher_topics, parameter));
         sp_ik_left_arm_.reset(new ThrowIK("LeftArm", {"LElbow", "LShoulderPitch", "LShoulderRoll"}, {0.0, 0.0, 0.0}));
@@ -123,7 +130,7 @@ namespace bitbots_throw{
         sp_publisher_facade_->publish_engine_debug(&throw_engine_, throw_request, vec_responses);
 	}
 
-	void ThrowNode::throw_engine_params_config_callback(bitbots_throw::throw_engine_paramsConfig & config , uint32_t level){
+	void ThrowNode::throw_engine_params_config_callback(throw_engine_paramsConfig & config , uint32_t level){
 		sp_node_parameter_.reset(new ThrowNodeParameter(config, level));
 
 		if(!sp_publisher_facade_ || !sp_ik_right_foot_ || !sp_ik_left_foot_ || !sp_ik_right_arm_ || !sp_ik_left_arm_){
@@ -140,12 +147,12 @@ namespace bitbots_throw{
         throw_engine_.set_engine_parameter(sp_engine_parameter_);
 	}
 
-	void ThrowNode::throw_params_config_callback(bitbots_throw::throw_paramsConfig & config , uint32_t level){
+	void ThrowNode::throw_params_config_callback(throw_paramsConfig & config , uint32_t level){
 	    auto type_parameter = ThrowTypeParameterBuilder::build_from_dynamic_reconf(config, level, sp_engine_parameter_);
 		throw_engine_.set_throw_types(type_parameter);
 	}
 
-	ThrowRequest ThrowNode::create_throw_request(const bitbots_throw::throw_action action){
+	ThrowRequest ThrowNode::create_throw_request(const throw_action action){
 		ThrowRequest request{};
 
 		request.ball_position_ = {action.ball_position.x, action.ball_position.y, action.ball_position.z };

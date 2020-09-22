@@ -30,11 +30,11 @@ namespace bitbots_throw{
 
         // Callback methods
         void throw_callback(bitbots_throw::throw_action action);
-        void throw_params_config_callback(bitbots_throw::throw_paramsConfig & config , uint32_t level);
-        void throw_engine_params_config_callback(bitbots_throw::throw_engine_paramsConfig & config , uint32_t level);
+        void throw_params_config_callback(throw_paramsConfig & config , uint32_t level);
+        void throw_engine_params_config_callback(throw_engine_paramsConfig & config , uint32_t level);
 
         // Helper methods
-        ThrowRequest create_throw_request(bitbots_throw::throw_action action);
+        ThrowRequest create_throw_request(throw_action action);
         bitbots_splines::JointGoals calculate_joint_goals(ThrowResponse const & response);
         void calculate_goal(std::shared_ptr<ThrowIK> & ik, bitbots_splines::JointGoals & joint_goals, std::vector<ThrowStabilizerData> & data);
         geometry_msgs::Pose get_pose(std::string const & frame_id
@@ -58,8 +58,8 @@ namespace bitbots_throw{
         ros::Subscriber ros_subscriber_throw_;
         tf2_ros::Buffer tf2_ros_buffer_;
         tf2_ros::TransformListener tf2_ros_transform_listener_;
-        dynamic_reconfigure::Server<bitbots_throw::throw_paramsConfig> dynamic_reconfigure_server_throw_params_;
-        dynamic_reconfigure::Server<bitbots_throw::throw_engine_paramsConfig> dynamic_reconfigure_server_engine_params_;
+        dynamic_reconfigure::Server<throw_paramsConfig> dynamic_reconfigure_server_throw_params_;
+        dynamic_reconfigure::Server<throw_engine_paramsConfig> dynamic_reconfigure_server_engine_params_;
     };
 } //bitbots_throw
 #endif //BITBOTS_THROW_THROW_NODE_H

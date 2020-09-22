@@ -3,11 +3,11 @@
 
 namespace bitbots_throw{
 	RosPublisherFacade::RosPublisherFacade(ros::NodeHandle & ros_node_handle
-	                                      ,std::shared_ptr<ThrowNodeParameter> parameter
+	                                      ,std::shared_ptr<ThrowNodeParameter> & parameter
 	                                      ,RosPublisherTopics const &topics
 	                                      ,ThrowVisualizer::ThrowVisualizerParams const & visualization_parameter)
 		: sp_node_parameter_(parameter)
-		, sp_visualizer_(new ThrowVisualizer(topics.str_debug_visualization_base_topic_, visualization_parameter))
+		, sp_visualizer_(new ThrowVisualizer(topics.str_debug_visualization_base_topic_, visualization_parameter, sp_node_parameter_))
 		, sp_controller_command_publisher_(new ControllerCommandPublisher(ros_node_handle
 		                                                                    ,topics.str_controller_command_topic_))
 		, sp_odometry_publisher_(new OdometryPublisher(ros_node_handle, topics.str_odometry_topic_))
@@ -23,7 +23,7 @@ namespace bitbots_throw{
 
     void RosPublisherFacade::update_node_parameter(std::shared_ptr<ThrowNodeParameter> & parameter){
         sp_node_parameter_ = parameter;
-        sp_visualizer_->update_smoothness(parameter->visualization_smoothness_);
+        sp_visualizer_->update_node_parameter(parameter);
     }
 
 	void RosPublisherFacade::publish_throw(bitbots_splines::JointGoals & joint_goals){

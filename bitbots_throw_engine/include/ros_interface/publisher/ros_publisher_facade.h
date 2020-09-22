@@ -23,7 +23,7 @@ namespace bitbots_throw{
         };
 
         RosPublisherFacade(ros::NodeHandle & ros_node_handle
-                          ,std::shared_ptr<ThrowNodeParameter> parameter
+                          ,std::shared_ptr<ThrowNodeParameter> & parameter
                           ,RosPublisherTopics const & topics
                           ,ThrowVisualizer::ThrowVisualizerParams const & visualization_parameter);
         void prepare_publisher_for_throw();
