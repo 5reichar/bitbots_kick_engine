@@ -76,7 +76,7 @@ namespace bitbots_throw{
                 counter += 1/sp_node_parameter_->engine_frequency_;
 	        }
 
-	        sp_debug_publisher_->print_throw_points(stream.str());
+	        sp_debug_publisher_->print_throw_points(stream.str(), sp_node_parameter_->print_debug_to_console_);
 	    }
     }
 

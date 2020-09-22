@@ -32,11 +32,15 @@ namespace bitbots_throw{
             ROS_ERROR_STREAM(create_string_for_ros(get_package_id(), object_info, error.what()));
         };
 
-        static void print_to_file(const std::string & message, const std::string & filename){
+        static void print_to_file(const std::string & message, const std::string & filename, bool const & print_to_console){
             std::ofstream out;
             out.open(filename, std::ofstream::out);
             out << message;
             out.close();
+
+            if(print_to_console){
+                publish_info(message, "print_to_file Additional Print");
+            }
         };
 
     private:

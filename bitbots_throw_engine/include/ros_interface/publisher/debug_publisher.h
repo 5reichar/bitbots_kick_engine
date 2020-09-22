@@ -15,7 +15,7 @@ namespace bitbots_throw{
                                ,std::string const & topic
                                ,std::string const & topic_marker);
 
-        void print_throw_points(std::string point_data);
+        void print_throw_points(std::string point_data, const bool & print_to_console);
         void publish_ik_debug(ThrowResponse const & response, int8_t const & percentage_done, int8_t const & movement_stage);
 
     private:

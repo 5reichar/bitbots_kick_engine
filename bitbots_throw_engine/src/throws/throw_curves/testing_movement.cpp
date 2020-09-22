@@ -221,7 +221,7 @@ namespace bitbots_throw{
                 ,std::make_shared<curve_type>(), std::make_shared<curve_type>()
                 ,std::make_shared<curve_type>(), std::make_shared<curve_type>()));
 
-        system_publisher.print_to_file(log.str(), type_name + ".csv");
+        system_publisher.print_to_file(log.str(), type_name + ".csv", false);
     }
 
     std::string
