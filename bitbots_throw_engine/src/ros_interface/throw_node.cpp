@@ -15,7 +15,7 @@ namespace bitbots_throw{
         load_parameter();
         init_ros_subscriptions();
 		init_ik();
-		SystemPublisher::publish_info("v0.20200922-4", "ThrowNode");
+		SystemPublisher::publish_info("v0.20200922-5", "ThrowNode");
 	}
 
 	void ThrowNode::set_default_parameter(){
@@ -163,16 +163,16 @@ namespace bitbots_throw{
             auto pose = get_pose("r_sole");
             request.right_feet_position_ = {pose.position.x, pose.position.y, pose.position.z, pose.orientation.x, pose.orientation.y, pose.orientation.z};
 
-            pose = get_pose("l_sole").position;
+            pose = get_pose("l_sole");
             request.left_feet_position_ = {pose.position.x, pose.position.y, pose.position.z, pose.orientation.x, pose.orientation.y, pose.orientation.z};
 
-            pose = get_pose("r_wrist").position;
+            pose = get_pose("r_wrist");
             request.right_hand_position_ = {pose.position.x, pose.position.y, pose.position.z, pose.orientation.x, pose.orientation.y, pose.orientation.z};
 
-            pose = get_pose("l_wrist").position;
+            pose = get_pose("l_wrist");
             request.left_hand_position_ = {pose.position.x, pose.position.y, pose.position.z, pose.orientation.x, pose.orientation.y, pose.orientation.z};
 
-            pose = get_pose("head").position;
+            pose = get_pose("head");
             request.head_position_ = {pose.position.x, pose.position.y, pose.position.z, pose.orientation.x, pose.orientation.y, pose.orientation.z};
         }
         catch(tf2::TransformException &e){

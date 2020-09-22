@@ -49,21 +49,29 @@ namespace bitbots_throw{
         return output.str();
     }
 
-    static std::string generate_points_csv(bitbots_splines::PositionHandle handle, double const & duration){
-        std::stringstream output, x, y, z;
+    static std::string generate_points_csv(bitbots_splines::PoseHandle handle, double const & duration){
+        std::stringstream output, x, y, z, roll, pitch, yaw;
 
         output << "time";
         x << "x-position";
         y << "y-position";
         z << "z-position";
+        roll << "roll-position";
+        pitch << "pitch-position";
+        yaw << "yaw-position";
         for(double time = 0.0; time < duration; time += 0.1){
             output << ", " << time;
             auto position = handle.get_position(time);
             x << ", " << position.x();
             y << ", " << position.y();
             z << ", " << position.z();
+            auto orientation = handle.get_orientation(time);
+            roll << ", " << orientation.x();
+            pitch << ", " << orientation.y();
+            yaw << ", " << orientation.z();
         }
         output << std::endl << x.str() << std::endl << y.str() << std::endl << z.str() << std::endl;
+        output << std::endl << roll.str() << std::endl << pitch.str() << std::endl << yaw.str() << std::endl;
 
         return output.str();
     }
