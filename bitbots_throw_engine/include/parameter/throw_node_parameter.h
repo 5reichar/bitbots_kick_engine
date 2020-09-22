@@ -6,6 +6,8 @@
 namespace bitbots_throw{
     struct ThrowNodeParameter{
         bool debug_active_;
+        // prints the debug additionally to the ros console
+        bool print_debug_to_console_;
         // Max frequency of engine update rate [hz]
         double engine_frequency_;
         // Publish odom every [int] update of the engine
@@ -32,6 +34,7 @@ namespace bitbots_throw{
         //////		Constructor
         ThrowNodeParameter(bitbots_throw::throw_engine_paramsConfig& config, uint32_t level){
             debug_active_ = config.debug_active;
+            print_debug_to_console_ = config.print_debug_to_console;
             engine_frequency_ = config.engine_frequency;
             odom_publish_factor_ = config.odom_pub_factor;
             bio_ik_time_ = config.bio_ik_time;
