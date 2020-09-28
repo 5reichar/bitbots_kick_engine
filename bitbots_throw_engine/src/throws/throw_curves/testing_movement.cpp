@@ -19,6 +19,7 @@ namespace bitbots_throw{
         move_arms_and_feet();
         squat();
         rotate_right_hand();
+        curve_with_radian();
 
         return trajectory_time_;
     }
@@ -221,7 +222,44 @@ namespace bitbots_throw{
                 ,std::make_shared<curve_type>(), std::make_shared<curve_type>()
                 ,std::make_shared<curve_type>(), std::make_shared<curve_type>()));
 
-        system_publisher.print_to_file(log.str(), type_name + ".csv", false);
+        bitbots_throw::SystemPublisher::print_to_file(log.str(), type_name + ".csv", false);
+    }
+
+    void TestingMovement::curve_with_radian(){
+        std::shared_ptr<bitbots_splines::CubicSpline> pose = std::make_shared<bitbots_splines::CubicSpline>();
+        SystemPublisher::publish_info("Start Testing", "curve_with_radian");
+
+        std::vector<std::pair<double, double>> test_values;
+        test_values.emplace_back(std::make_pair<double, double>(0, 0));
+        test_values.emplace_back(std::make_pair<double, double>(0.25, 0));
+        test_values.emplace_back(std::make_pair<double, double>(0.5, 0));
+        test_values.emplace_back(std::make_pair<double, double>(0.75, 5.49779));
+        test_values.emplace_back(std::make_pair<double, double>(1, 5.49779));
+        test_values.emplace_back(std::make_pair<double, double>(1.33333, 1.5708));
+        test_values.emplace_back(std::make_pair<double, double>(1.66667, 1.5708));
+        test_values.emplace_back(std::make_pair<double, double>(2, 2.35619));
+        test_values.emplace_back(std::make_pair<double, double>(2.5, 1.5708));
+        test_values.emplace_back(std::make_pair<double, double>(3, 5.75959));
+        test_values.emplace_back(std::make_pair<double, double>(4, 0));
+
+        for(auto it : test_values){
+            pose->add_point(bitbots_splines::Curve::Point{it.first, it.second});
+        }
+
+        int point = 1;
+        int successful = 0;
+        for(auto it : test_values){
+            double t = pose->position(it.first);
+            if(it.second != t){
+                SystemPublisher::publish_info("Check Failed (Point: " + std::to_string(point) + ", time: " + std::to_string(it.first) + ", position: " + std::to_string(it.second) + ")", "curve_with_radian");
+            }else{
+                ++successful;
+            }
+
+            ++point;
+        }
+
+        SystemPublisher::publish_info("Finished Testing, [" + std::to_string(successful) + " out of " + std::to_string(point) + " successful]", "curve_with_radian");
     }
 
     std::string

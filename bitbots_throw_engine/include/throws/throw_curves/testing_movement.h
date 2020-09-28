@@ -17,6 +17,8 @@ namespace bitbots_throw{
 
         template<typename curve_type> void test_curve_type(std::string const & type_name);
 
+        void curve_with_radian();
+
         std::string test_curve_with_values(bitbots_splines::Curve * curve, std::vector<std::pair<double, double>> values);
         std::string test_curve_with_points(bitbots_splines::Curve * curve, std::vector<std::pair<double, double>> values);
 
