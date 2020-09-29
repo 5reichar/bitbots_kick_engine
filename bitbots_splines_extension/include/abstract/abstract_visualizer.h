@@ -43,7 +43,7 @@ class AbstractVisualizer {
    * @param smoothness The smoothness of the pose
    * @return The visualization marker
    */
-  visualization_msgs::Marker getPath(bitbots_splines::PoseHandle &pose,
+  visualization_msgs::Marker getPath(PoseHandle &pose,
                                      const std::string &frame,
                                      const double smoothness) {
     visualization_msgs::Marker marker;
