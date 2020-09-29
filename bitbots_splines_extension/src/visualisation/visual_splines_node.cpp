@@ -34,17 +34,16 @@ namespace bitbots_splines{
             pose->pitch()->add_point(Curve::Point{it.first, it.second});
         }
 
-        int point = 1;
+        int point = 0;
         int successful = 0;
         for(auto it : test_values){
+            ++point;
             double t = pose->pitch()->position(it.first);
-            if(it.second != t){
-                ROS_INFO_STREAM("Check Failed (Point: " + std::to_string(point) + ", time: " + std::to_string(it.first) + ", position: " + std::to_string(it.second) + ")");
+            if(std::abs(it.second - t) > 0.00001){
+                ROS_INFO_STREAM("Check Failed (Point: " + std::to_string(point) + ", time: " + std::to_string(it.first) + ", position: " + std::to_string(it.second) + ", position-from-curve: " + std::to_string(t) + ")");
             }else{
                 ++successful;
             }
-
-            ++point;
         }
 
         ROS_INFO_STREAM("Finished Testing, [" + std::to_string(successful) + " out of " + std::to_string(point) + " successful]");
