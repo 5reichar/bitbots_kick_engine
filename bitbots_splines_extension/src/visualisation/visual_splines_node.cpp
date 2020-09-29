@@ -50,48 +50,36 @@ namespace bitbots_splines{
         return vsm_linear_spline;
     }
 
-    VisualSplinesMaterial * visualize_linear_spline(){
-        return visualize_curve<LinearSpline>("linear_spline_shapes", Color::red, 0.1);
-    }
+    void visualize(int argc, char **argv){
+        auto vsm_linear_spline = visualize_curve<LinearSpline>("linear_spline_shapes", Color::red, 0.1);
+        auto vsm_cubic_spline = visualize_curve<CubicSpline>("cubic_spline_shapes", Color::green, 0.1);
+        auto vsm_smooth_spline = visualize_curve<SmoothSpline>("smooth_spline_shapes", Color::blue, 0.1);
+        auto vsm_bezier_curve = visualize_curve<Beziercurve>("bezier_curve_shapes", Color::yellow, 0.1);
 
-    VisualSplinesMaterial * visualize_cubic_spline(){
-        return visualize_curve<CubicSpline>("cubic_spline_shapes", Color::green, 0.1);
-    }
+        VisualSplinesService vs_service(argc, argv, "spline_shapes", "visualization_marker");
+        vs_service.set_marker_frame("/spline_visual_frame");
+        ros::Rate rate(1);
 
-    VisualSplinesMaterial * visualize_smooth_spline(){
-        return visualize_curve<SmoothSpline>("smooth_spline_shapes", Color::blue, 0.1);
-    }
+        while (ros::ok())
+        {
+            vs_service.visualize_curve(vsm_linear_spline);
+            vs_service.visualize_curve(vsm_cubic_spline);
+            vs_service.visualize_curve(vsm_smooth_spline);
+            vs_service.visualize_curve(vsm_bezier_curve);
 
-    VisualSplinesMaterial * visualize_beziercurve(){
-        return visualize_curve<Beziercurve>("bezier_curve_shapes", Color::yellow, 0.1);
+            vs_service.visualize_points(vsm_linear_spline, "points", Color::white);
+
+            rate.sleep();
+        }
+
+        delete vsm_linear_spline;
+        delete vsm_cubic_spline;
+        delete vsm_smooth_spline;
+        delete vsm_bezier_curve;
     }
 }
 
 int main(int argc, char **argv)
 {
-    auto vsm_linear_spline = bitbots_splines::visualize_linear_spline();
-    auto vsm_cubic_spline = bitbots_splines::visualize_cubic_spline();
-    auto vsm_smooth_spline = bitbots_splines::visualize_smooth_spline();
-    auto vsm_bezier_curve = bitbots_splines::visualize_beziercurve();
-
-    bitbots_splines::VisualSplinesService vs_service(argc, argv, "spline_shapes", "visualization_marker");
-    vs_service.set_marker_frame("/spline_visual_frame");
-    ros::Rate rate(1);
-
-    while (ros::ok())
-    {
-        vs_service.visualize_curve(vsm_linear_spline);
-        vs_service.visualize_curve(vsm_cubic_spline);
-        vs_service.visualize_curve(vsm_smooth_spline);
-        vs_service.visualize_curve(vsm_bezier_curve);
-
-        vs_service.visualize_points(vsm_linear_spline, "points", bitbots_splines::Color::white);
-
-        rate.sleep();
-    }
-
-    delete vsm_linear_spline;
-    delete vsm_cubic_spline;
-    delete vsm_smooth_spline;
-    delete vsm_bezier_curve;
+    bitbots_splines::visualize(argc, argv);
 }
