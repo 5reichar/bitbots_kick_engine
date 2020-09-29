@@ -13,26 +13,28 @@ namespace bitbots_throw{
     }
 
     double TestingMovement::init_material(){
+        SystemPublisher::publish_info("Start Testing", "TestingMovement");
         trajectory_time_ = 0.0;
 
+        curve_with_radian();
         test_curves();
         move_arms_and_feet();
         squat();
         rotate_right_hand();
-        curve_with_radian();
 
+        SystemPublisher::publish_info("Finished Testing", "TestingMovement");
         return trajectory_time_;
     }
 
     void TestingMovement::test_curves(){
-        test_curve_type<bitbots_splines::Beziercurve>("Beziercurve");
+        //test_curve_type<bitbots_splines::Beziercurve>("Beziercurve");
         test_curve_type<bitbots_splines::LinearSpline>("LinearSpline");
         test_curve_type<bitbots_splines::CubicSpline>("CubicSpline");
 
         // TODO: Find out why point are not getting added to Smooth Spline
         // test_curve_type<bitbots_splines::SmoothSpline>("SmoothSpline");
 
-        SystemPublisher::publish_info("Finished Testing", "TestingMovement");
+        SystemPublisher::publish_info("Finished Testing", "test_curves");
     }
 
     void TestingMovement::move_arms_and_feet(){
@@ -150,7 +152,7 @@ namespace bitbots_throw{
         bitbots_splines::Curve * curve;
         SystemPublisher system_publisher;
         std::vector<std::pair<double, double>> values;
-        SystemPublisher::publish_info("Testing " + type_name, "TestingMovement");
+        SystemPublisher::publish_info("Testing " + type_name, "test_curve");
 
 
         log << "asc. points, -3.0, -1.0, 0.0, 1.0, 3.0" << std::endl;
@@ -226,7 +228,6 @@ namespace bitbots_throw{
     }
 
     void TestingMovement::curve_with_radian(){
-        std::shared_ptr<bitbots_splines::CubicSpline> pose = std::make_shared<bitbots_splines::CubicSpline>();
         SystemPublisher::publish_info("Start Testing", "curve_with_radian");
 
         std::vector<std::pair<double, double>> test_values;
@@ -242,21 +243,49 @@ namespace bitbots_throw{
         test_values.emplace_back(std::make_pair<double, double>(3, 5.75959));
         test_values.emplace_back(std::make_pair<double, double>(4, 0));
 
+
+        SystemPublisher::publish_info("Testing Spline Direct", "curve_with_radian");
+        std::unique_ptr<bitbots_splines::CubicSpline> spline = std::make_unique<bitbots_splines::CubicSpline>();
         for(auto it : test_values){
-            pose->add_point(bitbots_splines::Curve::Point{it.first, it.second});
+            spline->add_point(it.first, it.second);
         }
 
-        int point = 1;
+        int point = 0;
         int successful = 0;
         for(auto it : test_values){
-            double t = pose->position(it.first);
-            if(it.second != t){
-                SystemPublisher::publish_info("Check Failed (Point: " + std::to_string(point) + ", time: " + std::to_string(it.first) + ", position: " + std::to_string(it.second) + ")", "curve_with_radian");
+            ++point;
+            double t = spline->position(it.first);
+            double e = std::abs(it.second - t);
+            if(e > 0.000001){
+                SystemPublisher::publish_info("Check Failed (Point: " + std::to_string(point) + ", time: " + std::to_string(it.first) + ", position: " + std::to_string(it.second) + ", position-from-curve: " + std::to_string(t) + ")", "curve_with_radian");
             }else{
                 ++successful;
             }
+        }
+        SystemPublisher::publish_info("Finished Testing, [" + std::to_string(successful) + " out of " + std::to_string(point) + " successful]", "curve_with_radian");
 
+        SystemPublisher::publish_info("Testing Spline via PoseHandle", "curve_with_radian");
+        std::unique_ptr<bitbots_splines::PoseHandle> pose = std::make_unique<bitbots_splines::PoseHandle>(std::make_shared<bitbots_splines::CubicSpline>()
+                                                                                                         ,std::make_shared<bitbots_splines::CubicSpline>()
+                                                                                                         ,std::make_shared<bitbots_splines::CubicSpline>()
+                                                                                                         ,std::make_shared<bitbots_splines::CubicSpline>()
+                                                                                                         ,std::make_shared<bitbots_splines::CubicSpline>()
+                                                                                                         ,std::make_shared<bitbots_splines::CubicSpline>());
+        for(auto it : test_values){
+            pose->pitch()->add_point(it.first, it.second, 0.0, 0.0);
+        }
+
+        point = 0;
+        successful = 0;
+        for(auto it : test_values){
             ++point;
+            double t = pose->pitch()->position(it.first);
+            double e = std::abs(it.second - t);
+            if(e > 0.000001){
+                SystemPublisher::publish_info("Check Failed (Point: " + std::to_string(point) + ", time: " + std::to_string(it.first) + ", position: " + std::to_string(it.second) + ", position-from-curve: " + std::to_string(t) + ")", "curve_with_radian");
+            }else{
+                ++successful;
+            }
         }
 
         SystemPublisher::publish_info("Finished Testing, [" + std::to_string(successful) + " out of " + std::to_string(point) + " successful]", "curve_with_radian");
@@ -267,7 +296,7 @@ namespace bitbots_throw{
         std::stringstream log;
 
         for(auto it : values){
-            curve->add_point(it.first, it.second);
+            curve->add_point(it.first, it.second, 0.0, 0.0);
         }
         log << curve->get_debug_csv() << std::endl;
         log << generate_points_csv(curve) << std::endl;
@@ -294,23 +323,23 @@ namespace bitbots_throw{
         log << "y-points, -3.0, 0.0, 3.0, 0.0, -3.0, (cycle)" << std::endl;
         log << "z-points, -3.0, -5.0, 0.0, 2.0, 1.0, (divers)" << std::endl;
 
-        handle.x()->add_point(0.0, -3.0);
-        handle.x()->add_point(0.5, -1.0);
-        handle.x()->add_point(1.0, 0.0);
-        handle.x()->add_point(1.5, 1.0);
-        handle.x()->add_point(2.0, 3.0);
+        handle.x()->add_point(0.0, -3.0, 0.0, 0.0);
+        handle.x()->add_point(0.5, -1.0, 0.0, 0.0);
+        handle.x()->add_point(1.0, 0.0, 0.0, 0.0);
+        handle.x()->add_point(1.5, 1.0, 0.0, 0.0);
+        handle.x()->add_point(2.0, 3.0, 0.0, 0.0);
 
-        handle.y()->add_point(0.0, -3.0);
-        handle.y()->add_point(0.5, 0.0);
-        handle.y()->add_point(1.0, 3.0);
-        handle.y()->add_point(1.5, 0.0);
-        handle.y()->add_point(2.0, -3.0);
+        handle.y()->add_point(0.0, -3.0, 0.0, 0.0);
+        handle.y()->add_point(0.5, 0.0, 0.0, 0.0);
+        handle.y()->add_point(1.0, 3.0, 0.0, 0.0);
+        handle.y()->add_point(1.5, 0.0, 0.0, 0.0);
+        handle.y()->add_point(2.0, -3.0, 0.0, 0.0);
 
-        handle.z()->add_point(0.0, -3.0);
-        handle.z()->add_point(0.5, -5.0);
-        handle.z()->add_point(1.0, 0.0);
-        handle.z()->add_point(1.5, 2.0);
-        handle.z()->add_point(2.0, 1.0);
+        handle.z()->add_point(0.0, -3.0, 0.0, 0.0);
+        handle.z()->add_point(0.5, -5.0, 0.0, 0.0);
+        handle.z()->add_point(1.0, 0.0, 0.0, 0.0);
+        handle.z()->add_point(1.5, 2.0, 0.0, 0.0);
+        handle.z()->add_point(2.0, 1.0, 0.0, 0.0);
 
         log << handle.get_debug_csv() << std::endl;
         log << generate_points_csv(handle, 2.1) << std::endl;
