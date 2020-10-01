@@ -10,9 +10,8 @@
 
 namespace bitbots_throw{
     ThrowTypeId ThrowFactory::get_throw_type(Struct3d const & throw_goal){
-        ThrowMath throw_math;
         ThrowTypeId throw_type_id = ThrowTypeId::none;
-        auto throw_distance = throw_math.calculate_distance(throw_goal);
+        auto throw_distance = ThrowMath::calculate_distance(throw_goal);
 
         for (auto & map_throw_type : sp_throw_type_parameter_->map_throw_types_){
             auto throw_type = map_throw_type.second;
