@@ -33,12 +33,7 @@ namespace bitbots_throw{
             throw_release_point.y_ = std::sin(throw_orientation_angle) * adjacent;
             throw_release_point.z_ = throw_zenith - opposite;
             throw_release_point.roll_ = 0.0;
-            // 90 - (180 - 2 * throw_release_angle)
-            auto hand_angle = -1*pi/2 + 2 * throw_release_angle;
-            if (hand_angle < 0){
-                hand_angle += 2*pi;
-            }
-            throw_release_point.pitch_ = hand_angle;
+            throw_release_point.pitch_ = 2 * throw_release_angle - pi/2;
             throw_release_point.yaw_ = 0.0;
 
             return throw_release_point;

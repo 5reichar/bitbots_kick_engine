@@ -17,7 +17,7 @@ namespace bitbots_throw{
         point.y_ = request_.left_hand_position_.y_;
         point.z_ = request_.left_feet_position_.z_ + engine_parameter_.ball_radius_;
         point.roll_ = 0.0;
-        point.pitch_ = 1.75 * engine_parameter_.pi_;
+        point.pitch_ = 0.25 * engine_parameter_.pi_;
         point.yaw_ = 0.0;
         return point;
     }
@@ -27,7 +27,7 @@ namespace bitbots_throw{
         point.y_ = engine_parameter_.ball_radius_;
         point.z_ = request_.left_feet_position_.z_ + engine_parameter_.ball_radius_;
         point.roll_ = 0.0;
-        point.pitch_ = 1.75 * engine_parameter_.pi_;
+        point.pitch_ = 0.25 * engine_parameter_.pi_;
         point.yaw_ = 0.0;
         return point;
     }
@@ -37,7 +37,7 @@ namespace bitbots_throw{
         point.y_ = engine_parameter_.ball_radius_;
         point.z_ = request_.head_position_.z_ + engine_parameter_.arm_length_;
         point.roll_ = 0.0;
-        point.pitch_ = engine_parameter_.pi_ / 2;
+        point.pitch_ = -0.5 * engine_parameter_.pi_;
         point.yaw_ = 0.0;
         return point;
     }
@@ -47,7 +47,7 @@ namespace bitbots_throw{
         point.y_ = engine_parameter_.ball_radius_;
         point.z_ = request_.head_position_.z_ + engine_parameter_.arm_length_;
         point.roll_ = 0.0;
-        point.pitch_ = engine_parameter_.pi_ / 2;
+        point.pitch_ = -0.5 * engine_parameter_.pi_;
         point.yaw_ = 0.0;
         return point;
     }
@@ -57,7 +57,7 @@ namespace bitbots_throw{
         point.y_ = engine_parameter_.ball_radius_;
         point.z_ = request_.head_position_.z_;
         point.roll_ = 0.0;
-        point.pitch_ = 3 * engine_parameter_.pi_ / 4;
+        point.pitch_ = -0.75 * engine_parameter_.pi_;
         point.yaw_ = 0.0;
         return point;
     }
@@ -84,7 +84,7 @@ namespace bitbots_throw{
         point.y_ = request_.right_hand_position_.y_;
         point.z_ = request_.right_feet_position_.z_ + engine_parameter_.ball_radius_;
         point.roll_ = 0.0;
-        point.pitch_ = 1.75 * engine_parameter_.pi_;
+        point.pitch_ = 0.25 * engine_parameter_.pi_;
         point.yaw_ = 0.0;
         return point;
     }
@@ -94,7 +94,7 @@ namespace bitbots_throw{
         point.y_ = -1 * engine_parameter_.ball_radius_;
         point.z_ = request_.right_feet_position_.z_ + engine_parameter_.ball_radius_;
         point.roll_ = 0.0;
-        point.pitch_ = 1.75 * engine_parameter_.pi_;
+        point.pitch_ = 0.25 * engine_parameter_.pi_;
         point.yaw_ = 0.0;
         return point;
     }
@@ -104,7 +104,7 @@ namespace bitbots_throw{
         point.y_ = -1 * engine_parameter_.ball_radius_;
         point.z_ = request_.head_position_.z_ + engine_parameter_.arm_length_;
         point.roll_ = 0.0;
-        point.pitch_ = engine_parameter_.pi_ / 2;
+        point.pitch_ = -0.5 * engine_parameter_.pi_;
         point.yaw_ = 0.0;
         return point;
     }
@@ -114,7 +114,7 @@ namespace bitbots_throw{
         point.y_ = -1 * engine_parameter_.ball_radius_;
         point.z_ = request_.head_position_.z_ + engine_parameter_.arm_length_;
         point.roll_ = 0.0;
-        point.pitch_ = engine_parameter_.pi_ / 2;
+        point.pitch_ = -0.5 * engine_parameter_.pi_;
         point.yaw_ = 0.0;
         return point;
     }
@@ -124,7 +124,7 @@ namespace bitbots_throw{
         point.y_ = -1 * engine_parameter_.ball_radius_;
         point.z_ = request_.head_position_.z_;
         point.roll_ = 0.0;
-        point.pitch_ = engine_parameter_.pi_ * 0.75;
+        point.pitch_ = -0.25 * engine_parameter_.pi_;
         point.yaw_ = 0.0;
         return point;
     }
