@@ -9,7 +9,6 @@
 namespace bitbots_throw{
     TestingMovement::TestingMovement(std::shared_ptr<ThrowMaterial> material)
         :ThrowMovement(material){
-        max_prepare_rounds_ = 20;
     }
 
     double TestingMovement::init_material(){
@@ -17,10 +16,14 @@ namespace bitbots_throw{
         trajectory_time_ = 0.0;
 
         curve_with_radian();
+        test_basic_throw_movement();
+
+        /*
         test_curves();
         move_arms_and_feet();
         squat();
         rotate_right_hand();
+         */
 
         SystemPublisher::publish_info("Finished Testing", "TestingMovement");
         return trajectory_time_;
@@ -39,52 +42,52 @@ namespace bitbots_throw{
 
     void TestingMovement::move_arms_and_feet(){
         SystemPublisher::publish_info("Start Testing Movement III", "TestingMovement");
-        sp_material_->add_point_to_right_hand(trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
-        sp_material_->add_point_to_left_hand(trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
-        sp_material_->add_point_to_right_foot(trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
-        sp_material_->add_point_to_left_foot(trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_right_hand(trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_left_hand(trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_right_foot(trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_left_foot(trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
         trajectory_time_ += 0.6;
 
-        sp_material_->add_point_to_right_hand(trajectory_time_, {3.0, 0.0, 0.0, 0.0, 0.0, 0.0});
-        sp_material_->add_point_to_left_hand(trajectory_time_, {3.0, 0.0, 0.0, 0.0, 0.0, 0.0});
-        sp_material_->add_point_to_right_foot(trajectory_time_, {3.0, 0.0, 0.0, 0.0, 0.0, 0.0});
-        sp_material_->add_point_to_left_foot(trajectory_time_, {3.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_right_hand(trajectory_time_, {3.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_left_hand(trajectory_time_, {3.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_right_foot(trajectory_time_, {3.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_left_foot(trajectory_time_, {3.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
         trajectory_time_ += 0.6;
 
-        sp_material_->add_point_to_right_hand(trajectory_time_, {-3.0, 0.0, 0.0, 0.0, 0.0, 0.0});
-        sp_material_->add_point_to_left_hand(trajectory_time_, {-3.0, 0.0, 0.0, 0.0, 0.0, 0.0});
-        sp_material_->add_point_to_right_foot(trajectory_time_, {-3.0, 0.0, 0.0, 0.0, 0.0, 0.0});
-        sp_material_->add_point_to_left_foot(trajectory_time_, {-3.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_right_hand(trajectory_time_, {-3.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_left_hand(trajectory_time_, {-3.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_right_foot(trajectory_time_, {-3.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_left_foot(trajectory_time_, {-3.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
         trajectory_time_ += 0.6;
 
-        sp_material_->add_point_to_right_hand(trajectory_time_, {0.0, 3.0, 0.0, 0.0, 0.0, 0.0});
-        sp_material_->add_point_to_left_hand(trajectory_time_, {0.0, 3.0, 0.0, 0.0, 0.0, 0.0});
-        sp_material_->add_point_to_right_foot(trajectory_time_, {0.0, 3.0, 0.0, 0.0, 0.0, 0.0});
-        sp_material_->add_point_to_left_foot(trajectory_time_, {0.0, 3.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_right_hand(trajectory_time_, {0.0, 3.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_left_hand(trajectory_time_, {0.0, 3.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_right_foot(trajectory_time_, {0.0, 3.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_left_foot(trajectory_time_, {0.0, 3.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
         trajectory_time_ += 0.6;
 
-        sp_material_->add_point_to_right_hand(trajectory_time_, {0.0, -3.0, 0.0, 0.0, 0.0, 0.0});
-        sp_material_->add_point_to_left_hand(trajectory_time_, {0.0, -3.0, 0.0, 0.0, 0.0, 0.0});
-        sp_material_->add_point_to_right_foot(trajectory_time_, {0.0, -3.0, 0.0, 0.0, 0.0, 0.0});
-        sp_material_->add_point_to_left_foot(trajectory_time_, {0.0, -3.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_right_hand(trajectory_time_, {0.0, -3.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_left_hand(trajectory_time_, {0.0, -3.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_right_foot(trajectory_time_, {0.0, -3.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_left_foot(trajectory_time_, {0.0, -3.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
         trajectory_time_ += 0.6;
 
-        sp_material_->add_point_to_right_hand(trajectory_time_, {0.0, 0.0, 3.0, 0.0, 0.0, 0.0});
-        sp_material_->add_point_to_left_hand(trajectory_time_, {0.0, 0.0, 3.0, 0.0, 0.0, 0.0});
-        sp_material_->add_point_to_right_foot(trajectory_time_, {0.0, 0.0, 3.0, 0.0, 0.0, 0.0});
-        sp_material_->add_point_to_left_foot(trajectory_time_, {0.0, 0.0, 3.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_right_hand(trajectory_time_, {0.0, 0.0, 3.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_left_hand(trajectory_time_, {0.0, 0.0, 3.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_right_foot(trajectory_time_, {0.0, 0.0, 3.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_left_foot(trajectory_time_, {0.0, 0.0, 3.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
         trajectory_time_ += 0.6;
 
-        sp_material_->add_point_to_right_hand(trajectory_time_, {0.0, 0.0, -3.0, 0.0, 0.0, 0.0});
-        sp_material_->add_point_to_left_hand(trajectory_time_, {0.0, 0.0, -3.0, 0.0, 0.0, 0.0});
-        sp_material_->add_point_to_right_foot(trajectory_time_, {0.0, 0.0, -3.0, 0.0, 0.0, 0.0});
-        sp_material_->add_point_to_left_foot(trajectory_time_, {0.0, 0.0, -3.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_right_hand(trajectory_time_, {0.0, 0.0, -3.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_left_hand(trajectory_time_, {0.0, 0.0, -3.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_right_foot(trajectory_time_, {0.0, 0.0, -3.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_left_foot(trajectory_time_, {0.0, 0.0, -3.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
         trajectory_time_ += 0.6;
 
-        sp_material_->add_point_to_right_hand(trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
-        sp_material_->add_point_to_left_hand(trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
-        sp_material_->add_point_to_right_foot(trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
-        sp_material_->add_point_to_left_foot(trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_right_hand(trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_left_hand(trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_right_foot(trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_left_foot(trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
         trajectory_time_ += 0.6;
 
         SystemPublisher::publish_info("Finished Testing Movement III", "TestingMovement");
@@ -92,56 +95,56 @@ namespace bitbots_throw{
 
     void TestingMovement::squat(){
         SystemPublisher::publish_info("Start Testing Movement II", "TestingMovement");
-        sp_material_->add_point_to_right_hand(trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
-        sp_material_->add_point_to_left_hand(trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
-        sp_material_->add_point_to_right_foot(trajectory_time_, {0.0, 0.0, -3.0, 0.0, 0.0, 0.0});
-        sp_material_->add_point_to_left_foot(trajectory_time_, {0.0, 0.0, -3.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_right_hand(trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_left_hand(trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_right_foot(trajectory_time_, {0.0, 0.0, -3.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_left_foot(trajectory_time_, {0.0, 0.0, -3.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
         trajectory_time_ += 0.6;
 
-        sp_material_->add_point_to_right_foot(trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
-        sp_material_->add_point_to_left_foot(trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_right_foot(trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_left_foot(trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
         trajectory_time_ += 0.6;
 
-        sp_material_->add_point_to_right_hand(trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
-        sp_material_->add_point_to_left_hand(trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
-        sp_material_->add_point_to_right_foot(trajectory_time_, {0.0, 0.0, -3.0, 0.0, 0.0, 0.0});
-        sp_material_->add_point_to_left_foot(trajectory_time_, {0.0, 0.0, -3.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_right_hand(trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_left_hand(trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_right_foot(trajectory_time_, {0.0, 0.0, -3.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_left_foot(trajectory_time_, {0.0, 0.0, -3.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
         trajectory_time_ += 0.3;
         SystemPublisher::publish_info("Finished Testing Movement II", "TestingMovement");
     }
 
     void TestingMovement::rotate_right_hand(){
         SystemPublisher::publish_info("Start Testing Movement I", "TestingMovement");
-        sp_material_->add_point_to_right_hand(trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
-        sp_material_->add_point_to_left_hand(trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
-        sp_material_->add_point_to_right_foot(trajectory_time_, {0.0, 0.0, -3.0, 0.0, 0.0, 0.0});
-        sp_material_->add_point_to_left_foot(trajectory_time_, {0.0, 0.0, -3.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_right_hand(trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_left_hand(trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_right_foot(trajectory_time_, {0.0, 0.0, -3.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_left_foot(trajectory_time_, {0.0, 0.0, -3.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
         trajectory_time_ += 0.3;
 
-        sp_material_->add_point_to_right_hand(trajectory_time_, {0.0, 0.0, 3.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_right_hand(trajectory_time_, {0.0, 0.0, 3.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
         trajectory_time_ += 0.3;
-        sp_material_->add_point_to_right_hand(trajectory_time_, {3.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_right_hand(trajectory_time_, {3.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
         trajectory_time_ += 0.3;
-        sp_material_->add_point_to_right_hand(trajectory_time_, {0.0, 0.0, -3.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_right_hand(trajectory_time_, {0.0, 0.0, -3.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
         trajectory_time_ += 0.3;
-        sp_material_->add_point_to_right_hand(trajectory_time_, {-3.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_right_hand(trajectory_time_, {-3.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
         trajectory_time_ += 0.3;
-        sp_material_->add_point_to_right_hand(trajectory_time_, {0.0, 0.0, 3.0, 0.0, 0.0, 0.0});
-        trajectory_time_ += 0.3;
-
-        sp_material_->add_point_to_right_hand(trajectory_time_, {0.0, 0.0, -3.0, 0.0, 0.0, 0.0});
-        trajectory_time_ += 0.3;
-        sp_material_->add_point_to_right_hand(trajectory_time_, {0.0, -3.0, 0.0, 0.0, 0.0, 0.0});
-        trajectory_time_ += 0.3;
-        sp_material_->add_point_to_right_hand(trajectory_time_, {0.0, 0.0, 3.0, 0.0, 0.0, 0.0});
-        trajectory_time_ += 0.3;
-        sp_material_->add_point_to_right_hand(trajectory_time_, {0.0, -3.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_right_hand(trajectory_time_, {0.0, 0.0, 3.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
         trajectory_time_ += 0.3;
 
-        sp_material_->add_point_to_right_hand(trajectory_time_, {0.0, 0.0, -3.0, 0.0, 0.0, 0.0});
-        sp_material_->add_point_to_left_hand(trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
-        sp_material_->add_point_to_right_foot(trajectory_time_, {0.0, 0.0, -3.0, 0.0, 0.0, 0.0});
-        sp_material_->add_point_to_left_foot(trajectory_time_, {0.0, 0.0, -3.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_right_hand(trajectory_time_, {0.0, 0.0, -3.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        trajectory_time_ += 0.3;
+        sp_material_->add_point_to_right_hand(trajectory_time_, {0.0, -3.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        trajectory_time_ += 0.3;
+        sp_material_->add_point_to_right_hand(trajectory_time_, {0.0, 0.0, 3.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        trajectory_time_ += 0.3;
+        sp_material_->add_point_to_right_hand(trajectory_time_, {0.0, -3.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        trajectory_time_ += 0.3;
+
+        sp_material_->add_point_to_right_hand(trajectory_time_, {0.0, 0.0, -3.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_left_hand(trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_right_foot(trajectory_time_, {0.0, 0.0, -3.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_left_foot(trajectory_time_, {0.0, 0.0, -3.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
         trajectory_time_ += 0.3;
         SystemPublisher::publish_info("Finished Testing Movement I", "TestingMovement");
     }
@@ -230,65 +233,118 @@ namespace bitbots_throw{
     void TestingMovement::curve_with_radian(){
         SystemPublisher::publish_info("Start Testing", "curve_with_radian");
 
-        std::vector<std::pair<double, double>> test_values;
-        test_values.emplace_back(std::make_pair<double, double>(0, 0));
-        test_values.emplace_back(std::make_pair<double, double>(0.25, 0));
-        test_values.emplace_back(std::make_pair<double, double>(0.5, 0));
-        test_values.emplace_back(std::make_pair<double, double>(0.75, 5.49779));
-        test_values.emplace_back(std::make_pair<double, double>(1, 5.49779));
-        test_values.emplace_back(std::make_pair<double, double>(1.33333, 1.5708));
-        test_values.emplace_back(std::make_pair<double, double>(1.66667, 1.5708));
-        test_values.emplace_back(std::make_pair<double, double>(2, 2.35619));
-        test_values.emplace_back(std::make_pair<double, double>(2.5, 1.5708));
-        test_values.emplace_back(std::make_pair<double, double>(3, 5.75959));
-        test_values.emplace_back(std::make_pair<double, double>(4, 0));
+        std::vector<bitbots_splines::Curve::Point> test_values;
+        test_values.emplace_back(bitbots_splines::Curve::Point{0, 0, 0, 0});
+        test_values.emplace_back(bitbots_splines::Curve::Point{0.25, 0, 0, 0});
+        test_values.emplace_back(bitbots_splines::Curve::Point{0.5, 0, 0, 0});
+        test_values.emplace_back(bitbots_splines::Curve::Point{0.75, 5.49779, 0, 0});
+        test_values.emplace_back(bitbots_splines::Curve::Point{1, 5.49779, 0, 0});
+        test_values.emplace_back(bitbots_splines::Curve::Point{1.33333, 1.5708, 0, 0});
+        test_values.emplace_back(bitbots_splines::Curve::Point{1.66667, 1.5708, 0, 0});
+        test_values.emplace_back(bitbots_splines::Curve::Point{2, 2.35619, 0, 0});
+        test_values.emplace_back(bitbots_splines::Curve::Point{2.5, 1.5708, 0, 0});
+        test_values.emplace_back(bitbots_splines::Curve::Point{3, 5.75959, 0, 0});
+        test_values.emplace_back(bitbots_splines::Curve::Point{4, 0, 0, 0});
 
 
         SystemPublisher::publish_info("Testing Spline Direct", "curve_with_radian");
-        std::unique_ptr<bitbots_splines::CubicSpline> spline = std::make_unique<bitbots_splines::CubicSpline>();
+        std::shared_ptr<bitbots_splines::CubicSpline> spline = std::make_shared<bitbots_splines::CubicSpline>();
         for(auto it : test_values){
-            spline->add_point(it.first, it.second);
+            spline->add_point(it.time_, it.position_);
         }
-
-        int point = 0;
-        int successful = 0;
-        for(auto it : test_values){
-            ++point;
-            double t = spline->position(it.first);
-            double e = std::abs(it.second - t);
-            if(e > 0.000001){
-                SystemPublisher::publish_info("Check Failed (Point: " + std::to_string(point) + ", time: " + std::to_string(it.first) + ", position: " + std::to_string(it.second) + ", position-from-curve: " + std::to_string(t) + ")", "curve_with_radian");
-            }else{
-                ++successful;
-            }
-        }
-        SystemPublisher::publish_info("Finished Testing, [" + std::to_string(successful) + " out of " + std::to_string(point) + " successful]", "curve_with_radian");
+        check_curve(spline, test_values);
 
         SystemPublisher::publish_info("Testing Spline via PoseHandle", "curve_with_radian");
-        std::unique_ptr<bitbots_splines::PoseHandle> pose = std::make_unique<bitbots_splines::PoseHandle>(std::make_shared<bitbots_splines::CubicSpline>()
-                                                                                                         ,std::make_shared<bitbots_splines::CubicSpline>()
-                                                                                                         ,std::make_shared<bitbots_splines::CubicSpline>()
-                                                                                                         ,std::make_shared<bitbots_splines::CubicSpline>()
-                                                                                                         ,std::make_shared<bitbots_splines::CubicSpline>()
-                                                                                                         ,std::make_shared<bitbots_splines::CubicSpline>());
+        auto pose = create_pose_handle<bitbots_splines::CubicSpline>();
         for(auto it : test_values){
-            pose->pitch()->add_point(it.first, it.second, 0.0, 0.0);
+            pose->pitch()->add_point(it.time_, it.position_, 0.0, 0.0);
         }
+        check_curve(pose->pitch(), test_values);
 
-        point = 0;
-        successful = 0;
+        SystemPublisher::publish_info("Testing Spline via PoseHandle with ThrowUtility", "curve_with_radian");
+        auto pose_u = create_pose_handle<bitbots_splines::CubicSpline>();
         for(auto it : test_values){
+            add_point(pose_u
+                     ,it.time_
+                     ,{0.0, 0.0, 0.0, 0.0, it.position_, 0.0}
+                     ,{0.0, 0.0, 0.0, 0.0, 0.0, 0.0}
+                     ,{0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        }
+        check_curve(pose_u->pitch(), test_values);
+    }
+
+    void TestingMovement::test_basic_throw_movement(){
+        SystemPublisher::publish_info("Testing ThrowMaterial base class", "test_basic_throw_movement");
+        ThrowMovement movement(std::make_shared<ThrowMaterial>(create_pose_handle<bitbots_splines::CubicSpline>()
+                                                              ,create_pose_handle<bitbots_splines::CubicSpline>()
+                                                              ,create_pose_handle<bitbots_splines::CubicSpline>()
+                                                              ,create_pose_handle<bitbots_splines::CubicSpline>()));
+        movement.init(sp_service_);
+        check_movement(movement);
+        SystemPublisher::publish_info("finished testing", "test_basic_throw_movement");
+    }
+
+    void TestingMovement::check_curve(std::shared_ptr<bitbots_splines::Curve> sp_curve, std::vector<bitbots_splines::Curve::Point> const & values){
+        int point = 0;
+        int successful = 0;
+        for(auto it : values){
             ++point;
-            double t = pose->pitch()->position(it.first);
-            double e = std::abs(it.second - t);
+            double t = sp_curve->position(it.time_);
+            double e = std::abs(it.position_ - t);
             if(e > 0.000001){
-                SystemPublisher::publish_info("Check Failed (Point: " + std::to_string(point) + ", time: " + std::to_string(it.first) + ", position: " + std::to_string(it.second) + ", position-from-curve: " + std::to_string(t) + ")", "curve_with_radian");
+                SystemPublisher::publish_info("Check Failed (Point: " + std::to_string(point) + ", time: " + std::to_string(it.time_) + ", position: " + std::to_string(it.position_) + ", position-from-curve: " + std::to_string(t) + ")", "check_curve");
             }else{
                 ++successful;
             }
         }
+        SystemPublisher::publish_info("Finished Testing, [" + std::to_string(successful) + " out of " + std::to_string(point) + " successful]", "check_curve");
+    }
 
-        SystemPublisher::publish_info("Finished Testing, [" + std::to_string(successful) + " out of " + std::to_string(point) + " successful]", "curve_with_radian");
+    void TestingMovement::check_joint(std::shared_ptr<bitbots_splines::PoseHandle> sp_joint
+                                      , const std::vector<std::vector<bitbots_splines::Curve::Point>> & joint_values){
+        SystemPublisher::publish_info("check with points from movements-class", "check_joint");
+        SystemPublisher::publish_info("check x", "check_joint - joint_values");
+        check_curve(sp_joint->x(), joint_values.at(0));
+        SystemPublisher::publish_info("check y", "check_joint - joint_values");
+        check_curve(sp_joint->y(), joint_values.at(1));
+        SystemPublisher::publish_info("check z", "check_joint - joint_values");
+        check_curve(sp_joint->z(), joint_values.at(2));
+        SystemPublisher::publish_info("check roll", "check_joint - joint_values");
+        check_curve(sp_joint->roll(), joint_values.at(3));
+        SystemPublisher::publish_info("check pitch", "check_joint - joint_values");
+        check_curve(sp_joint->pitch(), joint_values.at(4));
+        SystemPublisher::publish_info("check yaw", "check_joint - joint_values");
+        check_curve(sp_joint->yaw(), joint_values.at(5));
+
+        SystemPublisher::publish_info("check with points from curve", "check_joint");
+        SystemPublisher::publish_info("check x", "check_joint - curve");
+        check_curve(sp_joint->x(), sp_joint->x()->points());
+        SystemPublisher::publish_info("check y", "check_joint - curve");
+        check_curve(sp_joint->y(), sp_joint->y()->points());
+        SystemPublisher::publish_info("check z", "check_joint - curve");
+        check_curve(sp_joint->z(), sp_joint->z()->points());
+        SystemPublisher::publish_info("check roll", "check_joint - curve");
+        check_curve(sp_joint->roll(), sp_joint->roll()->points());
+        SystemPublisher::publish_info("check pitch", "check_joint - curve");
+        check_curve(sp_joint->pitch(), sp_joint->pitch()->points());
+        SystemPublisher::publish_info("check yaw", "check_joint - curve");
+        check_curve(sp_joint->yaw(), sp_joint->yaw()->points());
+    }
+
+    void TestingMovement::check_movement(ThrowMovement & movement){
+        auto material = movement.create_material(true);
+
+        SystemPublisher::publish_info("check left hand", "check_movement");
+        check_joint(material->get_left_hand(), movement.get_left_hand_points());
+
+        SystemPublisher::publish_info("check right hand", "check_movement");
+        check_joint(material->get_right_hand(), movement.get_right_hand_points());
+
+        SystemPublisher::publish_info("check left foot", "check_movement");
+        check_joint(material->get_left_foot(), movement.get_left_foot_points());
+
+        SystemPublisher::publish_info("check right foot", "check_movement");
+        check_joint(material->get_right_foot(), movement.get_right_foot_points());
     }
 
     std::string

@@ -14,16 +14,20 @@ namespace bitbots_throw{
             ,std::shared_ptr<bitbots_splines::PoseHandle> left_foot
             ,std::shared_ptr<bitbots_splines::PoseHandle> right_foot);
 
-        void add_point_to_left_hand(double const & time, Struct3dRPY const & values, Struct3dRPY const & velocity = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, Struct3dRPY const & acceleration = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
-        void add_point_to_right_hand(double const & time, Struct3dRPY const & values, Struct3dRPY const & velocity = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, Struct3dRPY const & acceleration = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
-        void add_point_to_left_foot(double const & time, Struct3dRPY const & values, Struct3dRPY const & velocity = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, Struct3dRPY const & acceleration = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
-        void add_point_to_right_foot(double const & time, Struct3dRPY const & values, Struct3dRPY const & velocity = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, Struct3dRPY const & acceleration = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        void add_point_to_left_hand(double const & time, Struct3dRPY const & values, Struct3dRPY const & velocity, Struct3dRPY const & acceleration);
+        void add_point_to_right_hand(double const & time, Struct3dRPY const & values, Struct3dRPY const & velocity, Struct3dRPY const & acceleration);
+        void add_point_to_left_foot(double const & time, Struct3dRPY const & values, Struct3dRPY const & velocity, Struct3dRPY const & acceleration);
+        void add_point_to_right_foot(double const & time, Struct3dRPY const & values, Struct3dRPY const & velocity, Struct3dRPY const & acceleration);
 
         void add_movement_stage(double & time_stage_start);
 
+        std::shared_ptr<bitbots_splines::PoseHandle> get_left_hand() const;
         virtual tf2::Transform get_left_hand_transform(double const & time) const;
+        std::shared_ptr<bitbots_splines::PoseHandle> get_right_hand() const;
         virtual tf2::Transform get_right_hand_transform(double const & time) const;
+        std::shared_ptr<bitbots_splines::PoseHandle> get_left_foot() const;
         virtual tf2::Transform get_left_foot_transform(double const & time) const;
+        std::shared_ptr<bitbots_splines::PoseHandle> get_right_foot() const;
         virtual tf2::Transform get_right_foot_transform(double const & time) const;
 
         virtual double get_duration() const;

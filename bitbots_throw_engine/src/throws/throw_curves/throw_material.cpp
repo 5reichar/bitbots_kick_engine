@@ -33,16 +33,32 @@ namespace bitbots_throw{
         movement_stage_.emplace_back(time_stage_start);
     }
 
+    std::shared_ptr<bitbots_splines::PoseHandle> ThrowMaterial::get_left_hand() const{
+        return sp_pose_left_hand_;
+    }
+
     tf2::Transform ThrowMaterial::get_left_hand_transform(double const & time) const{
         return sp_pose_left_hand_->get_tf_transform(time);
+    }
+
+    std::shared_ptr<bitbots_splines::PoseHandle> ThrowMaterial::get_left_foot() const{
+        return sp_pose_right_hand_;
     }
 
     tf2::Transform ThrowMaterial::get_right_hand_transform(double const & time) const{
         return sp_pose_right_hand_->get_tf_transform(time);
     }
 
+    std::shared_ptr<bitbots_splines::PoseHandle> ThrowMaterial::get_right_hand() const{
+        return sp_pose_left_foot_;
+    }
+
     tf2::Transform ThrowMaterial::get_left_foot_transform(double const & time) const{
         return sp_pose_left_foot_->get_tf_transform(time);
+    }
+
+    std::shared_ptr<bitbots_splines::PoseHandle> ThrowMaterial::get_right_foot() const{
+        return sp_pose_right_foot_;
     }
 
     tf2::Transform ThrowMaterial::get_right_foot_transform(double const & time) const{

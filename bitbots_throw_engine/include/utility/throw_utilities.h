@@ -75,5 +75,15 @@ namespace bitbots_throw{
 
         return output.str();
     }
+
+    template<class c> std::shared_ptr<bitbots_splines::PoseHandle> create_pose_handle(){
+        return std::make_shared<bitbots_splines::PoseHandle>(
+                std::make_shared<c>() // x
+                ,std::make_shared<c>() // y
+                ,std::make_shared<c>() // z
+                ,std::make_shared<c>() // roll
+                ,std::make_shared<c>() // pitch
+                ,std::make_shared<c>()); // yaw
+    }
 } //bitbots_throw
 #endif //BITBOTS_THROW_THROW_UTILITIES_H

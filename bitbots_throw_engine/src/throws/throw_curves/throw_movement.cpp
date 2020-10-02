@@ -12,9 +12,32 @@ namespace bitbots_throw{
         sp_service_ = std::move(service);
     }
 
-    std::shared_ptr<ThrowMaterial> ThrowMovement::create_material(){
+    std::shared_ptr<ThrowMaterial> ThrowMovement::create_material(bool debug_active){
+        debug_active_ = debug_active;
+        left_hand_points_.clear();
+        right_hand_points_.clear();
+        left_foot_points_.clear();
+        right_foot_points_.clear();
+
         init_material();
+
         return sp_material_;
+    }
+
+    std::vector<std::vector<bitbots_splines::Curve::Point>> ThrowMovement::get_left_hand_points(){
+        return left_hand_points_;
+    }
+
+    std::vector<std::vector<bitbots_splines::Curve::Point>> ThrowMovement::get_right_hand_points(){
+        return right_hand_points_;
+    }
+
+    std::vector<std::vector<bitbots_splines::Curve::Point>> ThrowMovement::get_left_foot_points(){
+        return left_foot_points_;
+    }
+
+    std::vector<std::vector<bitbots_splines::Curve::Point>> ThrowMovement::get_right_foot_points(){
+        return right_foot_points_;
     }
 
     double ThrowMovement::init_material(){
@@ -39,34 +62,34 @@ namespace bitbots_throw{
 
         ////  Movement
         ////==== Start position
-        sp_material_->add_point_to_left_hand(trajectory_time_, sp_service_->get_left_arm_start());
-        sp_material_->add_point_to_right_hand(trajectory_time_, sp_service_->get_right_arm_start());
-        sp_material_->add_point_to_left_foot(trajectory_time_, sp_service_->get_left_foot_start());
-        sp_material_->add_point_to_right_foot(trajectory_time_, sp_service_->get_right_foot_start());
+        add_to_left_hand(trajectory_time_, sp_service_->get_left_arm_start());
+        add_to_right_hand(trajectory_time_, sp_service_->get_right_arm_start());
+        add_to_left_foot(trajectory_time_, sp_service_->get_left_foot_start());
+        add_to_right_foot(trajectory_time_, sp_service_->get_right_foot_start());
 
         ////==== Orient to ball
-        sp_material_->add_point_to_left_hand(orientation_time, sp_service_->get_left_arm_start());
-        sp_material_->add_point_to_right_hand(orientation_time, sp_service_->get_right_arm_start());
-        sp_material_->add_point_to_left_foot(orientation_time, sp_service_->get_left_foot_orientation_to_ball());
-        sp_material_->add_point_to_right_foot(orientation_time, sp_service_->get_right_foot_orientation_to_ball());
+        add_to_left_hand(orientation_time, sp_service_->get_left_arm_start());
+        add_to_right_hand(orientation_time, sp_service_->get_right_arm_start());
+        add_to_left_foot(orientation_time, sp_service_->get_left_foot_orientation_to_ball());
+        add_to_right_foot(orientation_time, sp_service_->get_right_foot_orientation_to_ball());
 
         ////==== Squat
-        sp_material_->add_point_to_left_hand(squat_time, sp_service_->get_left_arm_start());
-        sp_material_->add_point_to_right_hand(squat_time, sp_service_->get_right_arm_start());
-        sp_material_->add_point_to_left_foot(squat_time, sp_service_->get_left_foot_squat());
-        sp_material_->add_point_to_right_foot(squat_time, sp_service_->get_right_foot_squat());
+        add_to_left_hand(squat_time, sp_service_->get_left_arm_start());
+        add_to_right_hand(squat_time, sp_service_->get_right_arm_start());
+        add_to_left_foot(squat_time, sp_service_->get_left_foot_squat());
+        add_to_right_foot(squat_time, sp_service_->get_right_foot_squat());
 
         ////==== Reach to ball
-        sp_material_->add_point_to_left_hand(reach_time, sp_service_->get_left_arm_reach_to_ball());
-        sp_material_->add_point_to_right_hand(reach_time, sp_service_->get_right_arm_reach_to_ball());
-        sp_material_->add_point_to_left_foot(reach_time, sp_service_->get_left_foot_squat());
-        sp_material_->add_point_to_right_foot(reach_time, sp_service_->get_right_foot_squat());
+        add_to_left_hand(reach_time, sp_service_->get_left_arm_reach_to_ball());
+        add_to_right_hand(reach_time, sp_service_->get_right_arm_reach_to_ball());
+        add_to_left_foot(reach_time, sp_service_->get_left_foot_squat());
+        add_to_right_foot(reach_time, sp_service_->get_right_foot_squat());
 
         ////==== Pick ball
-        sp_material_->add_point_to_left_hand(pick_up_ball_time, sp_service_->get_left_arm_pick_up());
-        sp_material_->add_point_to_right_hand(pick_up_ball_time, sp_service_->get_right_arm_pick_up());
-        sp_material_->add_point_to_left_foot(pick_up_ball_time, sp_service_->get_left_foot_squat());
-        sp_material_->add_point_to_right_foot(pick_up_ball_time, sp_service_->get_right_foot_squat());
+        add_to_left_hand(pick_up_ball_time, sp_service_->get_left_arm_pick_up());
+        add_to_right_hand(pick_up_ball_time, sp_service_->get_right_arm_pick_up());
+        add_to_left_foot(pick_up_ball_time, sp_service_->get_left_foot_squat());
+        add_to_right_foot(pick_up_ball_time, sp_service_->get_right_foot_squat());
 
         /////  Clean Up
         trajectory_time_ = pick_up_ball_time;
@@ -83,20 +106,20 @@ namespace bitbots_throw{
 
         ////  Movement
         ////==== Move ball up
-        sp_material_->add_point_to_left_hand(move_ball_up, sp_service_->get_left_arm_ball_at_head_height());
-        sp_material_->add_point_to_right_hand(move_ball_up, sp_service_->get_right_arm_ball_at_head_height());
-        sp_material_->add_point_to_left_foot(move_ball_up, sp_service_->get_left_foot_start());
-        sp_material_->add_point_to_right_foot(move_ball_up, sp_service_->get_right_foot_start());
+        add_to_left_hand(move_ball_up, sp_service_->get_left_arm_ball_at_head_height());
+        add_to_right_hand(move_ball_up, sp_service_->get_right_arm_ball_at_head_height());
+        add_to_left_foot(move_ball_up, sp_service_->get_left_foot_start());
+        add_to_right_foot(move_ball_up, sp_service_->get_right_foot_start());
 
         ////==== Move ball over the head
-        sp_material_->add_point_to_left_hand(move_ball_over_the_head, sp_service_->get_left_arm_throw_zenith());
-        sp_material_->add_point_to_right_hand(move_ball_over_the_head, sp_service_->get_right_arm_throw_zenith());
-        sp_material_->add_point_to_left_foot(move_ball_over_the_head, sp_service_->get_left_foot_orientation_to_goal());
-        sp_material_->add_point_to_right_foot(move_ball_over_the_head, sp_service_->get_right_foot_orientation_to_goal());
+        add_to_left_hand(move_ball_over_the_head, sp_service_->get_left_arm_throw_zenith());
+        add_to_right_hand(move_ball_over_the_head, sp_service_->get_right_arm_throw_zenith());
+        add_to_left_foot(move_ball_over_the_head, sp_service_->get_left_foot_orientation_to_goal());
+        add_to_right_foot(move_ball_over_the_head, sp_service_->get_right_foot_orientation_to_goal());
 
         ////==== Begin throw position
-        sp_material_->add_point_to_left_hand(begin_throw_time, sp_service_->get_left_arm_throw_start());
-        sp_material_->add_point_to_right_hand(begin_throw_time, sp_service_->get_right_arm_throw_start());
+        add_to_left_hand(begin_throw_time, sp_service_->get_left_arm_throw_start());
+        add_to_right_hand(begin_throw_time, sp_service_->get_right_arm_throw_start());
 
         /////  Clean Up
         trajectory_time_ = begin_throw_time;
@@ -112,13 +135,13 @@ namespace bitbots_throw{
 
         ////  Movement
         ////==== Return to ball to over head position
-        sp_material_->add_point_to_left_hand(zenith_throw_time, sp_service_->get_left_arm_throw_zenith_return());
-        sp_material_->add_point_to_right_hand(zenith_throw_time, sp_service_->get_right_arm_throw_zenith_return());
+        add_to_left_hand(zenith_throw_time, sp_service_->get_left_arm_throw_zenith_return());
+        add_to_right_hand(zenith_throw_time, sp_service_->get_right_arm_throw_zenith_return());
 
         ////==== Release ball
         //Struct3dRPY velocity = sp_service_->get_throw_velocity();
-        sp_material_->add_point_to_left_hand(release_throw_time, sp_service_->get_left_arm_throw_release());//, velocity);
-        sp_material_->add_point_to_right_hand(release_throw_time, sp_service_->get_right_arm_throw_release());//, velocity);
+        add_to_left_hand(release_throw_time, sp_service_->get_left_arm_throw_release());//, velocity);
+        add_to_right_hand(release_throw_time, sp_service_->get_right_arm_throw_release());//, velocity);
 
         /////  Clean Up
         trajectory_time_ = release_throw_time;
@@ -132,11 +155,71 @@ namespace bitbots_throw{
         double finish_time = trajectory_time_ + movement_time;
 
         ////  Movement
-        sp_material_->add_point_to_left_hand(finish_time, sp_service_->get_left_arm_start());
-        sp_material_->add_point_to_right_hand(finish_time, sp_service_->get_right_arm_start());
+        add_to_left_hand(finish_time, sp_service_->get_left_arm_start());
+        add_to_right_hand(finish_time, sp_service_->get_right_arm_start());
 
         /////  Clean Up
         trajectory_time_ = finish_time;
         sp_material_->add_movement_stage(trajectory_time_);
+    }
+
+    void ThrowMovement::add_to_left_hand(const double & time, const Struct3dRPY & position, Struct3dRPY const & velocity, Struct3dRPY const & acceleration){
+        sp_material_->add_point_to_left_hand(time, position, velocity, acceleration);
+
+        if(debug_active_){
+            std::vector<bitbots_splines::Curve::Point> axis;
+            axis.emplace_back(bitbots_splines::Curve::Point{time, position.x_, velocity.x_, acceleration.x_});
+            axis.emplace_back(bitbots_splines::Curve::Point{time, position.y_, velocity.x_, acceleration.y_});
+            axis.emplace_back(bitbots_splines::Curve::Point{time, position.z_, velocity.x_, acceleration.z_});
+            axis.emplace_back(bitbots_splines::Curve::Point{time, position.roll_, velocity.x_, acceleration.roll_});
+            axis.emplace_back(bitbots_splines::Curve::Point{time, position.pitch_, velocity.pitch_, acceleration.pitch_});
+            axis.emplace_back(bitbots_splines::Curve::Point{time, position.yaw_, velocity.yaw_, acceleration.yaw_});
+            left_hand_points_.emplace_back(axis);
+        }
+    }
+
+    void ThrowMovement::add_to_right_hand(const double & time, const Struct3dRPY & position, Struct3dRPY const & velocity, Struct3dRPY const & acceleration){
+        sp_material_->add_point_to_right_hand(time, position, velocity, acceleration);
+
+        if(debug_active_){
+            std::vector<bitbots_splines::Curve::Point> axis;
+            axis.emplace_back(bitbots_splines::Curve::Point{time, position.x_, velocity.x_, acceleration.x_});
+            axis.emplace_back(bitbots_splines::Curve::Point{time, position.y_, velocity.x_, acceleration.y_});
+            axis.emplace_back(bitbots_splines::Curve::Point{time, position.z_, velocity.x_, acceleration.z_});
+            axis.emplace_back(bitbots_splines::Curve::Point{time, position.roll_, velocity.x_, acceleration.roll_});
+            axis.emplace_back(bitbots_splines::Curve::Point{time, position.pitch_, velocity.pitch_, acceleration.pitch_});
+            axis.emplace_back(bitbots_splines::Curve::Point{time, position.yaw_, velocity.yaw_, acceleration.yaw_});
+            right_hand_points_.emplace_back(axis);
+        }
+    }
+
+    void ThrowMovement::add_to_left_foot(const double & time, const Struct3dRPY & position, Struct3dRPY const & velocity, Struct3dRPY const & acceleration){
+        sp_material_->add_point_to_left_foot(time, position, velocity, acceleration);
+
+        if(debug_active_){
+            std::vector<bitbots_splines::Curve::Point> axis;
+            axis.emplace_back(bitbots_splines::Curve::Point{time, position.x_, velocity.x_, acceleration.x_});
+            axis.emplace_back(bitbots_splines::Curve::Point{time, position.y_, velocity.x_, acceleration.y_});
+            axis.emplace_back(bitbots_splines::Curve::Point{time, position.z_, velocity.x_, acceleration.z_});
+            axis.emplace_back(bitbots_splines::Curve::Point{time, position.roll_, velocity.x_, acceleration.roll_});
+            axis.emplace_back(bitbots_splines::Curve::Point{time, position.pitch_, velocity.pitch_, acceleration.pitch_});
+            axis.emplace_back(bitbots_splines::Curve::Point{time, position.yaw_, velocity.yaw_, acceleration.yaw_});
+            left_foot_points_.emplace_back(axis);
+        }
+    }
+
+    void ThrowMovement::add_to_right_foot(const double & time, const Struct3dRPY & position, Struct3dRPY const & velocity, Struct3dRPY const & acceleration){
+        sp_material_->add_point_to_right_foot(time, position, velocity, acceleration);
+
+        if(debug_active_){
+            std::vector<bitbots_splines::Curve::Point> axis;
+            axis.emplace_back(bitbots_splines::Curve::Point{time, position.x_, velocity.x_, acceleration.x_});
+            axis.emplace_back(bitbots_splines::Curve::Point{time, position.y_, velocity.x_, acceleration.y_});
+            axis.emplace_back(bitbots_splines::Curve::Point{time, position.z_, velocity.x_, acceleration.z_});
+            axis.emplace_back(bitbots_splines::Curve::Point{time, position.roll_, velocity.x_, acceleration.roll_});
+            axis.emplace_back(bitbots_splines::Curve::Point{time, position.pitch_, velocity.pitch_, acceleration.pitch_});
+            axis.emplace_back(bitbots_splines::Curve::Point{time, position.yaw_, velocity.yaw_, acceleration.yaw_});
+            right_foot_points_.emplace_back(axis);
+        }
     }
 } //bitbots_throw
