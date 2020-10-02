@@ -41,7 +41,7 @@ namespace bitbots_throw{
         return sp_pose_left_hand_->get_tf_transform(time);
     }
 
-    std::shared_ptr<bitbots_splines::PoseHandle> ThrowMaterial::get_left_foot() const{
+    std::shared_ptr<bitbots_splines::PoseHandle> ThrowMaterial::get_right_hand() const{
         return sp_pose_right_hand_;
     }
 
@@ -49,7 +49,7 @@ namespace bitbots_throw{
         return sp_pose_right_hand_->get_tf_transform(time);
     }
 
-    std::shared_ptr<bitbots_splines::PoseHandle> ThrowMaterial::get_right_hand() const{
+    std::shared_ptr<bitbots_splines::PoseHandle> ThrowMaterial::get_left_foot() const{
         return sp_pose_left_foot_;
     }
 
