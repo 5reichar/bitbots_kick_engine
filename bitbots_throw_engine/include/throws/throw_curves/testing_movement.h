@@ -14,6 +14,7 @@ namespace bitbots_throw{
         void move_arms_and_feet();
         void squat() ;
         void rotate_right_hand();
+        void test_orientation();
 
         template<typename curve_type> void test_curve_type(std::string const & type_name);
 

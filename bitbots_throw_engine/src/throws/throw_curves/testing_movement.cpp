@@ -15,12 +15,15 @@ namespace bitbots_throw{
         SystemPublisher::publish_info("Start Testing", "TestingMovement");
         trajectory_time_ = 0.0;
 
+        /*
         curve_with_radian();
         test_basic_throw_movement();
         test_curves();
         move_arms_and_feet();
         squat();
         rotate_right_hand();
+         */
+        test_orientation();
 
         SystemPublisher::publish_info("Finished Testing", "TestingMovement");
         return trajectory_time_;
@@ -417,5 +420,39 @@ namespace bitbots_throw{
         log << handle->get_debug_csv() << std::endl;
         log << generate_points_csv(*handle, 2.1) << std::endl;
         return log.str();
+    }
+
+    void TestingMovement::test_orientation(){
+        SystemPublisher::publish_info("Start Testing Orientation I", "test_orientation");
+        sp_material_->add_point_to_right_hand(trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_left_hand(trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_right_foot(trajectory_time_, {0.0, 0.0, -3.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_left_foot(trajectory_time_, {0.0, 0.0, -3.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        trajectory_time_ += 0.3;
+
+        double x = 0.5;
+        double y = 0.5;
+        double z = 0.5;
+
+        for(double i = -2.0; i <= 2; i += 0.05){
+            add_to_left_hand(trajectory_time_, {x, y, z, 0.0, i, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+
+            if(x <= 3.5){
+                x+= 0.1;
+            }else if(y <= 3.5){
+                y += 0.1;
+            }else if(z <= 3.5){
+                z += 0.1;
+            }
+
+            trajectory_time_ += 0.1;
+        }
+
+        sp_material_->add_point_to_right_hand(trajectory_time_, {0.0, 0.0, -3.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_left_hand(trajectory_time_, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_right_foot(trajectory_time_, {0.0, 0.0, -3.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        sp_material_->add_point_to_left_foot(trajectory_time_, {0.0, 0.0, -3.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        trajectory_time_ += 0.3;
+        SystemPublisher::publish_info("Finished Testing Movement I", "TestingMovement");
     }
 }
