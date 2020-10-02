@@ -28,6 +28,9 @@ namespace bitbots_throw{
         std::string test_curve_with_points(bitbots_splines::Curve * curve, std::vector<std::pair<double, double>> values);
         std::string test_pose_handle_adding_points(bitbots_splines::PoseHandle handle);
         std::string test_pose_handle_with_function(std::shared_ptr<bitbots_splines::PoseHandle> handle);
+
+        void check_transform(std::shared_ptr<bitbots_splines::PoseHandle> sp_joint
+                             , const std::vector<std::vector<bitbots_splines::Curve::Point>> & joint_values);
     };
 
 }
