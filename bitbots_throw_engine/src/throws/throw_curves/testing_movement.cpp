@@ -17,13 +17,10 @@ namespace bitbots_throw{
 
         curve_with_radian();
         test_basic_throw_movement();
-
-        /*
         test_curves();
         move_arms_and_feet();
         squat();
         rotate_right_hand();
-         */
 
         SystemPublisher::publish_info("Finished Testing", "TestingMovement");
         return trajectory_time_;
@@ -300,93 +297,6 @@ namespace bitbots_throw{
         SystemPublisher::publish_info("Finished Testing, [" + std::to_string(successful) + " out of " + std::to_string(point) + " successful]", "check_curve");
     }
 
-    void TestingMovement::check_transform(std::shared_ptr<bitbots_splines::PoseHandle> sp_joint
-                                          , const std::vector<std::vector<bitbots_splines::Curve::Point>> & joint_values){
-        int point = 0;
-        int successful = 0;
-        for(auto it : joint_values[0]){
-            ++point;
-            double t = sp_joint->get_tf_transform(it.time_).getOrigin().x();
-            double e = std::abs(it.position_ - t);
-            if(e > 0.000001){
-                SystemPublisher::publish_info("Check Failed (Point: " + std::to_string(point) + ", time: " + std::to_string(it.time_) + ", position: " + std::to_string(it.position_) + ", position-from-curve: " + std::to_string(t) + ")", "check_transform-x");
-            }else{
-                ++successful;
-            }
-        }
-        SystemPublisher::publish_info("Finished Testing, [" + std::to_string(successful) + " out of " + std::to_string(point) + " successful]", "check_transform-x");
-
-        point = 0;
-        successful = 0;
-        for(auto it : joint_values[1]){
-            ++point;
-            double t = sp_joint->get_tf_transform(it.time_).getOrigin().y();
-            double e = std::abs(it.position_ - t);
-            if(e > 0.000001){
-                SystemPublisher::publish_info("Check Failed (Point: " + std::to_string(point) + ", time: " + std::to_string(it.time_) + ", position: " + std::to_string(it.position_) + ", position-from-curve: " + std::to_string(t) + ")", "check_transform-y");
-            }else{
-                ++successful;
-            }
-        }
-        SystemPublisher::publish_info("Finished Testing, [" + std::to_string(successful) + " out of " + std::to_string(point) + " successful]", "check_transform-y");
-
-        point = 0;
-        successful = 0;
-        for(auto it : joint_values[2]){
-            ++point;
-            double t = sp_joint->get_tf_transform(it.time_).getOrigin().z();
-            double e = std::abs(it.position_ - t);
-            if(e > 0.000001){
-                SystemPublisher::publish_info("Check Failed (Point: " + std::to_string(point) + ", time: " + std::to_string(it.time_) + ", position: " + std::to_string(it.position_) + ", position-from-curve: " + std::to_string(t) + ")", "check_transform-z");
-            }else{
-                ++successful;
-            }
-        }
-        SystemPublisher::publish_info("Finished Testing, [" + std::to_string(successful) + " out of " + std::to_string(point) + " successful]", "check_transform-z");
-
-        point = 0;
-        successful = 0;
-        for(auto it : joint_values[3]){
-            ++point;
-            double t = sp_joint->get_tf_transform(it.time_).getRotation().x();
-            double e = std::abs(it.position_ - t);
-            if(e > 0.000001){
-                SystemPublisher::publish_info("Check Failed (Point: " + std::to_string(point) + ", time: " + std::to_string(it.time_) + ", position: " + std::to_string(it.position_) + ", position-from-curve: " + std::to_string(t) + ")", "check_transform-roll");
-            }else{
-                ++successful;
-            }
-        }
-        SystemPublisher::publish_info("Finished Testing, [" + std::to_string(successful) + " out of " + std::to_string(point) + " successful]", "check_transform-roll");
-
-        point = 0;
-        successful = 0;
-        for(auto it : joint_values[4]){
-            ++point;
-            double t = sp_joint->get_tf_transform(it.time_).getRotation().y();
-            double e = std::abs(it.position_ - t);
-            if(e > 0.000001){
-                SystemPublisher::publish_info("Check Failed (Point: " + std::to_string(point) + ", time: " + std::to_string(it.time_) + ", position: " + std::to_string(it.position_) + ", position-from-curve: " + std::to_string(t) + ")", "check_transform-pitch");
-            }else{
-                ++successful;
-            }
-        }
-        SystemPublisher::publish_info("Finished Testing, [" + std::to_string(successful) + " out of " + std::to_string(point) + " successful]", "check_transform-pitch");
-
-        point = 0;
-        successful = 0;
-        for(auto it : joint_values[5]){
-            ++point;
-            double t = sp_joint->get_tf_transform(it.time_).getRotation().z();
-            double e = std::abs(it.position_ - t);
-            if(e > 0.000001){
-                SystemPublisher::publish_info("Check Failed (Point: " + std::to_string(point) + ", time: " + std::to_string(it.time_) + ", position: " + std::to_string(it.position_) + ", position-from-curve: " + std::to_string(t) + ")", "check_transform-yaw");
-            }else{
-                ++successful;
-            }
-        }
-        SystemPublisher::publish_info("Finished Testing, [" + std::to_string(successful) + " out of " + std::to_string(point) + " successful]", "check_transform-yaw");
-    }
-
     void TestingMovement::check_joint(std::shared_ptr<bitbots_splines::PoseHandle> sp_joint
                                       , const std::vector<std::vector<bitbots_splines::Curve::Point>> & joint_values){
         SystemPublisher::publish_info("========== check x ==========", "check_joint - joint_values");
@@ -418,9 +328,6 @@ namespace bitbots_throw{
         check_curve(sp_joint->yaw(), joint_values.at(5));
         SystemPublisher::publish_info("==========", "check_joint - curve");
         check_curve(sp_joint->yaw(), sp_joint->yaw()->points());
-
-        SystemPublisher::publish_info("========== check transformation ==========", "check_joint - tf");
-        check_transform(sp_joint, joint_values);
     }
 
     void TestingMovement::check_movement(ThrowMovement & movement){
