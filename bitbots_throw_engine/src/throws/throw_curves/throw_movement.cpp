@@ -15,9 +15,13 @@ namespace bitbots_throw{
     std::shared_ptr<ThrowMaterial> ThrowMovement::create_material(bool debug_active){
         debug_active_ = debug_active;
         left_hand_points_.clear();
+        left_hand_points_.resize(6);
         right_hand_points_.clear();
+        right_hand_points_.resize(6);
         left_foot_points_.clear();
+        left_foot_points_.resize(6);
         right_foot_points_.clear();
+        right_foot_points_.resize(6);
 
         init_material();
 
@@ -167,14 +171,12 @@ namespace bitbots_throw{
         sp_material_->add_point_to_left_hand(time, position, velocity, acceleration);
 
         if(debug_active_){
-            std::vector<bitbots_splines::Curve::Point> axis;
-            axis.emplace_back(bitbots_splines::Curve::Point{time, position.x_, velocity.x_, acceleration.x_});
-            axis.emplace_back(bitbots_splines::Curve::Point{time, position.y_, velocity.x_, acceleration.y_});
-            axis.emplace_back(bitbots_splines::Curve::Point{time, position.z_, velocity.x_, acceleration.z_});
-            axis.emplace_back(bitbots_splines::Curve::Point{time, position.roll_, velocity.x_, acceleration.roll_});
-            axis.emplace_back(bitbots_splines::Curve::Point{time, position.pitch_, velocity.pitch_, acceleration.pitch_});
-            axis.emplace_back(bitbots_splines::Curve::Point{time, position.yaw_, velocity.yaw_, acceleration.yaw_});
-            left_hand_points_.emplace_back(axis);
+            left_hand_points_.at(0).emplace_back(bitbots_splines::Curve::Point{time, position.x_, velocity.x_, acceleration.x_});
+            left_hand_points_.at(1).emplace_back(bitbots_splines::Curve::Point{time, position.y_, velocity.x_, acceleration.y_});
+            left_hand_points_.at(2).emplace_back(bitbots_splines::Curve::Point{time, position.z_, velocity.x_, acceleration.z_});
+            left_hand_points_.at(3).emplace_back(bitbots_splines::Curve::Point{time, position.roll_, velocity.x_, acceleration.roll_});
+            left_hand_points_.at(4).emplace_back(bitbots_splines::Curve::Point{time, position.pitch_, velocity.pitch_, acceleration.pitch_});
+            left_hand_points_.at(5).emplace_back(bitbots_splines::Curve::Point{time, position.yaw_, velocity.yaw_, acceleration.yaw_});
         }
     }
 
@@ -182,14 +184,12 @@ namespace bitbots_throw{
         sp_material_->add_point_to_right_hand(time, position, velocity, acceleration);
 
         if(debug_active_){
-            std::vector<bitbots_splines::Curve::Point> axis;
-            axis.emplace_back(bitbots_splines::Curve::Point{time, position.x_, velocity.x_, acceleration.x_});
-            axis.emplace_back(bitbots_splines::Curve::Point{time, position.y_, velocity.x_, acceleration.y_});
-            axis.emplace_back(bitbots_splines::Curve::Point{time, position.z_, velocity.x_, acceleration.z_});
-            axis.emplace_back(bitbots_splines::Curve::Point{time, position.roll_, velocity.x_, acceleration.roll_});
-            axis.emplace_back(bitbots_splines::Curve::Point{time, position.pitch_, velocity.pitch_, acceleration.pitch_});
-            axis.emplace_back(bitbots_splines::Curve::Point{time, position.yaw_, velocity.yaw_, acceleration.yaw_});
-            right_hand_points_.emplace_back(axis);
+            right_hand_points_.at(0).emplace_back(bitbots_splines::Curve::Point{time, position.x_, velocity.x_, acceleration.x_});
+            right_hand_points_.at(1).emplace_back(bitbots_splines::Curve::Point{time, position.y_, velocity.x_, acceleration.y_});
+            right_hand_points_.at(2).emplace_back(bitbots_splines::Curve::Point{time, position.z_, velocity.x_, acceleration.z_});
+            right_hand_points_.at(3).emplace_back(bitbots_splines::Curve::Point{time, position.roll_, velocity.x_, acceleration.roll_});
+            right_hand_points_.at(4).emplace_back(bitbots_splines::Curve::Point{time, position.pitch_, velocity.pitch_, acceleration.pitch_});
+            right_hand_points_.at(5).emplace_back(bitbots_splines::Curve::Point{time, position.yaw_, velocity.yaw_, acceleration.yaw_});
         }
     }
 
@@ -197,14 +197,12 @@ namespace bitbots_throw{
         sp_material_->add_point_to_left_foot(time, position, velocity, acceleration);
 
         if(debug_active_){
-            std::vector<bitbots_splines::Curve::Point> axis;
-            axis.emplace_back(bitbots_splines::Curve::Point{time, position.x_, velocity.x_, acceleration.x_});
-            axis.emplace_back(bitbots_splines::Curve::Point{time, position.y_, velocity.x_, acceleration.y_});
-            axis.emplace_back(bitbots_splines::Curve::Point{time, position.z_, velocity.x_, acceleration.z_});
-            axis.emplace_back(bitbots_splines::Curve::Point{time, position.roll_, velocity.x_, acceleration.roll_});
-            axis.emplace_back(bitbots_splines::Curve::Point{time, position.pitch_, velocity.pitch_, acceleration.pitch_});
-            axis.emplace_back(bitbots_splines::Curve::Point{time, position.yaw_, velocity.yaw_, acceleration.yaw_});
-            left_foot_points_.emplace_back(axis);
+            left_foot_points_.at(0).emplace_back(bitbots_splines::Curve::Point{time, position.x_, velocity.x_, acceleration.x_});
+            left_foot_points_.at(1).emplace_back(bitbots_splines::Curve::Point{time, position.y_, velocity.x_, acceleration.y_});
+            left_foot_points_.at(2).emplace_back(bitbots_splines::Curve::Point{time, position.z_, velocity.x_, acceleration.z_});
+            left_foot_points_.at(3).emplace_back(bitbots_splines::Curve::Point{time, position.roll_, velocity.x_, acceleration.roll_});
+            left_foot_points_.at(4).emplace_back(bitbots_splines::Curve::Point{time, position.pitch_, velocity.pitch_, acceleration.pitch_});
+            left_foot_points_.at(5).emplace_back(bitbots_splines::Curve::Point{time, position.yaw_, velocity.yaw_, acceleration.yaw_});
         }
     }
 
@@ -212,14 +210,12 @@ namespace bitbots_throw{
         sp_material_->add_point_to_right_foot(time, position, velocity, acceleration);
 
         if(debug_active_){
-            std::vector<bitbots_splines::Curve::Point> axis;
-            axis.emplace_back(bitbots_splines::Curve::Point{time, position.x_, velocity.x_, acceleration.x_});
-            axis.emplace_back(bitbots_splines::Curve::Point{time, position.y_, velocity.x_, acceleration.y_});
-            axis.emplace_back(bitbots_splines::Curve::Point{time, position.z_, velocity.x_, acceleration.z_});
-            axis.emplace_back(bitbots_splines::Curve::Point{time, position.roll_, velocity.x_, acceleration.roll_});
-            axis.emplace_back(bitbots_splines::Curve::Point{time, position.pitch_, velocity.pitch_, acceleration.pitch_});
-            axis.emplace_back(bitbots_splines::Curve::Point{time, position.yaw_, velocity.yaw_, acceleration.yaw_});
-            right_foot_points_.emplace_back(axis);
+            right_foot_points_.at(0).emplace_back(bitbots_splines::Curve::Point{time, position.x_, velocity.x_, acceleration.x_});
+            right_foot_points_.at(1).emplace_back(bitbots_splines::Curve::Point{time, position.y_, velocity.x_, acceleration.y_});
+            right_foot_points_.at(2).emplace_back(bitbots_splines::Curve::Point{time, position.z_, velocity.x_, acceleration.z_});
+            right_foot_points_.at(3).emplace_back(bitbots_splines::Curve::Point{time, position.roll_, velocity.x_, acceleration.roll_});
+            right_foot_points_.at(4).emplace_back(bitbots_splines::Curve::Point{time, position.pitch_, velocity.pitch_, acceleration.pitch_});
+            right_foot_points_.at(5).emplace_back(bitbots_splines::Curve::Point{time, position.yaw_, velocity.yaw_, acceleration.yaw_});
         }
     }
 } //bitbots_throw
