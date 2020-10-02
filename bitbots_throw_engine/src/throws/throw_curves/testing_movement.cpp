@@ -302,48 +302,50 @@ namespace bitbots_throw{
 
     void TestingMovement::check_joint(std::shared_ptr<bitbots_splines::PoseHandle> sp_joint
                                       , const std::vector<std::vector<bitbots_splines::Curve::Point>> & joint_values){
-        SystemPublisher::publish_info("check with points from movements-class", "check_joint");
-        SystemPublisher::publish_info("check x", "check_joint - joint_values");
+        SystemPublisher::publish_info("========== check x ==========", "check_joint - joint_values");
         check_curve(sp_joint->x(), joint_values.at(0));
-        SystemPublisher::publish_info("check y", "check_joint - joint_values");
-        check_curve(sp_joint->y(), joint_values.at(1));
-        SystemPublisher::publish_info("check z", "check_joint - joint_values");
-        check_curve(sp_joint->z(), joint_values.at(2));
-        SystemPublisher::publish_info("check roll", "check_joint - joint_values");
-        check_curve(sp_joint->roll(), joint_values.at(3));
-        SystemPublisher::publish_info("check pitch", "check_joint - joint_values");
-        check_curve(sp_joint->pitch(), joint_values.at(4));
-        SystemPublisher::publish_info("check yaw", "check_joint - joint_values");
-        check_curve(sp_joint->yaw(), joint_values.at(5));
-
-        SystemPublisher::publish_info("check with points from curve", "check_joint");
-        SystemPublisher::publish_info("check x", "check_joint - curve");
+        SystemPublisher::publish_info("==========", "check_joint - curve");
         check_curve(sp_joint->x(), sp_joint->x()->points());
-        SystemPublisher::publish_info("check y", "check_joint - curve");
+
+        SystemPublisher::publish_info("========== check y ==========", "check_joint - joint_values");
+        check_curve(sp_joint->y(), joint_values.at(1));
+        SystemPublisher::publish_info("==========", "check_joint - curve");
         check_curve(sp_joint->y(), sp_joint->y()->points());
-        SystemPublisher::publish_info("check z", "check_joint - curve");
+
+        SystemPublisher::publish_info("========== check z ==========", "check_joint - joint_values");
+        check_curve(sp_joint->z(), joint_values.at(2));
+        SystemPublisher::publish_info("==========", "check_joint - curve");
         check_curve(sp_joint->z(), sp_joint->z()->points());
-        SystemPublisher::publish_info("check roll", "check_joint - curve");
+
+        SystemPublisher::publish_info("========== check roll ==========", "check_joint - joint_values");
+        check_curve(sp_joint->roll(), joint_values.at(3));
+        SystemPublisher::publish_info("==========", "check_joint - curve");
         check_curve(sp_joint->roll(), sp_joint->roll()->points());
-        SystemPublisher::publish_info("check pitch", "check_joint - curve");
+
+        SystemPublisher::publish_info("========== check pitch ==========", "check_joint - joint_values");
+        check_curve(sp_joint->pitch(), joint_values.at(4));
+        SystemPublisher::publish_info("==========", "check_joint - curve");
         check_curve(sp_joint->pitch(), sp_joint->pitch()->points());
-        SystemPublisher::publish_info("check yaw", "check_joint - curve");
+
+        SystemPublisher::publish_info("========== check yaw ==========", "check_joint - joint_values");
+        check_curve(sp_joint->yaw(), joint_values.at(5));
+        SystemPublisher::publish_info("==========", "check_joint - curve");
         check_curve(sp_joint->yaw(), sp_joint->yaw()->points());
     }
 
     void TestingMovement::check_movement(ThrowMovement & movement){
         auto material = movement.create_material(true);
 
-        SystemPublisher::publish_info("check left hand", "check_movement");
+        SystemPublisher::publish_info("==================== check left hand ====================", "check_movement");
         check_joint(material->get_left_hand(), movement.get_left_hand_points());
 
-        SystemPublisher::publish_info("check right hand", "check_movement");
+        SystemPublisher::publish_info("==================== check right hand ====================", "check_movement");
         check_joint(material->get_right_hand(), movement.get_right_hand_points());
 
-        SystemPublisher::publish_info("check left foot", "check_movement");
+        SystemPublisher::publish_info("==================== check left foot ====================", "check_movement");
         check_joint(material->get_left_foot(), movement.get_left_foot_points());
 
-        SystemPublisher::publish_info("check right foot", "check_movement");
+        SystemPublisher::publish_info("==================== check right foot ====================", "check_movement");
         check_joint(material->get_right_foot(), movement.get_right_foot_points());
     }
 
