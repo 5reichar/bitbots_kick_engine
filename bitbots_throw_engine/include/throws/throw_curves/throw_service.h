@@ -44,8 +44,19 @@ namespace bitbots_throw{
         virtual double get_movement_time_throw_conclusion();
 
         virtual Struct3dRPY get_throw_velocity();
+        virtual void rotate_coordinate(double const & angle);
 
-    private:
+    protected:
+        virtual Struct3dRPY create_reach_to_ball();
+        virtual Struct3dRPY create_pick_up();
+        virtual Struct3dRPY create_ball_at_head_height();
+        virtual Struct3dRPY create_throw_zenith();
+        virtual Struct3dRPY create_throw_start();
+        virtual Struct3dRPY create_throw_zenith_return();
+        virtual Struct3dRPY create_throw_release();
+
+        double get_lowest_foot_position();
+
         ThrowRequest request_;
         ThrowType throw_type_;
         ThrowEngineParameter engine_parameter_;
