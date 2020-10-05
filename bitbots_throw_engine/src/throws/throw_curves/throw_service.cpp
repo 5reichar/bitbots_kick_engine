@@ -80,7 +80,7 @@ namespace bitbots_throw{
     Struct3dRPY ThrowService::get_left_foot_orientation_to_ball(){
         Struct3dRPY point = request_.left_feet_position_;
         if(request_.ball_position_.y_ != 0){
-            point.pitch_ = ThrowMath::calculate_angle(request_.ball_position_);
+            point.pitch_ = ThrowMath::calculate_angle(request_.ball_position_, engine_parameter_.pi_);
             //TODO: testing
             auto diffs = ThrowMath::calculate_foot_movement_for_rotate_robot(request_.ball_position_, point.y_);
             if(request_.ball_position_.y_ > 0){
@@ -103,7 +103,7 @@ namespace bitbots_throw{
     Struct3dRPY ThrowService::get_left_foot_orientation_to_goal(){
         Struct3dRPY point = request_.left_feet_position_;
         if(request_.goal_position_.y_ != 0){
-            point.pitch_ = ThrowMath::calculate_angle(request_.goal_position_);
+            point.pitch_ = ThrowMath::calculate_angle(request_.goal_position_, engine_parameter_.pi_);
             //TODO: testing
             auto diffs = ThrowMath::calculate_foot_movement_for_rotate_robot(request_.goal_position_, point.y_);
             if(request_.ball_position_.y_ > 0){
@@ -122,7 +122,7 @@ namespace bitbots_throw{
     Struct3dRPY ThrowService::get_right_foot_orientation_to_ball(){
         Struct3dRPY point = request_.right_feet_position_;
         if(request_.ball_position_.y_ != 0){
-            point.pitch_ = ThrowMath::calculate_angle(request_.ball_position_);
+            point.pitch_ = ThrowMath::calculate_angle(request_.ball_position_, engine_parameter_.pi_);
             //TODO: testing
             auto diffs = ThrowMath::calculate_foot_movement_for_rotate_robot(request_.ball_position_, point.y_);
             if(request_.ball_position_.y_ > 0){
@@ -143,7 +143,7 @@ namespace bitbots_throw{
     Struct3dRPY ThrowService::get_right_foot_orientation_to_goal(){
         Struct3dRPY point = request_.right_feet_position_;
         if(request_.goal_position_.y_ != 0){
-            point.pitch_ = ThrowMath::calculate_angle(request_.goal_position_);
+            point.pitch_ = ThrowMath::calculate_angle(request_.goal_position_, engine_parameter_.pi_);
             //TODO: testing
             auto diffs = ThrowMath::calculate_foot_movement_for_rotate_robot(request_.goal_position_, point.y_);
             if(request_.ball_position_.y_ > 0){

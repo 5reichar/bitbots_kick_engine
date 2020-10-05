@@ -14,15 +14,27 @@ namespace bitbots_throw{
             return angle_deg * pi / 180;
         }
 
-        static double calculate_angle(Struct3d & point){
-            return std::atan((point.y_ / point.x_));
+        static double calculate_angle(Struct3d & point, double const & pi){
+            auto angle = std::atan((point.y_ / point.x_));
+
+            if(angle > pi){
+                angle -= 2 * pi;
+            }else if(angle < pi){
+                angle += 2 * pi;
+            }
+
+            if((point.y_ < 0 && angle > 0) || (point.y_ > 0 && angle < 0)){
+                angle *= -1;
+            }
+
+            return angle;
         }
 
         static Struct3dRPY calculate_throw_release_point(double const & throw_release_angle
                                                         ,double const & arm_length
                                                         ,double const & throw_orientation_angle
                                                         ,double const & throw_zenith
-                                                        , double const pi){
+                                                        ,double const & pi){
             Struct3dRPY throw_release_point;
             // From Isosceles triangle with the two angles with the same size are given as 90 - throw_angle
             auto hypotenuse = std::sqrt(2 * std::pow(arm_length, 2) * (1 - std::cos(2 * throw_release_angle)));
