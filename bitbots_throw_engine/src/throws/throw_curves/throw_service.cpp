@@ -53,9 +53,9 @@ namespace bitbots_throw{
     }
     Struct3dRPY ThrowService::get_left_arm_throw_start(){
         Struct3dRPY point;
-        point.x_ = -0.5 * engine_parameter_.arm_length_;
+        point.x_ = -0.85 * engine_parameter_.arm_length_;
         point.y_ = engine_parameter_.ball_radius_;
-        point.z_ = request_.head_position_.z_;
+        point.z_ = request_.head_position_.z_ + engine_parameter_.head_height_ / 2;
         point.roll_ = 0.0;
         point.pitch_ = -0.75 * engine_parameter_.pi_;
         point.yaw_ = 0.0;
@@ -120,11 +120,11 @@ namespace bitbots_throw{
     }
     Struct3dRPY ThrowService::get_right_arm_throw_start(){
         Struct3dRPY point;
-        point.x_ = -0.5 * engine_parameter_.arm_length_;
+        point.x_ = -0.85 * engine_parameter_.arm_length_;
         point.y_ = -1 * engine_parameter_.ball_radius_;
-        point.z_ = request_.head_position_.z_;
+        point.z_ = request_.head_position_.z_ + engine_parameter_.head_height_ / 2;
         point.roll_ = 0.0;
-        point.pitch_ = -0.25 * engine_parameter_.pi_;
+        point.pitch_ = -0.75 * engine_parameter_.pi_;
         point.yaw_ = 0.0;
         return point;
     }
