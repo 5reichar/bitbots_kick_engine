@@ -168,11 +168,11 @@ namespace bitbots_throw{
     double ThrowService::get_movement_time_throw_conclusion(){
         return throw_type_.movement_share_conclusion_ * throw_type_.movement_duration_;
     }
-    Struct3dRPY ThrowService::get_throw_velocity(){
-        Struct3dRPY point;
-        point.x_ = engine_parameter_.gravity_ * request_.goal_position_.x_ / request_.goal_position_.z_;
-        point.y_ = 0.0;
-        point.z_ = 0.0;
+    Struct3dRPY ThrowService::get_throw_velocity(double const & throw_release_z){
+        Struct3dRPY point = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+        double distance = throw_release_z - request_.goal_position_.z_;
+        double time_falling = std::sqrt(distance / engine_parameter_.gravity_);
+        point.x_ = std::abs((request_.goal_position_.x_ / time_falling));
         return point;
     }
     Struct3dRPY ThrowService::create_reach_to_ball(){

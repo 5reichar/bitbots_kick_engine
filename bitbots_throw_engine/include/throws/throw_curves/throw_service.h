@@ -43,7 +43,7 @@ namespace bitbots_throw{
         virtual double get_movement_time_throw();
         virtual double get_movement_time_throw_conclusion();
 
-        virtual Struct3dRPY get_throw_velocity();
+        virtual Struct3dRPY get_throw_velocity(double const & throw_release_z);
         virtual void rotate_coordinate(double const & angle);
 
     protected:

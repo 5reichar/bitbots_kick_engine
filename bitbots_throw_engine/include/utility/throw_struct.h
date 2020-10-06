@@ -38,6 +38,21 @@ namespace bitbots_throw{
 
             return position;
         }
+
+        Struct3dRPY operator/(double value){
+            return {this->x_ / value, this->y_ / value, this->z_ / value
+                   ,this->roll_ / value, this->pitch_ / value, this->yaw_ / value};
+        }
+
+        Struct3dRPY & operator/=(double value){
+            this->x_ /= value;
+            this->y_ /= value;
+            this->z_ /= value;
+            this->roll_ /= value;
+            this->pitch_ /= value;
+            this->yaw_ /= value;
+            return *this;
+        }
     };
 
     struct Color{
