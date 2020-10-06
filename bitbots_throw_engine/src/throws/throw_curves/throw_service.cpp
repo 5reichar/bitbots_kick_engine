@@ -221,7 +221,7 @@ namespace bitbots_throw{
         point.y_ = engine_parameter_.ball_radius_;
         point.z_ = request_.head_position_.z_ + engine_parameter_.head_height_ / 2;
         point.roll_ = 0.0;
-        point.pitch_ = -0.75 * engine_parameter_.pi_;
+        point.pitch_ = -0.9 * engine_parameter_.pi_;
         point.yaw_ = 0.0;
         return point;
     }
