@@ -10,14 +10,6 @@ https://github.com/Rhoban/model/
 
 namespace bitbots_splines
 {
-
-void SmoothSpline::add_point(double time, double position,
-                            double velocity, double acceleration)
-{
-    SplineBase::Point point = {time, position, velocity, acceleration};
-    add_point(point);
-}
-
 void SmoothSpline::compute_splines()
 {
     SplineBase::splines_.clear();
@@ -29,7 +21,7 @@ void SmoothSpline::compute_splines()
     std::sort(
         points_.begin(),
         points_.end(),
-        [](const Point &p1, const Point &p2) -> bool {
+        [](const Point &p1, const Point &p2) -> bool{
             return p1.time_ < p2.time_;
         });
 
@@ -38,11 +30,15 @@ void SmoothSpline::compute_splines()
         double time = points_[i].time_ - points_[i - 1].time_;
         if (time > 0.00001)
         {
-            SplineBase::splines_.push_back({polynom_fit(time,
-                                                        points_[i - 1].position_, points_[i - 1].velocity_, points_[i - 1].acceleration_,
-                                                        points_[i].position_, points_[i].velocity_, points_[i].acceleration_),
-                                            points_[i - 1].time_,
-                                            points_[i].time_});
+            add_part(polynom_fit(time
+                                     ,points_[i - 1].position_
+                                     ,points_[i - 1].velocity_
+                                     ,points_[i - 1].acceleration_
+                                     ,points_[i].position_
+                                     ,points_[i].velocity_
+                                     ,points_[i].acceleration_)
+                     ,points_[i - 1].time_
+                     ,points_[i].time_);
         }
     }
 }
@@ -118,5 +114,4 @@ Polynom SmoothSpline::polynom_fit(double t,
 
     return p;
 }
-
 } // namespace bitbots_splines

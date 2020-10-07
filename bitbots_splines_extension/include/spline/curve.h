@@ -33,17 +33,27 @@ public:
         double acceleration_;
     };
 
-    static Point create_point(double time, double position, double velocity, double acceleration)
-    {
-        Point point = {time, position, velocity, acceleration};
-        return point;
-    };
-
     /**
      * Add a new point
      */
 	virtual void add_point(Point point);
-	virtual void add_point(double time, double position, double velocity, double acceleration);
+
+    /**
+     * Add a new point with its time and position value
+     */
+    virtual void add_point(double time, double position);
+
+    /**
+     * Add a new point with its time, position value,
+     * and velocity
+     */
+    virtual void add_point(double time, double position, double velocity);
+
+    /**
+    * Add a new point with its time, position value,
+    * velocity and acceleration
+    */
+    virtual void add_point(double time, double position, double velocity, double acceleration);
 
     /**
      * Access to points container

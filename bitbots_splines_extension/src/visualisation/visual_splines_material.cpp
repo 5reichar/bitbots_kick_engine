@@ -128,8 +128,7 @@ namespace bitbots_splines{
     {
         assert(curve);
 
-        auto point = Curve::create_point(time, position, velocity, acceleration);
-        curve->add_point(point);
+        curve->add_point(time, position, velocity, acceleration);
     }
 
     std::vector<std::vector<Curve::Point>> VisualSplinesMaterial::get_points() const

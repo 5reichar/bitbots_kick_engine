@@ -21,12 +21,6 @@ namespace bitbots_splines
 class LinearSpline : public SplineBase
 {
 public:
-    using SplineBase::add_point;
-    /**
-     * Add a new point with its time and position value,
-     */
-    virtual void add_point(double time, double position);
-
 private:
     /**
      * Recompute splines interpolation model

@@ -10,13 +10,6 @@ https://github.com/Rhoban/model/
 
 namespace bitbots_splines
 {
-
-void LinearSpline::add_point(double time, double position)
-{
-    SplineBase::Point point = {time, position, 0.0, 0.0};
-    add_point(point);
-}
-
 void LinearSpline::compute_splines()
 {
     SplineBase::splines_.clear();
@@ -40,9 +33,7 @@ void LinearSpline::compute_splines()
             Polynom poly(1);
             poly(0) = points_[i - 1].position_;
             poly(1) = (points_[i].position_ - points_[i - 1].position_) / time;
-            SplineBase::splines_.push_back({poly,
-                                            points_[i - 1].time_,
-                                            points_[i].time_});
+            add_part(poly, points_[i - 1].time_, points_[i].time_);
         }
     }
 }

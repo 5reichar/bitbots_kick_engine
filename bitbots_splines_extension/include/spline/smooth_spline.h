@@ -20,13 +20,6 @@ namespace bitbots_splines
 class SmoothSpline : public SplineBase
 {
 public:
-    using SplineBase::add_point;
-      /**
-      * Add a new point with its time, position value,
-      * velocity and acceleration
-      */
-    virtual void add_point(double time, double position, double velocity = 0.0, double acceleration = 0.0);
-
      /**
       * Recompute splines interpolation model
       */

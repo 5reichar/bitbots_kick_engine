@@ -146,8 +146,7 @@ const SplineBase::Spline_t &SplineBase::part(size_t index) const
     return splines_.at(index);
 }
 
-void SplineBase::add_part(const Polynom &poly,
-                     double min, double max)
+void SplineBase::add_part(const Polynom &poly, double min, double max)
 {
     splines_.push_back({poly, min, max});
 }
@@ -163,8 +162,7 @@ void SplineBase::import_call_back()
 {
 }
 
-double SplineBase::interpolation(double x,
-                             double (Polynom::*func)(double) const) const
+double SplineBase::interpolation(double x, double (Polynom::*func)(double) const) const
 {
     //Empty case
     if (splines_.size() == 0)

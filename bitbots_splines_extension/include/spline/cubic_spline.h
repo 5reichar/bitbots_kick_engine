@@ -21,13 +21,6 @@ namespace bitbots_splines
 class CubicSpline : public SplineBase
 {
 public:
-    using SplineBase::add_point;
-     /**
-      * Add a new point with its time, position value,
-      * and velocity
-      */
-    virtual void add_point(double time, double position, double velocity = 0.0);
-
      /**
       * Apply normal random noise on spline point
       * position and velocity of given standart deviation.

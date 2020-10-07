@@ -17,9 +17,19 @@ void Curve::add_point(Curve::Point point)
     add_point_call_back();
 }
 
+void Curve::add_point(double time, double position)
+{
+	add_point(time, position, 0.0);
+}
+
+void Curve::add_point(double time, double position, double velocity)
+{
+    add_point(time, position, velocity, 0.0);
+}
+
 void Curve::add_point(double time, double position, double velocity, double acceleration)
 {
-	add_point(Curve::create_point(time, position, velocity, acceleration));
+    add_point(Point{time, position, velocity, acceleration});
 }
 
 const std::vector<Curve::Point> &Curve::points() const

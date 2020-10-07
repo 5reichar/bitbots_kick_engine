@@ -12,13 +12,6 @@ https://github.com/Rhoban/model/
 
 namespace bitbots_splines
 {
-
-void CubicSpline::add_point(double time, double position, double velocity)
-{
-    SplineBase::Point point = {time, position, velocity, 0.0};
-    add_point(point);
-}
-
 void CubicSpline::random_noise(double stdDevPos, double stdDevVel, bool updateBounds)
 {
     //Initialize the generator
@@ -89,11 +82,13 @@ void CubicSpline::compute_splines()
         double time = points_[i].time_ - points_[i - 1].time_;
         if (time > 0.00001)
         {
-            SplineBase::splines_.push_back({polynom_fit(time,
-                                                        points_[i - 1].position_, points_[i - 1].velocity_,
-                                                        points_[i].position_, points_[i].velocity_),
-                                            points_[i - 1].time_,
-                                            points_[i].time_});
+            add_part(polynom_fit(time
+                                     ,points_[i - 1].position_
+                                     ,points_[i - 1].velocity_
+                                     ,points_[i].position_
+                                     ,points_[i].velocity_)
+                    ,points_[i - 1].time_
+                    ,points_[i].time_);
         }
     }
 }
