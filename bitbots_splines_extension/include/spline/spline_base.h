@@ -54,7 +54,7 @@ public:
      virtual double jerk_mod(double t) const override;
 
      /**
-         * Return minimum and maximum abscisse
+         * Return minimum and maximum abscissa
          * value for which spline is defined
          */
      double min() const override;
