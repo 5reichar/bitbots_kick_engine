@@ -41,7 +41,7 @@ namespace bitbots_throw{
         parameter.left_foot_arrow_topic_suffix_ = "_left_foot_arrow_marker";
         parameter.right_foot_arrow_topic_suffix_ = "_right_foot_arrow_marker";
 
-        sp_publisher_facade_.reset(new RosPublisherFacade(ros_node_handle_, sp_node_parameter_, publisher_topics, parameter));
+        sp_publisher_facade_.reset(new RosPublisherFacade(ros_node_handle_, sp_engine_parameter_, publisher_topics, parameter, sp_debug_parameter_));
         sp_ik_left_arm_.reset(new ThrowIK("LeftArm", {"LElbow", "LShoulderPitch", "LShoulderRoll"}, {0.0, 0.0, 0.0}));
         sp_ik_right_arm_.reset(new ThrowIK("RightArm", {"RElbow", "RShoulderPitch", "RShoulderRoll"}, {0.0, 0.0, 0.0}));
         sp_ik_left_foot_.reset(new ThrowIK("LeftLeg", {"LHipPitch", "LKnee", "LAnklePitch"}, {0.7, 1.0, -0.4}));
@@ -50,7 +50,7 @@ namespace bitbots_throw{
 
 	void ThrowNode::load_parameter(){
 		ros_node_handle_.param<bool>("/simulation_active"
-		                            ,sp_node_parameter_->simulation_active_
+		                            ,sp_engine_parameter_->simulation_active_
 		                            ,false);
 	}
 
@@ -92,7 +92,7 @@ namespace bitbots_throw{
 
 	void ThrowNode::throw_callback(const bitbots_throw::throw_action action){
 		throw_engine_.reset();
-		ros::Rate loopRate(sp_node_parameter_->engine_frequency_);
+		ros::Rate loopRate(sp_engine_parameter_->engine_frequency_);
 
         sp_publisher_facade_->prepare_publisher_for_throw();
 		auto throw_request = create_throw_request(action);
@@ -101,7 +101,7 @@ namespace bitbots_throw{
 
         int8_t percentage_done = throw_engine_.get_percent_done();
         int8_t movement_stage = throw_engine_.get_movement_stage();
-        auto engine_update_dt = 1/sp_node_parameter_->engine_frequency_;
+        auto engine_update_dt = 1 / sp_engine_parameter_->engine_frequency_;
         std::vector<ThrowResponse> vec_responses;
 		while (ros::ok() && percentage_done < 100){
 			auto response = throw_engine_.update(engine_update_dt);
@@ -131,24 +131,25 @@ namespace bitbots_throw{
 	}
 
 	void ThrowNode::throw_engine_params_config_callback(throw_engine_paramsConfig & config , uint32_t level){
-		sp_node_parameter_.reset(new ThrowNodeParameter(config, level));
+        sp_debug_parameter_.reset(new ThrowDebugParameter(config, level));
+        sp_engine_parameter_.reset(new ThrowEngineParameter(config, level));
+        sp_robot_and_world_parameter_.reset(new RobotAndWorldParameter(config, level));
 
 		if(!sp_publisher_facade_ || !sp_ik_right_foot_ || !sp_ik_left_foot_ || !sp_ik_right_arm_ || !sp_ik_left_arm_){
 		    set_default_parameter();
 		}
 
-        sp_publisher_facade_->update_node_parameter(sp_node_parameter_);
-        sp_ik_left_arm_->set_bio_ik_timeout(sp_node_parameter_->bio_ik_time_);
-        sp_ik_right_arm_->set_bio_ik_timeout(sp_node_parameter_->bio_ik_time_);
-        sp_ik_left_foot_->set_bio_ik_timeout(sp_node_parameter_->bio_ik_time_);
-        sp_ik_right_foot_->set_bio_ik_timeout(sp_node_parameter_->bio_ik_time_);
+        sp_publisher_facade_->set_parameter(sp_engine_parameter_, sp_debug_parameter_);
+        sp_ik_left_arm_->set_bio_ik_timeout(sp_engine_parameter_->bio_ik_time_);
+        sp_ik_right_arm_->set_bio_ik_timeout(sp_engine_parameter_->bio_ik_time_);
+        sp_ik_left_foot_->set_bio_ik_timeout(sp_engine_parameter_->bio_ik_time_);
+        sp_ik_right_foot_->set_bio_ik_timeout(sp_engine_parameter_->bio_ik_time_);
 
-        sp_engine_parameter_.reset(new ThrowEngineParameter(config, level));
-        throw_engine_.set_engine_parameter(sp_engine_parameter_);
+        throw_engine_.set_engine_parameter(sp_robot_and_world_parameter_);
 	}
 
 	void ThrowNode::throw_params_config_callback(throw_paramsConfig & config , uint32_t level){
-	    auto type_parameter = ThrowTypeParameterBuilder::build_from_dynamic_reconf(config, level, sp_engine_parameter_);
+	    auto type_parameter = ThrowTypeParameterBuilder::build_from_dynamic_reconf(config, level, sp_robot_and_world_parameter_);
 		throw_engine_.set_throw_types(type_parameter);
 	}
 
@@ -178,12 +179,12 @@ namespace bitbots_throw{
         catch(tf2::TransformException &e){
             SystemPublisher::publish_error(e.what(), "ThrowNode::create_throw_request()");
 
-            auto hand_height = sp_engine_parameter_->trunk_height_;
+            auto hand_height = sp_robot_and_world_parameter_->trunk_height_;
             request.head_position_ = {0.0, 0.0, hand_height, 0.0, 0.0, 0.0};
-            hand_height -= sp_engine_parameter_->arm_length_;
+            hand_height -= sp_robot_and_world_parameter_->arm_length_;
             request.left_hand_position_ = {0.0, -0.15, hand_height, 0.0, 0.0, 0.0};
             request.right_hand_position_ = {0.0, 0.15, hand_height, 0.0, 0.0, 0.0};
-            auto feet_height = -1 * sp_engine_parameter_->leg_length_;
+            auto feet_height = -1 * sp_robot_and_world_parameter_->leg_length_;
             request.left_feet_position_ = {0.0, 0.5, feet_height, 0.0, 0.0, 0.0};
             request.right_feet_position_ = {0.0, -0.5, feet_height, 0.0, 0.0, 0.0};
         }

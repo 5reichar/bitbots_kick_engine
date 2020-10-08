@@ -5,6 +5,7 @@
 #include <moveit_msgs/RobotState.h>
 #include "bitbots_splines/abstract_visualizer.h"
 #include "bitbots_splines/abstract_ik.h"
+#include "parameter/throw_engine_parameter.h"
 
 #include "utility/throw_utilities.h"
 
@@ -15,7 +16,7 @@ namespace bitbots_throw{
                                ,std::string const & topic
                                ,std::string const & topic_marker);
 
-        void print_throw_points(std::string point_data, const bool & print_to_console);
+        void print_throw_points(std::string point_data, std::shared_ptr<ThrowDebugParameter> const & sp_parameter);
         void publish_ik_debug(ThrowResponse const & response, int8_t const & percentage_done, int8_t const & movement_stage);
 
     private:

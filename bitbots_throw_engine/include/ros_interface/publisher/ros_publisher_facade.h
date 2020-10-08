@@ -7,7 +7,7 @@
 #include "ros_interface/publisher/debug_publisher.h"
 #include "ros_interface/publisher/odometry_publisher.h"
 #include "ros_interface/publisher/support_publisher.h"
-#include "parameter/throw_node_parameter.h"
+#include "parameter/throw_engine_parameter.h"
 #include "engine/throw_engine.h"
 
 namespace bitbots_throw{
@@ -23,11 +23,12 @@ namespace bitbots_throw{
         };
 
         RosPublisherFacade(ros::NodeHandle & ros_node_handle
-                          ,std::shared_ptr<ThrowNodeParameter> & parameter
+                          ,std::shared_ptr<ThrowEngineParameter> & sp_engine_parameter
                           ,RosPublisherTopics const & topics
-                          ,ThrowVisualizer::ThrowVisualizerParams const & visualization_parameter);
+                          ,ThrowVisualizer::ThrowVisualizerParams const & visualization_parameter
+                          ,std::shared_ptr<ThrowDebugParameter> & sp_debug_parameter);
         void prepare_publisher_for_throw();
-        void update_node_parameter(std::shared_ptr<ThrowNodeParameter> & parameter);
+        void set_parameter(std::shared_ptr<ThrowEngineParameter> & sp_engine_parameter, std::shared_ptr<ThrowDebugParameter> & sp_debug_parameter);
 
         void publish_throw(bitbots_splines::JointGoals & joint_goals);
         void publish_odometry();
@@ -43,8 +44,9 @@ namespace bitbots_throw{
         std::shared_ptr<OdometryPublisher> sp_odometry_publisher_;
         std::shared_ptr<ControllerCommandPublisher> sp_controller_command_publisher_;
 
-        std::shared_ptr<ThrowNodeParameter> sp_node_parameter_;
         std::shared_ptr<ThrowVisualizer> sp_visualizer_;
+        std::shared_ptr<ThrowDebugParameter> sp_debug_parameter_;
+        std::shared_ptr<ThrowEngineParameter> sp_engine_parameter_;
     };
 } //bitbots_throw
 #endif //BITBOTS_THROW_ROS_PUBLISHER_FACADE_H

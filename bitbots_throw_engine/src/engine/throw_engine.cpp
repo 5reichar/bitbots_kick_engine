@@ -61,7 +61,7 @@ namespace bitbots_throw{
 	    sp_throw_factory_->set_throw_type_parameter(types);
 	}
 
-	void ThrowEngine::set_engine_parameter(std::shared_ptr<ThrowEngineParameter> & parameter){
+	void ThrowEngine::set_engine_parameter(std::shared_ptr<RobotAndWorldParameter> & parameter){
 		sp_engine_parameter_ = parameter;
 	}
 

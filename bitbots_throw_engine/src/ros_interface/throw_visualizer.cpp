@@ -3,8 +3,8 @@
 
 namespace bitbots_throw{
     ThrowVisualizer::ThrowVisualizer(const std::string & base_topic, ThrowVisualizerParams const & params
-                                     , std::shared_ptr<ThrowNodeParameter> & node_parameter)
-            : sp_node_parameter(node_parameter), parameter_(params){
+                                     , std::shared_ptr<ThrowDebugParameter> & sp_parameter)
+            : sp_parameter(sp_parameter), parameter_(params){
         ros_publisher_left_hand_ = ros_node_handle_.advertise<visualization_msgs::Marker>(
                 base_topic + params.left_hand_topic_suffix_, 100);
         ros_publisher_right_hand_ = ros_node_handle_.advertise<visualization_msgs::Marker>(
@@ -24,60 +24,59 @@ namespace bitbots_throw{
                 base_topic + params.right_foot_arrow_topic_suffix_, 100);
     }
 
-    void ThrowVisualizer::update_node_parameter(std::shared_ptr<ThrowNodeParameter> & node_parameter){
-        sp_node_parameter = node_parameter;
+    void ThrowVisualizer::set_parameter(std::shared_ptr<ThrowDebugParameter> & sp_parameter){
+        sp_parameter = sp_parameter;
     }
 
     void ThrowVisualizer::display_left_hand(std::shared_ptr<bitbots_splines::PoseHandle> & pose){
-        if(sp_node_parameter->visualize_limbs_){
+        if(sp_parameter->visualize_movement_){
             display_pose(pose, parameter_.left_hand_frame_, ros_publisher_left_hand_
                          , {1, 1, 0});
         }
 
-        if(sp_node_parameter->visualize_left_arm_){
+        if(sp_parameter->visualize_left_arm_arrows_){
             display_pose_as_arrows(pose, parameter_.left_hand_frame_, ros_publisher_left_hand_arrow_
                                    , {1, 1, 1}, {0, 0, 0}
-                                   , sp_node_parameter->visualize_arrows_use_gradient_);
+                                   , sp_parameter->visualize_arrows_use_gradient_);
         }
     }
 
     void ThrowVisualizer::display_right_hand(std::shared_ptr<bitbots_splines::PoseHandle> & pose){
-        if(sp_node_parameter->visualize_limbs_){
+        if(sp_parameter->visualize_movement_){
             display_pose(pose, parameter_.right_hand_frame_, ros_publisher_right_hand_
                          , {1, 0, 1});
         }
 
-
-        if(sp_node_parameter->visualize_right_arm_){
+        if(sp_parameter->visualize_right_arm_arrows_){
             display_pose_as_arrows(pose, parameter_.right_hand_frame_, ros_publisher_right_hand_arrow_
                                    , {1, 1, 1}, {0, 0, 0}
-                                   , sp_node_parameter->visualize_arrows_use_gradient_);
+                                   , sp_parameter->visualize_arrows_use_gradient_);
         }
     }
 
     void ThrowVisualizer::display_left_foot(std::shared_ptr<bitbots_splines::PoseHandle> & pose){
-        if(sp_node_parameter->visualize_limbs_){
+        if(sp_parameter->visualize_movement_){
             display_pose(pose, parameter_.left_foot_frame_, ros_publisher_left_foot_
                          , {0, 1, 0});
         }
 
-        if(sp_node_parameter->visualize_left_foot_){
+        if(sp_parameter->visualize_left_foot_arrows_){
             display_pose_as_arrows(pose, parameter_.left_foot_frame_, ros_publisher_left_foot_arrow_
                                    , {1, 1, 1}, {0, 0, 0}
-                                   , sp_node_parameter->visualize_arrows_use_gradient_);
+                                   , sp_parameter->visualize_arrows_use_gradient_);
         }
     }
 
     void ThrowVisualizer::display_right_foot(std::shared_ptr<bitbots_splines::PoseHandle> & pose){
-        if(sp_node_parameter->visualize_limbs_){
+        if(sp_parameter->visualize_movement_){
             display_pose(pose, parameter_.right_foot_frame_, ros_publisher_right_foot_
                          , {0, 0, 1});
         }
 
-        if(sp_node_parameter->visualize_right_foot_){
+        if(sp_parameter->visualize_right_foot_arrows_){
             display_pose_as_arrows(pose, parameter_.right_foot_frame_, ros_publisher_right_foot_arrow_
                                    , {1, 1, 1}, {0, 0, 0}
-                                   , sp_node_parameter->visualize_arrows_use_gradient_);
+                                   , sp_parameter->visualize_arrows_use_gradient_);
         }
     }
 
@@ -85,7 +84,7 @@ namespace bitbots_throw{
                                        , const std::string & frame
                                        , ros::Publisher const & publisher
                                        , const Color & color){
-        auto path = get_path(*pose, frame, sp_node_parameter->visualization_smoothness_);
+        auto path = get_path(*pose, frame, sp_parameter->visualization_smoothness_);
 
         path.color.r = color.red_;
         path.color.g = color.green_;
@@ -101,17 +100,17 @@ namespace bitbots_throw{
                                                  , const bool & use_gradient){
         std::vector<double> times;
 
-        if(sp_node_parameter->visualization_smoothness_ > 1.0){
+        if(sp_parameter->visualize_only_points_arrows_){
+            for(auto & point : pose->x()->points()){
+                times.emplace_back(point.time_);
+            }
+        }else{
             double minimum = pose->x()->min();
             double maximum = pose->x()->max();
-            double time_step = (maximum - minimum) / sp_node_parameter->visualization_smoothness_;
+            double time_step = (maximum - minimum) / sp_parameter->visualize_arrows_smoothness_;
 
             for(auto i = minimum; i <= maximum; i += time_step){
                 times.emplace_back(i);
-            }
-        }else{
-            for(auto & point : pose->x()->points()){
-                times.emplace_back(point.time_);
             }
         }
 

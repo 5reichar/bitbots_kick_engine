@@ -8,7 +8,7 @@
 namespace bitbots_throw{
     class ThrowService{
     public:
-        ThrowService(ThrowRequest request, ThrowType throw_type, ThrowEngineParameter engine_parameter);
+        ThrowService(ThrowRequest request, ThrowType throw_type, RobotAndWorldParameter engine_parameter);
 
         virtual Struct3dRPY get_left_arm_start();
         virtual Struct3dRPY get_left_arm_reach_to_ball();
@@ -59,7 +59,7 @@ namespace bitbots_throw{
 
         ThrowRequest request_;
         ThrowType throw_type_;
-        ThrowEngineParameter engine_parameter_;
+        RobotAndWorldParameter engine_parameter_;
     };
 }
 #endif //BITBOTS_THROW_THROW_SERVICE_H

@@ -12,7 +12,7 @@ namespace bitbots_throw{
     public:
         static std::shared_ptr<ThrowTypeParameter> build_from_dynamic_reconf(bitbots_throw::throw_paramsConfig& config
                                                                             ,uint32_t level
-                                                                            ,std::shared_ptr<ThrowEngineParameter> params){
+                                                                            ,std::shared_ptr<RobotAndWorldParameter> params){
             auto sp_parameter = build_default();
             auto current_id = (ThrowTypeId)config.default_throw_enum;
             sp_parameter->default_throw_id_ = current_id;

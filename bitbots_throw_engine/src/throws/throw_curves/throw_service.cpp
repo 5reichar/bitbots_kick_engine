@@ -2,7 +2,7 @@
 #include "utility/throw_math.h"
 
 namespace bitbots_throw{
-    ThrowService::ThrowService(ThrowRequest request, ThrowType throw_type, ThrowEngineParameter engine_parameter)
+    ThrowService::ThrowService(ThrowRequest request, ThrowType throw_type, RobotAndWorldParameter engine_parameter)
         : request_(request)
         , throw_type_(throw_type)
         , engine_parameter_(engine_parameter)

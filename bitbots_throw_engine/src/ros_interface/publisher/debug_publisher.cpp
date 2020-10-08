@@ -12,9 +12,11 @@ namespace bitbots_throw{
         ros_publisher_debug_marker_ = ros_node_handle.advertise<visualization_msgs::Marker>(topic_marker, 1);
     }
 
-    void DebugPublisher::print_throw_points(std::string point_data, const bool & print_to_console){
+    void DebugPublisher::print_throw_points(std::string point_data, std::shared_ptr<ThrowDebugParameter> const & sp_parameter){
         SystemPublisher publisher;
-        publisher.print_to_file(point_data, "output.csv", print_to_console);
+        publisher.print_to_file(point_data
+                               ,sp_parameter->debug_data_path_ + sp_parameter->debug_data_file_name_
+                               ,sp_parameter->print_debug_to_console_);
     }
 
     void DebugPublisher::publish_ik_debug(ThrowResponse const & response, int8_t const & percentage_done, int8_t const & movement_stage){

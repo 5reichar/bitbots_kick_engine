@@ -25,7 +25,7 @@ namespace bitbots_throw{
 
         void set_goals(const ThrowRequest & request);
         void set_throw_types(std::shared_ptr<ThrowTypeParameter> & types);
-        void set_engine_parameter(std::shared_ptr<ThrowEngineParameter> & parameter);
+        void set_engine_parameter(std::shared_ptr<RobotAndWorldParameter> & parameter);
 
         std::string get_throw_points_as_string() const;
 
@@ -40,7 +40,7 @@ namespace bitbots_throw{
         std::shared_ptr<ThrowMaterial> sp_current_throw_;
         std::shared_ptr<ThrowFactory> sp_throw_factory_;
         std::shared_ptr<ThrowTypeParameter> sp_throw_types_;
-        std::shared_ptr<ThrowEngineParameter> sp_engine_parameter_;
+        std::shared_ptr<RobotAndWorldParameter> sp_engine_parameter_;
     };
 } //bitbots_throw
 #endif //BITBOTS_THROW_THROW_ENGINE_H

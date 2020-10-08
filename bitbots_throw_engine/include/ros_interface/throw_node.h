@@ -5,7 +5,6 @@
 #include "utility/throw_ik.h"
 #include "utility/throw_stabilizer.h"
 #include "engine/throw_engine.h"
-#include "parameter/throw_node_parameter.h"
 #include "parameter/throw_engine_parameter.h"
 
 #include <dynamic_reconfigure/server.h>
@@ -50,9 +49,11 @@ namespace bitbots_throw{
         std::shared_ptr<ThrowIK> sp_ik_right_foot_;
 
         ThrowEngine throw_engine_;
-        std::shared_ptr<ThrowNodeParameter> sp_node_parameter_;
         std::shared_ptr<RosPublisherFacade> sp_publisher_facade_;
+
+        std::shared_ptr<ThrowDebugParameter> sp_debug_parameter_;
         std::shared_ptr<ThrowEngineParameter> sp_engine_parameter_;
+        std::shared_ptr<RobotAndWorldParameter> sp_robot_and_world_parameter_;
 
         ros::NodeHandle ros_node_handle_;
         ros::Subscriber ros_subscriber_throw_;

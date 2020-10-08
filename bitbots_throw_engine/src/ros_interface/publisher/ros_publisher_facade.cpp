@@ -3,11 +3,13 @@
 
 namespace bitbots_throw{
 	RosPublisherFacade::RosPublisherFacade(ros::NodeHandle & ros_node_handle
-	                                      ,std::shared_ptr<ThrowNodeParameter> & parameter
+                                          ,std::shared_ptr<ThrowEngineParameter> & sp_engine_parameter
 	                                      ,RosPublisherTopics const &topics
-	                                      ,ThrowVisualizer::ThrowVisualizerParams const & visualization_parameter)
-		: sp_node_parameter_(parameter)
-		, sp_visualizer_(new ThrowVisualizer(topics.str_debug_visualization_base_topic_, visualization_parameter, sp_node_parameter_))
+	                                      ,ThrowVisualizer::ThrowVisualizerParams const & visualization_parameter
+                                          ,std::shared_ptr<ThrowDebugParameter> & sp_debug_parameter)
+		: sp_engine_parameter_(sp_engine_parameter)
+		, sp_debug_parameter_(sp_debug_parameter)
+		, sp_visualizer_(new ThrowVisualizer(topics.str_debug_visualization_base_topic_, visualization_parameter, sp_debug_parameter))
 		, sp_controller_command_publisher_(new ControllerCommandPublisher(ros_node_handle
 		                                                                    ,topics.str_controller_command_topic_))
 		, sp_odometry_publisher_(new OdometryPublisher(ros_node_handle, topics.str_odometry_topic_))
@@ -21,9 +23,10 @@ namespace bitbots_throw{
 		sp_odometry_publisher_->reset_counter();
 	}
 
-    void RosPublisherFacade::update_node_parameter(std::shared_ptr<ThrowNodeParameter> & parameter){
-        sp_node_parameter_ = parameter;
-        sp_visualizer_->update_node_parameter(parameter);
+    void RosPublisherFacade::set_parameter(std::shared_ptr<ThrowEngineParameter> & sp_engine_parameter, std::shared_ptr<ThrowDebugParameter> & sp_debug_parameter){
+        sp_debug_parameter_ = sp_debug_parameter;
+        sp_engine_parameter_ = sp_engine_parameter;
+        sp_visualizer_->set_parameter(sp_debug_parameter);
     }
 
 	void RosPublisherFacade::publish_throw(bitbots_splines::JointGoals & joint_goals){
@@ -34,11 +37,11 @@ namespace bitbots_throw{
 	}
 
 	void RosPublisherFacade::publish_odometry(){
-		sp_odometry_publisher_->publish(sp_node_parameter_->odom_publish_factor_);
+		sp_odometry_publisher_->publish(sp_engine_parameter_->odom_publish_factor_);
 	}
 
     void RosPublisherFacade::publish_engine_debug(ThrowEngine * engine, ThrowRequest const & request, std::vector<ThrowResponse> & responses){
-	    if(sp_node_parameter_->debug_active_){
+	    if(sp_debug_parameter_->debug_active_){
 	        SystemPublisher::publish_info("Printing Engine data", "RosPublisherFacade");
 	        std::stringstream stream;
 
@@ -73,10 +76,10 @@ namespace bitbots_throw{
                 stream << build_data_from_transform(it.support_foot_to_right_foot_);
                 stream << std::endl;
 
-                counter += 1/sp_node_parameter_->engine_frequency_;
+                counter += 1 / sp_engine_parameter_->engine_frequency_;
 	        }
 
-	        sp_debug_publisher_->print_throw_points(stream.str(), sp_node_parameter_->print_debug_to_console_);
+	        sp_debug_publisher_->print_throw_points(stream.str(), sp_debug_parameter_);
 	    }
     }
 
@@ -98,7 +101,7 @@ namespace bitbots_throw{
     }
 
 	void RosPublisherFacade::publish_debug(ThrowResponse const & response, int8_t const & percentage_done, int8_t const & movement_stage){
-		if(sp_node_parameter_->debug_active_){
+		if(sp_debug_parameter_->debug_active_){
 			sp_debug_publisher_->publish_ik_debug(response, percentage_done, movement_stage);
 		}
 	}
