@@ -40,6 +40,8 @@ namespace bitbots_throw{
 		double movement_share_throw_;
         // The share of the movement cycle dedicated to motion after throwing the ball
 		double movement_share_conclusion_;
+		// The amount of time to move the arms away from the ball
+        double movement_offset_move_arms_away_from_ball_;
 
 
 		//////		Constructor
@@ -55,6 +57,7 @@ namespace bitbots_throw{
                  ,double movement_share_preparation
                  ,double movement_share_throw
                  ,double movement_share_conclusion
+                 ,double movement_offset_move_arms_away_from_ball
 				 )
 				 :id_{id}
 				 ,active_{active}
@@ -67,7 +70,8 @@ namespace bitbots_throw{
                  ,movement_share_pick_up_{movement_share_pick_up}
                  ,movement_share_preparation_{movement_share_preparation}
                  ,movement_share_throw_{movement_share_throw}
-                 ,movement_share_conclusion_{movement_share_conclusion}{
+                 ,movement_share_conclusion_{movement_share_conclusion}
+                 ,movement_offset_move_arms_away_from_ball_{movement_offset_move_arms_away_from_ball}{
 		}
 	};
 

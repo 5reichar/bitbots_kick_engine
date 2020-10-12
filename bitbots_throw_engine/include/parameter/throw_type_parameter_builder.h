@@ -29,7 +29,8 @@ namespace bitbots_throw{
                                                                          ,config.throw_1_movement_share_pick_up
                                                                          ,config.throw_1_movement_share_preparation
                                                                          ,config.throw_1_movement_share_throw
-                                                                         ,config.throw_1_movement_share_conclusion);
+                                                                         ,config.throw_1_movement_share_conclusion
+                                                                         ,config.throw_1_movement_offset_move_arms_away_from_ball);
 
             current_id = (ThrowTypeId)config.throw_2_throw_enum;
             sp_parameter->map_throw_types_[current_id] = build_throw_type(current_id
@@ -43,7 +44,8 @@ namespace bitbots_throw{
                                                                         ,config.throw_2_movement_share_pick_up
                                                                         ,config.throw_2_movement_share_preparation
                                                                         ,config.throw_2_movement_share_throw
-                                                                        ,config.throw_2_movement_share_conclusion);
+                                                                        ,config.throw_2_movement_share_conclusion
+                                                                        ,config.throw_2_movement_offset_move_arms_away_from_ball);
 
             current_id = (ThrowTypeId)config.throw_3_throw_enum;
             sp_parameter->map_throw_types_[current_id] = build_throw_type(current_id
@@ -57,7 +59,8 @@ namespace bitbots_throw{
                                                                         ,config.throw_3_movement_share_pick_up
                                                                         ,config.throw_3_movement_share_preparation
                                                                         ,config.throw_3_movement_share_throw
-                                                                        ,config.throw_3_movement_share_conclusion);
+                                                                        ,config.throw_3_movement_share_conclusion
+                                                                        ,config.throw_3_movement_offset_move_arms_away_from_ball);
 
             current_id = (ThrowTypeId)config.throw_4_throw_enum;
             sp_parameter->map_throw_types_[current_id] = build_throw_type(current_id
@@ -71,7 +74,8 @@ namespace bitbots_throw{
                                                                         ,config.throw_4_movement_share_pick_up
                                                                         ,config.throw_4_movement_share_preparation
                                                                         ,config.throw_4_movement_share_throw
-                                                                        ,config.throw_4_movement_share_conclusion);
+                                                                        ,config.throw_4_movement_share_conclusion
+                                                                        ,config.throw_4_movement_offset_move_arms_away_from_ball);
 
             sp_parameter->map_throw_types_[ThrowTypeId::none] = build_throw_type((ThrowTypeId)config.default_throw_enum
                                                                           ,true
@@ -84,7 +88,8 @@ namespace bitbots_throw{
                                                                           ,config.movement_share_pick_up
                                                                           ,config.movement_share_preparation
                                                                           ,config.movement_share_throw
-                                                                          ,config.movement_share_conclusion);
+                                                                          ,config.movement_share_conclusion
+                                                                          ,config.movement_offset_move_arms_away_from_ball);
 
             return sp_parameter;
         };
@@ -120,7 +125,8 @@ namespace bitbots_throw{
                                                           ,double movement_share_pick_up
                                                           ,double movement_share_preparation
                                                           ,double movement_share_throw
-                                                          ,double movement_share_conclusion){
+                                                          ,double movement_share_conclusion
+                                                          ,double movement_offset_move_arms_away_from_ball){
             return std::make_shared<ThrowType>(id
                                               ,active
                                               ,priority_level
@@ -132,7 +138,8 @@ namespace bitbots_throw{
                                               ,movement_share_pick_up
                                               ,movement_share_preparation
                                               ,movement_share_throw
-                                              ,movement_share_conclusion);
+                                              ,movement_share_conclusion
+                                              ,movement_offset_move_arms_away_from_ball);
         };
     };
 } //bitbots_throw

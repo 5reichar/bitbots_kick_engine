@@ -221,4 +221,30 @@ namespace bitbots_throw{
 
         return max_velocity < velocity.x_ && max_velocity < velocity.y_ && max_velocity < velocity.z_;
     }
+    Struct3dRPY ThrowService::get_left_arm_move_away_from_ball(double const & angle_offset){
+        Struct3dRPY point = get_left_arm_throw_release(angle_offset);
+        point.y_ += robot_and_world_parameter_.move_arms_away_from_ball_;
+        return point;
+    }
+    Struct3dRPY ThrowService::get_right_arm_move_away_from_ball(double const & angle_offset){
+        Struct3dRPY point = get_left_arm_throw_release(angle_offset);
+        point.y_ -= robot_and_world_parameter_.move_arms_away_from_ball_;
+        return point;
+    }
+    double ThrowService::get_movement_offset_move_arms_away_from_ball(){
+        return throw_type_.movement_offset_move_arms_away_from_ball_;
+    }
+    double ThrowService::get_throw_release_offset(){
+        double angle_offset = 0.0;
+        auto left_arm_throw_release = get_left_arm_throw_release(angle_offset);
+        Struct3dRPY velocity = get_throw_velocity(left_arm_throw_release.z_);
+        for(bool check = check_velocity(velocity)
+                ;!check && angle_offset < 1.0 && angle_offset > -1.0
+                ;check = check_velocity(velocity)){
+            angle_offset += 0.02; // increase about 1 degree
+            left_arm_throw_release = get_left_arm_throw_release(angle_offset);
+            velocity = get_throw_velocity(left_arm_throw_release.z_);
+        }
+        return angle_offset;
+    }
 }

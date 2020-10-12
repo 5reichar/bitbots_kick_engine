@@ -100,6 +100,10 @@ namespace bitbots_throw{
             if(type->movement_share_conclusion_ == 0){
                 type->movement_share_conclusion_ = sp_throw_types_->map_throw_types_[ThrowTypeId::none]->movement_share_conclusion_;
             };
+
+            if(type->movement_offset_move_arms_away_from_ball_ == 0){
+                type->movement_offset_move_arms_away_from_ball_ = sp_throw_types_->map_throw_types_[ThrowTypeId::none]->movement_offset_move_arms_away_from_ball_;
+            };
 		}
 
         return std::make_shared<ThrowService>(request, *type, *sp_engine_parameter_);

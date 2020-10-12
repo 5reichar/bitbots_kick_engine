@@ -27,6 +27,8 @@ namespace bitbots_throw{
         double ball_weight_;
         // the safety distance between the botton of the trunk and the feet of the robot
         double squat_safety_distance_;
+        // The distance the arms move away from the ball to release it
+        double move_arms_away_from_ball_;
 
 		//////		Constructor
 		RobotAndWorldParameter(bitbots_throw::throw_engine_paramsConfig& config, uint32_t level){
@@ -41,6 +43,7 @@ namespace bitbots_throw{
             ball_radius_ = config.ball_radius;
             ball_weight_ = config.ball_weight;
             squat_safety_distance_ = config.squat_safety_distance;
+            move_arms_away_from_ball_ = config.move_arms_away_from_ball;
 		}
 	};
 

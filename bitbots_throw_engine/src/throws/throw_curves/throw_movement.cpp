@@ -130,33 +130,23 @@ namespace bitbots_throw{
         /////  Preparation
         //Set up the trajectories for the half cycle (single step)
         auto movement_time = sp_service_->get_movement_time_throw();
-        double release_throw_time = trajectory_time_ + movement_time - 0.01;
-        double move_away_from_ball = trajectory_time_ + movement_time;
+        double release_throw_time = trajectory_time_ + movement_time - sp_service_->get_movement_offset_move_arms_away_from_ball();
+        double move_arms_away_from_ball = trajectory_time_ + movement_time;
 
-        // Adapt the velocity of the throw
-        double angle_offset = 0.0;
+        // get Values
+        double angle_offset = sp_service_->get_throw_release_offset();
         auto left_arm_throw_release = sp_service_->get_left_arm_throw_release(angle_offset);
         Struct3dRPY velocity = sp_service_->get_throw_velocity(left_arm_throw_release.z_);
-        for(bool check_velocity = sp_service_->check_velocity(velocity)
-                   ;!check_velocity && angle_offset < 1.0 && angle_offset > -1.0
-                   ;check_velocity = sp_service_->check_velocity(velocity)){
-            angle_offset += 0.02; // increase about 1 degree
-            left_arm_throw_release = sp_service_->get_left_arm_throw_release(angle_offset);
-            velocity = sp_service_->get_throw_velocity(left_arm_throw_release.z_);
-        }
-        auto right_arm_throw_release = sp_service_->get_right_arm_throw_release(angle_offset);
 
         ////  Movement
         ////==== Release ball
         add_to_left_hand(release_throw_time, left_arm_throw_release, velocity);
-        add_to_right_hand(release_throw_time, right_arm_throw_release, velocity);
+        add_to_right_hand(release_throw_time, sp_service_->get_right_arm_throw_release(angle_offset), velocity);
 
 
-        ////==== Release ball
-        left_arm_throw_release.y_ += 0.1;
-        right_arm_throw_release.y_ -= 0.1;
-        add_to_left_hand(move_away_from_ball, left_arm_throw_release);
-        add_to_right_hand(move_away_from_ball, right_arm_throw_release);
+        ////==== Move arms away from the ball
+        add_to_left_hand(move_arms_away_from_ball, sp_service_->get_left_arm_move_away_from_ball(angle_offset));
+        add_to_right_hand(move_arms_away_from_ball, sp_service_->get_right_arm_move_away_from_ball(angle_offset));
 
         /////  Clean Up
         trajectory_time_ = release_throw_time;
