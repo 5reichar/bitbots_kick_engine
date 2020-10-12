@@ -104,9 +104,9 @@ namespace bitbots_throw{
         /////  Preparation
         //Set up the trajectories for the half cycle (single step)
         auto movement_time = sp_service_->get_movement_time_throw_preparation();
-        auto move_ball_up = trajectory_time_ + (movement_time / 3);
-        auto move_ball_over_the_head = trajectory_time_ + (2 * movement_time / 3);
-        double begin_throw_time = trajectory_time_ + movement_time;
+        auto move_ball_up = trajectory_time_ + (movement_time / 2);
+        auto move_ball_over_the_head = trajectory_time_ + movement_time;
+        //double begin_throw_time = trajectory_time_ + movement_time;
 
         ////  Movement
         ////==== Move ball up
@@ -121,12 +121,14 @@ namespace bitbots_throw{
         add_to_left_foot(move_ball_over_the_head, sp_service_->get_left_foot_orientation_to_goal());
         add_to_right_foot(move_ball_over_the_head, sp_service_->get_right_foot_orientation_to_goal());
 
+        /*
         ////==== Begin throw position
         add_to_left_hand(begin_throw_time, sp_service_->get_left_arm_throw_start());
         add_to_right_hand(begin_throw_time, sp_service_->get_right_arm_throw_start());
+        */
 
         /////  Clean Up
-        trajectory_time_ = begin_throw_time;
+        trajectory_time_ = move_ball_over_the_head;
         sp_material_->add_movement_stage(trajectory_time_);
     }
 
@@ -134,8 +136,9 @@ namespace bitbots_throw{
         /////  Preparation
         //Set up the trajectories for the half cycle (single step)
         auto movement_time = sp_service_->get_movement_time_throw();
-        double zenith_throw_time = trajectory_time_ + (movement_time / 2);
-        double release_throw_time = trajectory_time_ + movement_time;
+        //double zenith_throw_time = trajectory_time_ + (movement_time / 2);
+        double release_throw_time = trajectory_time_ + movement_time - 0.01;
+        double move_away_from_ball = trajectory_time_ + movement_time;
 
         double angle_offset = 0.0;
         auto left_arm_throw_release = sp_service_->get_left_arm_throw_release(angle_offset);
@@ -147,15 +150,25 @@ namespace bitbots_throw{
             left_arm_throw_release = sp_service_->get_left_arm_throw_release(angle_offset);
             velocity = sp_service_->get_throw_velocity(left_arm_throw_release.z_);
         }
+        auto right_arm_throw_release = sp_service_->get_right_arm_throw_release(angle_offset);
 
         ////  Movement
+        /*
         ////==== Return to ball to over head position
         add_to_left_hand(zenith_throw_time, sp_service_->get_left_arm_throw_zenith_return(), velocity);
         add_to_right_hand(zenith_throw_time, sp_service_->get_right_arm_throw_zenith_return(), velocity);
+        */
 
         ////==== Release ball
         add_to_left_hand(release_throw_time, left_arm_throw_release, velocity);
-        add_to_right_hand(release_throw_time, sp_service_->get_right_arm_throw_release(angle_offset), velocity);
+        add_to_right_hand(release_throw_time, right_arm_throw_release, velocity);
+
+
+        ////==== Release ball
+        left_arm_throw_release.y_ += 0.1;
+        right_arm_throw_release.y_ -= 0.1;
+        add_to_left_hand(move_away_from_ball, left_arm_throw_release);
+        add_to_right_hand(move_away_from_ball, right_arm_throw_release);
 
         /////  Clean Up
         trajectory_time_ = release_throw_time;
