@@ -45,7 +45,6 @@ namespace bitbots_throw{
 
         virtual Struct3dRPY get_throw_velocity(double const & throw_release_z);
         virtual bool check_velocity(Struct3dRPY const & velocity);
-        virtual void rotate_coordinate(double const & angle);
 
     protected:
         virtual Struct3dRPY create_reach_to_ball();

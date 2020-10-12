@@ -244,9 +244,6 @@ namespace bitbots_throw{
         }
         return ret;
     }
-    void ThrowService::rotate_coordinate(const double & angle){
-
-    }
     bool ThrowService::check_velocity(Struct3dRPY const & velocity){
         auto f = (robot_and_world_parameter_.arm_max_stall_torque_ * robot_and_world_parameter_.arm_stall_torque_usage_) / robot_and_world_parameter_.arm_length_;
         double max_velocity = f / robot_and_world_parameter_.ball_weight_;
