@@ -21,10 +21,10 @@ namespace bitbots_throw{
             sp_parameter->map_throw_types_[current_id] = build_throw_type(current_id
                                                                          ,config.throw_1_throw_active
                                                                          ,config.throw_1_throw_priority_level
-                                                                         ,config.throw_1_throw_strength
-                                                                         ,ThrowMath::degree_to_radian(config.throw_1_throw_angle, params->pi_)
                                                                          ,config.throw_1_throw_min_distance
                                                                          ,config.throw_1_throw_max_distance
+                                                                         ,config.throw_1_throw_strength
+                                                                         ,ThrowMath::degree_to_radian(config.throw_1_throw_angle, params->pi_)
                                                                          ,config.throw_1_movement_duration
                                                                          ,config.throw_1_movement_share_pick_up
                                                                          ,config.throw_1_movement_share_preparation
@@ -36,10 +36,10 @@ namespace bitbots_throw{
             sp_parameter->map_throw_types_[current_id] = build_throw_type(current_id
                                                                         ,config.throw_2_throw_active
                                                                         ,config.throw_2_throw_priority_level
-                                                                        ,config.throw_2_throw_strength
-                                                                        ,ThrowMath::degree_to_radian(config.throw_2_throw_angle, params->pi_)
                                                                         ,config.throw_2_throw_min_distance
                                                                         ,config.throw_2_throw_max_distance
+                                                                        ,config.throw_2_throw_strength
+                                                                        ,ThrowMath::degree_to_radian(config.throw_2_throw_angle, params->pi_)
                                                                         ,config.throw_2_movement_duration
                                                                         ,config.throw_2_movement_share_pick_up
                                                                         ,config.throw_2_movement_share_preparation
@@ -51,10 +51,10 @@ namespace bitbots_throw{
             sp_parameter->map_throw_types_[current_id] = build_throw_type(current_id
                                                                         ,config.throw_3_throw_active
                                                                         ,config.throw_3_throw_priority_level
-                                                                        ,config.throw_3_throw_strength
-                                                                        ,ThrowMath::degree_to_radian(config.throw_3_throw_angle, params->pi_)
                                                                         ,config.throw_3_throw_min_distance
                                                                         ,config.throw_3_throw_max_distance
+                                                                        ,config.throw_3_throw_strength
+                                                                        ,ThrowMath::degree_to_radian(config.throw_3_throw_angle, params->pi_)
                                                                         ,config.throw_3_movement_duration
                                                                         ,config.throw_3_movement_share_pick_up
                                                                         ,config.throw_3_movement_share_preparation
@@ -66,10 +66,10 @@ namespace bitbots_throw{
             sp_parameter->map_throw_types_[current_id] = build_throw_type(current_id
                                                                         ,config.throw_4_throw_active
                                                                         ,config.throw_4_throw_priority_level
-                                                                        ,config.throw_4_throw_strength
-                                                                        ,ThrowMath::degree_to_radian(config.throw_4_throw_angle, params->pi_)
                                                                         ,config.throw_4_throw_min_distance
                                                                         ,config.throw_4_throw_max_distance
+                                                                        ,config.throw_4_throw_strength
+                                                                        ,ThrowMath::degree_to_radian(config.throw_4_throw_angle, params->pi_)
                                                                         ,config.throw_4_movement_duration
                                                                         ,config.throw_4_movement_share_pick_up
                                                                         ,config.throw_4_movement_share_preparation
@@ -80,10 +80,10 @@ namespace bitbots_throw{
             sp_parameter->map_throw_types_[ThrowTypeId::none] = build_throw_type((ThrowTypeId)config.default_throw_enum
                                                                           ,true
                                                                           ,0
+                                                                          ,0.0
+                                                                          ,0.0
                                                                           ,config.throw_strength
                                                                           ,ThrowMath::degree_to_radian(config.throw_angle, params->pi_)
-                                                                          ,0.0
-                                                                          ,0.0
                                                                           ,config.movement_duration
                                                                           ,config.movement_share_pick_up
                                                                           ,config.movement_share_preparation
