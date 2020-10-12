@@ -133,20 +133,29 @@ namespace bitbots_throw{
     void ThrowMovement::add_throw_movement(){
         /////  Preparation
         //Set up the trajectories for the half cycle (single step)
-        auto left_arm_throw_release = sp_service_->get_left_arm_throw_release();
-        Struct3dRPY velocity = sp_service_->get_throw_velocity(left_arm_throw_release.z_);
         auto movement_time = sp_service_->get_movement_time_throw();
         double zenith_throw_time = trajectory_time_ + (movement_time / 2);
         double release_throw_time = trajectory_time_ + movement_time;
 
+        double angle_offset = 0.0;
+        auto left_arm_throw_release = sp_service_->get_left_arm_throw_release(angle_offset);
+        Struct3dRPY velocity = sp_service_->get_throw_velocity(left_arm_throw_release.z_);
+        for(bool check_velocity = sp_service_->check_velocity(velocity)
+                   ;!check_velocity && angle_offset < 1.0 && angle_offset > -1.0
+                   ;check_velocity = sp_service_->check_velocity(velocity)){
+            angle_offset += 0.02; // increase about 1 degree
+            left_arm_throw_release = sp_service_->get_left_arm_throw_release(angle_offset);
+            velocity = sp_service_->get_throw_velocity(left_arm_throw_release.z_);
+        }
+
         ////  Movement
         ////==== Return to ball to over head position
-        add_to_left_hand(zenith_throw_time, sp_service_->get_left_arm_throw_zenith_return(), velocity/2);
-        add_to_right_hand(zenith_throw_time, sp_service_->get_right_arm_throw_zenith_return(), velocity/2);
+        add_to_left_hand(zenith_throw_time, sp_service_->get_left_arm_throw_zenith_return(), velocity);
+        add_to_right_hand(zenith_throw_time, sp_service_->get_right_arm_throw_zenith_return(), velocity);
 
         ////==== Release ball
         add_to_left_hand(release_throw_time, left_arm_throw_release, velocity);
-        add_to_right_hand(release_throw_time, sp_service_->get_right_arm_throw_release(), velocity);
+        add_to_right_hand(release_throw_time, sp_service_->get_right_arm_throw_release(angle_offset), velocity);
 
         /////  Clean Up
         trajectory_time_ = release_throw_time;
