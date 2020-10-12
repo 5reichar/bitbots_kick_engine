@@ -106,7 +106,6 @@ namespace bitbots_throw{
         auto movement_time = sp_service_->get_movement_time_throw_preparation();
         auto move_ball_up = trajectory_time_ + (movement_time / 2);
         auto move_ball_over_the_head = trajectory_time_ + movement_time;
-        //double begin_throw_time = trajectory_time_ + movement_time;
 
         ////  Movement
         ////==== Move ball up
@@ -121,11 +120,6 @@ namespace bitbots_throw{
         add_to_left_foot(move_ball_over_the_head, sp_service_->get_left_foot_orientation_to_goal());
         add_to_right_foot(move_ball_over_the_head, sp_service_->get_right_foot_orientation_to_goal());
 
-        /*
-        ////==== Begin throw position
-        add_to_left_hand(begin_throw_time, sp_service_->get_left_arm_throw_start());
-        add_to_right_hand(begin_throw_time, sp_service_->get_right_arm_throw_start());
-        */
 
         /////  Clean Up
         trajectory_time_ = move_ball_over_the_head;
@@ -136,10 +130,10 @@ namespace bitbots_throw{
         /////  Preparation
         //Set up the trajectories for the half cycle (single step)
         auto movement_time = sp_service_->get_movement_time_throw();
-        //double zenith_throw_time = trajectory_time_ + (movement_time / 2);
         double release_throw_time = trajectory_time_ + movement_time - 0.01;
         double move_away_from_ball = trajectory_time_ + movement_time;
 
+        // Adapt the velocity of the throw
         double angle_offset = 0.0;
         auto left_arm_throw_release = sp_service_->get_left_arm_throw_release(angle_offset);
         Struct3dRPY velocity = sp_service_->get_throw_velocity(left_arm_throw_release.z_);
@@ -153,12 +147,6 @@ namespace bitbots_throw{
         auto right_arm_throw_release = sp_service_->get_right_arm_throw_release(angle_offset);
 
         ////  Movement
-        /*
-        ////==== Return to ball to over head position
-        add_to_left_hand(zenith_throw_time, sp_service_->get_left_arm_throw_zenith_return(), velocity);
-        add_to_right_hand(zenith_throw_time, sp_service_->get_right_arm_throw_zenith_return(), velocity);
-        */
-
         ////==== Release ball
         add_to_left_hand(release_throw_time, left_arm_throw_release, velocity);
         add_to_right_hand(release_throw_time, right_arm_throw_release, velocity);

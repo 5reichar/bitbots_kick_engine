@@ -15,8 +15,6 @@ namespace bitbots_throw{
         virtual Struct3dRPY get_left_arm_pick_up();
         virtual Struct3dRPY get_left_arm_ball_at_head_height();
         virtual Struct3dRPY get_left_arm_throw_zenith();
-        virtual Struct3dRPY get_left_arm_throw_start();
-        virtual Struct3dRPY get_left_arm_throw_zenith_return();
         virtual Struct3dRPY get_left_arm_throw_release(double const & angle_offset);
 
         virtual Struct3dRPY get_right_arm_start();
@@ -24,8 +22,6 @@ namespace bitbots_throw{
         virtual Struct3dRPY get_right_arm_reach_to_ball();
         virtual Struct3dRPY get_right_arm_ball_at_head_height();
         virtual Struct3dRPY get_right_arm_throw_zenith();
-        virtual Struct3dRPY get_right_arm_throw_start();
-        virtual Struct3dRPY get_right_arm_throw_zenith_return();
         virtual Struct3dRPY get_right_arm_throw_release(double const & angle_offset);
 
         virtual Struct3dRPY get_left_foot_start();
@@ -51,8 +47,6 @@ namespace bitbots_throw{
         virtual Struct3dRPY create_pick_up();
         virtual Struct3dRPY create_ball_at_head_height();
         virtual Struct3dRPY create_throw_zenith();
-        virtual Struct3dRPY create_throw_start();
-        virtual Struct3dRPY create_throw_zenith_return();
         virtual Struct3dRPY create_throw_release(double const & angle_offset);
 
         double get_lowest_foot_position();

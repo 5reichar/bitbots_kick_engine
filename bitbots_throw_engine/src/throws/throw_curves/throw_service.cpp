@@ -25,12 +25,6 @@ namespace bitbots_throw{
     Struct3dRPY ThrowService::get_left_arm_throw_zenith(){
         return create_throw_zenith();
     }
-    Struct3dRPY ThrowService::get_left_arm_throw_start(){
-        return create_throw_start();
-    }
-    Struct3dRPY ThrowService::get_left_arm_throw_zenith_return(){
-        return create_throw_zenith_return();
-    }
     Struct3dRPY ThrowService::get_left_arm_throw_release(double const & angle_offset){
         Struct3dRPY point = create_throw_release(angle_offset);
         point.y_ = robot_and_world_parameter_.ball_radius_;
@@ -56,16 +50,6 @@ namespace bitbots_throw{
     }
     Struct3dRPY ThrowService::get_right_arm_throw_zenith(){
         Struct3dRPY point = create_throw_zenith();
-        point.y_ *= -1;
-        return point;
-    }
-    Struct3dRPY ThrowService::get_right_arm_throw_start(){
-        Struct3dRPY point = create_throw_start();
-        point.y_ *= -1;
-        return point;
-    }
-    Struct3dRPY ThrowService::get_right_arm_throw_zenith_return(){
-        Struct3dRPY point = create_throw_zenith_return();
         point.y_ *= -1;
         return point;
     }
@@ -214,19 +198,6 @@ namespace bitbots_throw{
         point.pitch_ = -0.5 * robot_and_world_parameter_.pi_;
         point.yaw_ = 0.0;
         return point;
-    }
-    Struct3dRPY ThrowService::create_throw_start(){
-        Struct3dRPY point;
-        point.x_ = -0.85 * robot_and_world_parameter_.arm_length_;
-        point.y_ = robot_and_world_parameter_.ball_radius_;
-        point.z_ = request_.head_position_.z_ + robot_and_world_parameter_.head_height_ / 2;
-        point.roll_ = 0.0;
-        point.pitch_ = -0.9 * robot_and_world_parameter_.pi_;
-        point.yaw_ = 0.0;
-        return point;
-    }
-    Struct3dRPY ThrowService::create_throw_zenith_return(){
-        return create_throw_zenith();
     }
     Struct3dRPY ThrowService::create_throw_release(double const & angle_offset){
         return ThrowMath::calculate_throw_release_point(throw_type_.throw_angle_ - angle_offset
