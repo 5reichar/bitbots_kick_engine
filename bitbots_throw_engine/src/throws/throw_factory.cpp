@@ -17,7 +17,7 @@ namespace bitbots_throw{
             auto throw_type = map_throw_type.second;
             if (throw_type->active_ &&
                 throw_type->min_throw_distance_ < throw_distance &&
-                throw_type->max_throw_distance_ > throw_distance){
+                throw_type->max_throw_distance_ >= throw_distance){
                 throw_type_id = map_throw_type.first;
                 break;
             }
