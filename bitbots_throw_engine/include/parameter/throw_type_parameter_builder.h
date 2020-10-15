@@ -25,6 +25,8 @@ namespace bitbots_throw{
                                                                          ,config.throw_1_throw_max_distance
                                                                          ,config.throw_1_throw_strength
                                                                          ,ThrowMath::degree_to_radian(config.throw_1_throw_angle, params->pi_)
+                                                                         ,config.throw_1_goal_tolerance
+                                                                         ,config.throw_1_velocity_adaptation_rate
                                                                          ,config.throw_1_movement_duration
                                                                          ,config.throw_1_movement_share_pick_up
                                                                          ,config.throw_1_movement_share_preparation
@@ -40,6 +42,8 @@ namespace bitbots_throw{
                                                                         ,config.throw_2_throw_max_distance
                                                                         ,config.throw_2_throw_strength
                                                                         ,ThrowMath::degree_to_radian(config.throw_2_throw_angle, params->pi_)
+                                                                        ,config.throw_2_goal_tolerance
+                                                                        ,config.throw_2_velocity_adaptation_rate
                                                                         ,config.throw_2_movement_duration
                                                                         ,config.throw_2_movement_share_pick_up
                                                                         ,config.throw_2_movement_share_preparation
@@ -55,6 +59,8 @@ namespace bitbots_throw{
                                                                         ,config.throw_3_throw_max_distance
                                                                         ,config.throw_3_throw_strength
                                                                         ,ThrowMath::degree_to_radian(config.throw_3_throw_angle, params->pi_)
+                                                                        ,config.throw_3_goal_tolerance
+                                                                        ,config.throw_3_velocity_adaptation_rate
                                                                         ,config.throw_3_movement_duration
                                                                         ,config.throw_3_movement_share_pick_up
                                                                         ,config.throw_3_movement_share_preparation
@@ -70,6 +76,8 @@ namespace bitbots_throw{
                                                                         ,config.throw_4_throw_max_distance
                                                                         ,config.throw_4_throw_strength
                                                                         ,ThrowMath::degree_to_radian(config.throw_4_throw_angle, params->pi_)
+                                                                        ,config.throw_4_goal_tolerance
+                                                                        ,config.throw_4_velocity_adaptation_rate
                                                                         ,config.throw_4_movement_duration
                                                                         ,config.throw_4_movement_share_pick_up
                                                                         ,config.throw_4_movement_share_preparation
@@ -84,6 +92,8 @@ namespace bitbots_throw{
                                                                           ,0.0
                                                                           ,config.throw_strength
                                                                           ,ThrowMath::degree_to_radian(config.throw_angle, params->pi_)
+                                                                          ,config.goal_tolerance
+                                                                          ,config.velocity_adaptation_rate
                                                                           ,config.movement_duration
                                                                           ,config.movement_share_pick_up
                                                                           ,config.movement_share_preparation
@@ -106,6 +116,8 @@ namespace bitbots_throw{
                                                           ,double max_throw_distance
                                                           ,double throw_strength
                                                           ,double throw_angle
+                                                          ,double goal_tolerance
+                                                          ,double velocity_adaptation_rate
                                                           ,double movement_duration
                                                           ,double movement_share_pick_up
                                                           ,double movement_share_preparation
@@ -119,6 +131,8 @@ namespace bitbots_throw{
                                               ,max_throw_distance
                                               ,throw_strength
                                               ,throw_angle
+                                              ,goal_tolerance
+                                              ,velocity_adaptation_rate
                                               ,movement_duration
                                               ,movement_share_pick_up
                                               ,movement_share_preparation

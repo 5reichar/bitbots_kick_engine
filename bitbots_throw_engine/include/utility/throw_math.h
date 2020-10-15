@@ -30,25 +30,23 @@ namespace bitbots_throw{
             return angle;
         }
 
-        static Struct3dRPY calculate_throw_release_point(double const & throw_release_angle
-                                                        ,double const & arm_length
-                                                        ,double const & throw_orientation_angle
-                                                        ,double const & throw_zenith
-                                                        ,double const & pi){
-            Struct3dRPY throw_release_point;
+        static Struct3dRPY calculate_throw_start_point(double const & throw_release_angle
+                                                       ,double const & throw_zenith
+                                                       ,double const & pi){
+            Struct3dRPY throw_start_point;
             // From Isosceles triangle with the two angles with the same size are given as 90 - throw_angle
-            auto hypotenuse = std::sqrt(2 * std::pow(arm_length, 2) * (1 - std::cos(2 * throw_release_angle)));
+            auto hypotenuse = std::sqrt(2 * std::pow(throw_zenith, 2) * (1 - std::cos(2 * throw_release_angle)));
             auto opposite = std::sin(throw_release_angle) * hypotenuse;
             auto adjacent = std::cos(throw_release_angle) * hypotenuse;
 
-            throw_release_point.x_ = std::cos(throw_orientation_angle) * adjacent;
-            throw_release_point.y_ = std::sin(throw_orientation_angle) * adjacent;
-            throw_release_point.z_ = throw_zenith - opposite;
-            throw_release_point.roll_ = 0.0;
-            throw_release_point.pitch_ = 2 * throw_release_angle - pi/2;
-            throw_release_point.yaw_ = 0.0;
+            throw_start_point.x_ = -1 * adjacent;
+            throw_start_point.y_ = 0.0;
+            throw_start_point.z_ = throw_zenith - opposite;
+            throw_start_point.roll_ = 0.0;
+            throw_start_point.pitch_ = -2 * throw_release_angle - pi / 2;
+            throw_start_point.yaw_ = 0.0;
 
-            return throw_release_point;
+            return throw_start_point;
         };
 
         static std::pair<double, double> calculate_foot_movement_for_rotate_robot(Struct3d const & rotation_goal, double const & foot_distance){

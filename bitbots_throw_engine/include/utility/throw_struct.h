@@ -39,6 +39,21 @@ namespace bitbots_throw{
             return position;
         }
 
+        Struct3dRPY operator+(Struct3dRPY value){
+            return {this->x_ + value.x_, this->y_ + value.y_, this->z_ + value.z_
+                    ,this->roll_ + value.roll_, this->pitch_ + value.pitch_, this->yaw_ + value.yaw_};
+        }
+
+        Struct3dRPY & operator+=(Struct3dRPY value){
+            this->x_ += value.x_;
+            this->y_ += value.y_;
+            this->z_ += value.z_;
+            this->roll_ += value.roll_;
+            this->pitch_ += value.pitch_;
+            this->yaw_ += value.yaw_;
+            return *this;
+        }
+
         Struct3dRPY operator/(double value){
             return {this->x_ / value, this->y_ / value, this->z_ / value
                    ,this->roll_ / value, this->pitch_ / value, this->yaw_ / value};

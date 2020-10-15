@@ -11,7 +11,7 @@ namespace bitbots_throw{
         :ThrowMovement(material){
     }
 
-    double TestingMovement::init_material(){
+    void TestingMovement::add_movement(){
         SystemPublisher::publish_info("Start Testing", "TestingMovement");
         trajectory_time_ = 0.0;
 
@@ -26,7 +26,6 @@ namespace bitbots_throw{
         test_orientation();
 
         SystemPublisher::publish_info("Finished Testing", "TestingMovement");
-        return trajectory_time_;
     }
 
     void TestingMovement::test_curves(){
@@ -435,7 +434,7 @@ namespace bitbots_throw{
         double z = 0.5;
 
         for(double i = -2.0; i <= 2; i += 0.05){
-            add_to_left_hand(trajectory_time_, {x, y, z, 0.0, i, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+            add_to_left_hand({x, y, z, 0.0, i, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
 
             if(x <= 3.5){
                 x+= 0.1;

@@ -30,6 +30,10 @@ namespace bitbots_throw{
 		double min_throw_distance_;
         // The maximum distance this throw should be used for
 		double max_throw_distance_;
+		// The amount of deviation from the goal that is tolerated
+        double goal_tolerance_;
+        // The amount the reference velocity will be increased/decreased to find the fitting velocity
+        double velocity_adaptation_rate_;
 		// Duration of the full movement cycle (in s, > 0)
 		double movement_duration_;
         // The share of the movement cycle dedicated to picking up the ball
@@ -48,10 +52,12 @@ namespace bitbots_throw{
 		ThrowType(ThrowTypeId id
 		         ,bool active
 		         ,int throw_priority_level
-                 ,double throw_strength
-                 ,double throw_angle
                  ,double min_throw_distance
                  ,double max_throw_distance
+                 ,double throw_strength
+                 ,double throw_angle
+                 ,double goal_tolerance
+                 ,double velocity_adaptation_rate
                  ,double movement_duration
                  ,double movement_share_pick_up
                  ,double movement_share_preparation
@@ -66,6 +72,8 @@ namespace bitbots_throw{
                  ,throw_angle_{throw_angle}
                  ,min_throw_distance_{min_throw_distance}
                  ,max_throw_distance_{max_throw_distance}
+                 ,goal_tolerance_{goal_tolerance}
+                 ,velocity_adaptation_rate_{velocity_adaptation_rate}
                  ,movement_duration_(movement_duration)
                  ,movement_share_pick_up_{movement_share_pick_up}
                  ,movement_share_preparation_{movement_share_preparation}
@@ -73,7 +81,7 @@ namespace bitbots_throw{
                  ,movement_share_conclusion_{movement_share_conclusion}
                  ,movement_offset_move_arms_away_from_ball_{movement_offset_move_arms_away_from_ball}{
 		}
-	};
+    };
 
 	struct ThrowTypeParameter
 	{

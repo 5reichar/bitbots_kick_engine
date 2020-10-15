@@ -19,16 +19,24 @@ namespace bitbots_throw{
         std::vector<std::vector<bitbots_splines::Curve::Point>> get_right_foot_points();
 
 	protected:
-        virtual double init_material();
-        void add_pick_up_ball_movement();
-        void add_throw_preparation_movement();
-        void add_throw_movement();
-        void add_throw_conclusion_movement();
+        void reset_debug_data(bool const & debug_active);
 
-        void add_to_left_hand(double const & time, Struct3dRPY const & position, Struct3dRPY const & velocity = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, Struct3dRPY const & acceleration = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
-        void add_to_right_hand(double const & time, Struct3dRPY const & position, Struct3dRPY const & velocity = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, Struct3dRPY const & acceleration = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
-        void add_to_left_foot(double const & time, Struct3dRPY const & position, Struct3dRPY const & velocity = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, Struct3dRPY const & acceleration = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
-        void add_to_right_foot(double const & time, Struct3dRPY const & position, Struct3dRPY const & velocity = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, Struct3dRPY const & acceleration = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        virtual void add_movement();
+        void add_movement_starting_position();
+        void add_movement_orient_to_ball();
+        void add_movement_squat();
+        void add_movement_reach_to_ball();
+        void add_movement_pick_ball();
+        void add_movement_stand_up();
+        void add_movement_prepare_throw();
+        void add_movement_throw();
+        void add_movement_return_to_starting_position();
+
+        void add_to_left_hand(Struct3dRPY const & position, Struct3dRPY const & velocity = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, Struct3dRPY const & acceleration = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        void add_to_right_hand(Struct3dRPY const & position, Struct3dRPY const & velocity = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, Struct3dRPY const & acceleration = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        void add_to_left_foot(Struct3dRPY const & position, Struct3dRPY const & velocity = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, Struct3dRPY const & acceleration = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        void add_to_right_foot(Struct3dRPY const & position, Struct3dRPY const & velocity = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, Struct3dRPY const & acceleration = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+        void add_point_to_debug(std::vector<std::vector<bitbots_splines::Curve::Point>> & debug_points, double const & time, Struct3dRPY const & position, Struct3dRPY const & velocity, Struct3dRPY const & acceleration);
 
         double trajectory_time_;
         std::shared_ptr<ThrowService> sp_service_;
