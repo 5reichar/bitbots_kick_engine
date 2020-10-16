@@ -9,7 +9,6 @@ namespace bitbots_throw{
         TestingMovement(std::shared_ptr<ThrowMaterial> material);
 
     private:
-        point.yaw_ = request_.left_feet_position_.yaw_;
         void add_movement() override;
         void test_curves();
         void move_arms_and_feet();
