@@ -5,23 +5,36 @@
 #include <memory>
 
 namespace bitbots_throw{
-	enum ThrowTypeId : uint8_t {
-	    none = 0,
-		beziercurve = 1,
-		linear_spline,
-		cubic_spline,
-		smooth_spline,
-		testing
-	};
+    enum ThrowTypeId : uint8_t{
+        none = 0,
+        throw_1,
+        throw_2,
+        throw_3,
+        throw_4
+    };
+    enum ThrowMovementId : uint8_t {
+        testing = 0,
+        throw_movement
+    };
+    enum ThrowCurveId : uint8_t {
+        beziercurve = 0,
+        linear_spline,
+        cubic_spline,
+        smooth_spline
+    };
 
 	struct ThrowType{
-		// Id of the type of Kick
-		ThrowTypeId id_;
 		// Shall this kick be used
 		bool active_;
 		// Parameter to control if there are two or more throws that are eligable which shall be used first.
 		// the rule is: the throw with the lowest level will be used
 		int throw_priority_level_;
+        // The movement that should used
+        ThrowMovementId movement_;
+        // The curves that shall be used for the arms in this movement
+        ThrowCurveId arms_curve_;
+        // The curves that shall be used for the legs in this movement
+        ThrowCurveId legs_curve_;
         // How many percent of the max_throw_velocity shall be used if possible
         double throw_strength_;
         // The Angle at which the ball shall thrown
@@ -49,9 +62,11 @@ namespace bitbots_throw{
 
 
 		//////		Constructor
-		ThrowType(ThrowTypeId id
-		         ,bool active
+		ThrowType(bool active
 		         ,int throw_priority_level
+                 ,ThrowMovementId movement
+                 ,ThrowCurveId arms_curve
+                 ,ThrowCurveId legs_curve
                  ,double min_throw_distance
                  ,double max_throw_distance
                  ,double throw_strength
@@ -65,9 +80,11 @@ namespace bitbots_throw{
                  ,double movement_share_conclusion
                  ,double movement_offset_move_arms_away_from_ball
 				 )
-				 :id_{id}
-				 ,active_{active}
+				 :active_{active}
                  ,throw_priority_level_{throw_priority_level}
+                 ,movement_{movement}
+                 ,arms_curve_{arms_curve}
+                 ,legs_curve_{legs_curve}
                  ,throw_strength_{throw_strength}
                  ,throw_angle_{throw_angle}
                  ,min_throw_distance_{min_throw_distance}
@@ -82,16 +99,5 @@ namespace bitbots_throw{
                  ,movement_offset_move_arms_away_from_ball_{movement_offset_move_arms_away_from_ball}{
 		}
     };
-
-	struct ThrowTypeParameter
-	{
-		ThrowTypeId default_throw_id_;
-		std::map<ThrowTypeId, std::shared_ptr<ThrowType>> map_throw_types_;
-
-		ThrowTypeParameter(ThrowTypeId default_throw_id)
-						:
-						default_throw_id_{default_throw_id}{
-		}
-	};
 } //bitbots_throw
 #endif //BITBOTS_THROW_THROW_TYPE_PARAMETER_H

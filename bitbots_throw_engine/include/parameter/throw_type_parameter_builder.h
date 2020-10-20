@@ -10,135 +10,102 @@
 namespace bitbots_throw{
     class ThrowTypeParameterBuilder{
     public:
-        static std::shared_ptr<ThrowTypeParameter> build_from_dynamic_reconf(bitbots_throw::throw_paramsConfig& config
+        static std::map<ThrowTypeId, std::shared_ptr<ThrowType>> build_from_dynamic_reconf(bitbots_throw::throw_paramsConfig& config
                                                                             ,uint32_t level
                                                                             ,std::shared_ptr<RobotAndWorldParameter> params){
-            auto sp_parameter = build_default();
-            auto current_id = (ThrowTypeId)config.default_throw_enum;
-            sp_parameter->default_throw_id_ = current_id;
+            std::map<ThrowTypeId, std::shared_ptr<ThrowType>> throw_type_map;
 
-            current_id = (ThrowTypeId)config.throw_1_throw_enum;
-            sp_parameter->map_throw_types_[current_id] = build_throw_type(current_id
-                                                                         ,config.throw_1_throw_active
-                                                                         ,config.throw_1_throw_priority_level
-                                                                         ,config.throw_1_throw_min_distance
-                                                                         ,config.throw_1_throw_max_distance
-                                                                         ,config.throw_1_throw_strength
-                                                                         ,ThrowMath::degree_to_radian(config.throw_1_throw_angle, params->pi_)
-                                                                         ,config.throw_1_goal_tolerance
-                                                                         ,config.throw_1_velocity_adaptation_rate
-                                                                         ,config.throw_1_movement_duration
-                                                                         ,config.throw_1_movement_share_pick_up
-                                                                         ,config.throw_1_movement_share_preparation
-                                                                         ,config.throw_1_movement_share_throw
-                                                                         ,config.throw_1_movement_share_conclusion
-                                                                         ,config.throw_1_movement_offset_move_arms_away_from_ball);
+            throw_type_map[ThrowTypeId::throw_1] = std::make_shared<ThrowType>(config.throw_1_throw_active
+                                                                              ,config.throw_1_throw_priority_level
+                                                                              ,(ThrowMovementId)config.throw_1_throw_movement_enum
+                                                                              ,(ThrowCurveId)config.throw_1_arms_curve_enum
+                                                                              ,(ThrowCurveId)config.throw_1_legs_curve_enum
+                                                                              ,config.throw_1_throw_min_distance
+                                                                              ,config.throw_1_throw_max_distance
+                                                                              ,config.throw_1_throw_strength
+                                                                              ,ThrowMath::degree_to_radian(config.throw_1_throw_angle, params->pi_)
+                                                                              ,config.throw_1_goal_tolerance
+                                                                              ,config.throw_1_velocity_adaptation_rate
+                                                                              ,config.throw_1_movement_duration
+                                                                              ,config.throw_1_movement_share_pick_up
+                                                                              ,config.throw_1_movement_share_preparation
+                                                                              ,config.throw_1_movement_share_throw
+                                                                              ,config.throw_1_movement_share_conclusion
+                                                                              ,config.throw_1_movement_offset_move_arms_away_from_ball);
 
-            current_id = (ThrowTypeId)config.throw_2_throw_enum;
-            sp_parameter->map_throw_types_[current_id] = build_throw_type(current_id
-                                                                        ,config.throw_2_throw_active
-                                                                        ,config.throw_2_throw_priority_level
-                                                                        ,config.throw_2_throw_min_distance
-                                                                        ,config.throw_2_throw_max_distance
-                                                                        ,config.throw_2_throw_strength
-                                                                        ,ThrowMath::degree_to_radian(config.throw_2_throw_angle, params->pi_)
-                                                                        ,config.throw_2_goal_tolerance
-                                                                        ,config.throw_2_velocity_adaptation_rate
-                                                                        ,config.throw_2_movement_duration
-                                                                        ,config.throw_2_movement_share_pick_up
-                                                                        ,config.throw_2_movement_share_preparation
-                                                                        ,config.throw_2_movement_share_throw
-                                                                        ,config.throw_2_movement_share_conclusion
-                                                                        ,config.throw_2_movement_offset_move_arms_away_from_ball);
+            throw_type_map[ThrowTypeId::throw_2] = std::make_shared<ThrowType>(config.throw_2_throw_active
+                                                                              ,config.throw_2_throw_priority_level
+                                                                              ,(ThrowMovementId)config.throw_2_throw_movement_enum
+                                                                              ,(ThrowCurveId)config.throw_2_arms_curve_enum
+                                                                              ,(ThrowCurveId)config.throw_2_legs_curve_enum
+                                                                              ,config.throw_2_throw_min_distance
+                                                                              ,config.throw_2_throw_max_distance
+                                                                              ,config.throw_2_throw_strength
+                                                                              ,ThrowMath::degree_to_radian(config.throw_2_throw_angle, params->pi_)
+                                                                              ,config.throw_2_goal_tolerance
+                                                                              ,config.throw_2_velocity_adaptation_rate
+                                                                              ,config.throw_2_movement_duration
+                                                                              ,config.throw_2_movement_share_pick_up
+                                                                              ,config.throw_2_movement_share_preparation
+                                                                              ,config.throw_2_movement_share_throw
+                                                                              ,config.throw_2_movement_share_conclusion
+                                                                              ,config.throw_2_movement_offset_move_arms_away_from_ball);
 
-            current_id = (ThrowTypeId)config.throw_3_throw_enum;
-            sp_parameter->map_throw_types_[current_id] = build_throw_type(current_id
-                                                                        ,config.throw_3_throw_active
-                                                                        ,config.throw_3_throw_priority_level
-                                                                        ,config.throw_3_throw_min_distance
-                                                                        ,config.throw_3_throw_max_distance
-                                                                        ,config.throw_3_throw_strength
-                                                                        ,ThrowMath::degree_to_radian(config.throw_3_throw_angle, params->pi_)
-                                                                        ,config.throw_3_goal_tolerance
-                                                                        ,config.throw_3_velocity_adaptation_rate
-                                                                        ,config.throw_3_movement_duration
-                                                                        ,config.throw_3_movement_share_pick_up
-                                                                        ,config.throw_3_movement_share_preparation
-                                                                        ,config.throw_3_movement_share_throw
-                                                                        ,config.throw_3_movement_share_conclusion
-                                                                        ,config.throw_3_movement_offset_move_arms_away_from_ball);
+            throw_type_map[ThrowTypeId::throw_3] = std::make_shared<ThrowType>(config.throw_3_throw_active
+                                                                              ,config.throw_3_throw_priority_level
+                                                                              ,(ThrowMovementId)config.throw_3_throw_movement_enum
+                                                                              ,(ThrowCurveId)config.throw_3_arms_curve_enum
+                                                                              ,(ThrowCurveId)config.throw_3_legs_curve_enum
+                                                                              ,config.throw_3_throw_min_distance
+                                                                              ,config.throw_3_throw_max_distance
+                                                                              ,config.throw_3_throw_strength
+                                                                              ,ThrowMath::degree_to_radian(config.throw_3_throw_angle, params->pi_)
+                                                                              ,config.throw_3_goal_tolerance
+                                                                              ,config.throw_3_velocity_adaptation_rate
+                                                                              ,config.throw_3_movement_duration
+                                                                              ,config.throw_3_movement_share_pick_up
+                                                                              ,config.throw_3_movement_share_preparation
+                                                                              ,config.throw_3_movement_share_throw
+                                                                              ,config.throw_3_movement_share_conclusion
+                                                                              ,config.throw_3_movement_offset_move_arms_away_from_ball);
 
-            current_id = (ThrowTypeId)config.throw_4_throw_enum;
-            sp_parameter->map_throw_types_[current_id] = build_throw_type(current_id
-                                                                        ,config.throw_4_throw_active
-                                                                        ,config.throw_4_throw_priority_level
-                                                                        ,config.throw_4_throw_min_distance
-                                                                        ,config.throw_4_throw_max_distance
-                                                                        ,config.throw_4_throw_strength
-                                                                        ,ThrowMath::degree_to_radian(config.throw_4_throw_angle, params->pi_)
-                                                                        ,config.throw_4_goal_tolerance
-                                                                        ,config.throw_4_velocity_adaptation_rate
-                                                                        ,config.throw_4_movement_duration
-                                                                        ,config.throw_4_movement_share_pick_up
-                                                                        ,config.throw_4_movement_share_preparation
-                                                                        ,config.throw_4_movement_share_throw
-                                                                        ,config.throw_4_movement_share_conclusion
-                                                                        ,config.throw_4_movement_offset_move_arms_away_from_ball);
+            throw_type_map[ThrowTypeId::throw_4] = std::make_shared<ThrowType>(config.throw_4_throw_active
+                                                                              ,config.throw_4_throw_priority_level
+                                                                              ,(ThrowMovementId)config.throw_4_throw_movement_enum
+                                                                              ,(ThrowCurveId)config.throw_4_arms_curve_enum
+                                                                              ,(ThrowCurveId)config.throw_4_legs_curve_enum
+                                                                              ,config.throw_4_throw_min_distance
+                                                                              ,config.throw_4_throw_max_distance
+                                                                              ,config.throw_4_throw_strength
+                                                                              ,ThrowMath::degree_to_radian(config.throw_4_throw_angle, params->pi_)
+                                                                              ,config.throw_4_goal_tolerance
+                                                                              ,config.throw_4_velocity_adaptation_rate
+                                                                              ,config.throw_4_movement_duration
+                                                                              ,config.throw_4_movement_share_pick_up
+                                                                              ,config.throw_4_movement_share_preparation
+                                                                              ,config.throw_4_movement_share_throw
+                                                                              ,config.throw_4_movement_share_conclusion
+                                                                              ,config.throw_4_movement_offset_move_arms_away_from_ball);
 
-            sp_parameter->map_throw_types_[ThrowTypeId::none] = build_throw_type((ThrowTypeId)config.default_throw_enum
-                                                                          ,true
-                                                                          ,0
-                                                                          ,0.0
-                                                                          ,0.0
-                                                                          ,config.throw_strength
-                                                                          ,ThrowMath::degree_to_radian(config.throw_angle, params->pi_)
-                                                                          ,config.goal_tolerance
-                                                                          ,config.velocity_adaptation_rate
-                                                                          ,config.movement_duration
-                                                                          ,config.movement_share_pick_up
-                                                                          ,config.movement_share_preparation
-                                                                          ,config.movement_share_throw
-                                                                          ,config.movement_share_conclusion
-                                                                          ,config.movement_offset_move_arms_away_from_ball);
+            throw_type_map[ThrowTypeId::none] = std::make_shared<ThrowType>(true
+                                                                           ,0
+                                                                           ,(ThrowMovementId)config.throw_movement_enum
+                                                                           ,(ThrowCurveId)config.arms_curve_enum
+                                                                           ,(ThrowCurveId)config.legs_curve_enum
+                                                                           ,0.0
+                                                                           ,0.0
+                                                                           ,config.throw_strength
+                                                                           ,ThrowMath::degree_to_radian(config.throw_angle, params->pi_)
+                                                                           ,config.goal_tolerance
+                                                                           ,config.velocity_adaptation_rate
+                                                                           ,config.movement_duration
+                                                                           ,config.movement_share_pick_up
+                                                                           ,config.movement_share_preparation
+                                                                           ,config.movement_share_throw
+                                                                           ,config.movement_share_conclusion
+                                                                           ,config.movement_offset_move_arms_away_from_ball);
 
-            return sp_parameter;
-        };
-
-        static std::shared_ptr<ThrowTypeParameter> build_default(){
-            return std::make_shared<ThrowTypeParameter>(ThrowTypeId::smooth_spline);
-        };
-
-    protected:
-        static std::shared_ptr<ThrowType> build_throw_type(ThrowTypeId id
-                                                          ,bool active
-                                                          ,int priority_level
-                                                          ,double min_throw_distance
-                                                          ,double max_throw_distance
-                                                          ,double throw_strength
-                                                          ,double throw_angle
-                                                          ,double goal_tolerance
-                                                          ,double velocity_adaptation_rate
-                                                          ,double movement_duration
-                                                          ,double movement_share_pick_up
-                                                          ,double movement_share_preparation
-                                                          ,double movement_share_throw
-                                                          ,double movement_share_conclusion
-                                                          ,double movement_offset_move_arms_away_from_ball){
-            return std::make_shared<ThrowType>(id
-                                              ,active
-                                              ,priority_level
-                                              ,min_throw_distance
-                                              ,max_throw_distance
-                                              ,throw_strength
-                                              ,throw_angle
-                                              ,goal_tolerance
-                                              ,velocity_adaptation_rate
-                                              ,movement_duration
-                                              ,movement_share_pick_up
-                                              ,movement_share_preparation
-                                              ,movement_share_throw
-                                              ,movement_share_conclusion
-                                              ,movement_offset_move_arms_away_from_ball);
+            return throw_type_map;
         };
     };
 } //bitbots_throw

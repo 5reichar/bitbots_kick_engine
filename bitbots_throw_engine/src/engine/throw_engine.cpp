@@ -8,7 +8,6 @@
 namespace bitbots_throw{
 	ThrowEngine::ThrowEngine()
 					:sp_engine_parameter_(nullptr)
-					,sp_throw_types_(nullptr)
 					,sp_throw_factory_(new ThrowFactory()){
 		reset();
 	}
@@ -50,14 +49,14 @@ namespace bitbots_throw{
 	}
 
 	void ThrowEngine::setGoals(const ThrowRequest & request){
-		auto throw_type_id = sp_throw_factory_->get_throw_type(request.goal_position_);
+		auto throw_type_id = sp_throw_factory_->select_throw_type(request.goal_position_);
 		auto current_movement = sp_throw_factory_->select_movement(throw_type_id);
 		current_movement->init(create_service(throw_type_id, request));
 		sp_current_throw_ = current_movement->create_material();
 	}
 
-	void ThrowEngine::set_throw_types(std::shared_ptr<ThrowTypeParameter> & types){
-	    sp_throw_types_ = types;
+	void ThrowEngine::set_throw_types(std::map<ThrowTypeId, std::shared_ptr<ThrowType>> & types){
+        throw_type_map_ = types;
 	    sp_throw_factory_->set_throw_type_parameter(types);
 	}
 
@@ -68,41 +67,41 @@ namespace bitbots_throw{
     std::shared_ptr<ThrowService> ThrowEngine::create_service(const ThrowTypeId throw_type_id, const ThrowRequest & request){
 	    std::shared_ptr<ThrowType> type;
 
-		if (sp_throw_types_->map_throw_types_.cend() == sp_throw_types_->map_throw_types_.find(throw_type_id)){
-            type = sp_throw_types_->map_throw_types_[ThrowTypeId::none];
+		if (throw_type_map_.cend() == throw_type_map_.find(throw_type_id)){
+            type = throw_type_map_[ThrowTypeId::none];
 		}else{
-            type = sp_throw_types_->map_throw_types_[throw_type_id];
+            type = throw_type_map_[throw_type_id];
 
             if(type->throw_angle_ == 0){
-                type->throw_angle_ = sp_throw_types_->map_throw_types_[ThrowTypeId::none]->throw_angle_;
+                type->throw_angle_ = throw_type_map_[ThrowTypeId::none]->throw_angle_;
             };
 
             if(type->throw_strength_ == 0){
-                type->throw_strength_ = sp_throw_types_->map_throw_types_[ThrowTypeId::none]->throw_strength_;
+                type->throw_strength_ = throw_type_map_[ThrowTypeId::none]->throw_strength_;
             };
 
             if(type->movement_duration_ == 0){
-                type->movement_duration_ = sp_throw_types_->map_throw_types_[ThrowTypeId::none]->movement_duration_;
+                type->movement_duration_ = throw_type_map_[ThrowTypeId::none]->movement_duration_;
             };
 
             if(type->movement_share_pick_up_ == 0){
-                type->movement_share_pick_up_ = sp_throw_types_->map_throw_types_[ThrowTypeId::none]->movement_share_pick_up_;
+                type->movement_share_pick_up_ = throw_type_map_[ThrowTypeId::none]->movement_share_pick_up_;
             };
 
             if(type->movement_share_preparation_ == 0){
-                type->movement_share_preparation_ = sp_throw_types_->map_throw_types_[ThrowTypeId::none]->movement_share_preparation_;
+                type->movement_share_preparation_ = throw_type_map_[ThrowTypeId::none]->movement_share_preparation_;
             };
 
             if(type->movement_share_throw_ == 0){
-                type->movement_share_throw_ = sp_throw_types_->map_throw_types_[ThrowTypeId::none]->movement_share_throw_;
+                type->movement_share_throw_ = throw_type_map_[ThrowTypeId::none]->movement_share_throw_;
             };
 
             if(type->movement_share_conclusion_ == 0){
-                type->movement_share_conclusion_ = sp_throw_types_->map_throw_types_[ThrowTypeId::none]->movement_share_conclusion_;
+                type->movement_share_conclusion_ = throw_type_map_[ThrowTypeId::none]->movement_share_conclusion_;
             };
 
             if(type->movement_offset_move_arms_away_from_ball_ == 0){
-                type->movement_offset_move_arms_away_from_ball_ = sp_throw_types_->map_throw_types_[ThrowTypeId::none]->movement_offset_move_arms_away_from_ball_;
+                type->movement_offset_move_arms_away_from_ball_ = throw_type_map_[ThrowTypeId::none]->movement_offset_move_arms_away_from_ball_;
             };
 		}
 

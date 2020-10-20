@@ -1,4 +1,5 @@
 #include "throws/throw_curves/testing_movement.h"
+#include "throws/throw_curves/throw_movement.h"
 #include "../../bitbots_splines_extension/include/spline/linear_spline.h"
 #include "../../bitbots_splines_extension/include/spline/cubic_spline.h"
 #include "../../bitbots_splines_extension/include/spline/smooth_spline.h"
@@ -8,7 +9,7 @@
 
 namespace bitbots_throw{
     TestingMovement::TestingMovement(std::shared_ptr<ThrowMaterial> material)
-        :ThrowMovement(material){
+        :ThrowMovementBase(material){
     }
 
     void TestingMovement::add_movement(){
@@ -332,7 +333,7 @@ namespace bitbots_throw{
         check_curve(sp_joint->yaw(), sp_joint->yaw()->points());
     }
 
-    void TestingMovement::check_movement(ThrowMovement & movement){
+    void TestingMovement::check_movement(ThrowMovementBase & movement){
         auto material = movement.create_material(true);
 
         SystemPublisher::publish_info("==================== check left hand ====================", "check_movement");

@@ -1,10 +1,10 @@
 #ifndef BITBOTS_THROW_TESTING_MOVEMENT_H
 #define BITBOTS_THROW_TESTING_MOVEMENT_H
 
-#include "throw_movement.h"
+#include "throw_movement_base.h"
 
 namespace bitbots_throw{
-    class TestingMovement : public ThrowMovement{
+    class TestingMovement : public ThrowMovementBase{
     public:
         TestingMovement(std::shared_ptr<ThrowMaterial> material);
 
@@ -23,7 +23,7 @@ namespace bitbots_throw{
 
         void check_curve(std::shared_ptr<bitbots_splines::Curve> sp_curve, const std::vector<bitbots_splines::Curve::Point> & values);
         void check_joint(std::shared_ptr<bitbots_splines::PoseHandle> sp_joint, const std::vector<std::vector<bitbots_splines::Curve::Point>> & joint_values);
-        void check_movement(ThrowMovement & movement);
+        void check_movement(ThrowMovementBase & movement);
 
         std::string test_curve_with_values(bitbots_splines::Curve * curve, std::vector<std::pair<double, double>> values);
         std::string test_curve_with_points(bitbots_splines::Curve * curve, std::vector<std::pair<double, double>> values);

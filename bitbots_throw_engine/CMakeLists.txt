@@ -71,6 +71,7 @@ set(
   src/utility/throw_stabilizer.cpp
   src/throws/throw_curves/throw_service.cpp
   src/throws/throw_curves/throw_material.cpp
+  src/throws/throw_curves/throw_movement_base.cpp
 )
 
 add_executable(ThrowNode ${SOURCES})
