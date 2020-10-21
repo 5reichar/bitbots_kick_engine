@@ -33,6 +33,8 @@
   <depend>bitbots_splines_extension</depend>
   <depend>bitbots_msgs</depend>
 
+  <depend>wolfgang_pybullet_sim</depend>
+
   <export>
     <bitbots_documentation>
       <status>simulation testing</status>
