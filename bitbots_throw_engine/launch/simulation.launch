@@ -1,0 +1,14 @@
+<launch>
+    <arg name="gui" default="true"/>
+
+    <group if="$(arg gui)">
+        <node pkg="bitbots_throw" type="simulation_with_gui.py" name="bitbots_throw_pybullet_sim" output="screen">
+            <rosparam file="$(find bitbots_throw)/config/simulation_config.yaml"/>
+        </node>
+    </group>
+    <group unless="$(arg gui)">
+        <node pkg="bitbots_throw" type="simulation_headless.py" name="bitbots_throw_pybullet_sim" output="screen">
+            <rosparam file="$(find bitbots_throw)/config/simulation_config.yaml"/>
+        </node>
+    </group>
+</launch>

@@ -7,11 +7,13 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 find_package(catkin REQUIRED COMPONENTS
   roscpp
+  rospy
   std_msgs
   message_generation
   dynamic_reconfigure
   eigen_conversions
   geometry_msgs
+  urdf
   tf2
   bio_ik
   bitbots_splines

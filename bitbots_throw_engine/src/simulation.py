@@ -40,7 +40,8 @@ class Simulation:
         p.changeDynamics(self.plane_index, -1, lateralFriction=1, spinningFriction=-1,
                          rollingFriction=-1, restitution=0.9)
 
-        self.ball_index = p.loadURDF('ball.urdf')
+        # Loading ball
+        self.ball_index = p.loadURDF('../urdf/ball.urdf')
         p.changeDynamics(self.ball_index, 1, lateralFriction=1, spinningFriction=1,
                          rollingFriction=1, restitution=0.9)
 
