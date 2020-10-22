@@ -3,7 +3,7 @@
 #include "visualisation/visual_splines_service.h"
 #include "spline/linear_spline.h"
 #include "spline/cubic_spline.h"
-#include "spline/smooth_spline.h"
+#include "spline/quintic_spline.h"
 #include "spline/beziercurve.h"
 
 namespace bitbots_splines{
@@ -85,7 +85,7 @@ namespace bitbots_splines{
     void visualize(int argc, char **argv){
         auto vsm_linear_spline = visualize_curve<LinearSpline>("linear_spline_shapes", Color::red, 0.1);
         auto vsm_cubic_spline = visualize_curve<CubicSpline>("cubic_spline_shapes", Color::green, 0.1);
-        auto vsm_smooth_spline = visualize_curve<SmoothSpline>("smooth_spline_shapes", Color::blue, 0.1);
+        auto vsm_smooth_spline = visualize_curve<QuinticSpline>("smooth_spline_shapes", Color::blue, 0.1);
         auto vsm_bezier_curve = visualize_curve<Beziercurve>("bezier_curve_shapes", Color::yellow, 0.1);
 
         VisualSplinesService vs_service(argc, argv, "spline_shapes", "visualization_marker");

@@ -6,10 +6,10 @@ https://github.com/Rhoban/model/
 #include <stdexcept>
 #include <algorithm>
 #include <math.h>
-#include "spline/smooth_spline.h"
+#include "spline/quintic_spline.h"
 
 namespace bitbots_splines{
-    void SmoothSpline::compute_splines(){
+    void QuinticSpline::compute_splines(){
         SplineBase::splines_.clear();
         if (points_.size() < 2){
             return;
@@ -38,7 +38,7 @@ namespace bitbots_splines{
         }
     }
 
-    void SmoothSpline::import_call_back(){
+    void QuinticSpline::import_call_back(){
         size_t size = SplineBase::splines_.size();
         if (size == 0){
             return;
@@ -81,12 +81,12 @@ namespace bitbots_splines{
                            SplineBase::acceleration(tEnd)});
     }
 
-    Polynom SmoothSpline::polynom_fit(double t,
+    Polynom QuinticSpline::polynom_fit(double t,
                                       double pos1, double vel1, double acc1,
                                       double pos2, double vel2, double acc2) const{
         if (t <= 0.00001){
             throw std::logic_error(
-                "SmoothSpline invalid spline interval");
+                "QuinticSpline invalid spline interval");
         }
         double t2 = t * t;
         double t3 = t2 * t;

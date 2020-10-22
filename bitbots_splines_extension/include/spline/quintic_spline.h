@@ -3,8 +3,8 @@ This code is largely based on the original code by Quentin "Leph" Rouxel and Tea
 The original files can be found at:
 https://github.com/Rhoban/model/
 */
-#ifndef BITBOTS_SPLINES_EXTENSION_SMOOTH_SPLINE_H
-#define BITBOTS_SPLINES_EXTENSION_SMOOTH_SPLINE_H
+#ifndef BITBOTS_SPLINES_EXTENSION_QUINTIC_SPLINE_H
+#define BITBOTS_SPLINES_EXTENSION_QUINTIC_SPLINE_H
 
 #include "spline_base.h"
 
@@ -12,12 +12,12 @@ namespace bitbots_splines
 {
 
 /**
- * SmoothSpline
+ * QuinticSpline
  *
  * Implementation of 5th order polynomial
  * splines trajectory known to minimize jerk
  */
-class SmoothSpline : public SplineBase
+class QuinticSpline : public SplineBase
 {
 public:
      /**

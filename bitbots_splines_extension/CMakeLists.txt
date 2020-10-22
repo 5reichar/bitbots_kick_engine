@@ -35,7 +35,7 @@ set(SOURCES
   src/spline/spline_base.cpp
   src/spline/linear_spline.cpp
   src/spline/cubic_spline.cpp
-  src/spline/smooth_spline.cpp
+  src/spline/quintic_spline.cpp
   src/spline/beziercurve.cpp
   src/handle/position_handle.cpp
   src/handle/pose_handle.cpp
