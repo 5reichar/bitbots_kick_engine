@@ -14,7 +14,8 @@ namespace bitbots_throw{
     };
     enum ThrowMovementId : uint8_t {
         testing = 0,
-        throw_movement
+        throw_movement,
+        throw_movement_position_only
     };
     enum ThrowCurveId : uint8_t {
         beziercurve = 0,

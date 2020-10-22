@@ -6,6 +6,8 @@
 #include "../../bitbots_splines_extension/include/spline/linear_spline.h"
 #include "../../bitbots_splines_extension/include/spline/cubic_spline.h"
 #include "../../bitbots_splines_extension/include/spline/smooth_spline.h"
+#include "throws/throw_curves/throw_movement.h"
+#include "throws/throw_curves/throw_movement_position_only.h"
 #include "throws/throw_curves/testing_movement.h"
 
 namespace bitbots_throw{
@@ -36,13 +38,17 @@ namespace bitbots_throw{
 		auto movement_id = throw_type_map_[throw_type_id]->movement_;
         auto arms_id = throw_type_map_[throw_type_id]->arms_curve_;
         auto legs_id = throw_type_map_[throw_type_id]->legs_curve_;
+        auto material = create_material(arms_id, arms_id, legs_id, legs_id);
 
 		switch (movement_id){
 		case ThrowMovementId::throw_movement:
-			sp_return = std::make_shared<ThrowMovement>(create_material(arms_id, arms_id, legs_id, legs_id));
+			sp_return = std::make_shared<ThrowMovement>(material);
 			break;
+        case ThrowMovementId::throw_movement_position_only:
+            sp_return = std::make_shared<ThrowMovementPositionOnly>(material);
+		    break;
         case ThrowMovementId::testing:
-            sp_return = std::make_shared<TestingMovement>(create_material(arms_id, arms_id, legs_id, legs_id));
+            sp_return = std::make_shared<TestingMovement>(material);
             break;
         }
 

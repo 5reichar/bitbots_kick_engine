@@ -88,19 +88,18 @@ namespace bitbots_throw{
         // get Values
         double duration_throw = sp_service_->get_movement_time_throw();
         duration_throw -= sp_service_->get_movement_offset_move_arms_away_from_ball();
-        auto left_arm_throw_release = sp_service_->get_left_arm_throw_release();
         Struct3dRPY velocity = sp_service_->calculate_throw_velocity(duration_throw);
 
         ////  Movement
         ////==== Release ball
         trajectory_time_ -= sp_service_->get_movement_offset_move_arms_away_from_ball();
-        add_to_left_hand( left_arm_throw_release, velocity, velocity/duration_throw);
+        add_to_left_hand( sp_service_->get_left_arm_throw_release(), velocity, velocity/duration_throw);
         add_to_right_hand(sp_service_->get_right_arm_throw_release(), velocity, velocity/duration_throw);
 
         ////==== Move arms away from the ball
         trajectory_time_ += sp_service_->get_movement_offset_move_arms_away_from_ball();
-        add_to_left_hand(sp_service_->get_left_arm_move_away_from_ball());
-        add_to_right_hand(sp_service_->get_right_arm_move_away_from_ball());
+        add_to_left_hand(sp_service_->get_left_arm_move_away_from_ball(velocity), velocity, velocity/duration_throw);
+        add_to_right_hand(sp_service_->get_right_arm_move_away_from_ball(velocity), velocity, velocity/duration_throw);
     }
 
     void ThrowMovement::add_movement_return_to_starting_position(){

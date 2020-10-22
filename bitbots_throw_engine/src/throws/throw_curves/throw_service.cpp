@@ -36,8 +36,9 @@ namespace bitbots_throw{
         point.y_ += robot_and_world_parameter_.ball_radius_;
         return point;
     }
-    Struct3dRPY ThrowService::get_left_arm_move_away_from_ball(){
+    Struct3dRPY ThrowService::get_left_arm_move_away_from_ball(Struct3dRPY const & velocity){
         Struct3dRPY point = get_left_arm_throw_release();
+        point.x_ += velocity.x_ * get_movement_offset_move_arms_away_from_ball();
         point.y_ += robot_and_world_parameter_.move_arms_away_from_ball_;
         return point;
     }
@@ -69,8 +70,9 @@ namespace bitbots_throw{
         point.y_ -= robot_and_world_parameter_.ball_radius_;
         return point;
     }
-    Struct3dRPY ThrowService::get_right_arm_move_away_from_ball(){
+    Struct3dRPY ThrowService::get_right_arm_move_away_from_ball(Struct3dRPY const & velocity){
         Struct3dRPY point = get_left_arm_throw_release();
+        point.x_ += velocity.x_ * get_movement_offset_move_arms_away_from_ball();
         point.y_ -= robot_and_world_parameter_.move_arms_away_from_ball_;
         return point;
     }

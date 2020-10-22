@@ -2,9 +2,6 @@
 #define BITBOTS_THROW_THROW_MOVEMENT_H
 
 #include "throw_movement_base.h"
-#include <memory>
-#include "throw_service.h"
-#include "throw_material.h"
 
 namespace bitbots_throw{
 	class ThrowMovement : public ThrowMovementBase{
@@ -20,8 +17,8 @@ namespace bitbots_throw{
         void add_movement_reach_to_ball();
         void add_movement_pick_ball();
         void add_movement_stand_up();
-        void add_movement_prepare_throw();
-        void add_movement_throw();
+        virtual void add_movement_prepare_throw();
+        virtual void add_movement_throw();
         void add_movement_return_to_starting_position();
 	};
 } //bitbots_throw

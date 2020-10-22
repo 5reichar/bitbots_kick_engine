@@ -2,7 +2,7 @@
 #define BITBOTS_THROW_THROW_FACTORY_H
 
 #include "parameter/throw_type_parameter.h"
-#include "throws/throw_curves/throw_movement.h"
+#include "throws/throw_curves/throw_movement_base.h"
 #include "../../bitbots_splines_extension/include/handle/pose_handle.h"
 
 namespace bitbots_throw{
