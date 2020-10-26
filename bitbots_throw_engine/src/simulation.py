@@ -41,12 +41,12 @@ class Simulation:
                          rollingFriction=-1, restitution=0.9)
 
         # Loading ball
-        self.ball_index = p.loadURDF('../urdf/ball.urdf')
+        rospack = rospkg.RosPack()
+        self.ball_index = p.loadURDF(rospack.get_path("bitbots_throw") + '/urdf/ball.urdf')
         p.changeDynamics(self.ball_index, 1, lateralFriction=1, spinningFriction=1,
                          rollingFriction=1, restitution=0.9)
 
         # Loading robot
-        rospack = rospkg.RosPack()
         path = rospack.get_path("wolfgang_description")
         flags = p.URDF_USE_INERTIA_FROM_FILE + p.URDF_USE_SELF_COLLISION + p.URDF_USE_SELF_COLLISION_EXCLUDE_ALL_PARENTS
         self.robot_index = p.loadURDF(path + "/urdf/robot.urdf",
@@ -102,7 +102,7 @@ class Simulation:
                 p.changeDynamics(self.plane_index, -1, lateralFriction=lateral_friction,
                                  spinningFriction=spinning_friction,
                                  rollingFriction=rolling_friction, restitution=0.9)
-                p.changeDynamics(self.ball_index, 1, lateralFriction=lateral_friction,
+                p.changeDynamics(self.ball_index, -1, lateralFriction=lateral_friction,
                                  spinningFriction=spinning_friction,
                                  rollingFriction=rolling_friction, restitution=0.9)
 
