@@ -16,6 +16,9 @@ class Simulation:
         self.gravity = True
 
         # config values
+        self.ball_start_position = [0.5, 0, 0.05]
+        self.ball_start_orientation = p.getQuaternionFromEuler((0, 0.25, 0))
+
         self.start_position = [0, 0, 0.43]
         self.start_orientation = p.getQuaternionFromEuler((0, 0.25, 0))
         self.initial_joints_positions = {"LAnklePitch": -30, "LAnkleRoll": 0, "LHipPitch": 30, "LHipRoll": 0,
@@ -42,9 +45,8 @@ class Simulation:
 
         # Loading ball
         rospack = rospkg.RosPack()
-        self.ball_index = p.loadURDF(rospack.get_path("bitbots_throw") + '/urdf/ball.urdf')
-        p.changeDynamics(self.ball_index, 1, lateralFriction=1, spinningFriction=1,
-                         rollingFriction=1, restitution=0.9)
+        self.ball_index = p.loadURDF(rospack.get_path("bitbots_throw") + '/urdf/ball.urdf',
+                                     self.ball_start_position, self.ball_start_orientation)
 
         # Loading robot
         path = rospack.get_path("wolfgang_description")
@@ -124,6 +126,10 @@ class Simulation:
         # reset body pose and velocity
         p.resetBasePositionAndOrientation(self.robot_index, self.start_position, self.start_orientation)
         p.resetBaseVelocity(self.robot_index, [0, 0, 0], [0, 0, 0])
+
+        # reset ball pose and velocity
+        p.resetBasePositionAndOrientation(self.ball_index, self.ball_start_position, self.ball_start_orientation)
+        p.resetBaseVelocity(self.ball_index, [0, 0, 0], [0, 0, 0])
 
     def step(self):
         # get keyboard events if gui is active
