@@ -11,7 +11,7 @@ rospy.sleep(1)
 throw_ball  = throw_action()
 
 throw_ball.ball_position = Vector3()
-throw_ball.ball_position.x = 0.3
+throw_ball.ball_position.x = 0.5
 throw_ball.ball_position.y = 0.0
 throw_ball.ball_position.z = -0.4
 
