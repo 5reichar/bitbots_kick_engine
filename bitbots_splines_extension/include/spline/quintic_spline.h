@@ -12,12 +12,12 @@ namespace bitbots_splines
 {
 
 /**
- * QuinticSpline
+ * SmoothSpline
  *
  * Implementation of 5th order polynomial
  * splines trajectory known to minimize jerk
  */
-class QuinticSpline : public SplineBase
+class SmoothSpline : public SplineBase
 {
 public:
      /**

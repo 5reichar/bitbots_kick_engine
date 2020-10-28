@@ -2,7 +2,7 @@
 #include "throws/throw_curves/throw_movement.h"
 #include "../../bitbots_splines_extension/include/spline/linear_spline.h"
 #include "../../bitbots_splines_extension/include/spline/cubic_spline.h"
-#include "../../bitbots_splines_extension/include/spline/smooth_spline.h"
+#include "../../bitbots_splines_extension/include/spline/quintic_spline.h"
 #include "../../bitbots_splines_extension/include/spline/beziercurve.h"
 #include "ros_interface/publisher/system_publisher.h"
 #include <sstream>
