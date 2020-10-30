@@ -86,6 +86,7 @@ namespace bitbots_throw{
     Struct3dRPY ThrowService::get_left_foot_squat(){
         Struct3dRPY point = request_.left_feet_position_;
         point.z_ = -1 * robot_and_world_parameter_.squat_safety_distance_;
+        point.pitch_ = -1 * calculate_squat_bow_angle();
         return point;
     }
     Struct3dRPY ThrowService::get_left_foot_orientation_to_goal(){
@@ -102,6 +103,7 @@ namespace bitbots_throw{
     Struct3dRPY ThrowService::get_right_foot_squat(){
         Struct3dRPY point = request_.right_feet_position_;
         point.z_ = -1 * robot_and_world_parameter_.squat_safety_distance_;
+        point.pitch_ = -1 * calculate_squat_bow_angle();
         return point;
     }
     Struct3dRPY ThrowService::get_right_foot_orientation_to_goal(){
@@ -273,5 +275,11 @@ namespace bitbots_throw{
             ret = request_.right_feet_position_.z_;
         }
         return ret;
+    }
+    double ThrowService::calculate_squat_bow_angle(){
+        auto distance_to_ball = ThrowMath::calculate_distance(request_.ball_position_);
+        auto squat_height = robot_and_world_parameter_.squat_safety_distance_ + robot_and_world_parameter_.trunk_height_;
+        auto beta = std::acos((pow(robot_and_world_parameter_.arm_length_, 2) - pow(squat_height, 2) - pow(distance_to_ball, 2)) / (-2 * squat_height * distance_to_ball));
+        return beta;
     }
 }

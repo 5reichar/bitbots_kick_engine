@@ -56,6 +56,7 @@ namespace bitbots_throw{
         virtual Struct3dRPY create_orientation_to_goal(bool const & left_foot);
 
         double get_lowest_foot_position();
+        double calculate_squat_bow_angle();
 
         ThrowRequest request_;
         ThrowType throw_type_;
