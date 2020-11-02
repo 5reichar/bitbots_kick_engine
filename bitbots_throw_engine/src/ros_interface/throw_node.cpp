@@ -155,38 +155,59 @@ namespace bitbots_throw{
 
 	ThrowRequest ThrowNode::create_throw_request(const throw_action action){
 		ThrowRequest request{};
+		bool set_default_values = false;
 
 		request.ball_position_ = {action.ball_position.x, action.ball_position.y, action.ball_position.z };
 		request.goal_position_ = {action.throw_target.x, action.throw_target.y, action.throw_target.z };
 
-        // get current position of feet
-        try{
-            auto pose = get_pose("r_sole");
-            request.right_feet_position_ = {pose.position.x, pose.position.y, pose.position.z, pose.orientation.x, pose.orientation.y, pose.orientation.z};
+        if(sp_engine_parameter_->use_default_start_value_){
+            set_default_values = true;
+        }else{
+            // get current position of feet
+            try{
+                auto pose = get_pose("r_sole");
+                request.right_feet_position_ = {pose.position.x, pose.position.y, pose.position.z, pose.orientation.x,
+                                                pose.orientation.y, pose.orientation.z};
 
-            pose = get_pose("l_sole");
-            request.left_feet_position_ = {pose.position.x, pose.position.y, pose.position.z, pose.orientation.x, pose.orientation.y, pose.orientation.z};
+                pose = get_pose("l_sole");
+                request.left_feet_position_ = {pose.position.x, pose.position.y, pose.position.z, pose.orientation.x,
+                                               pose.orientation.y, pose.orientation.z};
 
-            pose = get_pose("r_wrist");
-            request.right_hand_position_ = {pose.position.x, pose.position.y, pose.position.z, pose.orientation.x, pose.orientation.y, pose.orientation.z};
+                pose = get_pose("r_wrist");
+                request.right_hand_position_ = {pose.position.x, pose.position.y, pose.position.z, pose.orientation.x,
+                                                pose.orientation.y, pose.orientation.z};
 
-            pose = get_pose("l_wrist");
-            request.left_hand_position_ = {pose.position.x, pose.position.y, pose.position.z, pose.orientation.x, pose.orientation.y, pose.orientation.z};
+                pose = get_pose("l_wrist");
+                request.left_hand_position_ = {pose.position.x, pose.position.y, pose.position.z, pose.orientation.x,
+                                               pose.orientation.y, pose.orientation.z};
 
-            pose = get_pose("head");
-            request.head_position_ = {pose.position.x, pose.position.y, pose.position.z, pose.orientation.x, pose.orientation.y, pose.orientation.z};
+                pose = get_pose("head");
+                request.head_position_ = {pose.position.x, pose.position.y, pose.position.z, pose.orientation.x,
+                                          pose.orientation.y, pose.orientation.z};
+
+                if(sp_debug_parameter_->debug_active_){
+                    SystemPublisher::publish_info("used robot position", "ThrowNode::create_throw_request");
+                }
+            }
+            catch(tf2::TransformException & e){
+                SystemPublisher::publish_error(e.what(), "ThrowNode::create_throw_request()");
+                set_default_values = true;
+            }
         }
-        catch(tf2::TransformException &e){
-            SystemPublisher::publish_error(e.what(), "ThrowNode::create_throw_request()");
+
+        if(set_default_values){
+            if(sp_debug_parameter_->debug_active_){
+                SystemPublisher::publish_info("used default position", "ThrowNode::create_throw_request");
+            }
 
             auto hand_height = sp_robot_and_world_parameter_->trunk_height_;
             request.head_position_ = {0.0, 0.0, hand_height, 0.0, 0.0, 0.0};
             hand_height -= sp_robot_and_world_parameter_->arm_length_;
-            request.left_hand_position_ = {0.0, -0.15, hand_height, 0.0, 0.0, 0.0};
-            request.right_hand_position_ = {0.0, 0.15, hand_height, 0.0, 0.0, 0.0};
+            request.left_hand_position_ = {0.0, sp_robot_and_world_parameter_->arm_distance_, hand_height, 0.0, 0.0, 0.0};
+            request.right_hand_position_ = {0.0, -1 * sp_robot_and_world_parameter_->arm_distance_, hand_height, 0.0, 0.0, 0.0};
             auto feet_height = -1 * sp_robot_and_world_parameter_->leg_length_;
-            request.left_feet_position_ = {0.0, 0.5, feet_height, 0.0, 0.0, 0.0};
-            request.right_feet_position_ = {0.0, -0.5, feet_height, 0.0, 0.0, 0.0};
+            request.left_feet_position_ = {0.0, sp_robot_and_world_parameter_->leg_distance_, feet_height, 0.0, 0.0, 0.0};
+            request.right_feet_position_ = {0.0, -1 * sp_robot_and_world_parameter_->leg_distance_, feet_height, 0.0, 0.0, 0.0};
         }
 
 		return request;

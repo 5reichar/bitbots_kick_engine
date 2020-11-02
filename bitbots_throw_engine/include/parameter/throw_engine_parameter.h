@@ -15,8 +15,12 @@ namespace bitbots_throw{
         double trunk_height_;
         // The lenght of the legs of the robot
         double leg_length_;
+        // The default distance between one leg and the center of the robot on the y axis
+        double leg_distance_;
         // The length of the arms of the robot
         double arm_length_;
+        // The default distance between one arm and the center of the robot on the y axis
+        double arm_distance_;
         // The maximal stall torque the robot arm motor has (in Nm, >= 0)
         double arm_max_stall_torque_;
         // The recommended fraction of the stall torque the robot arm motor should use
@@ -37,7 +41,9 @@ namespace bitbots_throw{
             head_height_ = config.head_height;
             trunk_height_ = config.trunk_height;
             leg_length_ = config.leg_length;
+            leg_distance_ = config.leg_distance;
             arm_length_ = config.arm_length;
+            arm_distance_ = config.arm_distance;
             arm_max_stall_torque_ = config.arm_max_stall_torque;
             arm_stall_torque_usage_ = config.arm_stall_torque_usage;
             ball_radius_ = config.ball_radius;
@@ -56,12 +62,15 @@ namespace bitbots_throw{
         double bio_ik_time_;
         // Show if the code is run in a simulation or on the robot
         bool simulation_active_;
+        // Option to always use the default value instead of getting the current pose values of the robot
+       bool use_default_start_value_;
 
         //////		Constructor
         ThrowEngineParameter(bitbots_throw::throw_engine_paramsConfig& config, uint32_t level){
             engine_frequency_ = config.engine_frequency;
             odom_publish_factor_ = config.odom_pub_factor;
             bio_ik_time_ = config.bio_ik_time;
+            use_default_start_value_ = config.use_default_start_value;
         }
     };
 
