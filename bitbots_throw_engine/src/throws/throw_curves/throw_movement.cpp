@@ -20,9 +20,11 @@ namespace bitbots_throw{
         trajectory_time_ += movement_time;
         add_movement_pick_ball();
 
-        movement_time = sp_service_->get_movement_time_throw_preparation() / 2;
+        movement_time = sp_service_->get_movement_time_throw_preparation() / 3;
         trajectory_time_ += movement_time;
         add_movement_stand_up();
+        trajectory_time_ += movement_time;
+        add_movement_lift_ball();
         trajectory_time_ += movement_time;
         add_movement_prepare_throw();
 
@@ -59,20 +61,19 @@ namespace bitbots_throw{
     void ThrowMovement::add_movement_reach_to_ball(){
         add_to_left_hand(sp_service_->get_left_arm_reach_to_ball());
         add_to_right_hand(sp_service_->get_right_arm_reach_to_ball());
-        add_to_left_foot(sp_service_->get_left_foot_squat());
-        add_to_right_foot(sp_service_->get_right_foot_squat());
     }
 
     void ThrowMovement::add_movement_pick_ball(){
         add_to_left_hand(sp_service_->get_left_arm_pick_up());
         add_to_right_hand(sp_service_->get_right_arm_pick_up());
-        add_to_left_foot(sp_service_->get_left_foot_squat());
-        add_to_right_foot(sp_service_->get_right_foot_squat());
+    }
+
+    void ThrowMovement::add_movement_lift_ball(){
+        add_to_left_hand(sp_service_->get_left_arm_ball_at_head_height());
+        add_to_right_hand(sp_service_->get_right_arm_ball_at_head_height());
     }
 
     void ThrowMovement::add_movement_stand_up(){
-        add_to_left_hand(sp_service_->get_left_arm_ball_at_head_height());
-        add_to_right_hand(sp_service_->get_right_arm_ball_at_head_height());
         add_to_left_foot(sp_service_->get_left_foot_start());
         add_to_right_foot(sp_service_->get_right_foot_start());
     }
@@ -105,5 +106,7 @@ namespace bitbots_throw{
     void ThrowMovement::add_movement_return_to_starting_position(){
         add_to_left_hand(sp_service_->get_left_arm_start());
         add_to_right_hand(sp_service_->get_right_arm_start());
+        add_to_left_foot(sp_service_->get_left_foot_start());
+        add_to_right_foot(sp_service_->get_right_foot_start());
     }
 } //bitbots_throw
