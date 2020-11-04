@@ -201,13 +201,13 @@ namespace bitbots_throw{
             }
 
             auto hand_height = sp_robot_and_world_parameter_->trunk_height_;
-            request.head_position_ = {0.0, 0.0, hand_height, 0.0, 0.0, 0.0};
+            request.head_position_ = {0.0265, -0.0235001, hand_height, 0.0, 0.0, 0.0};
             hand_height -= sp_robot_and_world_parameter_->arm_length_;
-            request.left_hand_position_ = {0.0, sp_robot_and_world_parameter_->arm_distance_, hand_height, 0.0, 0.0, 0.0};
-            request.right_hand_position_ = {0.0, -1 * sp_robot_and_world_parameter_->arm_distance_, hand_height, 0.0, 0.0, 0.0};
+            request.left_hand_position_ = {0.299, sp_robot_and_world_parameter_->arm_distance_, hand_height, 0.0, 0.0, 0.0};
+            request.right_hand_position_ = {0.299, -1 * sp_robot_and_world_parameter_->arm_distance_, hand_height, 0.0, 0.0, 0.0};
             auto feet_height = -1 * sp_robot_and_world_parameter_->leg_length_;
-            request.left_feet_position_ = {0.0, sp_robot_and_world_parameter_->leg_distance_, feet_height, 0.0, 0.0, 0.0};
-            request.right_feet_position_ = {0.0, -1 * sp_robot_and_world_parameter_->leg_distance_, feet_height, 0.0, 0.0, 0.0};
+            request.left_feet_position_ = {0.1, sp_robot_and_world_parameter_->leg_distance_, feet_height, 0.0, 0.0, 0.0};
+            request.right_feet_position_ = {0.1, -1 * sp_robot_and_world_parameter_->leg_distance_, feet_height, 0.0, 0.0, 0.0};
         }
 
 		return request;
