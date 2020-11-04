@@ -269,7 +269,7 @@ namespace bitbots_throw{
         Struct3dRPY point;
         point.x_ = 0.0;
         point.y_ = 0.0;
-        point.z_ = robot_and_world_parameter_.squat_safety_distance_;
+        point.z_ = -1 * robot_and_world_parameter_.squat_safety_distance_;
         point.roll_ = 0.0;
         point.pitch_ = -1 * calculate_squat_bow_angle();
         point.yaw_ = 0.0;
