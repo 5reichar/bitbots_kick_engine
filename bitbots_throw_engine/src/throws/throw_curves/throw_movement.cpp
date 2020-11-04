@@ -20,9 +20,13 @@ namespace bitbots_throw{
         trajectory_time_ += movement_time;
         add_movement_pick_ball();
 
-        movement_time = sp_service_->get_movement_time_throw_preparation() / 3;
+        movement_time = sp_service_->get_movement_time_throw_preparation() / 5;
         trajectory_time_ += movement_time;
         add_movement_stand_up();
+        trajectory_time_ += movement_time;
+        add_movement_orient_to_goal();
+        trajectory_time_ += movement_time;
+        add_movement_enter_stable_stand();
         trajectory_time_ += movement_time;
         add_movement_lift_ball();
         trajectory_time_ += movement_time;
@@ -78,11 +82,19 @@ namespace bitbots_throw{
         add_to_right_foot(sp_service_->get_right_foot_start());
     }
 
+    void ThrowMovement::add_movement_orient_to_goal(){
+        add_to_left_foot(sp_service_->get_left_foot_orientation_to_goal());
+        add_to_right_foot(sp_service_->get_right_foot_orientation_to_goal());
+    }
+
+    void ThrowMovement::add_movement_enter_stable_stand(){
+        add_to_left_foot(sp_service_->get_left_foot_stable_stand());
+        add_to_right_foot(sp_service_->get_right_foot_stable_stand());
+    }
+
     void ThrowMovement::add_movement_prepare_throw(){
         add_to_left_hand(sp_service_->get_left_arm_throw_start());
         add_to_right_hand(sp_service_->get_right_arm_throw_start());
-        add_to_left_foot(sp_service_->get_left_foot_orientation_to_goal());
-        add_to_right_foot(sp_service_->get_right_foot_orientation_to_goal());
     }
 
     void ThrowMovement::add_movement_throw(){

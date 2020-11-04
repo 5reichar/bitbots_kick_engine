@@ -92,6 +92,11 @@ namespace bitbots_throw{
         Struct3dRPY point = request_.left_feet_position_ + create_orientation_to_goal(true);
         return point;
     }
+    Struct3dRPY ThrowService::get_left_foot_stable_stand(){
+        Struct3dRPY point = create_foot_stable_stand();
+        point.x_ *= -1;
+        return point;
+    }
     Struct3dRPY ThrowService::get_right_foot_start(){
         return request_.right_feet_position_;
     }
@@ -106,6 +111,11 @@ namespace bitbots_throw{
     }
     Struct3dRPY ThrowService::get_right_foot_orientation_to_goal(){
         Struct3dRPY point = request_.right_feet_position_ + create_orientation_to_goal(false);
+        return point;
+    }
+    Struct3dRPY ThrowService::get_right_foot_stable_stand(){
+        Struct3dRPY point = create_foot_stable_stand();
+        point.y_ *= -1;
         return point;
     }
     double ThrowService::get_movement_time_pick_up_ball(){
@@ -272,6 +282,16 @@ namespace bitbots_throw{
         point.z_ = -1 * robot_and_world_parameter_.squat_safety_distance_;
         point.roll_ = 0.0;
         point.pitch_ = -1 * calculate_squat_bow_angle();
+        point.yaw_ = 0.0;
+        return point;
+    }
+    Struct3dRPY ThrowService::create_foot_stable_stand(){
+        Struct3dRPY point;
+        point.x_ = 0.3;
+        point.y_ = robot_and_world_parameter_.leg_distance_;
+        point.z_ = -1 * robot_and_world_parameter_.leg_length_;
+        point.roll_ = 0.0;
+        point.pitch_ = 0.0;
         point.yaw_ = 0.0;
         return point;
     }
