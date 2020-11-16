@@ -28,13 +28,13 @@ namespace bitbots_throw{
 
         virtual Struct3dRPY get_left_foot_start();
         virtual Struct3dRPY get_left_foot_orientation_to_ball();
-        virtual Struct3dRPY get_left_foot_squat();
+        virtual Struct3dRPY get_left_foot_squat(bool const & tilted);
         virtual Struct3dRPY get_left_foot_orientation_to_goal();
         virtual Struct3dRPY get_left_foot_stable_stand();
 
         virtual Struct3dRPY get_right_foot_start();
         virtual Struct3dRPY get_right_foot_orientation_to_ball();
-        virtual Struct3dRPY get_right_foot_squat();
+        virtual Struct3dRPY get_right_foot_squat(bool const & tilted);
         virtual Struct3dRPY get_right_foot_orientation_to_goal();
         virtual Struct3dRPY get_right_foot_stable_stand();
 
@@ -56,7 +56,7 @@ namespace bitbots_throw{
         virtual Struct3dRPY create_throw_release();
         virtual Struct3dRPY create_orientation_to_ball(bool const & left_foot, bool const & rotate_coordinate);
         virtual Struct3dRPY create_orientation_to_goal(bool const & left_foot);
-        virtual Struct3dRPY create_foot_squat();
+        virtual Struct3dRPY create_foot_squat(bool const & tilted);
         virtual Struct3dRPY create_foot_stable_stand();
 
         double get_lowest_foot_position();

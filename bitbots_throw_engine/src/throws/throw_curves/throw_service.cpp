@@ -83,8 +83,8 @@ namespace bitbots_throw{
         Struct3dRPY point = request_.left_feet_position_ + create_orientation_to_ball(true, true);
         return point;
     }
-    Struct3dRPY ThrowService::get_left_foot_squat(){
-        Struct3dRPY point = create_foot_squat();
+    Struct3dRPY ThrowService::get_left_foot_squat(bool const & tilted){
+        Struct3dRPY point = create_foot_squat(tilted);
         point.y_ += robot_and_world_parameter_.leg_distance_;
         return point;
     }
@@ -104,8 +104,8 @@ namespace bitbots_throw{
         Struct3dRPY point = request_.right_feet_position_ + create_orientation_to_ball(false, false);
         return point;
     }
-    Struct3dRPY ThrowService::get_right_foot_squat(){
-        Struct3dRPY point = create_foot_squat();
+    Struct3dRPY ThrowService::get_right_foot_squat(bool const & tilted){
+        Struct3dRPY point = create_foot_squat(tilted);
         point.y_ -= robot_and_world_parameter_.leg_distance_;
         return point;
     }
@@ -275,13 +275,13 @@ namespace bitbots_throw{
         }
         return point;
     }
-    Struct3dRPY ThrowService::create_foot_squat(){
+    Struct3dRPY ThrowService::create_foot_squat(bool const & tilted){
         Struct3dRPY point;
         point.x_ = 0.0;
         point.y_ = 0.0;
         point.z_ = -1 * robot_and_world_parameter_.squat_safety_distance_;
         point.roll_ = 0.0;
-        point.pitch_ = -1 * calculate_squat_bow_angle();
+        point.pitch_ = tilted ? -1 * calculate_squat_bow_angle() : 0.0;
         point.yaw_ = 0.0;
         return point;
     }

@@ -14,9 +14,11 @@ namespace bitbots_throw{
         void add_movement_starting_position();
         void add_movement_orient_to_ball();
         void add_movement_squat();
+        void add_movement_squat_tilt();
         void add_movement_reach_to_ball();
         void add_movement_pick_ball();
         void add_movement_lift_ball();
+        void add_movement_remove_squat_tilt();
         void add_movement_stand_up();
         void add_movement_orient_to_goal();
         void add_movement_enter_stable_stand();
