@@ -4,6 +4,7 @@
 #include "utility/throw_utilities.h"
 #include "utility/throw_stabilizer.h"
 #include "ros_interface/publisher/system_publisher.h"
+#include "ros_interface/ros_joint_and_topic_names.h"
 #include "parameter/throw_type_parameter_builder.h"
 
 namespace bitbots_throw{
@@ -20,32 +21,40 @@ namespace bitbots_throw{
 
 	void ThrowNode::set_default_parameter(){
         RosPublisherFacade::RosPublisherTopics publisher_topics;
-        publisher_topics.str_controller_command_topic_ = "/DynamixelController/command";
-        publisher_topics.str_odometry_topic_ = "/throw_odometry";
-        publisher_topics.str_debug_topic_ = "/throw_debug";
-        publisher_topics.str_debug_marker_topic_ = "/throw_debug_marker";
-        publisher_topics.str_support_topic_ = "/throw_support_foot_state";
-        publisher_topics.str_debug_visualization_base_topic_ = "/throw_debug";
+        publisher_topics.str_controller_command_topic_ = RosJointAndTopicNames::get_topic_controller_command();
+        publisher_topics.str_odometry_topic_ = RosJointAndTopicNames::get_topic_odometry();
+        publisher_topics.str_debug_topic_ = RosJointAndTopicNames::get_topic_debug();
+        publisher_topics.str_debug_marker_topic_ = RosJointAndTopicNames::get_topic_debug_marker();
+        publisher_topics.str_support_topic_ = RosJointAndTopicNames::get_topic_support();
+        publisher_topics.str_debug_visualization_base_topic_ = RosJointAndTopicNames::get_topic_debug_visualization_base();
 
         ThrowVisualizer::ThrowVisualizerParams parameter;
-        parameter.left_hand_frame_ = "base_link";
-        parameter.right_hand_frame_ = "base_link";
-        parameter.left_foot_frame_ = "base_link";
-        parameter.right_foot_frame_ = "base_link";
-        parameter.left_hand_topic_suffix_ = "_left_hand_marker";
-        parameter.right_hand_topic_suffix_ = "_right_hand_marker";
-        parameter.left_foot_topic_suffix_ = "_left_foot_marker";
-        parameter.right_foot_topic_suffix_ = "_right_foot_marker";
-        parameter.left_hand_arrow_topic_suffix_ = "_left_hand_arrow_marker";
-        parameter.right_hand_arrow_topic_suffix_ = "_right_hand_arrow_marker";
-        parameter.left_foot_arrow_topic_suffix_ = "_left_foot_arrow_marker";
-        parameter.right_foot_arrow_topic_suffix_ = "_right_foot_arrow_marker";
+        parameter.left_hand_frame_ = RosJointAndTopicNames::get_joint_base_link();
+        parameter.right_hand_frame_ = RosJointAndTopicNames::get_joint_base_link();
+        parameter.left_foot_frame_ = RosJointAndTopicNames::get_joint_base_link();
+        parameter.right_foot_frame_ = RosJointAndTopicNames::get_joint_base_link();
+        parameter.left_hand_topic_suffix_ = RosJointAndTopicNames::get_topic_suffix_left_hand();
+        parameter.right_hand_topic_suffix_ = RosJointAndTopicNames::get_topic_suffix_right_hand();
+        parameter.left_foot_topic_suffix_ = RosJointAndTopicNames::get_topic_suffix_left_foot();
+        parameter.right_foot_topic_suffix_ = RosJointAndTopicNames::get_topic_suffix_right_foot();
+        parameter.left_hand_arrow_topic_suffix_ = RosJointAndTopicNames::get_topic_suffix_left_hand_arrow();
+        parameter.right_hand_arrow_topic_suffix_ = RosJointAndTopicNames::get_topic_suffix_right_hand_arrow();
+        parameter.left_foot_arrow_topic_suffix_ = RosJointAndTopicNames::get_topic_suffix_left_foot_arrow();
+        parameter.right_foot_arrow_topic_suffix_ = RosJointAndTopicNames::get_topic_suffix_right_foot_arrow();
 
         sp_publisher_facade_.reset(new RosPublisherFacade(ros_node_handle_, sp_engine_parameter_, publisher_topics, parameter, sp_debug_parameter_));
-        sp_ik_left_arm_.reset(new ThrowIK("LeftArm", {"LElbow", "LShoulderPitch", "LShoulderRoll"}, {0.0, 0.0, 0.0}));
-        sp_ik_right_arm_.reset(new ThrowIK("RightArm", {"RElbow", "RShoulderPitch", "RShoulderRoll"}, {0.0, 0.0, 0.0}));
-        sp_ik_left_foot_.reset(new ThrowIK("LeftLeg", {"LHipPitch", "LKnee", "LAnklePitch"}, {0.7, 1.0, -0.4}));
-        sp_ik_right_foot_.reset(new ThrowIK("RightLeg", {"RHipPitch", "RKnee", "RAnklePitch"}, {-0.7, -1.0, 0.4}));
+        sp_ik_left_arm_.reset(new ThrowIK(RosJointAndTopicNames::get_joint_group_left_arm()
+                             ,{RosJointAndTopicNames::get_joint_l_elbow(), RosJointAndTopicNames::get_joint_l_shoulder_pitch(), RosJointAndTopicNames::get_joint_l_shoulder_roll()}
+                             ,{0.0, 0.0, 0.0}));
+        sp_ik_right_arm_.reset(new ThrowIK(RosJointAndTopicNames::get_joint_group_right_arm()
+                              ,{RosJointAndTopicNames::get_joint_r_elbow(), RosJointAndTopicNames::get_joint_r_shoulder_pitch(), RosJointAndTopicNames::get_joint_r_shoulder_roll()}
+                              ,{0.0, 0.0, 0.0}));
+        sp_ik_left_foot_.reset(new ThrowIK(RosJointAndTopicNames::get_joint_group_left_leg()
+                              ,{RosJointAndTopicNames::get_joint_l_hip_pitch(), RosJointAndTopicNames::get_joint_l_knee(), RosJointAndTopicNames::get_joint_l_ankle_pitch()}
+                              ,{0.7, 1.0, -0.4}));
+        sp_ik_right_foot_.reset(new ThrowIK(RosJointAndTopicNames::get_joint_group_right_leg()
+                               ,{RosJointAndTopicNames::get_joint_r_hip_pitch(), RosJointAndTopicNames::get_joint_r_knee(), RosJointAndTopicNames::get_joint_r_ankle_pitch()}
+                               ,{-0.7, -1.0, 0.4}));
 	}
 
 	void ThrowNode::load_parameter(){
@@ -55,7 +64,7 @@ namespace bitbots_throw{
 	}
 
 	void ThrowNode::init_ros_subscriptions(){
-		ros_subscriber_throw_ = ros_node_handle_.subscribe("/throw"
+		ros_subscriber_throw_ = ros_node_handle_.subscribe(RosJointAndTopicNames::get_topic_throw()
 		                                                  ,1
 		                                                  ,&ThrowNode::throw_callback
 		                                                  ,this
@@ -165,23 +174,23 @@ namespace bitbots_throw{
         }else{
             // get current position of feet
             try{
-                auto pose = get_pose("r_sole");
+                auto pose = get_pose(RosJointAndTopicNames::get_joint_r_sole());
                 request.right_feet_position_ = {pose.position.x, pose.position.y, pose.position.z, pose.orientation.x,
                                                 pose.orientation.y, pose.orientation.z};
 
-                pose = get_pose("l_sole");
+                pose = get_pose(RosJointAndTopicNames::get_joint_l_sole());
                 request.left_feet_position_ = {pose.position.x, pose.position.y, pose.position.z, pose.orientation.x,
                                                pose.orientation.y, pose.orientation.z};
 
-                pose = get_pose("r_wrist");
+                pose = get_pose(RosJointAndTopicNames::get_joint_r_wrist());
                 request.right_hand_position_ = {pose.position.x, pose.position.y, pose.position.z, pose.orientation.x,
                                                 pose.orientation.y, pose.orientation.z};
 
-                pose = get_pose("l_wrist");
+                pose = get_pose(RosJointAndTopicNames::get_joint_l_wrist());
                 request.left_hand_position_ = {pose.position.x, pose.position.y, pose.position.z, pose.orientation.x,
                                                pose.orientation.y, pose.orientation.z};
 
-                pose = get_pose("head");
+                pose = get_pose(RosJointAndTopicNames::get_joint_head());
                 request.head_position_ = {pose.position.x, pose.position.y, pose.position.z, pose.orientation.x,
                                           pose.orientation.y, pose.orientation.z};
 
@@ -201,13 +210,13 @@ namespace bitbots_throw{
             }
 
             auto hand_height = sp_robot_and_world_parameter_->trunk_height_;
-            request.head_position_ = {0.0265, -0.0235001, hand_height, 0.0, 0.0, 0.0};
+            request.head_position_ = {0.0, 0.0, hand_height, 0.0, 0.0, 0.0};
             hand_height -= sp_robot_and_world_parameter_->arm_length_;
-            request.left_hand_position_ = {0.299, sp_robot_and_world_parameter_->arm_distance_, hand_height, 0.0, 0.0, 0.0};
-            request.right_hand_position_ = {0.299, -1 * sp_robot_and_world_parameter_->arm_distance_, hand_height, 0.0, 0.0, 0.0};
+            request.left_hand_position_ = {0.0, sp_robot_and_world_parameter_->arm_distance_, hand_height, 0.0, 0.0, 0.0};
+            request.right_hand_position_ = {0.0, -1 * sp_robot_and_world_parameter_->arm_distance_, hand_height, 0.0, 0.0, 0.0};
             auto feet_height = -1 * sp_robot_and_world_parameter_->leg_length_;
-            request.left_feet_position_ = {0.1, sp_robot_and_world_parameter_->leg_distance_, feet_height, 0.0, 0.0, 0.0};
-            request.right_feet_position_ = {0.1, -1 * sp_robot_and_world_parameter_->leg_distance_, feet_height, 0.0, 0.0, 0.0};
+            request.left_feet_position_ = {0.0, sp_robot_and_world_parameter_->leg_distance_, feet_height, 0.0, 0.0, 0.0};
+            request.right_feet_position_ = {0.0, -1 * sp_robot_and_world_parameter_->leg_distance_, feet_height, 0.0, 0.0, 0.0};
         }
 
 		return request;
@@ -216,16 +225,16 @@ namespace bitbots_throw{
     bitbots_splines::JointGoals ThrowNode::calculate_joint_goals(ThrowResponse const & response){
         bitbots_splines::JointGoals joint_goals;
 
-        std::vector<ThrowStabilizerData> data = {{response.support_foot_to_left_hand_, "l_wrist", "base_link", 1}};
+        std::vector<ThrowStabilizerData> data = {{response.support_foot_to_left_hand_, RosJointAndTopicNames::get_joint_l_wrist(), RosJointAndTopicNames::get_joint_base_link(), 1}};
         calculate_goal(sp_ik_left_arm_, joint_goals, data);
 
-        data = {{response.support_foot_to_right_hand_, "r_wrist", "base_link", 1}};
+        data = {{response.support_foot_to_right_hand_, RosJointAndTopicNames::get_joint_r_wrist(), RosJointAndTopicNames::get_joint_base_link(), 1}};
         calculate_goal(sp_ik_right_arm_, joint_goals, data);
 
-        data = {{response.support_foot_to_left_foot_, "l_sole", "base_link", 1}};
+        data = {{response.support_foot_to_left_foot_, RosJointAndTopicNames::get_joint_l_sole(), RosJointAndTopicNames::get_joint_base_link(), 1}};
         calculate_goal(sp_ik_left_foot_, joint_goals, data);
 
-        data = {{response.support_foot_to_right_foot_, "r_sole", "base_link", 1}};
+        data = {{response.support_foot_to_right_foot_, RosJointAndTopicNames::get_joint_r_sole(), RosJointAndTopicNames::get_joint_base_link(), 1}};
         calculate_goal(sp_ik_right_foot_, joint_goals, data);
 
         return joint_goals;
