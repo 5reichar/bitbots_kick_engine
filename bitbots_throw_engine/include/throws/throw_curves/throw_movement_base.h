@@ -21,6 +21,8 @@ namespace bitbots_throw{
     protected:
         virtual void add_movement() = 0;
 
+        void add_movement_stage();
+        void add_ik_mode(IKMode const & mode);
         void add_to_left_hand(Struct3dRPY const & position, Struct3dRPY const & velocity = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, Struct3dRPY const & acceleration = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
         void add_to_right_hand(Struct3dRPY const & position, Struct3dRPY const & velocity = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, Struct3dRPY const & acceleration = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
         void add_to_left_foot(Struct3dRPY const & position, Struct3dRPY const & velocity = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0}, Struct3dRPY const & acceleration = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0});

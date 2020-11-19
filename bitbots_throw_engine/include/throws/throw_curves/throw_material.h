@@ -20,7 +20,9 @@ namespace bitbots_throw{
         void add_point_to_right_foot(double const & time, Struct3dRPY const & values, Struct3dRPY const & velocity, Struct3dRPY const & acceleration);
 
         void add_movement_stage(double & time_stage_start);
+        void add_ik_mode(double const & time, IKMode const & mode);
 
+        IKMode get_ik_mode(double const & time);
         std::shared_ptr<bitbots_splines::PoseHandle> get_left_hand() const;
         virtual tf2::Transform get_left_hand_transform(double const & time) const;
         std::shared_ptr<bitbots_splines::PoseHandle> get_right_hand() const;
@@ -40,6 +42,7 @@ namespace bitbots_throw{
         void add_point_to_pose(std::shared_ptr<bitbots_splines::PoseHandle> & pose, double const & time, Struct3dRPY const & values, Struct3dRPY const & velocity, Struct3dRPY const & acceleration);
 
         double duration_;
+        std::map<double, IKMode> map_modes_;
         std::vector<double> movement_stage_;
 
         std::shared_ptr<bitbots_splines::PoseHandle> sp_pose_left_hand_;

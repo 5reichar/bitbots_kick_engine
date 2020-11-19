@@ -15,6 +15,7 @@ namespace bitbots_throw{
 	ThrowResponse ThrowEngine::update(double dt){
 		ThrowResponse response;
 
+		response.ik_mode_ = sp_current_throw_->get_ik_mode(time_);
 		response.support_foot_to_left_hand_ = sp_current_throw_->get_left_hand_transform(time_);
 		response.support_foot_to_right_hand_ = sp_current_throw_->get_right_hand_transform(time_);
 		response.support_foot_to_left_foot_ = sp_current_throw_->get_left_foot_transform(time_);

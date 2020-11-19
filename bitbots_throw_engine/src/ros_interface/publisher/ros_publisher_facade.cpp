@@ -62,14 +62,14 @@ namespace bitbots_throw{
 	        stream << engine->get_throw_points_as_string();
 
             double counter = 0.0;
-            stream << "Time,";
+            stream << "Time, IKMode,";
             stream << "LH,x,y,z,roll,pitch,yaw,";
             stream << "RH,x,y,z,roll,pitch,yaw,";
             stream << "LF,x,y,z,roll,pitch,yaw,";
             stream << "RF,x,y,z,roll,pitch,yaw" << std::endl;
 
             for(auto & it : responses){
-                stream << counter << ",";
+                stream << counter << "," << it.ik_mode_ << ",";
                 stream << build_data_from_transform(it.support_foot_to_left_hand_);
                 stream << build_data_from_transform(it.support_foot_to_right_hand_);
                 stream << build_data_from_transform(it.support_foot_to_left_foot_);

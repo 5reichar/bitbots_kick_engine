@@ -3,29 +3,10 @@
 
 #include <string>
 #include "throw_struct.h"
-#include "tf2/LinearMath/Transform.h"
 #include "../../bitbots_splines_extension/include/spline/curve.h"
 #include "../../bitbots_splines_extension/include/handle/pose_handle.h"
 
 namespace bitbots_throw{
-    struct ThrowRequest{
-        Struct3d ball_position_;
-        Struct3d goal_position_;
-
-        Struct3dRPY head_position_;
-        Struct3dRPY left_hand_position_;
-        Struct3dRPY right_hand_position_;
-        Struct3dRPY left_feet_position_;
-        Struct3dRPY right_feet_position_;
-    };
-
-    struct ThrowResponse{
-        tf2::Transform support_foot_to_left_hand_;
-        tf2::Transform support_foot_to_right_hand_;
-        tf2::Transform support_foot_to_left_foot_;
-        tf2::Transform support_foot_to_right_foot_;
-    };
-
     static void add_point(std::shared_ptr<bitbots_splines::PoseHandle> & pose, double const & time, Struct3dRPY const & position, Struct3dRPY const & velocity, Struct3dRPY const & acceleration){
         pose->x()->add_point(time, position.x_, velocity.x_, acceleration.x_);
         pose->y()->add_point(time, position.y_, velocity.y_, acceleration.y_);

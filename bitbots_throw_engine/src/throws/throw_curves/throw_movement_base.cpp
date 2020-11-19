@@ -47,6 +47,15 @@ namespace bitbots_throw{
         right_foot_points_.resize(6);
     }
 
+
+    void ThrowMovementBase::add_movement_stage(){
+        sp_material_->add_movement_stage(trajectory_time_);
+    }
+
+    void ThrowMovementBase::add_ik_mode(const IKMode & mode){
+        sp_material_->add_ik_mode(trajectory_time_, mode);
+    }
+
     void ThrowMovementBase::add_to_left_hand(const Struct3dRPY & position, Struct3dRPY const & velocity, Struct3dRPY const & acceleration){
         sp_material_->add_point_to_left_hand(trajectory_time_, position, velocity, acceleration);
         add_point_to_debug(left_hand_points_, trajectory_time_, position, velocity, acceleration);

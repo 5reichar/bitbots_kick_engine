@@ -16,7 +16,7 @@ namespace bitbots_throw{
         load_parameter();
         init_ros_subscriptions();
 		init_ik();
-		SystemPublisher::publish_info("v0.20201015-1", "ThrowNode");
+		SystemPublisher::publish_info("v0.20201119-3", "ThrowNode");
 	}
 
 	void ThrowNode::set_default_parameter(){
@@ -55,6 +55,12 @@ namespace bitbots_throw{
         sp_ik_right_foot_.reset(new ThrowIK(RosJointAndTopicNames::get_joint_group_right_leg()
                                ,{RosJointAndTopicNames::get_joint_r_hip_pitch(), RosJointAndTopicNames::get_joint_r_knee(), RosJointAndTopicNames::get_joint_r_ankle_pitch()}
                                ,{-0.7, -1.0, 0.4}));
+        sp_ik_left_hand_.reset(new ThrowIK(RosJointAndTopicNames::get_joint_group_left_arm()
+                              ,{RosJointAndTopicNames::get_joint_l_elbow()}
+                              ,{0.0}));
+        sp_ik_right_hand_.reset(new ThrowIK(RosJointAndTopicNames::get_joint_group_right_arm()
+                               ,{RosJointAndTopicNames::get_joint_r_elbow()}
+                               ,{0.0}));
 	}
 
 	void ThrowNode::load_parameter(){
@@ -97,6 +103,8 @@ namespace bitbots_throw{
         sp_ik_right_arm_->init(kinematic_model);
         sp_ik_left_foot_->init(kinematic_model);
         sp_ik_right_foot_->init(kinematic_model);
+        sp_ik_left_hand_->init(kinematic_model);
+        sp_ik_right_hand_->init(kinematic_model);
 	}
 
 	void ThrowNode::throw_callback(const bitbots_throw::throw_action action){
@@ -153,6 +161,8 @@ namespace bitbots_throw{
         sp_ik_right_arm_->set_bio_ik_timeout(sp_engine_parameter_->bio_ik_time_);
         sp_ik_left_foot_->set_bio_ik_timeout(sp_engine_parameter_->bio_ik_time_);
         sp_ik_right_foot_->set_bio_ik_timeout(sp_engine_parameter_->bio_ik_time_);
+        sp_ik_left_hand_->set_bio_ik_timeout(sp_engine_parameter_->bio_ik_time_);
+        sp_ik_right_hand_->set_bio_ik_timeout(sp_engine_parameter_->bio_ik_time_);
 
         throw_engine_.set_engine_parameter(sp_robot_and_world_parameter_);
 	}
@@ -223,19 +233,43 @@ namespace bitbots_throw{
 	}
 
     bitbots_splines::JointGoals ThrowNode::calculate_joint_goals(ThrowResponse const & response){
+        std::vector<ThrowStabilizerData> data;
         bitbots_splines::JointGoals joint_goals;
 
-        std::vector<ThrowStabilizerData> data = {{response.support_foot_to_left_hand_, RosJointAndTopicNames::get_joint_l_wrist(), RosJointAndTopicNames::get_joint_base_link(), 1}};
-        calculate_goal(sp_ik_left_arm_, joint_goals, data);
+        if (IKMode::arms_and_legs_separated == response.ik_mode_){
+            if(sp_debug_parameter_->debug_active_){
+                SystemPublisher::publish_info("each arm get one ik", "ThrowNode::calculate_joint_goals");
+            }
 
-        data = {{response.support_foot_to_right_hand_, RosJointAndTopicNames::get_joint_r_wrist(), RosJointAndTopicNames::get_joint_base_link(), 1}};
-        calculate_goal(sp_ik_right_arm_, joint_goals, data);
+            data = {{response.support_foot_to_left_hand_, RosJointAndTopicNames::get_joint_l_wrist(), RosJointAndTopicNames::get_joint_base_link(), 1}};
+            calculate_goal(sp_ik_left_arm_, joint_goals, data);
 
-        data = {{response.support_foot_to_left_foot_, RosJointAndTopicNames::get_joint_l_sole(), RosJointAndTopicNames::get_joint_base_link(), 1}};
-        calculate_goal(sp_ik_left_foot_, joint_goals, data);
+            data = {{response.support_foot_to_right_hand_, RosJointAndTopicNames::get_joint_r_wrist(), RosJointAndTopicNames::get_joint_base_link(), 1}};
+            calculate_goal(sp_ik_right_arm_, joint_goals, data);
+        }
+        else if (IKMode::hands_only_and_legs_separated == response.ik_mode_){
+            if(sp_debug_parameter_->debug_active_){
+                SystemPublisher::publish_info("each hand get one ik", "ThrowNode::calculate_joint_goals");
+            }
 
-        data = {{response.support_foot_to_right_foot_, RosJointAndTopicNames::get_joint_r_sole(), RosJointAndTopicNames::get_joint_base_link(), 1}};
-        calculate_goal(sp_ik_right_foot_, joint_goals, data);
+            data = {{response.support_foot_to_left_hand_, RosJointAndTopicNames::get_joint_l_wrist(), RosJointAndTopicNames::get_joint_base_link(), 1}};
+            calculate_goal(sp_ik_left_hand_, joint_goals, data);
+
+            data = {{response.support_foot_to_right_hand_, RosJointAndTopicNames::get_joint_r_wrist(), RosJointAndTopicNames::get_joint_base_link(), 1}};
+            calculate_goal(sp_ik_right_hand_, joint_goals, data);
+        }
+
+        if (IKMode::arms_and_legs_separated == response.ik_mode_ || IKMode::hands_only_and_legs_separated == response.ik_mode_){
+            if(sp_debug_parameter_->debug_active_){
+                SystemPublisher::publish_info("each leg get one ik", "ThrowNode::calculate_joint_goals");
+            }
+
+            data = {{response.support_foot_to_left_foot_, RosJointAndTopicNames::get_joint_l_sole(), RosJointAndTopicNames::get_joint_base_link(), 1}};
+            calculate_goal(sp_ik_left_foot_, joint_goals, data);
+
+            data = {{response.support_foot_to_right_foot_, RosJointAndTopicNames::get_joint_r_sole(), RosJointAndTopicNames::get_joint_base_link(), 1}};
+            calculate_goal(sp_ik_right_foot_, joint_goals, data);
+        }
 
         return joint_goals;
     }

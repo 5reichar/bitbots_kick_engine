@@ -1,6 +1,8 @@
 #ifndef  BITBOTS_THROW_THROW_STRUCT_H
 #define  BITBOTS_THROW_THROW_STRUCT_H
 
+#include "tf2/LinearMath/Transform.h"
+
 namespace bitbots_throw{
     struct Struct3d{
         double x_;
@@ -69,6 +71,32 @@ namespace bitbots_throw{
             return *this;
         }
     };
+
+    enum IKMode{
+        arms_and_legs_separated = 0,
+        hands_only_and_legs_separated
+    };
+
+    struct ThrowRequest{
+        Struct3d ball_position_;
+        Struct3d goal_position_;
+
+        Struct3dRPY head_position_;
+        Struct3dRPY left_hand_position_;
+        Struct3dRPY right_hand_position_;
+        Struct3dRPY left_feet_position_;
+        Struct3dRPY right_feet_position_;
+    };
+
+    struct ThrowResponse{
+        IKMode ik_mode_;
+        tf2::Transform support_foot_to_left_hand_;
+        tf2::Transform support_foot_to_right_hand_;
+        tf2::Transform support_foot_to_left_foot_;
+        tf2::Transform support_foot_to_right_foot_;
+    };
+
+
 
     struct Color{
         double red_;

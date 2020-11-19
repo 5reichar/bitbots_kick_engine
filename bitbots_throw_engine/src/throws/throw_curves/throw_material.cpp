@@ -33,6 +33,23 @@ namespace bitbots_throw{
         movement_stage_.emplace_back(time_stage_start);
     }
 
+    void ThrowMaterial::add_ik_mode(double const & time, IKMode const & mode){
+        map_modes_[time] = mode;
+    }
+
+    IKMode ThrowMaterial::get_ik_mode(const double & time){
+        IKMode mode = IKMode::arms_and_legs_separated;
+
+        for(auto const it : map_modes_){
+            if(it.first > time){
+                break;
+            }
+            mode = it.second;
+        }
+
+        return mode;
+    }
+
     std::shared_ptr<bitbots_splines::PoseHandle> ThrowMaterial::get_left_hand() const{
         return sp_pose_left_hand_;
     }
@@ -71,6 +88,16 @@ namespace bitbots_throw{
 
     std::string ThrowMaterial::get_debug_string() const{
         std::stringstream points_string;
+
+        points_string << "IK Modes, ,,, Movement Duration:," << duration_ << std::endl;
+        std::stringstream map_keys;
+        std::stringstream map_values;
+        for(auto const it : map_modes_){
+            map_keys << "," << it.first;
+            map_values << "," << it.second;
+        }
+        points_string << "Time" << map_keys.str() << std::endl;
+        points_string << "Mode" << map_values.str() << std::endl;
 
         points_string << "----- Left Hand -----" << std::endl << "Added Points" << std::endl;
         points_string << sp_pose_left_hand_->get_debug_csv() << std::endl;

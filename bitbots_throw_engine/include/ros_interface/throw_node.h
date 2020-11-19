@@ -47,6 +47,8 @@ namespace bitbots_throw{
         std::shared_ptr<ThrowIK> sp_ik_right_arm_;
         std::shared_ptr<ThrowIK> sp_ik_left_foot_;
         std::shared_ptr<ThrowIK> sp_ik_right_foot_;
+        std::shared_ptr<ThrowIK> sp_ik_left_hand_;
+        std::shared_ptr<ThrowIK> sp_ik_right_hand_;
 
         ThrowEngine throw_engine_;
         std::shared_ptr<RosPublisherFacade> sp_publisher_facade_;
