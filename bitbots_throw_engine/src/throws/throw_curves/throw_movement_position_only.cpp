@@ -29,8 +29,8 @@ namespace bitbots_throw{
 
         ////==== Move arms away from the ball
         trajectory_time_ += sp_service_->get_movement_offset_move_arms_away_from_ball();
-        add_to_left_hand(sp_service_->get_left_arm_move_away_from_ball(velocity));
-        add_to_right_hand(sp_service_->get_right_arm_move_away_from_ball(velocity));
+        add_to_left_hand(sp_service_->get_left_arm_move_away_from_ball(velocity.x_));
+        add_to_right_hand(sp_service_->get_right_arm_move_away_from_ball(velocity.x_));
 
         if(current_throw_release_time > trajectory_time_){
             trajectory_time_ = current_throw_release_time;

@@ -31,8 +31,8 @@ namespace bitbots_throw{
         }
 
         static Struct3dRPY calculate_throw_start_point(double const & throw_release_angle
-                                                       ,double const & throw_zenith
-                                                       ,double const & pi){
+                                                      ,double const & throw_zenith
+                                                      ,double const & pi){
             Struct3dRPY throw_start_point;
             // From Isosceles triangle with the two angles with the same size are given as 90 - throw_angle
             auto hypotenuse = std::sqrt(2 * std::pow(throw_zenith, 2) * (1 - std::cos(2 * throw_release_angle)));

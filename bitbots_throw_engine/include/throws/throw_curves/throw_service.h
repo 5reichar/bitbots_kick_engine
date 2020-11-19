@@ -13,18 +13,22 @@ namespace bitbots_throw{
         virtual Struct3dRPY get_left_arm_start();
         virtual Struct3dRPY get_left_arm_reach_to_ball();
         virtual Struct3dRPY get_left_arm_pick_up();
-        virtual Struct3dRPY get_left_arm_ball_at_head_height();
+        virtual Struct3dRPY get_left_arm_ball_in_front_of_head();
+        virtual Struct3dRPY get_left_arm_ball_over_head();
+        virtual Struct3dRPY get_left_arm_ball_behind_head();
         virtual Struct3dRPY get_left_arm_throw_start();
         virtual Struct3dRPY get_left_arm_throw_release();
-        virtual Struct3dRPY get_left_arm_move_away_from_ball(Struct3dRPY const & velocity);
+        virtual Struct3dRPY get_left_arm_move_away_from_ball(double const & velocity_x);
 
         virtual Struct3dRPY get_right_arm_start();
         virtual Struct3dRPY get_right_arm_pick_up();
         virtual Struct3dRPY get_right_arm_reach_to_ball();
-        virtual Struct3dRPY get_right_arm_ball_at_head_height();
+        virtual Struct3dRPY get_right_arm_ball_in_front_of_head();
+        virtual Struct3dRPY get_right_arm_ball_over_head();
+        virtual Struct3dRPY get_right_arm_ball_behind_head();
         virtual Struct3dRPY get_right_arm_throw_start();
         virtual Struct3dRPY get_right_arm_throw_release();
-        virtual Struct3dRPY get_right_arm_move_away_from_ball(Struct3dRPY const & velocity);
+        virtual Struct3dRPY get_right_arm_move_away_from_ball(double const & velocity_x);
 
         virtual Struct3dRPY get_left_foot_start();
         virtual Struct3dRPY get_left_foot_orientation_to_ball();
@@ -49,18 +53,21 @@ namespace bitbots_throw{
     protected:
         double calculate_robot_max_velocity(double const & duration_build_up_velocity) const;
 
-        virtual Struct3dRPY create_reach_to_ball();
-        virtual Struct3dRPY create_pick_up();
-        virtual Struct3dRPY create_ball_at_head_height();
-        virtual Struct3dRPY create_throw_start();
-        virtual Struct3dRPY create_throw_release();
+        virtual Struct3dRPY create_arm_position_reach_to_ball();
+        virtual Struct3dRPY create_arm_position_pick_up();
+        virtual Struct3dRPY create_arm_position_ball_in_front_of_head();
+        virtual Struct3dRPY create_arm_position_ball_over_head();
+        virtual Struct3dRPY create_arm_position_ball_behind_head();
+        virtual Struct3dRPY create_arm_position_throw_start();
+        virtual Struct3dRPY create_arm_position_throw_release();
         virtual Struct3dRPY create_orientation_to_ball(bool const & left_foot, bool const & rotate_coordinate);
         virtual Struct3dRPY create_orientation_to_goal(bool const & left_foot);
-        virtual Struct3dRPY create_foot_squat(bool const & tilted);
-        virtual Struct3dRPY create_foot_stable_stand();
+        virtual Struct3dRPY create_foot_position_squat_position(bool const & tilted);
+        virtual Struct3dRPY create_foot_position_stable_stand_position();
 
         double get_lowest_foot_position();
         double calculate_squat_bow_angle();
+        double get_ball_over_head_position(double const & arm_stretch_ratio = 0.8);
 
         ThrowRequest request_;
         ThrowType throw_type_;

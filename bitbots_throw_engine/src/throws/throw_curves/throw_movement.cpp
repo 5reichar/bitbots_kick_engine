@@ -10,6 +10,13 @@ namespace bitbots_throw{
     void ThrowMovement::add_movement(){
         add_movement_starting_position();
 
+        add_pick_up_ball_movement();
+        add_preparation_movement();
+        add_throw_movement();
+        add_conclusion_movement();
+    }
+
+    void ThrowMovement::add_pick_up_ball_movement(){
         auto movement_time = sp_service_->get_movement_time_pick_up_ball() / 4;
         //trajectory_time_ += movement_time;
         //add_movement_orient_to_ball();
@@ -21,8 +28,10 @@ namespace bitbots_throw{
         add_movement_reach_to_ball();
         trajectory_time_ += movement_time;
         add_movement_pick_ball();
+    }
 
-        movement_time = sp_service_->get_movement_time_throw_preparation() / 4;
+    void ThrowMovement::add_preparation_movement(){
+        auto movement_time = sp_service_->get_movement_time_throw_preparation() / 5;
         trajectory_time_ += movement_time;
         add_movement_remove_squat_tilt();
         trajectory_time_ += movement_time;
@@ -32,16 +41,24 @@ namespace bitbots_throw{
         trajectory_time_ += movement_time;
         add_movement_lift_ball();
         trajectory_time_ += movement_time;
+        add_movement_ball_over_head();
+        trajectory_time_ += movement_time;
         add_movement_prepare_throw();
+    }
 
-        movement_time = sp_service_->get_movement_time_throw();
+    void ThrowMovement::add_throw_movement(){
+        auto movement_time = sp_service_->get_movement_time_throw();
         trajectory_time_ += movement_time;
         add_movement_throw();
+    }
 
-        movement_time = sp_service_->get_movement_time_throw_conclusion();
+    void ThrowMovement::add_conclusion_movement(){
+        auto movement_time = sp_service_->get_movement_time_throw_conclusion();
         trajectory_time_ += movement_time;
         add_movement_return_to_starting_position();
     }
+
+
 
     void ThrowMovement::add_movement_starting_position(){
         add_to_left_hand(sp_service_->get_left_arm_start());
@@ -80,8 +97,8 @@ namespace bitbots_throw{
     }
 
     void ThrowMovement::add_movement_lift_ball(){
-        add_to_left_hand(sp_service_->get_left_arm_ball_at_head_height());
-        add_to_right_hand(sp_service_->get_right_arm_ball_at_head_height());
+        add_to_left_hand(sp_service_->get_left_arm_ball_in_front_of_head());
+        add_to_right_hand(sp_service_->get_right_arm_ball_in_front_of_head());
     }
 
     void ThrowMovement::add_movement_remove_squat_tilt(){
@@ -104,6 +121,11 @@ namespace bitbots_throw{
         add_to_right_foot(sp_service_->get_right_foot_stable_stand());
     }
 
+    void ThrowMovement::add_movement_ball_over_head(){
+        add_to_left_hand(sp_service_->get_left_arm_ball_over_head());
+        add_to_right_hand(sp_service_->get_right_arm_ball_over_head());
+    }
+
     void ThrowMovement::add_movement_prepare_throw(){
         add_to_left_hand(sp_service_->get_left_arm_throw_start());
         add_to_right_hand(sp_service_->get_right_arm_throw_start());
@@ -123,8 +145,8 @@ namespace bitbots_throw{
 
         ////==== Move arms away from the ball
         trajectory_time_ += sp_service_->get_movement_offset_move_arms_away_from_ball();
-        add_to_left_hand(sp_service_->get_left_arm_move_away_from_ball(velocity), velocity, velocity/duration_throw);
-        add_to_right_hand(sp_service_->get_right_arm_move_away_from_ball(velocity), velocity, velocity/duration_throw);
+        add_to_left_hand(sp_service_->get_left_arm_move_away_from_ball(velocity.x_), velocity, velocity/duration_throw);
+        add_to_right_hand(sp_service_->get_right_arm_move_away_from_ball(velocity.x_), velocity, velocity/duration_throw);
     }
 
     void ThrowMovement::add_movement_return_to_starting_position(){
