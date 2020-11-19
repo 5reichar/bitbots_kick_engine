@@ -3,6 +3,7 @@
 
 #include "ros/ros.h"
 #include "utility/throw_ik.h"
+#include "utility/throw_struct.h"
 #include "utility/throw_stabilizer.h"
 #include "engine/throw_engine.h"
 #include "parameter/throw_engine_parameter.h"
@@ -50,6 +51,7 @@ namespace bitbots_throw{
         std::shared_ptr<ThrowIK> sp_ik_left_hand_;
         std::shared_ptr<ThrowIK> sp_ik_right_hand_;
 
+        IKMode last_ik_mode_;
         ThrowEngine throw_engine_;
         std::shared_ptr<RosPublisherFacade> sp_publisher_facade_;
 

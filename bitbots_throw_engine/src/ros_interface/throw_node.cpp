@@ -99,6 +99,8 @@ namespace bitbots_throw{
 			exit(1);
 		}
 
+        last_ik_mode_ = IKMode::arms_and_legs_separated;
+
         sp_ik_left_arm_->init(kinematic_model);
         sp_ik_right_arm_->init(kinematic_model);
         sp_ik_left_foot_->init(kinematic_model);
@@ -237,7 +239,7 @@ namespace bitbots_throw{
         bitbots_splines::JointGoals joint_goals;
 
         if (IKMode::arms_and_legs_separated == response.ik_mode_){
-            if(sp_debug_parameter_->debug_active_){
+            if(sp_debug_parameter_->debug_active_ && IKMode::arms_and_legs_separated != last_ik_mode_){
                 SystemPublisher::publish_info("each arm get one ik", "ThrowNode::calculate_joint_goals");
             }
 
@@ -248,7 +250,7 @@ namespace bitbots_throw{
             calculate_goal(sp_ik_right_arm_, joint_goals, data);
         }
         else if (IKMode::hands_only_and_legs_separated == response.ik_mode_){
-            if(sp_debug_parameter_->debug_active_){
+            if(sp_debug_parameter_->debug_active_ && IKMode::hands_only_and_legs_separated != last_ik_mode_){
                 SystemPublisher::publish_info("each hand get one ik", "ThrowNode::calculate_joint_goals");
             }
 
