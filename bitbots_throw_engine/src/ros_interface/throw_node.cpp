@@ -237,9 +237,11 @@ namespace bitbots_throw{
     bitbots_splines::JointGoals ThrowNode::calculate_joint_goals(ThrowResponse const & response){
         std::vector<ThrowStabilizerData> data;
         bitbots_splines::JointGoals joint_goals;
+        bool ik_mode_changed = response.ik_mode_ != last_ik_mode_;
+        last_ik_mode_ = response.ik_mode_;
 
         if (IKMode::arms_and_legs_separated == response.ik_mode_){
-            if(sp_debug_parameter_->debug_active_ && IKMode::arms_and_legs_separated != last_ik_mode_){
+            if(sp_debug_parameter_->debug_active_ && ik_mode_changed){
                 SystemPublisher::publish_info("each arm get one ik", "ThrowNode::calculate_joint_goals");
             }
 
@@ -250,7 +252,7 @@ namespace bitbots_throw{
             calculate_goal(sp_ik_right_arm_, joint_goals, data);
         }
         else if (IKMode::hands_only_and_legs_separated == response.ik_mode_){
-            if(sp_debug_parameter_->debug_active_ && IKMode::hands_only_and_legs_separated != last_ik_mode_){
+            if(sp_debug_parameter_->debug_active_ && ik_mode_changed){
                 SystemPublisher::publish_info("each hand get one ik", "ThrowNode::calculate_joint_goals");
             }
 
@@ -262,7 +264,7 @@ namespace bitbots_throw{
         }
 
         if (IKMode::arms_and_legs_separated == response.ik_mode_ || IKMode::hands_only_and_legs_separated == response.ik_mode_){
-            if(sp_debug_parameter_->debug_active_){
+            if(sp_debug_parameter_->debug_active_ && ik_mode_changed){
                 SystemPublisher::publish_info("each leg get one ik", "ThrowNode::calculate_joint_goals");
             }
 
