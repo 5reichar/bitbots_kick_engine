@@ -2,6 +2,7 @@
 #define BITBOTS_THROW_THROW_ENGINE_PARAMETER_H
 
 #include <bitbots_throw/throw_engine_paramsConfig.h>
+#include <cmath>
 
 namespace bitbots_throw{
 	struct RobotAndWorldParameter{
@@ -37,7 +38,7 @@ namespace bitbots_throw{
 		//////		Constructor
 		RobotAndWorldParameter(bitbots_throw::throw_engine_paramsConfig& config, uint32_t level){
             gravity_ = config.gravity;
-            pi_ = config.pi;
+            pi_ = M_PI;
             head_height_ = config.head_height;
             trunk_height_ = config.trunk_height;
             leg_length_ = config.leg_length;

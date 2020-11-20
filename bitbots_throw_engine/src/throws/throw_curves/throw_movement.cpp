@@ -50,10 +50,10 @@ namespace bitbots_throw{
         add_movement_lift_ball();
         trajectory_time_ += movement_time;
         add_movement_ball_over_head();
-        add_ik_mode(IKMode::hands_only_and_legs_separated);
+        //add_ik_mode(IKMode::hands_only_and_legs_separated);
         trajectory_time_ += movement_time;
         add_movement_prepare_throw();
-        add_ik_mode(IKMode::arms_and_legs_separated);
+        //add_ik_mode(IKMode::arms_and_legs_separated);
     }
 
     void ThrowMovement::add_throw_movement(){
@@ -137,8 +137,8 @@ namespace bitbots_throw{
     }
 
     void ThrowMovement::add_movement_prepare_throw(){
-        add_to_left_hand(sp_service_->get_left_arm_throw_start());
-        add_to_right_hand(sp_service_->get_right_arm_throw_start());
+        add_to_left_hand(sp_service_->get_left_arm_ball_behind_head());
+        add_to_right_hand(sp_service_->get_right_arm_ball_behind_head());
     }
 
     void ThrowMovement::add_movement_throw(){

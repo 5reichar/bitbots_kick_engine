@@ -256,7 +256,7 @@ namespace bitbots_throw{
         point.y_ = 0.0;
         point.z_ = get_ball_over_head_position(0.5);
         point.roll_ = 0.0;
-        point.pitch_ = robot_and_world_parameter_.pi_;
+        point.pitch_ = -1 * robot_and_world_parameter_.pi_;
         point.yaw_ = 0.0;
         return point;
     }
