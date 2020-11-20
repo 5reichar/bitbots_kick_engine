@@ -32,7 +32,7 @@ namespace bitbots_throw{
         return point;
     }
     Struct3dRPY ThrowService::get_left_arm_ball_behind_head(){
-        Struct3dRPY point = create_arm_position_ball_in_front_of_head();
+        Struct3dRPY point = create_arm_position_ball_behind_head();
         point.y_ += robot_and_world_parameter_.ball_radius_;
         return point;
     }
