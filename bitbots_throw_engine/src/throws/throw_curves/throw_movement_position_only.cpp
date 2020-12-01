@@ -19,7 +19,7 @@ namespace bitbots_throw{
         Struct3dRPY velocity = sp_service_->calculate_throw_velocity(duration_throw);
 
         auto left_arm_throw_release = sp_service_->get_left_arm_throw_release();
-        auto diff = left_arm_throw_release.x_ - sp_service_->get_left_arm_throw_start().x_;
+        auto diff = left_arm_throw_release.x_ - sp_service_->get_left_arm_ball_behind_head().x_;
         trajectory_time_ = throw_start_time_ + (diff / velocity.x_);
 
         ////  Movement
