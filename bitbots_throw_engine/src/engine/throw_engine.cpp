@@ -72,38 +72,6 @@ namespace bitbots_throw{
             type = throw_type_map_[ThrowTypeId::none];
 		}else{
             type = throw_type_map_[throw_type_id];
-
-            if(type->throw_angle_ == 0){
-                type->throw_angle_ = throw_type_map_[ThrowTypeId::none]->throw_angle_;
-            };
-
-            if(type->throw_strength_ == 0){
-                type->throw_strength_ = throw_type_map_[ThrowTypeId::none]->throw_strength_;
-            };
-
-            if(type->movement_duration_ == 0){
-                type->movement_duration_ = throw_type_map_[ThrowTypeId::none]->movement_duration_;
-            };
-
-            if(type->movement_share_pick_up_ == 0){
-                type->movement_share_pick_up_ = throw_type_map_[ThrowTypeId::none]->movement_share_pick_up_;
-            };
-
-            if(type->movement_share_preparation_ == 0){
-                type->movement_share_preparation_ = throw_type_map_[ThrowTypeId::none]->movement_share_preparation_;
-            };
-
-            if(type->movement_share_throw_ == 0){
-                type->movement_share_throw_ = throw_type_map_[ThrowTypeId::none]->movement_share_throw_;
-            };
-
-            if(type->movement_share_conclusion_ == 0){
-                type->movement_share_conclusion_ = throw_type_map_[ThrowTypeId::none]->movement_share_conclusion_;
-            };
-
-            if(type->movement_offset_move_arms_away_from_ball_ == 0){
-                type->movement_offset_move_arms_away_from_ball_ = throw_type_map_[ThrowTypeId::none]->movement_offset_move_arms_away_from_ball_;
-            };
 		}
 
         return std::make_shared<ThrowService>(request, *type, *sp_engine_parameter_);
