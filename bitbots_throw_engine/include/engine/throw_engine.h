@@ -33,14 +33,10 @@ namespace bitbots_throw{
         int getPercentDone() const override;
         void setGoals(const ThrowRequest & request) override;
 
-        std::shared_ptr<ThrowService> create_service(const ThrowTypeId throw_type_id, const ThrowRequest & request);
-
         double time_;
 
         std::shared_ptr<ThrowMaterial> sp_current_throw_;
         std::shared_ptr<ThrowFactory> sp_throw_factory_;
-        std::map<ThrowTypeId, std::shared_ptr<ThrowType>> throw_type_map_;
-        std::shared_ptr<RobotAndWorldParameter> sp_engine_parameter_;
     };
 } //bitbots_throw
 #endif //BITBOTS_THROW_THROW_ENGINE_H
