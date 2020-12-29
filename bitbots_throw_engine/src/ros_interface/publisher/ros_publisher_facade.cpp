@@ -1,22 +1,19 @@
 #include "ros_interface/publisher/ros_publisher_facade.h"
 #include "ros_interface/publisher/system_publisher.h"
+#include "ros_interface/ros_joint_and_topic_names.h"
 
 namespace bitbots_throw{
 	RosPublisherFacade::RosPublisherFacade(ros::NodeHandle & ros_node_handle
                                           ,std::shared_ptr<ThrowEngineParameter> & sp_engine_parameter
-	                                      ,RosPublisherTopics const &topics
 	                                      ,ThrowVisualizer::ThrowVisualizerParams const & visualization_parameter
                                           ,std::shared_ptr<ThrowDebugParameter> & sp_debug_parameter)
 		: sp_engine_parameter_(sp_engine_parameter)
 		, sp_debug_parameter_(sp_debug_parameter)
-		, sp_visualizer_(new ThrowVisualizer(topics.str_debug_visualization_base_topic_, visualization_parameter, sp_debug_parameter))
-		, sp_controller_command_publisher_(new ControllerCommandPublisher(ros_node_handle
-		                                                                    ,topics.str_controller_command_topic_))
-		, sp_odometry_publisher_(new OdometryPublisher(ros_node_handle, topics.str_odometry_topic_))
-		, sp_support_publisher_(new SupportPublisher(ros_node_handle, topics.str_support_topic_))
-		, sp_debug_publisher_(new DebugPublisher(ros_node_handle
-		                                           ,topics.str_debug_topic_
-		                                           ,topics.str_debug_marker_topic_)){
+		, sp_visualizer_(new ThrowVisualizer(RosJointAndTopicNames::get_topic_debug_visualization_base(), visualization_parameter, sp_debug_parameter))
+		, sp_controller_command_publisher_(new ControllerCommandPublisher(ros_node_handle, RosJointAndTopicNames::get_topic_controller_command()))
+		, sp_odometry_publisher_(new OdometryPublisher(ros_node_handle, RosJointAndTopicNames::get_topic_odometry()))
+		, sp_support_publisher_(new SupportPublisher(ros_node_handle, RosJointAndTopicNames::get_topic_support()))
+		, sp_debug_publisher_(new DebugPublisher(ros_node_handle, RosJointAndTopicNames::get_topic_debug(), RosJointAndTopicNames::get_topic_debug_marker())){
 	}
 
 	void RosPublisherFacade::prepare_publisher_for_throw(){

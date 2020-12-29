@@ -12,17 +12,9 @@ namespace bitbots_throw{
     public:
         struct ThrowVisualizerParams{
             std::string left_hand_frame_;
-            std::string left_hand_topic_suffix_;
-            std::string left_hand_arrow_topic_suffix_;
             std::string right_hand_frame_;
-            std::string right_hand_topic_suffix_;
-            std::string right_hand_arrow_topic_suffix_;
             std::string left_foot_frame_;
-            std::string left_foot_topic_suffix_;
-            std::string left_foot_arrow_topic_suffix_;
             std::string right_foot_frame_;
-            std::string right_foot_topic_suffix_;
-            std::string right_foot_arrow_topic_suffix_;
         };
 
         explicit ThrowVisualizer(std::string const & base_topic, ThrowVisualizerParams const & params, std::shared_ptr<ThrowDebugParameter> & sp_parameter);

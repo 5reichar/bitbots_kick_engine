@@ -13,18 +13,8 @@
 namespace bitbots_throw{
     class RosPublisherFacade{
     public:
-        struct RosPublisherTopics{
-            std::string str_controller_command_topic_;
-            std::string str_support_topic_;
-            std::string str_odometry_topic_;
-            std::string str_debug_topic_;
-            std::string str_debug_marker_topic_;
-            std::string str_debug_visualization_base_topic_;
-        };
-
         RosPublisherFacade(ros::NodeHandle & ros_node_handle
                           ,std::shared_ptr<ThrowEngineParameter> & sp_engine_parameter
-                          ,RosPublisherTopics const & topics
                           ,ThrowVisualizer::ThrowVisualizerParams const & visualization_parameter
                           ,std::shared_ptr<ThrowDebugParameter> & sp_debug_parameter);
         void prepare_publisher_for_throw();

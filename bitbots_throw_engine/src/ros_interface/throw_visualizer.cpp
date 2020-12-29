@@ -1,27 +1,28 @@
 #include "ros_interface/throw_visualizer.h"
 #include "utility/throw_struct.h"
+#include "ros_interface/ros_joint_and_topic_names.h"
 
 namespace bitbots_throw{
     ThrowVisualizer::ThrowVisualizer(const std::string & base_topic, ThrowVisualizerParams const & params
                                      , std::shared_ptr<ThrowDebugParameter> & sp_parameter)
             : sp_parameter(sp_parameter), parameter_(params){
         ros_publisher_left_hand_ = ros_node_handle_.advertise<visualization_msgs::Marker>(
-                base_topic + params.left_hand_topic_suffix_, 100);
+                base_topic + RosJointAndTopicNames::get_topic_suffix_left_hand() , 100);
         ros_publisher_right_hand_ = ros_node_handle_.advertise<visualization_msgs::Marker>(
-                base_topic + params.right_hand_topic_suffix_, 100);
+                base_topic + RosJointAndTopicNames::get_topic_suffix_right_hand(), 100);
         ros_publisher_left_foot_ = ros_node_handle_.advertise<visualization_msgs::Marker>(
-                base_topic + params.left_foot_topic_suffix_, 100);
+                base_topic + RosJointAndTopicNames::get_topic_suffix_left_foot(), 100);
         ros_publisher_right_foot_ = ros_node_handle_.advertise<visualization_msgs::Marker>(
-                base_topic + params.right_foot_topic_suffix_, 100);
+                base_topic + RosJointAndTopicNames::get_topic_suffix_right_foot(), 100);
 
         ros_publisher_left_hand_arrow_ = ros_node_handle_.advertise<visualization_msgs::Marker>(
-                base_topic + params.left_hand_arrow_topic_suffix_, 100);
+                base_topic + RosJointAndTopicNames::get_topic_suffix_left_hand_arrow(), 100);
         ros_publisher_right_hand_arrow_ = ros_node_handle_.advertise<visualization_msgs::Marker>(
-                base_topic + params.right_hand_arrow_topic_suffix_, 100);
+                base_topic + RosJointAndTopicNames::get_topic_suffix_right_hand_arrow(), 100);
         ros_publisher_left_foot_arrow_ = ros_node_handle_.advertise<visualization_msgs::Marker>(
-                base_topic + params.left_foot_arrow_topic_suffix_, 100);
+                base_topic + RosJointAndTopicNames::get_topic_suffix_left_foot_arrow(), 100);
         ros_publisher_right_foot_arrow_ = ros_node_handle_.advertise<visualization_msgs::Marker>(
-                base_topic + params.right_foot_arrow_topic_suffix_, 100);
+                base_topic + RosJointAndTopicNames::get_topic_suffix_right_foot_arrow(), 100);
     }
 
     void ThrowVisualizer::set_parameter(std::shared_ptr<ThrowDebugParameter> & sp_parameter){

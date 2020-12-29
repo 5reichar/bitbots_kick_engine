@@ -20,29 +20,13 @@ namespace bitbots_throw{
 	}
 
 	void ThrowNode::set_default_parameter(){
-        RosPublisherFacade::RosPublisherTopics publisher_topics;
-        publisher_topics.str_controller_command_topic_ = RosJointAndTopicNames::get_topic_controller_command();
-        publisher_topics.str_odometry_topic_ = RosJointAndTopicNames::get_topic_odometry();
-        publisher_topics.str_debug_topic_ = RosJointAndTopicNames::get_topic_debug();
-        publisher_topics.str_debug_marker_topic_ = RosJointAndTopicNames::get_topic_debug_marker();
-        publisher_topics.str_support_topic_ = RosJointAndTopicNames::get_topic_support();
-        publisher_topics.str_debug_visualization_base_topic_ = RosJointAndTopicNames::get_topic_debug_visualization_base();
-
         ThrowVisualizer::ThrowVisualizerParams parameter;
         parameter.left_hand_frame_ = RosJointAndTopicNames::get_joint_base_link();
         parameter.right_hand_frame_ = RosJointAndTopicNames::get_joint_base_link();
         parameter.left_foot_frame_ = RosJointAndTopicNames::get_joint_base_link();
         parameter.right_foot_frame_ = RosJointAndTopicNames::get_joint_base_link();
-        parameter.left_hand_topic_suffix_ = RosJointAndTopicNames::get_topic_suffix_left_hand();
-        parameter.right_hand_topic_suffix_ = RosJointAndTopicNames::get_topic_suffix_right_hand();
-        parameter.left_foot_topic_suffix_ = RosJointAndTopicNames::get_topic_suffix_left_foot();
-        parameter.right_foot_topic_suffix_ = RosJointAndTopicNames::get_topic_suffix_right_foot();
-        parameter.left_hand_arrow_topic_suffix_ = RosJointAndTopicNames::get_topic_suffix_left_hand_arrow();
-        parameter.right_hand_arrow_topic_suffix_ = RosJointAndTopicNames::get_topic_suffix_right_hand_arrow();
-        parameter.left_foot_arrow_topic_suffix_ = RosJointAndTopicNames::get_topic_suffix_left_foot_arrow();
-        parameter.right_foot_arrow_topic_suffix_ = RosJointAndTopicNames::get_topic_suffix_right_foot_arrow();
 
-        sp_publisher_facade_.reset(new RosPublisherFacade(ros_node_handle_, sp_engine_parameter_, publisher_topics, parameter, sp_debug_parameter_));
+        sp_publisher_facade_.reset(new RosPublisherFacade(ros_node_handle_, sp_engine_parameter_, parameter, sp_debug_parameter_));
         sp_ik_left_arm_.reset(new ThrowIK(RosJointAndTopicNames::get_joint_group_left_arm()
                              ,{RosJointAndTopicNames::get_joint_l_elbow(), RosJointAndTopicNames::get_joint_l_shoulder_pitch(), RosJointAndTopicNames::get_joint_l_shoulder_roll()}
                              ,{0.0, 0.0, 0.0}));
