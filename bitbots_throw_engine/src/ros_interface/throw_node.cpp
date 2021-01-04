@@ -133,23 +133,23 @@ namespace bitbots_throw{
             // get current position of feet
             try{
                 auto pose = get_pose(RosJointAndTopicNames::get_joint_r_sole());
-                request.right_feet_position_ = {pose.position.x, pose.position.y, pose.position.z, pose.orientation.x,
+                request.joint_start_position_[RobotJoints::right_foot] = {pose.position.x, pose.position.y, pose.position.z, pose.orientation.x,
                                                 pose.orientation.y, pose.orientation.z};
 
                 pose = get_pose(RosJointAndTopicNames::get_joint_l_sole());
-                request.left_feet_position_ = {pose.position.x, pose.position.y, pose.position.z, pose.orientation.x,
+                request.joint_start_position_[RobotJoints::left_foot] = {pose.position.x, pose.position.y, pose.position.z, pose.orientation.x,
                                                pose.orientation.y, pose.orientation.z};
 
                 pose = get_pose(RosJointAndTopicNames::get_joint_r_wrist());
-                request.right_hand_position_ = {pose.position.x, pose.position.y, pose.position.z, pose.orientation.x,
+                request.joint_start_position_[RobotJoints::right_hand] = {pose.position.x, pose.position.y, pose.position.z, pose.orientation.x,
                                                 pose.orientation.y, pose.orientation.z};
 
                 pose = get_pose(RosJointAndTopicNames::get_joint_l_wrist());
-                request.left_hand_position_ = {pose.position.x, pose.position.y, pose.position.z, pose.orientation.x,
+                request.joint_start_position_[RobotJoints::left_hand] = {pose.position.x, pose.position.y, pose.position.z, pose.orientation.x,
                                                pose.orientation.y, pose.orientation.z};
 
                 pose = get_pose(RosJointAndTopicNames::get_joint_head());
-                request.head_position_ = {pose.position.x, pose.position.y, pose.position.z, pose.orientation.x,
+                request.joint_start_position_[RobotJoints::head] = {pose.position.x, pose.position.y, pose.position.z, pose.orientation.x,
                                           pose.orientation.y, pose.orientation.z};
 
                 if(sp_debug_parameter_->debug_active_){
@@ -168,13 +168,13 @@ namespace bitbots_throw{
             }
 
             auto hand_height = sp_robot_and_world_parameter_->trunk_height_;
-            request.head_position_ = {0.0, 0.0, hand_height, 0.0, 0.0, 0.0};
+            request.joint_start_position_[RobotJoints::head] = {0.0, 0.0, hand_height, 0.0, 0.0, 0.0};
             hand_height -= sp_robot_and_world_parameter_->arm_length_;
-            request.left_hand_position_ = {0.0, sp_robot_and_world_parameter_->arm_distance_, hand_height, 0.0, 0.0, 0.0};
-            request.right_hand_position_ = {0.0, -1 * sp_robot_and_world_parameter_->arm_distance_, hand_height, 0.0, 0.0, 0.0};
+            request.joint_start_position_[RobotJoints::left_hand] = {0.0, sp_robot_and_world_parameter_->arm_distance_, hand_height, 0.0, 0.0, 0.0};
+            request.joint_start_position_[RobotJoints::right_hand] = {0.0, -1 * sp_robot_and_world_parameter_->arm_distance_, hand_height, 0.0, 0.0, 0.0};
             auto feet_height = -1 * sp_robot_and_world_parameter_->leg_length_;
-            request.left_feet_position_ = {0.0, sp_robot_and_world_parameter_->leg_distance_, feet_height, 0.0, 0.0, 0.0};
-            request.right_feet_position_ = {0.0, -1 * sp_robot_and_world_parameter_->leg_distance_, feet_height, 0.0, 0.0, 0.0};
+            request.joint_start_position_[RobotJoints::left_foot] = {0.0, sp_robot_and_world_parameter_->leg_distance_, feet_height, 0.0, 0.0, 0.0};
+            request.joint_start_position_[RobotJoints::right_foot] = {0.0, -1 * sp_robot_and_world_parameter_->leg_distance_, feet_height, 0.0, 0.0, 0.0};
         }
 
 		return request;

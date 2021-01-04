@@ -42,20 +42,21 @@ namespace bitbots_throw{
 	        SystemPublisher::publish_info("Printing Engine data", "RosPublisherFacade");
 	        std::stringstream stream;
 
-            stream << "Throw Request,Ball,,,,Goal,,,,Head,,,,Left Hand,,,,Right Hand,,,,Left Foot,,,,Right Foot,," << std::endl;
-            stream << "Position,x,y,z,,x,y,z,,x,y,z,roll,pitch,yaw,,x,y,z,roll,pitch,yaw,,x,y,z,roll,pitch,yaw,,x,y,z,roll,pitch,yaw,,x,y,z,roll,pitch,yaw" << std::endl;
-            stream << "values,";
-            stream << request.ball_position_.x_ << "," << request.ball_position_.y_ << "," << request.ball_position_.z_ << ",,";
-            stream << request.goal_position_.x_ << "," << request.goal_position_.y_ << "," << request.goal_position_.z_ << ",,";
-            stream << request.head_position_.x_ << "," << request.head_position_.y_ << "," << request.head_position_.z_ << ",,";
-            stream << request.left_hand_position_.x_ << "," << request.left_hand_position_.y_ << "," << request.left_hand_position_.z_ << ",";
-            stream << request.left_hand_position_.roll_ << "," << request.left_hand_position_.pitch_ << "," << request.left_hand_position_.yaw_ << ",,";
-            stream << request.right_hand_position_.x_ << "," << request.right_hand_position_.y_ << "," << request.right_hand_position_.z_ << ",";
-            stream << request.right_hand_position_.roll_ << "," << request.right_hand_position_.pitch_ << "," << request.right_hand_position_.yaw_ << ",,";
-            stream << request.left_feet_position_.x_ << "," << request.left_feet_position_.y_ << "," << request.left_feet_position_.z_ << ",";
-            stream << request.left_feet_position_.roll_ << "," << request.left_feet_position_.pitch_ << "," << request.left_feet_position_.yaw_ << ",,";
-            stream << request.right_feet_position_.x_ << "," << request.right_feet_position_.y_ << "," << request.right_feet_position_.z_ << ",";
-            stream << request.right_feet_position_.roll_ << "," << request.right_feet_position_.pitch_ << "," << request.right_feet_position_.yaw_ << std::endl;
+            stream << "Throw Request" << std::endl;
+            stream << "Position,x,y,z,roll,pitch,yaw" << std::endl;
+            stream << "Ball" << request.ball_position_.x_ << "," << request.ball_position_.y_ << "," << request.ball_position_.z_ << std::endl;
+            stream << "Goal" << request.goal_position_.x_ << "," << request.goal_position_.y_ << "," << request.goal_position_.z_ << std::endl;
+
+            for(auto it : request.joint_start_position_){
+                stream << get_robot_joint_string(it.first);
+                stream << "," << it.second.x_;
+                stream << "," << it.second.y_;
+                stream << "," << it.second.z_;
+                stream << "," << it.second.roll_;
+                stream << "," << it.second.pitch_;
+                stream << "," << it.second.yaw_;
+                stream << std::endl;
+            }
 	        stream << engine->get_throw_points_as_string();
 
             double counter = 0.0;
@@ -67,10 +68,10 @@ namespace bitbots_throw{
 
             for(auto & it : responses){
                 stream << counter << "," << it.ik_mode_ << ",";
-                stream << build_data_from_transform(it.support_foot_to_left_hand_);
-                stream << build_data_from_transform(it.support_foot_to_right_hand_);
-                stream << build_data_from_transform(it.support_foot_to_left_foot_);
-                stream << build_data_from_transform(it.support_foot_to_right_foot_);
+                stream << build_data_from_transform(it.transform_to_joint_[RobotJoints::left_hand]);
+                stream << build_data_from_transform(it.transform_to_joint_[RobotJoints::right_hand]);
+                stream << build_data_from_transform(it.transform_to_joint_[RobotJoints::left_foot]);
+                stream << build_data_from_transform(it.transform_to_joint_[RobotJoints::right_foot]);
                 stream << std::endl;
 
                 counter += 1 / sp_engine_parameter_->engine_frequency_;

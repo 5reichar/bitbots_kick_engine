@@ -1,6 +1,7 @@
 #ifndef  BITBOTS_THROW_THROW_STRUCT_H
 #define  BITBOTS_THROW_THROW_STRUCT_H
 
+#include <map>
 #include "tf2/LinearMath/Transform.h"
 
 namespace bitbots_throw{
@@ -77,23 +78,49 @@ namespace bitbots_throw{
         hands_only_and_legs_separated
     };
 
+    enum RobotJoints{
+        head,
+        left_hand,
+        right_hand,
+        trunk,
+        left_foot,
+        right_foot
+    };
+
+    static std::string get_robot_joint_string(RobotJoints const & joint){
+        std::string return_value;
+        switch(joint){
+            case RobotJoints::head:
+                return_value = "Head";
+                break;
+            case RobotJoints::left_hand:
+                return_value = "Left Hand";
+                break;
+            case RobotJoints::right_hand:
+                return_value = "Right Hand";
+                break;
+            case RobotJoints::trunk:
+                return_value = "Trunk";
+                break;
+            case RobotJoints::left_foot:
+                return_value = "Left Foot";
+                break;
+            case RobotJoints::right_foot:
+                return_value = "Right Foot";
+                break;
+        }
+        return return_value;
+    }
+
     struct ThrowRequest{
         Struct3d ball_position_;
         Struct3d goal_position_;
-
-        Struct3dRPY head_position_;
-        Struct3dRPY left_hand_position_;
-        Struct3dRPY right_hand_position_;
-        Struct3dRPY left_feet_position_;
-        Struct3dRPY right_feet_position_;
+        std::map<RobotJoints, Struct3dRPY> joint_start_position_;
     };
 
     struct ThrowResponse{
         IKMode ik_mode_;
-        tf2::Transform support_foot_to_left_hand_;
-        tf2::Transform support_foot_to_right_hand_;
-        tf2::Transform support_foot_to_left_foot_;
-        tf2::Transform support_foot_to_right_foot_;
+        std::map<RobotJoints, tf2::Transform> transform_to_joint_;
     };
 
 

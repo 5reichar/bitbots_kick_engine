@@ -39,16 +39,13 @@ namespace bitbots_throw{
         void visualize_curves(std::shared_ptr<ThrowVisualizer> & sp_visualizer);
 
     private:
-        void add_point_to_pose(std::shared_ptr<bitbots_splines::PoseHandle> & pose, double const & time, Struct3dRPY const & values, Struct3dRPY const & velocity, Struct3dRPY const & acceleration);
+        void add_point_to_pose(RobotJoints joint, double const & time, Struct3dRPY const & values, Struct3dRPY const & velocity, Struct3dRPY const & acceleration);
 
         double duration_;
         std::map<double, IKMode> map_modes_;
         std::vector<double> movement_stage_;
 
-        std::shared_ptr<bitbots_splines::PoseHandle> sp_pose_left_hand_;
-        std::shared_ptr<bitbots_splines::PoseHandle> sp_pose_right_hand_;
-        std::shared_ptr<bitbots_splines::PoseHandle> sp_pose_left_foot_;
-        std::shared_ptr<bitbots_splines::PoseHandle> sp_pose_right_foot_;
+        std::map<RobotJoints, std::shared_ptr<bitbots_splines::PoseHandle>> map_poses_;
 
     };
 }

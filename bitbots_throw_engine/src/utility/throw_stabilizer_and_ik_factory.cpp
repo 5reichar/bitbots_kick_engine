@@ -114,21 +114,21 @@ namespace bitbots_throw{
 
     std::vector<ThrowStabilizerData> ThrowStabilizerAndIKFactory::get_stabilizer_data_left_hand(
             ThrowResponse & response){
-        return {{response.support_foot_to_left_hand_, RosJointAndTopicNames::get_joint_l_wrist(), RosJointAndTopicNames::get_joint_base_link(), 1}};
+        return {{response.transform_to_joint_[RobotJoints::left_hand], RosJointAndTopicNames::get_joint_l_wrist(), RosJointAndTopicNames::get_joint_base_link(), 1}};
     }
 
     std::vector<ThrowStabilizerData> ThrowStabilizerAndIKFactory::get_stabilizer_data_right_hand(
             ThrowResponse & response){
-        return {{response.support_foot_to_right_hand_, RosJointAndTopicNames::get_joint_r_wrist(), RosJointAndTopicNames::get_joint_base_link(), 1}};
+        return {{response.transform_to_joint_[RobotJoints::right_hand], RosJointAndTopicNames::get_joint_r_wrist(), RosJointAndTopicNames::get_joint_base_link(), 1}};
     }
 
     std::vector<ThrowStabilizerData> ThrowStabilizerAndIKFactory::get_stabilizer_data_left_foot(
             ThrowResponse & response){
-        return {{response.support_foot_to_left_foot_, RosJointAndTopicNames::get_joint_l_sole(), RosJointAndTopicNames::get_joint_base_link(), 1}};
+        return {{response.transform_to_joint_[RobotJoints::left_foot], RosJointAndTopicNames::get_joint_l_sole(), RosJointAndTopicNames::get_joint_base_link(), 1}};
     }
 
     std::vector<ThrowStabilizerData> ThrowStabilizerAndIKFactory::get_stabilizer_data_right_foot(
             ThrowResponse & response){
-        return {{response.support_foot_to_right_foot_, RosJointAndTopicNames::get_joint_r_sole(), RosJointAndTopicNames::get_joint_base_link(), 1}};
+        return {{response.transform_to_joint_[RobotJoints::right_foot], RosJointAndTopicNames::get_joint_r_sole(), RosJointAndTopicNames::get_joint_base_link(), 1}};
     }
 }

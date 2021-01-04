@@ -29,10 +29,10 @@ namespace bitbots_throw{
 
         msg.percentage_done = percentage_done;
         msg.movement_stage = movement_stage;
-        tf2::toMsg(response.support_foot_to_left_hand_, msg.left_hand_goal);
-        tf2::toMsg(response.support_foot_to_right_hand_, msg.right_hand_goal);
-        tf2::toMsg(response.support_foot_to_left_foot_, msg.left_foot_goal);
-        tf2::toMsg(response.support_foot_to_right_foot_, msg.right_foot_goal);
+        tf2::toMsg(response.transform_to_joint_.at(RobotJoints::left_hand), msg.left_hand_goal);
+        tf2::toMsg(response.transform_to_joint_.at(RobotJoints::right_hand), msg.right_hand_goal);
+        tf2::toMsg(response.transform_to_joint_.at(RobotJoints::left_foot), msg.left_foot_goal);
+        tf2::toMsg(response.transform_to_joint_.at(RobotJoints::right_foot), msg.right_foot_goal);
 
         publish_arrow_marker("throw_engine_left_hand_goal"
                             ,"base_link"
