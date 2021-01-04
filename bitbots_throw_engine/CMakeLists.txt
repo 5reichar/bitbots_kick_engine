@@ -71,6 +71,7 @@ set(
   src/throws/throw_curves/testing_movement.cpp
   src/utility/throw_ik.cpp
   src/utility/throw_stabilizer.cpp
+  src/utility/throw_stabilizer_and_ik_factory.cpp
   src/throws/throw_curves/throw_service.cpp
   src/throws/throw_curves/throw_material.cpp
   src/throws/throw_curves/throw_movement_base.cpp

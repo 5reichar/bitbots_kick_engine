@@ -27,24 +27,6 @@ namespace bitbots_throw{
         parameter.right_foot_frame_ = RosJointAndTopicNames::get_joint_base_link();
 
         sp_publisher_facade_.reset(new RosPublisherFacade(ros_node_handle_, sp_engine_parameter_, parameter, sp_debug_parameter_));
-        sp_ik_left_arm_.reset(new ThrowIK(RosJointAndTopicNames::get_joint_group_left_arm()
-                             ,{RosJointAndTopicNames::get_joint_l_elbow(), RosJointAndTopicNames::get_joint_l_shoulder_pitch(), RosJointAndTopicNames::get_joint_l_shoulder_roll()}
-                             ,{0.0, 0.0, 0.0}));
-        sp_ik_right_arm_.reset(new ThrowIK(RosJointAndTopicNames::get_joint_group_right_arm()
-                              ,{RosJointAndTopicNames::get_joint_r_elbow(), RosJointAndTopicNames::get_joint_r_shoulder_pitch(), RosJointAndTopicNames::get_joint_r_shoulder_roll()}
-                              ,{0.0, 0.0, 0.0}));
-        sp_ik_left_foot_.reset(new ThrowIK(RosJointAndTopicNames::get_joint_group_left_leg()
-                              ,{RosJointAndTopicNames::get_joint_l_hip_pitch(), RosJointAndTopicNames::get_joint_l_knee(), RosJointAndTopicNames::get_joint_l_ankle_pitch()}
-                              ,{0.7, 1.0, -0.4}));
-        sp_ik_right_foot_.reset(new ThrowIK(RosJointAndTopicNames::get_joint_group_right_leg()
-                               ,{RosJointAndTopicNames::get_joint_r_hip_pitch(), RosJointAndTopicNames::get_joint_r_knee(), RosJointAndTopicNames::get_joint_r_ankle_pitch()}
-                               ,{-0.7, -1.0, 0.4}));
-        sp_ik_left_hand_.reset(new ThrowIK(RosJointAndTopicNames::get_joint_group_left_arm()
-                              ,{RosJointAndTopicNames::get_joint_l_elbow()}
-                              ,{0.0}));
-        sp_ik_right_hand_.reset(new ThrowIK(RosJointAndTopicNames::get_joint_group_right_arm()
-                               ,{RosJointAndTopicNames::get_joint_r_elbow()}
-                               ,{0.0}));
 	}
 
 	void ThrowNode::load_parameter(){
@@ -83,14 +65,7 @@ namespace bitbots_throw{
 			exit(1);
 		}
 
-        last_ik_mode_ = IKMode::arms_and_legs_separated;
-
-        sp_ik_left_arm_->init(kinematic_model);
-        sp_ik_right_arm_->init(kinematic_model);
-        sp_ik_left_foot_->init(kinematic_model);
-        sp_ik_right_foot_->init(kinematic_model);
-        sp_ik_left_hand_->init(kinematic_model);
-        sp_ik_right_hand_->init(kinematic_model);
+		stabilizer_and_ik_.set_kinematic_model(kinematic_model);
 	}
 
 	void ThrowNode::throw_callback(const bitbots_throw::throw_action action){
@@ -109,17 +84,7 @@ namespace bitbots_throw{
 		while (ros::ok() && percentage_done < 100){
 			auto response = throw_engine_.update(engine_update_dt);
 			vec_responses.emplace_back(response);
-			bitbots_splines::JointGoals joint_goals;
-
-			try{
-				joint_goals = calculate_joint_goals(response);
-			}
-			catch(const std::runtime_error& e){
-				SystemPublisher::publish_runtime_error(e);
-
-				// maybe add some more diagnostic logic
-				joint_goals = bitbots_splines::JointGoals();
-			}
+			auto joint_goals = stabilizer_and_ik_.calculate_joint_goals(response);
 			
 			sp_publisher_facade_->publish_throw(joint_goals);
 			sp_publisher_facade_->publish_odometry();
@@ -138,17 +103,14 @@ namespace bitbots_throw{
         sp_engine_parameter_.reset(new ThrowEngineParameter(config, level));
         sp_robot_and_world_parameter_.reset(new RobotAndWorldParameter(config, level));
 
-		if(!sp_publisher_facade_ || !sp_ik_right_foot_ || !sp_ik_left_foot_ || !sp_ik_right_arm_ || !sp_ik_left_arm_){
+		if(!sp_publisher_facade_ ){
 		    set_default_parameter();
 		}
 
         sp_publisher_facade_->set_parameter(sp_engine_parameter_, sp_debug_parameter_);
-        sp_ik_left_arm_->set_bio_ik_timeout(sp_engine_parameter_->bio_ik_time_);
-        sp_ik_right_arm_->set_bio_ik_timeout(sp_engine_parameter_->bio_ik_time_);
-        sp_ik_left_foot_->set_bio_ik_timeout(sp_engine_parameter_->bio_ik_time_);
-        sp_ik_right_foot_->set_bio_ik_timeout(sp_engine_parameter_->bio_ik_time_);
-        sp_ik_left_hand_->set_bio_ik_timeout(sp_engine_parameter_->bio_ik_time_);
-        sp_ik_right_hand_->set_bio_ik_timeout(sp_engine_parameter_->bio_ik_time_);
+
+		stabilizer_and_ik_.set_debug_parameter(sp_debug_parameter_);
+		stabilizer_and_ik_.set_bio_ik_timeout(sp_engine_parameter_->bio_ik_time_);
 
         throw_engine_.set_engine_parameter(sp_robot_and_world_parameter_);
 	}
@@ -217,58 +179,6 @@ namespace bitbots_throw{
 
 		return request;
 	}
-
-    bitbots_splines::JointGoals ThrowNode::calculate_joint_goals(ThrowResponse const & response){
-        std::vector<ThrowStabilizerData> data;
-        bitbots_splines::JointGoals joint_goals;
-        bool ik_mode_changed = response.ik_mode_ != last_ik_mode_;
-        last_ik_mode_ = response.ik_mode_;
-
-        if (IKMode::arms_and_legs_separated == response.ik_mode_){
-            if(sp_debug_parameter_->debug_active_ && ik_mode_changed){
-                SystemPublisher::publish_info("each arm get one ik", "ThrowNode::calculate_joint_goals");
-            }
-
-            data = {{response.support_foot_to_left_hand_, RosJointAndTopicNames::get_joint_l_wrist(), RosJointAndTopicNames::get_joint_base_link(), 1}};
-            calculate_goal(sp_ik_left_arm_, joint_goals, data);
-
-            data = {{response.support_foot_to_right_hand_, RosJointAndTopicNames::get_joint_r_wrist(), RosJointAndTopicNames::get_joint_base_link(), 1}};
-            calculate_goal(sp_ik_right_arm_, joint_goals, data);
-        }
-        else if (IKMode::hands_only_and_legs_separated == response.ik_mode_){
-            if(sp_debug_parameter_->debug_active_ && ik_mode_changed){
-                SystemPublisher::publish_info("each hand get one ik", "ThrowNode::calculate_joint_goals");
-            }
-
-            data = {{response.support_foot_to_left_hand_, RosJointAndTopicNames::get_joint_l_wrist(), RosJointAndTopicNames::get_joint_base_link(), 1}};
-            calculate_goal(sp_ik_left_hand_, joint_goals, data);
-
-            data = {{response.support_foot_to_right_hand_, RosJointAndTopicNames::get_joint_r_wrist(), RosJointAndTopicNames::get_joint_base_link(), 1}};
-            calculate_goal(sp_ik_right_hand_, joint_goals, data);
-        }
-
-        if (IKMode::arms_and_legs_separated == response.ik_mode_ || IKMode::hands_only_and_legs_separated == response.ik_mode_){
-            if(sp_debug_parameter_->debug_active_ && ik_mode_changed){
-                SystemPublisher::publish_info("each leg get one ik", "ThrowNode::calculate_joint_goals");
-            }
-
-            data = {{response.support_foot_to_left_foot_, RosJointAndTopicNames::get_joint_l_sole(), RosJointAndTopicNames::get_joint_base_link(), 1}};
-            calculate_goal(sp_ik_left_foot_, joint_goals, data);
-
-            data = {{response.support_foot_to_right_foot_, RosJointAndTopicNames::get_joint_r_sole(), RosJointAndTopicNames::get_joint_base_link(), 1}};
-            calculate_goal(sp_ik_right_foot_, joint_goals, data);
-        }
-
-        return joint_goals;
-    }
-
-    void ThrowNode::calculate_goal(std::shared_ptr <ThrowIK> & ik, bitbots_splines::JointGoals & joint_goals, std::vector <ThrowStabilizerData> & data){
-        ThrowStabilizer stabilizer;
-        auto ik_goals = stabilizer.stabilize(data);
-        auto calc_goals = ik->calculate(std::move(ik_goals));
-        joint_goals.first.insert(joint_goals.first.end(), calc_goals.first.begin(), calc_goals.first.end());
-        joint_goals.second.insert(joint_goals.second.end(), calc_goals.second.begin(), calc_goals.second.end());
-    }
 
     geometry_msgs::Pose ThrowNode::get_pose(std::string const & frame_id
                                            ,double const & orientation

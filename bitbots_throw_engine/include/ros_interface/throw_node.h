@@ -2,9 +2,8 @@
 #define BITBOTS_THROW_THROW_NODE_H
 
 #include "ros/ros.h"
-#include "utility/throw_ik.h"
 #include "utility/throw_struct.h"
-#include "utility/throw_stabilizer.h"
+#include "utility/throw_stabilizer_and_ik_factory.h"
 #include "engine/throw_engine.h"
 #include "parameter/throw_engine_parameter.h"
 
@@ -35,8 +34,6 @@ namespace bitbots_throw{
 
         // Helper methods
         ThrowRequest create_throw_request(throw_action action);
-        bitbots_splines::JointGoals calculate_joint_goals(ThrowResponse const & response);
-        void calculate_goal(std::shared_ptr<ThrowIK> & ik, bitbots_splines::JointGoals & joint_goals, std::vector<ThrowStabilizerData> & data);
         geometry_msgs::Pose get_pose(std::string const & frame_id
                                     ,double const & orientation = 1
                                     ,ros::Time const & time = ros::Time::now()
@@ -44,15 +41,8 @@ namespace bitbots_throw{
                                     ,ros::Duration const & timeout = ros::Duration(0.2));
 
         // member variables
-        std::shared_ptr<ThrowIK> sp_ik_left_arm_;
-        std::shared_ptr<ThrowIK> sp_ik_right_arm_;
-        std::shared_ptr<ThrowIK> sp_ik_left_foot_;
-        std::shared_ptr<ThrowIK> sp_ik_right_foot_;
-        std::shared_ptr<ThrowIK> sp_ik_left_hand_;
-        std::shared_ptr<ThrowIK> sp_ik_right_hand_;
-
-        IKMode last_ik_mode_;
         ThrowEngine throw_engine_;
+        ThrowStabilizerAndIKFactory stabilizer_and_ik_;
         std::shared_ptr<RosPublisherFacade> sp_publisher_facade_;
 
         std::shared_ptr<ThrowDebugParameter> sp_debug_parameter_;
